@@ -261,10 +261,14 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
   <section class="panel section" id="heroPanel">
     <div class="hero">
       <div class="hero-left">
-        <div class="team-mark" id="teamMark">—</div>
-        <div>
+        <div class="hero-photo-wrap">
+          <img class="hero-photo" id="heroPhoto" alt="Player photo" style="display:none;" />
+          <div class="hero-photo-fallback" id="heroPhotoFallback"><span class="team-mark" id="teamMark">—</span></div>
+        </div>
+        <div class="hero-identity">
           <div class="hero-name" id="heroName">No data loaded</div>
           <div class="hero-meta" id="heroMeta">Upload your JSON or host a <code>latest.json</code> beside this file.</div>
+          <div class="hero-badges" id="heroBadges"></div>
         </div>
       </div>
       <div class="pill" id="samplePill">0 samples</div>
@@ -327,6 +331,114 @@ const TEAM_META = {
   boston: {name:'Boston Breach', short:'BOS'}
 };
 const EVENT_META = { M1Q:'Major 1 Qualifiers', M1T:'Major 1 Tournament', M2Q:'Major 2 Qualifiers', M2T:'Major 2 Tournament', CHAMPS:'Champs', EWC:'EWC' };
+const TEAM_IMAGE_DIR = {
+  optic:'OpTic-Texas',
+  pgm:'Paris-Gentle-Mates',
+  faze:'FaZe-Vegas',
+  lat:'Los-Angeles-Thieves',
+  g2:'G2-Minnesota',
+  falcons:'Riyadh-Falcons',
+  toronto:'Toronto-KOI',
+  ravens:'Carolina-Royal-Ravens',
+  vancouver:'Vancouver-Surge',
+  c9:'Cloud9-New-York',
+  miami:'Miami-Heretics',
+  boston:'Boston-Breach'
+};
+
+function slugVariants(str=''){
+  const raw = String(str || '').trim();
+  const basic = raw.normalize('NFKD').replace(/[^\w\s-]/g,'').trim();
+  const forms = new Set([
+    raw, basic,
+    basic.replace(/\s+/g,'-'),
+    basic.replace(/\s+/g,'_'),
+    basic.replace(/\s+/g,''),
+    basic.toLowerCase(),
+    basic.toLowerCase().replace(/\s+/g,'-'),
+    basic.toLowerCase().replace(/\s+/g,'_'),
+    basic.toLowerCase().replace(/\s+/g,'')
+  ]);
+  return [...forms].filter(Boolean);
+}
+
+function playerImageCandidates(player){
+  if (!player) return [];
+  const teamDir = TEAM_IMAGE_DIR[player.teamId] || teamName(player.teamId).replace(/\s+/g,'-');
+  const baseNames = new Set([
+    ...slugVariants(player.name),
+    ...slugVariants((player.id || '').split('_').slice(1).join(' ')),
+    ...slugVariants((player.id || '').split('_').slice(1).join('-'))
+  ]);
+  const exts = ['webp','png','jpg','jpeg'];
+  const paths = [];
+  [...baseNames].forEach(name => exts.forEach(ext => paths.push(`./assets/player-images/${teamDir}/${name}.${ext}`)));
+  return paths;
+}
+
+function setHeroPhoto(player){
+  const img = $('heroPhoto');
+  const fallback = $('heroPhotoFallback');
+  if (!img || !fallback) return;
+  const candidates = playerImageCandidates(player);
+  let idx = 0;
+  img.onerror = () => {
+    idx += 1;
+    if (idx < candidates.length) img.src = candidates[idx];
+    else { img.style.display = 'none'; fallback.style.display = 'flex'; }
+  };
+  img.onload = () => { img.style.display = 'block'; fallback.style.display = 'none'; };
+  if (!candidates.length){ img.style.display = 'none'; fallback.style.display = 'flex'; return; }
+  img.style.display = 'none';
+  fallback.style.display = 'flex';
+  img.src = candidates[0];
+}
+
+function eventWinnerId(eventId){
+  const matches = (STATE.raw?.matches || []).filter(m => m.eventId === eventId);
+  if (!matches.length) return '';
+  const counts = new Map();
+  matches.forEach(match => {
+    const maps = (STATE.mapsByMatch.get(match.id) || []);
+    let w1 = 0, w2 = 0;
+    maps.forEach(mp => {
+      if (mp.winner === match.team1Id) w1++;
+      if (mp.winner === match.team2Id) w2++;
+    });
+    if (w1 === w2) return;
+    const winner = w1 > w2 ? match.team1Id : match.team2Id;
+    counts.set(winner, (counts.get(winner) || 0) + 1);
+  });
+  let best = '', bestCount = -1;
+  counts.forEach((count, teamId) => { if (count > bestCount) { best = teamId; bestCount = count; } });
+  return best;
+}
+
+function teamSeriesRecord(teamId, split='ALL'){
+  if (!STATE.raw?.matches) return {wins:0, losses:0};
+  let wins = 0, losses = 0;
+  STATE.raw.matches.forEach(match => {
+    if (split !== 'ALL' && match.eventId !== split) return;
+    if (match.team1Id !== teamId && match.team2Id !== teamId) return;
+    const maps = (STATE.mapsByMatch.get(match.id) || []);
+    let w1 = 0, w2 = 0;
+    maps.forEach(mp => {
+      if (mp.winner === match.team1Id) w1++;
+      if (mp.winner === match.team2Id) w2++;
+    });
+    if (w1 === w2) return;
+    const winner = w1 > w2 ? match.team1Id : match.team2Id;
+    if (winner === teamId) wins++; else losses++;
+  });
+  return {wins, losses};
+}
+
+function teamTrophyEvents(teamId){
+  return ['M1T','M2T','CHAMPS','EWC']
+    .filter(eventId => eventWinnerId(eventId) === teamId)
+    .map(eventId => EVENT_META[eventId] || eventId);
+}
+
 const STATE = {
   raw:null,
   teams:[],
@@ -556,6 +668,20 @@ function renderHero(samples) {
   $('heroName').textContent = player.name;
   $('heroMeta').textContent = `${teamName(player.teamId)} · ${SPLIT_OPTIONS.find(([v])=>v===STATE.selectedSplit)?.[1] || 'Full Season'}`;
   $('samplePill').textContent = `${samples.length} samples`;
+  setHeroPhoto(player);
+
+  const record = teamSeriesRecord(player.teamId, STATE.selectedSplit);
+  const trophies = teamTrophyEvents(player.teamId);
+  const badges = [
+    `<span class="hero-chip subtle">${record.wins}–${record.losses} series</span>`,
+    `<span class="hero-chip subtle">${samples.length} matching logs</span>`
+  ];
+  if (trophies.length) {
+    trophies.slice(0,3).forEach(label => badges.push(`<span class="hero-chip trophy">🏆 ${label}</span>`));
+  } else {
+    badges.push(`<span class="hero-chip subtle">No titles yet</span>`);
+  }
+  $('heroBadges').innerHTML = badges.join('');
 }
 
 function renderSummary(samples) {
