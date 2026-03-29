@@ -122,11 +122,20 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
 .btn-primary { background:linear-gradient(90deg, #1cff6a, #b0ff35); color:#05210f; }
 .btn-secondary { background:#0d1913; color:var(--text); border:1px solid rgba(32,93,66,.9); }
 .btn-ghost { background:transparent; color:#aff2c8; border:1px solid rgba(32,93,66,.9); }
-.hero { display:flex; align-items:center; justify-content:space-between; gap:12px; }
-.hero-left { display:flex; gap:12px; align-items:center; min-width:0; }
+.hero { display:flex; flex-direction:column; align-items:stretch; gap:14px; }
+.hero-left { display:flex; flex-direction:column; gap:14px; align-items:stretch; min-width:0; }
+.hero-identity { min-width:0; }
+.hero-info-row { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.hero-photo-wrap { position:relative; width:100%; height:320px; border-radius:24px; overflow:hidden; background:radial-gradient(circle at 30% 20%, rgba(46,255,129,.12), rgba(6,14,11,.96)); border:1px solid rgba(32,93,66,.9); box-shadow: inset 0 0 0 1px rgba(120,255,170,.05), 0 8px 20px rgba(0,0,0,.22); }
+.hero-photo { width:100%; height:100%; object-fit:contain; object-position:center top; display:block; padding:10px 10px 0; }
+.hero-photo-fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 30% 20%, rgba(46,255,129,.16), rgba(6,14,11,.95)); }
 .team-mark { width:58px; height:58px; border-radius:16px; background:radial-gradient(circle at 30% 20%, rgba(46,255,129,.16), rgba(6,14,11,.95)); border:1px solid rgba(32,93,66,.9); display:grid; place-items:center; font-size:1.25rem; font-weight:900; color:var(--green); flex:0 0 auto; }
-.hero-name { font-size:1.55rem; font-weight:900; line-height:1; margin-bottom:2px; }
-.hero-meta { color:var(--muted); font-size:.92rem; }
+.hero-name { font-size:1.55rem; font-weight:900; line-height:1; margin-bottom:4px; }
+.hero-meta { color:var(--muted); font-size:.92rem; line-height:1.35; }
+.hero-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.hero-chip { display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px; border:1px solid rgba(32,93,66,.9); background:rgba(10,20,16,.95); color:#d8efe4; font-size:.8rem; font-weight:800; line-height:1; white-space:nowrap; }
+.hero-chip.trophy { color:#f7e39b; border-color:rgba(173,140,52,.7); background:rgba(38,30,8,.8); }
+.hero-chip.subtle { color:#b8f7d0; }
 .pill { display:inline-flex; align-items:center; gap:6px; padding:8px 11px; border-radius:999px; border:1px solid rgba(32,93,66,.9); background:rgba(10,20,16,.95); color:#a9c6b7; font-size:.84rem; font-weight:700; }
 .cards { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
 .stat-card { padding:14px; min-height:84px; }
@@ -181,6 +190,11 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
   .header-logo { width:108px; height:108px; }
   .headline { font-size:2.9rem; }
   .subhead { font-size:1.9rem; }
+  .hero { flex-direction:row; align-items:stretch; }
+  .hero-left { flex-direction:row; align-items:center; }
+  .hero-photo-wrap { width:320px; height:320px; flex:0 0 320px; }
+  .hero-photo { object-fit:cover; object-position:center top; padding:0; }
+  .hero-identity { display:flex; flex-direction:column; justify-content:center; }
   .cards { grid-template-columns:repeat(4,minmax(0,1fr)); }
   .last5 { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .filter-shell { margin-left:0; margin-right:0; border:1px solid rgba(19,55,40,.8); border-top:none; border-radius:0 0 18px 18px; }
@@ -266,12 +280,16 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
           <div class="hero-photo-fallback" id="heroPhotoFallback"><span class="team-mark" id="teamMark">—</span></div>
         </div>
         <div class="hero-identity">
-          <div class="hero-name" id="heroName">No data loaded</div>
-          <div class="hero-meta" id="heroMeta">Upload your JSON or host a <code>latest.json</code> beside this file.</div>
+          <div class="hero-info-row">
+            <div>
+              <div class="hero-name" id="heroName">No data loaded</div>
+              <div class="hero-meta" id="heroMeta">Upload your JSON or host a <code>latest.json</code> beside this file.</div>
+            </div>
+            <div class="pill" id="samplePill">0 samples</div>
+          </div>
           <div class="hero-badges" id="heroBadges"></div>
         </div>
       </div>
-      <div class="pill" id="samplePill">0 samples</div>
     </div>
   </section>
 
