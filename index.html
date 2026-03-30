@@ -136,8 +136,8 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
   border-radius:24px;
   overflow:hidden;
   background:
-    radial-gradient(circle at 22% 18%, var(--team-primary), rgba(0,0,0,0) 42%),
-    linear-gradient(90deg, color-mix(in srgb, var(--team-primary) 55%, transparent), rgba(0,0,0,0) 36%),
+    radial-gradient(circle at 50% 28%, color-mix(in srgb, var(--team-primary) 92%, transparent), rgba(0,0,0,0) 34%),
+    radial-gradient(circle at 18% 30%, color-mix(in srgb, var(--team-primary) 50%, transparent), rgba(0,0,0,0) 38%),
     linear-gradient(145deg, color-mix(in srgb, var(--team-secondary) 78%, black 22%), rgba(6,14,11,.98));
   border:1px solid color-mix(in srgb, var(--team-primary) 50%, rgba(32,93,66,.85));
   box-shadow: inset 0 0 0 1px rgba(120,255,170,.05), 0 8px 20px rgba(0,0,0,.22);
@@ -146,21 +146,22 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at 24% 24%, color-mix(in srgb, var(--team-primary) 75%, transparent), rgba(0,0,0,0) 32%),
-    linear-gradient(90deg, color-mix(in srgb, var(--team-primary) 38%, transparent), rgba(0,0,0,0) 48%);
+    radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--team-primary) 95%, transparent), rgba(0,0,0,0) 26%),
+    radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--team-primary) 35%, transparent), rgba(0,0,0,0) 52%);
   opacity:.95;
   pointer-events:none;
 }
 .hero-team-logo{
   position:absolute;
-  inset:14px 14px auto auto;
-  width:62%;
-  max-width:270px;
+  left:50%;
+  top:48%;
+  width:72%;
+  max-width:320px;
   height:auto;
-  opacity:.1;
-  filter: grayscale(1) brightness(1.6);
+  opacity:.12;
+  filter: grayscale(1) brightness(1.5);
   pointer-events:none;
-  transform: translate(4%, -2%);
+  transform: translate(-50%, -50%);
 }
 .hero-photo {
   position:relative;
@@ -246,7 +247,7 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
   .hero-left { flex-direction:row; align-items:center; }
   .hero-photo-wrap { width:320px; height:320px; flex:0 0 320px; }
   .hero-photo { object-fit:contain; object-position:center top; padding:0 8px 0; }
-  .hero-team-logo{ width:54%; max-width:240px; opacity:.11; right:22px; top:18px; }
+  .hero-team-logo{ width:62%; max-width:300px; opacity:.12; left:50%; top:46%; right:auto; transform:translate(-50%,-50%); }
   .hero-identity { display:flex; flex-direction:column; justify-content:center; }
   .cards { grid-template-columns:repeat(4,minmax(0,1fr)); }
   .last5 { grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -491,7 +492,11 @@ const TEAM_IMAGE_DIR = {
 };
 const PLAYER_IMAGE_NAME_OVERRIDES = {
   miami_mettalz: ['MettalZ', 'Mettalz'],
-  miami_renkor: ['RenKoR', 'RenKor']
+  miami_renkor: ['RenKoR', 'RenKor'],
+  Mettalz: ['MettalZ', 'Mettalz'],
+  mettalz: ['MettalZ', 'Mettalz'],
+  RenKor: ['RenKoR', 'RenKor'],
+  renkor: ['RenKoR', 'RenKor']
 };
 
 const TEAM_THEME = {
@@ -535,22 +540,20 @@ function playerImageCandidates(player){
     ...slugVariants((player.id || '').split('_').slice(1).join(' ')),
     ...slugVariants((player.id || '').split('_').slice(1).join('-'))
   ]);
+  const overrideKeys = [
+    player.id,
+    String(player.id || '').toLowerCase(),
+    player.name,
+    String(player.name || '').toLowerCase()
+  ].filter(Boolean);
+  overrideKeys.forEach(key => {
+    const overrideNames = PLAYER_IMAGE_NAME_OVERRIDES[key] || [];
+    overrideNames.forEach(name => slugVariants(name).forEach(v => baseNames.add(v)));
+  });
   const exts = ['webp','png','jpg','jpeg'];
   const paths = [];
   [...baseNames].forEach(name => exts.forEach(ext => paths.push(`./assets/player-images/${teamDir}/${name}.${ext}`)));
-  return paths;
-}
-
-
-function setHeroBackdrop(player){
-  const wrap = $('heroPhotoWrap');
-  const logo = $('heroTeamLogo');
-  if (!wrap || !player) return;
-  const theme = TEAM_THEME[player.teamId] || { primary:'rgba(46,255,129,.18)', secondary:'rgba(10,20,16,.98)' };
-  wrap.style.setProperty('--team-primary', theme.primary);
-  wrap.style.setProperty('--team-secondary', theme.secondary);
-  logo.src = TEAM_LOGO_DATA[player.teamId] || '';
-  logo.style.display = logo.src ? 'block' : 'none';
+  return [...new Set(paths)];
 }
 
 function setHeroPhoto(player){
