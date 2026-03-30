@@ -267,7 +267,7 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
         <input id="fileInput" type="file" accept=".json,application/json" style="display:none;" />
       </label>
     </div>
-    <div class="small" id="dataStatus" style="margin-top:8px;">Looking for <code>latest.json</code> in the same folder…</div>
+    <div class="small" id="dataStatus" style="margin-top:8px;">Looking for <code>latest.json</code> and <code>players.json</code> in the same folder…</div>
   </div>
     </div>
   </details>
@@ -283,7 +283,7 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
           <div class="hero-info-row">
             <div>
               <div class="hero-name" id="heroName">No data loaded</div>
-              <div class="hero-meta" id="heroMeta">Upload your JSON or host a <code>latest.json</code> beside this file.</div>
+              <div class="hero-meta" id="heroMeta">Upload your JSON or host <code>latest.json</code> and <code>players.json</code> beside this file.</div>
             </div>
             
           </div>
@@ -370,20 +370,79 @@ const PLAYER_META = {
   c9_vivid: { fullName:'Reece Drost', dob:'1999-12-24' },
 
   falcons_cellium: { fullName:'McArthur Jovel', dob:'2000-12-24' }
+c9_beans: { fullName:'Ben McMellon', dob:'2000-05-16' },
+  c9_mack: { fullName:'Makenzie Kelley', dob:'2001-11-21' },
 
-  c9_beans: { fullName:'Ben McMellon', dob:'2000-05-16' },
-  c9_encourage: { fullName:'Jordan Byrd', dob:'2006-06-19' },
-  c9_hide: { fullName:'Jacob Bustillos', dob:'2007-06-05' },
-
-  falcons_exnid: { fullName:'Saud Al-Ati', dob:'2002-10-28' },
   falcons_kismet: { fullName:'Matthew Tinsley', dob:'1999-11-11' },
   falcons_pred: { fullName:'Amer Zulbeari', dob:'2001-08-19' },
 
   faze_04: { fullName:'Jovan Rodriguez', dob:'2004-08-02' },
   faze_abuzah: { fullName:'Jordan François', dob:'2000-07-13' },
   faze_drazah: { fullName:'Zachary Jordan', dob:'2001-05-09' },
+  faze_simp: { fullName:'Chris Lehr', dob:'2001-02-06' },
+
+  g2_estreal: { fullName:'Justice McMillan', dob:'2002-12-17' },
+  g2_kremp: { fullName:'Kyle Haworth', dob:'2002-11-19' },
+  g2_skyz: { fullName:'Cesar Bueno', dob:'1999-07-08' },
+
+  lat_abezy: { fullName:'Tyler Pharris', dob:'1999-11-03' },
+  lat_hydra: { fullName:'Paco Rusiewiez', dob:'2002-02-11' },
+  lat_kenny: { fullName:'Kenneth Williams', dob:'1999-09-02' },
+  lat_nium: { fullName:'Jeremiah Harrison', dob:'2002-07-23' },
+  lat_scrap: { fullName:'Thomas Ernst', dob:'2002-07-01' },
+
+  ravens_nero: { fullName:'Dylan Koch', dob:'2002-05-30' },
+  ravens_slasher: { fullName:'Austin Liddicoat', dob:'1994-09-02' },
+
+  toronto_cleanx: { fullName:'Tobias Juul Jønsson', dob:'2000-08-11' },
+  toronto_insight: { fullName:'Jamie Craven', dob:'1999-10-31' },
+  toronto_joedeceives: { fullName:'Joseph Romero', dob:'2004-09-23' },
+  toronto_reeal: { fullName:'José Fernández', dob:'2003-12-11' },
+
+  vancouver_capsidal: { fullName:'Kenyen Sutton', dob:'2002-08-19' },
+  vancouver_gwinn: { fullName:'Isaiah Gwinn', dob:'2002-05-02' },
+  vancouver_tjhaly: { fullName:'Thomas Haly', dob:'1999-07-19' },
 
 };
+
+function getEmbeddedMeta(playerId){
+  try { return PLAYER_META?.[playerId] || {}; }
+  catch { return {}; }
+}
+
+function getRegistryMeta(playerId){
+  return STATE.registryById.get(playerId) || {};
+}
+
+function getPlayerMeta(player){
+  if (!player) return {};
+  const registryMeta = getRegistryMeta(player.id);
+  const embeddedMeta = getEmbeddedMeta(player.id);
+  return {
+    ...embeddedMeta,
+    ...registryMeta,
+    fullName: registryMeta.fullName || embeddedMeta.fullName || '',
+    dob: registryMeta.dob || embeddedMeta.dob || '',
+    role: registryMeta.role || embeddedMeta.role || player.role || '',
+    active: typeof registryMeta.active === 'boolean' ? registryMeta.active : (typeof player.active === 'boolean' ? player.active : true),
+    status: registryMeta.status || player.status || '',
+    accomplishments: registryMeta.accomplishments || embeddedMeta.accomplishments || player.accomplishments || {},
+  };
+}
+
+async function tryLoadRegistryFromHost(){
+  const candidates = ['./players.json', './cdl_2026_players_registry_aligned.json'];
+  for (const path of candidates) {
+    try {
+      const res = await fetch(path, {cache:'no-store'});
+      if (!res.ok) continue;
+      const registry = await res.json();
+      if (registry?.players?.length) return registry;
+    } catch (err) {}
+  }
+  return null;
+}
+
 
 function calcAge(dob){
   if (!dob) return '';
@@ -404,13 +463,14 @@ function prettyDob(dob){
 }
 
 function formatHeroMeta(player){
-  const meta = PLAYER_META[player?.id] || {};
+  const meta = getPlayerMeta(player);
   const lines = [`${teamName(player.teamId)} · ${SPLIT_OPTIONS.find(([v])=>v===STATE.selectedSplit)?.[1] || 'Full Season'}`];
   if (meta.fullName) lines.push(meta.fullName);
   if (meta.dob) {
     const age = calcAge(meta.dob);
     lines.push(`DOB: ${prettyDob(meta.dob)}${age ? ` (Age ${age})` : ''}`);
   }
+  if (meta.role) lines.push(`Role: ${meta.role}`);
   return lines.join('<br>');
 }
 
@@ -532,9 +592,11 @@ function teamChampsWinCount(teamId){
 
 const STATE = {
   raw:null,
+  registry:null,
   teams:[],
   players:[],
   playerById:new Map(),
+  registryById:new Map(),
   matchById:new Map(),
   mapById:new Map(),
   mapsByMatch:new Map(),
@@ -601,9 +663,26 @@ function normalizeLine(val) {
   return String(val || '').replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1').trim();
 }
 
-function buildIndexes(raw) {
+function buildIndexes(raw, registry=null) {
   STATE.raw = raw;
-  STATE.playerById = new Map(raw.players.map(p => [p.id, p]));
+  STATE.registry = registry || null;
+  STATE.registryById = new Map((registry?.players || []).map(p => [p.id, p]));
+
+  const mergedPlayers = (raw.players || []).map(player => {
+    const meta = getPlayerMeta(player);
+    return {
+      ...player,
+      name: meta.tag || player.name,
+      fullName: meta.fullName || player.fullName || '',
+      dob: meta.dob || player.dob || '',
+      role: meta.role || player.role || '',
+      status: meta.status || player.status || '',
+      active: typeof meta.active === 'boolean' ? meta.active : (typeof player.active === 'boolean' ? player.active : true),
+      accomplishments: meta.accomplishments || player.accomplishments || {},
+    };
+  });
+
+  STATE.playerById = new Map(mergedPlayers.map(p => [p.id, p]));
   STATE.matchById = new Map(raw.matches.map(m => [m.id, m]));
   STATE.mapById = new Map(raw.maps.map(m => [m.id, m]));
   STATE.mapsByMatch = new Map();
@@ -617,8 +696,8 @@ function buildIndexes(raw) {
     if (!STATE.pstatsByMap.has(ps.mapId)) STATE.pstatsByMap.set(ps.mapId, []);
     STATE.pstatsByMap.get(ps.mapId).push(ps);
   }
-  STATE.teams = [...new Set(raw.players.map(p => p.teamId))].filter(Boolean).sort((a,b)=>teamName(a).localeCompare(teamName(b)));
-  STATE.players = raw.players.slice();
+  STATE.teams = [...new Set(mergedPlayers.map(p => p.teamId))].filter(Boolean).sort((a,b)=>teamName(a).localeCompare(teamName(b)));
+  STATE.players = mergedPlayers.slice();
 }
 
 function teamName(teamId) { return TEAM_META[teamId]?.name || teamId; }
@@ -760,23 +839,19 @@ function renderHero(samples) {
   $('heroMeta').innerHTML = formatHeroMeta(player);
   setHeroPhoto(player);
 
+  const meta = getPlayerMeta(player);
+  const acc = meta.accomplishments || {};
   const record = teamSeriesRecord(player.teamId, STATE.selectedSplit);
-  const majorWins = teamMajorWinCount(player.teamId);
-  const champsWins = teamChampsWinCount(player.teamId);
+  const majorWins = Number.isFinite(acc.seasonMajorWins) ? acc.seasonMajorWins : teamMajorWinCount(player.teamId);
+  const champsWins = Number.isFinite(acc.seasonChampsWins) ? acc.seasonChampsWins : teamChampsWinCount(player.teamId);
 
   const badges = [
     `<span class="hero-chip subtle">${record.wins}–${record.losses} series</span>`
   ];
 
-  if (majorWins > 0) {
-    badges.push(`<span class="hero-chip trophy">🏆 ${majorWins}× Major Winner</span>`);
-  }
-  if (champsWins > 0) {
-    badges.push(`<span class="hero-chip trophy">👑 ${champsWins}× Champs Winner</span>`);
-  }
-  if (majorWins === 0 && champsWins === 0) {
-    badges.push(`<span class="hero-chip subtle">No titles yet</span>`);
-  }
+  if (majorWins > 0) badges.push(`<span class="hero-chip trophy">🏆 ${majorWins}× Major Winner</span>`);
+  if (champsWins > 0) badges.push(`<span class="hero-chip trophy">👑 ${champsWins}× Champs Winner</span>`);
+  if (majorWins === 0 && champsWins === 0) badges.push(`<span class="hero-chip subtle">No titles yet</span>`);
 
   $('heroBadges').innerHTML = badges.join('');
 }
@@ -858,12 +933,14 @@ function render() {
   renderLog(samples);
 }
 
-async function loadRaw(raw, sourceLabel='Loaded JSON') {
-  buildIndexes(raw);
+async function loadRaw(raw, sourceLabel='Loaded JSON', registry=null) {
+  buildIndexes(raw, registry);
   renderTeamPlayerSelectors();
   renderMapsSelector();
-  $('dataStatus').textContent = `${sourceLabel} · ${raw.matches.length} matches · ${raw.maps.length} maps · ${raw.pstats.length} player stat rows`;
+  const registryNote = registry?.players?.length ? ` · ${registry.players.length} registry players` : '';
+  $('dataStatus').textContent = `${sourceLabel} · ${raw.matches.length} matches · ${raw.maps.length} maps · ${raw.pstats.length} player stat rows${registryNote}`;
   localStorage.setItem('iss_mobile_json', JSON.stringify(raw));
+  if (registry) localStorage.setItem('iss_mobile_players_json', JSON.stringify(registry));
   render();
 }
 
@@ -872,7 +949,8 @@ async function tryLoadLatest() {
     const res = await fetch('./latest.json', {cache:'no-store'});
     if (!res.ok) throw new Error('latest.json not found');
     const raw = await res.json();
-    await loadRaw(raw, 'Loaded hosted latest.json');
+    const registry = await tryLoadRegistryFromHost();
+    await loadRaw(raw, registry ? 'Loaded hosted latest.json + players.json' : 'Loaded hosted latest.json', registry);
   } catch (err) {
     $('dataStatus').textContent = 'Could not auto-load latest.json. Use Upload JSON or Use saved data.';
   }
@@ -882,7 +960,8 @@ function loadSavedJson() {
   try {
     const raw = JSON.parse(localStorage.getItem('iss_mobile_json') || 'null');
     if (!raw) throw new Error('none');
-    loadRaw(raw, 'Loaded saved JSON');
+    const registry = JSON.parse(localStorage.getItem('iss_mobile_players_json') || 'null');
+    loadRaw(raw, registry ? 'Loaded saved JSON + players registry' : 'Loaded saved JSON', registry);
   } catch (err) {
     $('dataStatus').textContent = 'No saved JSON found on this device yet.';
   }
@@ -917,7 +996,8 @@ function wireControls() {
     if (!file) return;
     try {
       const raw = JSON.parse(await file.text());
-      await loadRaw(raw, `Loaded ${file.name}`);
+      const registry = await tryLoadRegistryFromHost();
+      await loadRaw(raw, registry ? `Loaded ${file.name} + hosted players registry` : `Loaded ${file.name}`, registry);
     } catch (err) {
       $('dataStatus').textContent = 'That file could not be parsed as the expected JSON.';
     } finally { e.target.value = ''; }
