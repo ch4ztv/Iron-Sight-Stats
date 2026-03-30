@@ -131,7 +131,7 @@ select:focus, input[type="text"]:focus { border-color:rgba(65,255,150,.9); box-s
 .hero-photo-fallback { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 30% 20%, rgba(46,255,129,.16), rgba(6,14,11,.95)); }
 .team-mark { width:58px; height:58px; border-radius:16px; background:radial-gradient(circle at 30% 20%, rgba(46,255,129,.16), rgba(6,14,11,.95)); border:1px solid rgba(32,93,66,.9); display:grid; place-items:center; font-size:1.25rem; font-weight:900; color:var(--green); flex:0 0 auto; }
 .hero-name { font-size:1.55rem; font-weight:900; line-height:1; margin-bottom:4px; }
-.hero-meta { color:var(--muted); font-size:.92rem; line-height:1.35; }
+.hero-meta { color:var(--muted); font-size:.92rem; line-height:1.35; display:block; }
 .hero-badges { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
 .hero-chip { display:inline-flex; align-items:center; gap:6px; padding:7px 10px; border-radius:999px; border:1px solid rgba(32,93,66,.9); background:rgba(10,20,16,.95); color:#d8efe4; font-size:.8rem; font-weight:800; line-height:1; white-space:nowrap; }
 .hero-chip.trophy { color:#f7e39b; border-color:rgba(173,140,52,.7); background:rgba(38,30,8,.8); }
@@ -349,6 +349,58 @@ const TEAM_META = {
   boston: {name:'Boston Breach', short:'BOS'}
 };
 const EVENT_META = { M1Q:'Major 1 Qualifiers', M1T:'Major 1 Tournament', M2Q:'Major 2 Qualifiers', M2T:'Major 2 Tournament', CHAMPS:'Champs', EWC:'EWC' };
+const PLAYER_META = {
+  optic_dashy: { fullName:'Brandon Otell', dob:'1999-04-19' },
+  optic_huke: { fullName:'Cuyler Garland', dob:'1999-10-21' },
+  optic_mercules: { fullName:'Mason Ramsey', dob:'2003-07-14' },
+  optic_shotzzy: { fullName:'Anthony Cuevas-Castro', dob:'2001-07-04' },
+
+  pgm_envoy: { fullName:'Dylan Hannon', dob:'2000-01-19' },
+  pgm_ghosty: { fullName:'Daniel Rothe', dob:'2002-04-24' },
+  pgm_neptune: { fullName:'Travis McCloud', dob:'2002-04-09' },
+  pgm_sib: { fullName:'Daunte Gray', dob:'2002-02-03' },
+
+  boston_cammy: { fullName:'Cameron McKilligan', dob:'1999-10-10' },
+  boston_nastie: { fullName:'Byron Plumridge', dob:'1999-07-03' },
+  boston_purj: { fullName:'Evan Perez', dob:'2003-03-03' },
+  boston_snoopy: { fullName:'Eric Pérez', dob:'2004-09-25' },
+  boston_spart: { fullName:'Kristopher Cervantez', dob:'2001-05-24' },
+
+  c9_afro: { fullName:'Marcus Reid', dob:'2001-07-19' },
+  c9_vivid: { fullName:'Reece Drost', dob:'1999-12-24' },
+
+  falcons_cellium: { fullName:'McArthur Jovel', dob:'2000-12-24' }
+};
+
+function calcAge(dob){
+  if (!dob) return '';
+  const d = new Date(dob + 'T00:00:00');
+  if (Number.isNaN(d.getTime())) return '';
+  const now = new Date();
+  let age = now.getFullYear() - d.getFullYear();
+  const m = now.getMonth() - d.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < d.getDate())) age--;
+  return String(age);
+}
+
+function prettyDob(dob){
+  if (!dob) return '';
+  const d = new Date(dob + 'T00:00:00');
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString(undefined, { year:'numeric', month:'long', day:'numeric' });
+}
+
+function formatHeroMeta(player){
+  const meta = PLAYER_META[player?.id] || {};
+  const lines = [`${teamName(player.teamId)} · ${SPLIT_OPTIONS.find(([v])=>v===STATE.selectedSplit)?.[1] || 'Full Season'}`];
+  if (meta.fullName) lines.push(meta.fullName);
+  if (meta.dob) {
+    const age = calcAge(meta.dob);
+    lines.push(`DOB: ${prettyDob(meta.dob)}${age ? ` (Age ${age})` : ''}`);
+  }
+  return lines.join('<br>');
+}
+
 const TEAM_IMAGE_DIR = {
   optic:'OpTic-Texas',
   pgm:'Paris-Gentle-Mates',
@@ -684,15 +736,14 @@ function renderHero(samples) {
   if (!player) return;
   $('teamMark').textContent = teamShort(player.teamId);
   $('heroName').textContent = player.name;
-  $('heroMeta').textContent = `${teamName(player.teamId)} · ${SPLIT_OPTIONS.find(([v])=>v===STATE.selectedSplit)?.[1] || 'Full Season'}`;
+  $('heroMeta').innerHTML = formatHeroMeta(player);
   $('samplePill').textContent = `${samples.length} samples`;
   setHeroPhoto(player);
 
   const record = teamSeriesRecord(player.teamId, STATE.selectedSplit);
   const trophies = teamTrophyEvents(player.teamId);
   const badges = [
-    `<span class="hero-chip subtle">${record.wins}–${record.losses} series</span>`,
-    `<span class="hero-chip subtle">${samples.length} matching logs</span>`
+    `<span class="hero-chip subtle">${record.wins}–${record.losses} series</span>`
   ];
   if (trophies.length) {
     trophies.slice(0,3).forEach(label => badges.push(`<span class="hero-chip trophy">🏆 ${label}</span>`));
