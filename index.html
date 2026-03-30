@@ -349,61 +349,7 @@ const TEAM_META = {
   boston: {name:'Boston Breach', short:'BOS'}
 };
 const EVENT_META = { M1Q:'Major 1 Qualifiers', M1T:'Major 1 Tournament', M2Q:'Major 2 Qualifiers', M2T:'Major 2 Tournament', CHAMPS:'Champs', EWC:'EWC' };
-const PLAYER_META = {
-  optic_dashy: { fullName:'Brandon Otell', dob:'1999-04-19' },
-  optic_huke: { fullName:'Cuyler Garland', dob:'1999-10-21' },
-  optic_mercules: { fullName:'Mason Ramsey', dob:'2003-07-14' },
-  optic_shotzzy: { fullName:'Anthony Cuevas-Castro', dob:'2001-07-04' },
-
-  pgm_envoy: { fullName:'Dylan Hannon', dob:'2000-01-19' },
-  pgm_ghosty: { fullName:'Daniel Rothe', dob:'2002-04-24' },
-  pgm_neptune: { fullName:'Travis McCloud', dob:'2002-04-09' },
-  pgm_sib: { fullName:'Daunte Gray', dob:'2002-02-03' },
-
-  boston_cammy: { fullName:'Cameron McKilligan', dob:'1999-10-10' },
-  boston_nastie: { fullName:'Byron Plumridge', dob:'1999-07-03' },
-  boston_purj: { fullName:'Evan Perez', dob:'2003-03-03' },
-  boston_snoopy: { fullName:'Eric Pérez', dob:'2004-09-25' },
-  boston_spart: { fullName:'Kristopher Cervantez', dob:'2001-05-24' },
-
-  c9_afro: { fullName:'Marcus Reid', dob:'2001-07-19' },
-  c9_vivid: { fullName:'Reece Drost', dob:'1999-12-24' },
-
-  falcons_cellium: { fullName:'McArthur Jovel', dob:'2000-12-24' }
-c9_beans: { fullName:'Ben McMellon', dob:'2000-05-16' },
-  c9_mack: { fullName:'Makenzie Kelley', dob:'2001-11-21' },
-
-  falcons_kismet: { fullName:'Matthew Tinsley', dob:'1999-11-11' },
-  falcons_pred: { fullName:'Amer Zulbeari', dob:'2001-08-19' },
-
-  faze_04: { fullName:'Jovan Rodriguez', dob:'2004-08-02' },
-  faze_abuzah: { fullName:'Jordan François', dob:'2000-07-13' },
-  faze_drazah: { fullName:'Zachary Jordan', dob:'2001-05-09' },
-  faze_simp: { fullName:'Chris Lehr', dob:'2001-02-06' },
-
-  g2_estreal: { fullName:'Justice McMillan', dob:'2002-12-17' },
-  g2_kremp: { fullName:'Kyle Haworth', dob:'2002-11-19' },
-  g2_skyz: { fullName:'Cesar Bueno', dob:'1999-07-08' },
-
-  lat_abezy: { fullName:'Tyler Pharris', dob:'1999-11-03' },
-  lat_hydra: { fullName:'Paco Rusiewiez', dob:'2002-02-11' },
-  lat_kenny: { fullName:'Kenneth Williams', dob:'1999-09-02' },
-  lat_nium: { fullName:'Jeremiah Harrison', dob:'2002-07-23' },
-  lat_scrap: { fullName:'Thomas Ernst', dob:'2002-07-01' },
-
-  ravens_nero: { fullName:'Dylan Koch', dob:'2002-05-30' },
-  ravens_slasher: { fullName:'Austin Liddicoat', dob:'1994-09-02' },
-
-  toronto_cleanx: { fullName:'Tobias Juul Jønsson', dob:'2000-08-11' },
-  toronto_insight: { fullName:'Jamie Craven', dob:'1999-10-31' },
-  toronto_joedeceives: { fullName:'Joseph Romero', dob:'2004-09-23' },
-  toronto_reeal: { fullName:'José Fernández', dob:'2003-12-11' },
-
-  vancouver_capsidal: { fullName:'Kenyen Sutton', dob:'2002-08-19' },
-  vancouver_gwinn: { fullName:'Isaiah Gwinn', dob:'2002-05-02' },
-  vancouver_tjhaly: { fullName:'Thomas Haly', dob:'1999-07-19' },
-
-};
+const PLAYER_META = {};
 
 function getEmbeddedMeta(playerId){
   try { return PLAYER_META?.[playerId] || {}; }
