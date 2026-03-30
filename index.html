@@ -539,7 +539,6 @@ function slugVariants(str=''){
 function playerImageCandidates(player){
   if (!player) return [];
   const teamDir = TEAM_IMAGE_DIR[player.teamId] || teamName(player.teamId).replace(/\s+/g,'-');
-  const explicitPaths = PLAYER_IMAGE_PATH_OVERRIDES[player.id] || [];
   const baseNames = new Set([
     ...slugVariants(player.name),
     ...slugVariants((player.id || '').split('_').slice(1).join(' ')),
@@ -556,7 +555,7 @@ function playerImageCandidates(player){
     overrideNames.forEach(name => slugVariants(name).forEach(v => baseNames.add(v)));
   });
   const exts = ['webp','png','jpg','jpeg'];
-  const paths = [...explicitPaths];
+  const paths = [...(PLAYER_IMAGE_PATH_OVERRIDES[player.id] || [])];
   [...baseNames].forEach(name => exts.forEach(ext => paths.push(`./assets/player-images/${teamDir}/${name}.${ext}`)));
   return [...new Set(paths)];
 }
