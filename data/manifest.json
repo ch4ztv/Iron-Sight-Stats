@@ -1,0 +1,57 @@
+{
+  "app": "IronSightStats",
+  "exported": "2026-04-01T00:11:54.359Z",
+  "version": "1.1",
+  "files": [
+    {
+      "file": "meta.json",
+      "source": "meta",
+      "description": "App/export metadata"
+    },
+    {
+      "file": "matches.json",
+      "source": "matches",
+      "description": "Series-level match records"
+    },
+    {
+      "file": "maps.json",
+      "source": "maps",
+      "description": "Map-by-map series results"
+    },
+    {
+      "file": "player-stats.json",
+      "source": "pstats",
+      "description": "Per-player per-map stat lines"
+    },
+    {
+      "file": "players.json",
+      "source": "players",
+      "description": "Player roster records"
+    },
+    {
+      "file": "points.json",
+      "source": "points",
+      "description": "Standings/event points transactions"
+    },
+    {
+      "file": "bpr-coefficients.json",
+      "source": "bprCoefficients",
+      "description": "BPR calculation coefficients by mode"
+    },
+    {
+      "file": "bracket-data.json",
+      "source": "bracketData",
+      "description": "Tournament bracket data"
+    },
+    {
+      "file": "team-stats.json",
+      "source": "teamStats",
+      "description": "Per-team aggregated/stat image metadata data"
+    },
+    {
+      "file": "season.json",
+      "source": "full export",
+      "description": "Complete original master export"
+    }
+  ]
+}

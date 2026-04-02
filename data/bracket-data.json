@@ -1,0 +1,244 @@
+{
+  "M1T": {
+    "M1_WQF1": {
+      "t1": "pgm",
+      "t2": "toronto",
+      "score1": 3,
+      "score2": 1,
+      "winner": "pgm"
+    },
+    "M1_WQF2": {
+      "t1": "ravens",
+      "t2": "lat",
+      "score1": 0,
+      "score2": 3,
+      "winner": "lat"
+    },
+    "M1_WQF3": {
+      "t1": "faze",
+      "t2": "g2",
+      "score1": 0,
+      "score2": 3,
+      "winner": "g2"
+    },
+    "M1_WQF4": {
+      "t1": "falcons",
+      "t2": "optic",
+      "score1": 0,
+      "score2": 3,
+      "winner": "optic"
+    },
+    "M1_WSF1": {
+      "t1": "pgm",
+      "t2": "lat",
+      "score1": 3,
+      "score2": 0,
+      "winner": "pgm"
+    },
+    "M1_WSF2": {
+      "t1": "g2",
+      "t2": "optic",
+      "score1": 0,
+      "score2": 3,
+      "winner": "optic"
+    },
+    "M1_WF": {
+      "t1": "pgm",
+      "t2": "optic",
+      "score1": 0,
+      "score2": 3,
+      "winner": "optic"
+    },
+    "M1_LR1A": {
+      "t1": "falcons",
+      "t2": "c9",
+      "score1": 3,
+      "score2": 1,
+      "winner": "falcons"
+    },
+    "M1_LR1B": {
+      "t1": "faze",
+      "t2": "boston",
+      "score1": 3,
+      "score2": 1,
+      "winner": "faze"
+    },
+    "M1_LR1C": {
+      "t1": "ravens",
+      "t2": "vancouver",
+      "score1": 1,
+      "score2": 3,
+      "winner": "vancouver"
+    },
+    "M1_LR1D": {
+      "t1": "toronto",
+      "t2": "miami",
+      "score1": 2,
+      "score2": 3,
+      "winner": "miami"
+    },
+    "M1_LR2A": {
+      "t1": "falcons",
+      "t2": "faze",
+      "score1": 2,
+      "score2": 3,
+      "winner": "faze"
+    },
+    "M1_LR2B": {
+      "t1": "vancouver",
+      "t2": "miami",
+      "score1": 0,
+      "score2": 3,
+      "winner": "miami"
+    },
+    "M1_LR3A": {
+      "t1": "lat",
+      "t2": "faze",
+      "score1": 0,
+      "score2": 3,
+      "winner": "faze"
+    },
+    "M1_LR3B": {
+      "t1": "g2",
+      "t2": "miami",
+      "score1": 3,
+      "score2": 0,
+      "winner": "g2"
+    },
+    "M1_LSF": {
+      "t1": "faze",
+      "t2": "g2",
+      "score1": 3,
+      "score2": 2,
+      "winner": "faze"
+    },
+    "M1_LF": {
+      "t1": "pgm",
+      "t2": "faze",
+      "score1": 3,
+      "score2": 2,
+      "winner": "pgm"
+    },
+    "M1_GF": {
+      "t1": "optic",
+      "t2": "pgm",
+      "score1": 3,
+      "score2": 4,
+      "winner": "pgm"
+    }
+  },
+  "M2T": {
+    "M2_PI1": {
+      "t1": "toronto",
+      "t2": "vancouver",
+      "score1": 3,
+      "score2": 1,
+      "winner": "toronto"
+    },
+    "M2_PI2": {
+      "t1": "ravens",
+      "t2": "pgm",
+      "score1": 1,
+      "score2": 3,
+      "winner": "pgm"
+    },
+    "M2_WQF1": {
+      "t1": "optic",
+      "t2": "toronto",
+      "score1": 3,
+      "score2": 0,
+      "winner": "optic"
+    },
+    "M2_WQF2": {
+      "t1": "g2",
+      "t2": "falcons",
+      "score1": 3,
+      "score2": 0,
+      "winner": "g2"
+    },
+    "M2_WQF3": {
+      "t1": "lat",
+      "t2": "faze",
+      "score1": 2,
+      "score2": 3,
+      "winner": "faze"
+    },
+    "M2_WQF4": {
+      "t1": "miami",
+      "t2": "pgm",
+      "score1": 1,
+      "score2": 3,
+      "winner": "pgm"
+    },
+    "M2_WSF1": {
+      "t1": "optic",
+      "t2": "g2",
+      "score1": 3,
+      "score2": 0,
+      "winner": "optic"
+    },
+    "M2_WSF2": {
+      "t1": "faze",
+      "t2": "pgm",
+      "score1": 3,
+      "score2": 0,
+      "winner": "faze"
+    },
+    "M2_LR1A": {
+      "t1": "toronto",
+      "t2": "falcons",
+      "score1": 3,
+      "score2": 0,
+      "winner": "toronto"
+    },
+    "M2_LR1B": {
+      "t1": "lat",
+      "t2": "miami",
+      "score1": 3,
+      "score2": 0,
+      "winner": "lat"
+    },
+    "M2_WF": {
+      "t1": "optic",
+      "t2": "faze",
+      "score1": 3,
+      "score2": 1,
+      "winner": "optic"
+    },
+    "M2_LR2A": {
+      "t2": "g2",
+      "t1": "toronto",
+      "score1": 3,
+      "score2": 1,
+      "winner": "toronto"
+    },
+    "M2_LR2B": {
+      "t2": "pgm",
+      "t1": "lat",
+      "score1": 3,
+      "score2": 1,
+      "winner": "lat"
+    },
+    "M2_LSF": {
+      "t1": "toronto",
+      "t2": "lat",
+      "score1": 3,
+      "score2": 0,
+      "winner": "toronto"
+    },
+    "M2_LF": {
+      "t2": "faze",
+      "t1": "toronto",
+      "score1": 1,
+      "score2": 3,
+      "winner": "faze"
+    },
+    "M2_GF": {
+      "t1": "optic",
+      "t2": "faze",
+      "score1": 1,
+      "score2": 4,
+      "winner": "faze"
+    }
+  }
+}

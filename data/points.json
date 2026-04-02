@@ -1,0 +1,1154 @@
+[
+  {
+    "teamId": "boston",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012343,
+    "id": 1
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012350,
+    "id": 2
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012359,
+    "id": 3
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012374,
+    "id": 4
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012389,
+    "id": 5
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012400,
+    "id": 6
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012413,
+    "id": 7
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012428,
+    "id": 8
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012440,
+    "id": 9
+  },
+  {
+    "teamId": "boston",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012452,
+    "id": 10
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012463,
+    "id": 11
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012473,
+    "id": 12
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012485,
+    "id": 13
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012496,
+    "id": 14
+  },
+  {
+    "teamId": "c9",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012505,
+    "id": 15
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012517,
+    "id": 16
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012530,
+    "id": 17
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012544,
+    "id": 18
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012556,
+    "id": 19
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012569,
+    "id": 20
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012579,
+    "id": 21
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012593,
+    "id": 22
+  },
+  {
+    "teamId": "vancouver",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012609,
+    "id": 23
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012624,
+    "id": 24
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012632,
+    "id": 25
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147012644,
+    "id": 26
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013272,
+    "id": 27
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013283,
+    "id": 28
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013294,
+    "id": 29
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013304,
+    "id": 30
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013317,
+    "id": 31
+  },
+  {
+    "teamId": "boston",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013334,
+    "id": 32
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013346,
+    "id": 33
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013359,
+    "id": 34
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013370,
+    "id": 35
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013386,
+    "id": 36
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013402,
+    "id": 37
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013418,
+    "id": 38
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013429,
+    "id": 39
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013444,
+    "id": 40
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013458,
+    "id": 41
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M1Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774147013466,
+    "id": 42
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754691,
+    "id": 43
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754717,
+    "id": 44
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754742,
+    "id": 45
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754760,
+    "id": 46
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754790,
+    "id": 47
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754807,
+    "id": 48
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754828,
+    "id": 49
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754837,
+    "id": 50
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754851,
+    "id": 51
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754864,
+    "id": 52
+  },
+  {
+    "teamId": "boston",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754877,
+    "id": 53
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754892,
+    "id": 54
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754918,
+    "id": 55
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754943,
+    "id": 56
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754965,
+    "id": 57
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754977,
+    "id": 58
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513754994,
+    "id": 59
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755002,
+    "id": 60
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755024,
+    "id": 61
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755036,
+    "id": 62
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755047,
+    "id": 63
+  },
+  {
+    "teamId": "vancouver",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755071,
+    "id": 64
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755096,
+    "id": 65
+  },
+  {
+    "teamId": "c9",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755135,
+    "id": 66
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513755156,
+    "id": 67
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756208,
+    "id": 68
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756225,
+    "id": 69
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756245,
+    "id": 70
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756263,
+    "id": 71
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756274,
+    "id": 72
+  },
+  {
+    "teamId": "boston",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756317,
+    "id": 73
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756336,
+    "id": 74
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756345,
+    "id": 75
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756391,
+    "id": 76
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756411,
+    "id": 77
+  },
+  {
+    "teamId": "vancouver",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756435,
+    "id": 78
+  },
+  {
+    "teamId": "boston",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756451,
+    "id": 79
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756462,
+    "id": 80
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756472,
+    "id": 81
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756481,
+    "id": 82
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756499,
+    "id": 83
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756520,
+    "id": 84
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756531,
+    "id": 85
+  },
+  {
+    "teamId": "vancouver",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756543,
+    "id": 86
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756577,
+    "id": 87
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756610,
+    "id": 88
+  },
+  {
+    "teamId": "c9",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756634,
+    "id": 89
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756646,
+    "id": 90
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756676,
+    "id": 91
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513756711,
+    "id": 92
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757350,
+    "id": 93
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757377,
+    "id": 94
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757403,
+    "id": 95
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757419,
+    "id": 96
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757434,
+    "id": 97
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757459,
+    "id": 98
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757477,
+    "id": 99
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757493,
+    "id": 100
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757501,
+    "id": 101
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757517,
+    "id": 102
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757534,
+    "id": 103
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757552,
+    "id": 104
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757568,
+    "id": 105
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757591,
+    "id": 106
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757607,
+    "id": 107
+  },
+  {
+    "teamId": "vancouver",
+    "eventId": "M2Q",
+    "reason": "Qualifier Stage Win",
+    "pts": 10,
+    "type": "qualWin",
+    "ts": 1774513757629,
+    "id": 108
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M1T",
+    "reason": "1st Place",
+    "pts": 100,
+    "type": "bracket",
+    "ts": 1774550099729,
+    "id": 109
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M1T",
+    "reason": "2nd Place",
+    "pts": 75,
+    "type": "bracket",
+    "ts": 1774550099734,
+    "id": 110
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M1T",
+    "reason": "3rd Place",
+    "pts": 60,
+    "type": "bracket",
+    "ts": 1774550099824,
+    "id": 111
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M1T",
+    "reason": "4th Place",
+    "pts": 45,
+    "type": "bracket",
+    "ts": 1774550099824,
+    "id": 112
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M1T",
+    "reason": "5th–6th Place",
+    "pts": 30,
+    "type": "bracket",
+    "ts": 1774550099825,
+    "id": 113
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M1T",
+    "reason": "5th–6th Place",
+    "pts": 30,
+    "type": "bracket",
+    "ts": 1774550099825,
+    "id": 114
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M1T",
+    "reason": "7th–8th Place",
+    "pts": 15,
+    "type": "bracket",
+    "ts": 1774550099826,
+    "id": 115
+  },
+  {
+    "teamId": "vancouver",
+    "eventId": "M1T",
+    "reason": "7th–8th Place",
+    "pts": 15,
+    "type": "bracket",
+    "ts": 1774550099826,
+    "id": 116
+  },
+  {
+    "teamId": "boston",
+    "eventId": "M1T",
+    "reason": "9th–12th Place",
+    "pts": 0,
+    "type": "bracket",
+    "ts": 1774550099827,
+    "id": 117
+  },
+  {
+    "teamId": "ravens",
+    "eventId": "M1T",
+    "reason": "9th–12th Place",
+    "pts": 0,
+    "type": "bracket",
+    "ts": 1774550099827,
+    "id": 118
+  },
+  {
+    "teamId": "c9",
+    "eventId": "M1T",
+    "reason": "9th–12th Place",
+    "pts": 0,
+    "type": "bracket",
+    "ts": 1774550099828,
+    "id": 119
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M1T",
+    "reason": "9th–12th Place",
+    "pts": 0,
+    "type": "bracket",
+    "ts": 1774550099828,
+    "id": 120
+  },
+  {
+    "teamId": "faze",
+    "eventId": "M2T",
+    "reason": "1st Place",
+    "pts": 100,
+    "type": "bracket",
+    "ts": 1774861383487,
+    "id": 121
+  },
+  {
+    "teamId": "optic",
+    "eventId": "M2T",
+    "reason": "2nd Place",
+    "pts": 75,
+    "type": "bracket",
+    "ts": 1774861383490,
+    "id": 122
+  },
+  {
+    "teamId": "toronto",
+    "eventId": "M2T",
+    "reason": "3rd Place",
+    "pts": 60,
+    "type": "bracket",
+    "ts": 1774861383530,
+    "id": 123
+  },
+  {
+    "teamId": "lat",
+    "eventId": "M2T",
+    "reason": "4th Place",
+    "pts": 45,
+    "type": "bracket",
+    "ts": 1774861383531,
+    "id": 124
+  },
+  {
+    "teamId": "g2",
+    "eventId": "M2T",
+    "reason": "5th–6th Place",
+    "pts": 30,
+    "type": "bracket",
+    "ts": 1774861383532,
+    "id": 125
+  },
+  {
+    "teamId": "pgm",
+    "eventId": "M2T",
+    "reason": "5th–6th Place",
+    "pts": 30,
+    "type": "bracket",
+    "ts": 1774861383532,
+    "id": 126
+  },
+  {
+    "teamId": "miami",
+    "eventId": "M2T",
+    "reason": "7th–8th Place",
+    "pts": 15,
+    "type": "bracket",
+    "ts": 1774861383533,
+    "id": 127
+  },
+  {
+    "teamId": "falcons",
+    "eventId": "M2T",
+    "reason": "7th–8th Place",
+    "pts": 15,
+    "type": "bracket",
+    "ts": 1774861383533,
+    "id": 128
+  }
+]

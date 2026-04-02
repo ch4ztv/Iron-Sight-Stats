@@ -1,0 +1,408 @@
+[
+  {
+    "id": "boston_cammy",
+    "name": "Cammy",
+    "teamId": "boston",
+    "active": false,
+    "ts": 1774142273216
+  },
+  {
+    "id": "boston_nastie",
+    "name": "Nastie",
+    "teamId": "boston",
+    "active": true,
+    "ts": 1774142273216
+  },
+  {
+    "id": "boston_purj",
+    "name": "Purj",
+    "teamId": "boston",
+    "active": true,
+    "ts": 1774142273217
+  },
+  {
+    "id": "boston_snoopy",
+    "name": "Snoopy",
+    "teamId": "boston",
+    "active": true,
+    "ts": 1774142273217
+  },
+  {
+    "id": "boston_spart",
+    "name": "Spart",
+    "teamId": "boston",
+    "active": true,
+    "ts": 1774142273217
+  },
+  {
+    "id": "c9_afro",
+    "name": "Afro",
+    "teamId": "c9",
+    "active": false,
+    "ts": 1774142273218
+  },
+  {
+    "id": "c9_beans",
+    "name": "Beans",
+    "teamId": "c9",
+    "active": false,
+    "ts": 1774142273218
+  },
+  {
+    "id": "c9_encourage",
+    "name": "Encourage",
+    "teamId": "c9",
+    "active": true,
+    "ts": 1774142273218
+  },
+  {
+    "id": "c9_hide",
+    "name": "Hide",
+    "teamId": "c9",
+    "active": true,
+    "ts": 1774142273218
+  },
+  {
+    "id": "c9_mack",
+    "name": "Mack",
+    "teamId": "c9",
+    "active": false,
+    "ts": 1774142273219
+  },
+  {
+    "id": "c9_nejra",
+    "name": "Nejra",
+    "teamId": "c9",
+    "active": true,
+    "ts": 1774142273219
+  },
+  {
+    "id": "c9_okis",
+    "name": "Okis",
+    "teamId": "c9",
+    "active": true,
+    "ts": 1774142273219
+  },
+  {
+    "id": "c9_vivid",
+    "name": "Vivid",
+    "teamId": "c9",
+    "active": false,
+    "ts": 1774142273219
+  },
+  {
+    "id": "falcons_cellium",
+    "name": "Cellium",
+    "teamId": "falcons",
+    "active": true,
+    "ts": 1774142273213
+  },
+  {
+    "id": "falcons_exnid",
+    "name": "Exnid",
+    "teamId": "falcons",
+    "active": true,
+    "ts": 1774142273213
+  },
+  {
+    "id": "falcons_kismet",
+    "name": "KiSMET",
+    "teamId": "falcons",
+    "active": true,
+    "ts": 1774142273213
+  },
+  {
+    "id": "falcons_pred",
+    "name": "Pred",
+    "teamId": "falcons",
+    "active": true,
+    "ts": 1774142273214
+  },
+  {
+    "id": "faze_04",
+    "name": "04",
+    "teamId": "faze",
+    "active": true,
+    "ts": 1774142273209
+  },
+  {
+    "id": "faze_abuzah",
+    "name": "Abuzah",
+    "teamId": "faze",
+    "active": true,
+    "ts": 1774142273209
+  },
+  {
+    "id": "faze_drazah",
+    "name": "Drazah",
+    "teamId": "faze",
+    "active": true,
+    "ts": 1774142273209
+  },
+  {
+    "id": "faze_simp",
+    "name": "Simp",
+    "teamId": "faze",
+    "active": true,
+    "ts": 1774142273209
+  },
+  {
+    "id": "g2_estreal",
+    "name": "Estreal",
+    "teamId": "g2",
+    "active": true,
+    "ts": 1774142273211
+  },
+  {
+    "id": "g2_kremp",
+    "name": "Kremp",
+    "teamId": "g2",
+    "active": true,
+    "ts": 1774142273211
+  },
+  {
+    "id": "g2_mamba",
+    "name": "Mamba",
+    "teamId": "g2",
+    "active": true,
+    "ts": 1774142273211
+  },
+  {
+    "id": "g2_skyz",
+    "name": "Skyz",
+    "teamId": "g2",
+    "active": true,
+    "ts": 1774142273212
+  },
+  {
+    "id": "lat_abezy",
+    "name": "aBeZy",
+    "teamId": "lat",
+    "active": true,
+    "ts": 1774142273212
+  },
+  {
+    "id": "lat_hydra",
+    "name": "HyDra",
+    "teamId": "lat",
+    "active": true,
+    "ts": 1774142273212
+  },
+  {
+    "id": "lat_kenny",
+    "name": "Kenny",
+    "teamId": "lat",
+    "active": false,
+    "ts": 1774142273212
+  },
+  {
+    "id": "lat_nium",
+    "name": "Nium",
+    "teamId": "lat",
+    "active": true,
+    "ts": 1774142273212
+  },
+  {
+    "id": "lat_scrap",
+    "name": "Scrap",
+    "teamId": "lat",
+    "active": true,
+    "ts": 1774142273213
+  },
+  {
+    "id": "miami_mettalz",
+    "name": "Mettalz",
+    "teamId": "miami",
+    "active": true,
+    "ts": 1774142273214
+  },
+  {
+    "id": "miami_renkor",
+    "name": "RenKor",
+    "teamId": "miami",
+    "active": true,
+    "ts": 1774142273214
+  },
+  {
+    "id": "miami_super",
+    "name": "SupeR",
+    "teamId": "miami",
+    "active": true,
+    "ts": 1774142273214
+  },
+  {
+    "id": "miami_traixx",
+    "name": "Traixx",
+    "teamId": "miami",
+    "active": true,
+    "ts": 1774142273214
+  },
+  {
+    "id": "optic_dashy",
+    "name": "Dashy",
+    "teamId": "optic",
+    "active": true,
+    "ts": 1774142273207
+  },
+  {
+    "id": "optic_huke",
+    "name": "Huke",
+    "teamId": "optic",
+    "active": true,
+    "ts": 1774142273207
+  },
+  {
+    "id": "optic_mercules",
+    "name": "MercuLes",
+    "teamId": "optic",
+    "active": true,
+    "ts": 1774142273208
+  },
+  {
+    "id": "optic_shotzzy",
+    "name": "Shotzzy",
+    "teamId": "optic",
+    "active": true,
+    "ts": 1774142273208
+  },
+  {
+    "id": "pgm_envoy",
+    "name": "Envoy",
+    "teamId": "pgm",
+    "active": true,
+    "ts": 1774142273208
+  },
+  {
+    "id": "pgm_ghosty",
+    "name": "Ghosty",
+    "teamId": "pgm",
+    "active": true,
+    "ts": 1774142273208
+  },
+  {
+    "id": "pgm_neptune",
+    "name": "Neptune",
+    "teamId": "pgm",
+    "active": true,
+    "ts": 1774142273209
+  },
+  {
+    "id": "pgm_sib",
+    "name": "Sib",
+    "teamId": "pgm",
+    "active": true,
+    "ts": 1774142273209
+  },
+  {
+    "id": "ravens_craze",
+    "name": "Craze",
+    "teamId": "ravens",
+    "active": true,
+    "ts": 1774142273215
+  },
+  {
+    "id": "ravens_exceed",
+    "name": "Exceed",
+    "teamId": "ravens",
+    "active": true,
+    "ts": 1774142273215
+  },
+  {
+    "id": "ravens_lurqxx",
+    "name": "Lurqxx",
+    "teamId": "ravens",
+    "active": true,
+    "ts": 1774142273215
+  },
+  {
+    "id": "ravens_nero",
+    "name": "Nero",
+    "teamId": "ravens",
+    "active": true,
+    "ts": 1774142273215
+  },
+  {
+    "id": "ravens_slasher",
+    "name": "SlasheR",
+    "teamId": "ravens",
+    "active": false,
+    "ts": 1774142273215
+  },
+  {
+    "id": "toronto_cleanx",
+    "name": "CleanX",
+    "teamId": "toronto",
+    "active": true,
+    "ts": 1774142273209
+  },
+  {
+    "id": "toronto_insight",
+    "name": "Insight",
+    "teamId": "toronto",
+    "active": true,
+    "ts": 1774142273210
+  },
+  {
+    "id": "toronto_joedeceives",
+    "name": "JoeDeceives",
+    "teamId": "toronto",
+    "active": true,
+    "ts": 1774142273210
+  },
+  {
+    "id": "toronto_kips",
+    "name": "Kips",
+    "teamId": "toronto",
+    "active": true,
+    "ts": 1774142273210
+  },
+  {
+    "id": "toronto_reeal",
+    "name": "ReeaL",
+    "teamId": "toronto",
+    "active": false,
+    "ts": 1774142273210
+  },
+  {
+    "id": "vancouver_abe",
+    "name": "Abe",
+    "teamId": "vancouver",
+    "active": false,
+    "ts": 1774142273217
+  },
+  {
+    "id": "vancouver_capsidal",
+    "name": "Capsidal",
+    "teamId": "vancouver",
+    "active": true,
+    "ts": 1774142273217
+  },
+  {
+    "id": "vancouver_gwinn",
+    "name": "Gwinn",
+    "teamId": "vancouver",
+    "active": true,
+    "ts": 1774142273217
+  },
+  {
+    "id": "vancouver_lqgend",
+    "name": "Lqgend",
+    "teamId": "vancouver",
+    "active": false,
+    "ts": 1774142273217
+  },
+  {
+    "id": "vancouver_lunarz",
+    "name": "Lunarz",
+    "teamId": "vancouver",
+    "active": true,
+    "ts": 1774142273218
+  },
+  {
+    "id": "vancouver_tjhaly",
+    "name": "TJHaLy",
+    "teamId": "vancouver",
+    "active": true,
+    "ts": 1774142273218
+  }
+]

@@ -1,0 +1,3750 @@
+{
+  "optic": {
+    "overall": {
+      "players": [
+        {
+          "player": "Dashy",
+          "kd": "1.03",
+          "slayerRating": "84.84",
+          "respawnKd": "0.99",
+          "ntkPct": "0.69",
+          "bpRating": "1.12"
+        },
+        {
+          "player": "Huke",
+          "kd": "1.03",
+          "slayerRating": "89.15",
+          "respawnKd": "1.01",
+          "ntkPct": "0.66",
+          "bpRating": "1.09"
+        },
+        {
+          "player": "MercuLes",
+          "kd": "1.12",
+          "slayerRating": "95.76",
+          "respawnKd": "1.06",
+          "ntkPct": "0.68",
+          "bpRating": "1.19"
+        },
+        {
+          "player": "Shotzzy",
+          "kd": "1.02",
+          "slayerRating": "92.32",
+          "respawnKd": "0.96",
+          "ntkPct": "0.66",
+          "bpRating": "1.13"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Dashy",
+          "kd": "0.99",
+          "k10m": "23.54",
+          "dmg10m": "3289",
+          "obj10m": "86.50",
+          "eng10m": "58.30"
+        },
+        {
+          "player": "Huke",
+          "kd": "1.01",
+          "k10m": "25.63",
+          "dmg10m": "3195",
+          "obj10m": "43.27",
+          "eng10m": "60.22"
+        },
+        {
+          "player": "MercuLes",
+          "kd": "1.06",
+          "k10m": "26.13",
+          "dmg10m": "3330",
+          "obj10m": "70.17",
+          "eng10m": "61.30"
+        },
+        {
+          "player": "Shotzzy",
+          "kd": "0.96",
+          "k10m": "25.00",
+          "dmg10m": "3052",
+          "obj10m": "57.29",
+          "eng10m": "59.45"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Dashy",
+          "kd": "1.09",
+          "kRound": "0.69",
+          "bloods": "34",
+          "plants": "5",
+          "defuses": "6",
+          "snipes": "61",
+          "dmgRound": "101.40"
+        },
+        {
+          "player": "Huke",
+          "kd": "0.82",
+          "kRound": "0.59",
+          "bloods": "28",
+          "plants": "46",
+          "defuses": "4",
+          "snipes": "0",
+          "dmgRound": "91.87"
+        },
+        {
+          "player": "MercuLes",
+          "kd": "1.53",
+          "kRound": "0.91",
+          "bloods": "32",
+          "plants": "11",
+          "defuses": "12",
+          "snipes": "0",
+          "dmgRound": "125.58"
+        },
+        {
+          "player": "Shotzzy",
+          "kd": "1.18",
+          "kRound": "0.79",
+          "bloods": "52",
+          "plants": "25",
+          "defuses": "9",
+          "snipes": "0",
+          "dmgRound": "97.78"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Dashy",
+          "kd": "1.08",
+          "k10m": "22.65",
+          "dmg10m": "3054",
+          "goals10m": "1.08",
+          "eng10m": "54.26"
+        },
+        {
+          "player": "Huke",
+          "kd": "1.13",
+          "k10m": "25.03",
+          "dmg10m": "3004",
+          "goals10m": "0.58",
+          "eng10m": "56.02"
+        },
+        {
+          "player": "MercuLes",
+          "kd": "1.08",
+          "k10m": "23.44",
+          "dmg10m": "2960",
+          "goals10m": "1.11",
+          "eng10m": "54.40"
+        },
+        {
+          "player": "Shotzzy",
+          "kd": "1.07",
+          "k10m": "24.96",
+          "dmg10m": "2941",
+          "goals10m": "0.83",
+          "eng10m": "55.56"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 1,
+          "hpL": null,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 6,
+          "hpL": 2,
+          "sndW": null,
+          "sndL": 1,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 5,
+          "hpL": 5,
+          "sndW": 6,
+          "sndL": null,
+          "ovlW": 9,
+          "ovlL": 1
+        },
+        {
+          "map": "Exposure",
+          "hpW": 5,
+          "hpL": 3,
+          "sndW": 3,
+          "sndL": 3,
+          "ovlW": 5,
+          "ovlL": 2
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 8,
+          "sndL": 3,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 10,
+          "hpL": 3,
+          "sndW": 4,
+          "sndL": 4,
+          "ovlW": 6,
+          "ovlL": 4
+        }
+      ],
+      "totals": {
+        "hpW": 26,
+        "hpL": 14,
+        "sndW": 21,
+        "sndL": 11,
+        "ovlW": 20,
+        "ovlL": 7
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 10,
+          "hpVeto": 11,
+          "sndPick": 1,
+          "sndVeto": 24,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 11,
+          "hpVeto": 12,
+          "sndPick": 10,
+          "sndVeto": 14,
+          "ovlPick": 10,
+          "ovlVeto": 6
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 12,
+          "hpVeto": 5,
+          "sndPick": 10,
+          "sndVeto": 6,
+          "ovlPick": 6,
+          "ovlVeto": 10
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 15,
+          "sndVeto": 7,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 16,
+          "hpVeto": 7,
+          "sndPick": 16,
+          "sndVeto": 1,
+          "ovlPick": 10,
+          "ovlVeto": 10
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 3,
+          "hpVeto": 17,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All values clearly readable, all image content matched expected types",
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "parsedAt": 1775001578211,
+    "imageCount": 6
+  },
+  "pgm": {
+    "overall": {
+      "players": [
+        {
+          "player": "Envoy",
+          "kd": "0.90",
+          "slayerRating": "85.90",
+          "respawnKd": "0.93",
+          "ntkPct": "0.64",
+          "bpRating": "0.95"
+        },
+        {
+          "player": "Ghosty",
+          "kd": "1.06",
+          "slayerRating": "86.41",
+          "respawnKd": "1.09",
+          "ntkPct": "0.71",
+          "bpRating": "1.05"
+        },
+        {
+          "player": "Neptune",
+          "kd": "1.04",
+          "slayerRating": "92.38",
+          "respawnKd": "1.05",
+          "ntkPct": "0.65",
+          "bpRating": "1.04"
+        },
+        {
+          "player": "Sib",
+          "kd": "1.00",
+          "slayerRating": "91.70",
+          "respawnKd": "0.97",
+          "ntkPct": "0.67",
+          "bpRating": "1.01"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Envoy",
+          "kd": "0.93",
+          "k10m": "25.21",
+          "dmg10m": "3177",
+          "obj10m": "64.15",
+          "eng10m": "62.60"
+        },
+        {
+          "player": "Ghosty",
+          "kd": "1.09",
+          "k10m": "25.37",
+          "dmg10m": "3254",
+          "obj10m": "91.41",
+          "eng10m": "60.19"
+        },
+        {
+          "player": "Neptune",
+          "kd": "1.05",
+          "k10m": "26.39",
+          "dmg10m": "3288",
+          "obj10m": "48.72",
+          "eng10m": "61.98"
+        },
+        {
+          "player": "Sib",
+          "kd": "0.97",
+          "k10m": "25.47",
+          "dmg10m": "3418",
+          "obj10m": "54.15",
+          "eng10m": "63.05"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Envoy",
+          "kd": "0.87",
+          "kRound": "0.65",
+          "bloods": "40",
+          "plants": "23",
+          "defuses": "5",
+          "snipes": "1",
+          "dmgRound": "101.27"
+        },
+        {
+          "player": "Ghosty",
+          "kd": "0.98",
+          "kRound": "0.63",
+          "bloods": "16",
+          "plants": "30",
+          "defuses": "12",
+          "snipes": "0",
+          "dmgRound": "107.63"
+        },
+        {
+          "player": "Neptune",
+          "kd": "1.02",
+          "kRound": "0.73",
+          "bloods": "47",
+          "plants": "8",
+          "defuses": "5",
+          "snipes": "1",
+          "dmgRound": "100.43"
+        },
+        {
+          "player": "Sib",
+          "kd": "0.97",
+          "kRound": "0.72",
+          "bloods": "54",
+          "plants": "8",
+          "defuses": "4",
+          "snipes": "78",
+          "dmgRound": "101.95"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Envoy",
+          "kd": "0.84",
+          "k10m": "21.10",
+          "dmg10m": "2737",
+          "goals10m": "0.80",
+          "eng10m": "56.36"
+        },
+        {
+          "player": "Ghosty",
+          "kd": "1.03",
+          "k10m": "21.82",
+          "dmg10m": "2788",
+          "goals10m": "1.04",
+          "eng10m": "52.93"
+        },
+        {
+          "player": "Neptune",
+          "kd": "1.03",
+          "k10m": "23.56",
+          "dmg10m": "2845",
+          "goals10m": "0.48",
+          "eng10m": "54.77"
+        },
+        {
+          "player": "Sib",
+          "kd": "1.07",
+          "k10m": "24.84",
+          "dmg10m": "3135",
+          "goals10m": "0.55",
+          "eng10m": "57.78"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": null,
+          "hpL": "2",
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": "9",
+          "hpL": "2",
+          "sndW": "5",
+          "sndL": "3",
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": "10",
+          "hpL": "4",
+          "sndW": null,
+          "sndL": "1",
+          "ovlW": "4",
+          "ovlL": "5"
+        },
+        {
+          "map": "Exposure",
+          "hpW": "5",
+          "hpL": "3",
+          "sndW": "4",
+          "sndL": "3",
+          "ovlW": "6",
+          "ovlL": "9"
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": "4",
+          "sndL": "6",
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": "5",
+          "hpL": "7",
+          "sndW": "4",
+          "sndL": "7",
+          "ovlW": "3",
+          "ovlL": "1"
+        }
+      ],
+      "totals": {
+        "hpW": "29",
+        "hpL": "18",
+        "sndW": "17",
+        "sndL": "20",
+        "ovlW": "13",
+        "ovlL": "15"
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": "13",
+          "hpVeto": "11",
+          "sndPick": "10",
+          "sndVeto": "13",
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": "15",
+          "hpVeto": "9",
+          "sndPick": "5",
+          "sndVeto": "22",
+          "ovlPick": "9",
+          "ovlVeto": "8"
+        },
+        {
+          "map": "Exposure",
+          "hpPick": "11",
+          "hpVeto": "6",
+          "sndPick": "11",
+          "sndVeto": "9",
+          "ovlPick": "14",
+          "ovlVeto": "6"
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": "13",
+          "sndVeto": "6",
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": "13",
+          "hpVeto": "8",
+          "sndPick": "15",
+          "sndVeto": "4",
+          "ovlPick": "4",
+          "ovlVeto": "13"
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": "2",
+          "hpVeto": "20",
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All data clearly readable and extracted successfully",
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "parsedAt": 1775001626595,
+    "imageCount": 6
+  },
+  "faze": {
+    "overall": {
+      "players": [
+        {
+          "player": "04",
+          "kd": "0.96",
+          "slayerRating": "88.68",
+          "respawnKd": "0.99",
+          "ntkPct": "0.68",
+          "bpRating": "1.02"
+        },
+        {
+          "player": "Abuzah",
+          "kd": "1.09",
+          "slayerRating": "90.18",
+          "respawnKd": "1.05",
+          "ntkPct": "0.67",
+          "bpRating": "1.08"
+        },
+        {
+          "player": "Drazah",
+          "kd": "1.02",
+          "slayerRating": "87.91",
+          "respawnKd": "1.02",
+          "ntkPct": "0.69",
+          "bpRating": "1.04"
+        },
+        {
+          "player": "Simp",
+          "kd": "1.11",
+          "slayerRating": "96.85",
+          "respawnKd": "1.12",
+          "ntkPct": "0.67",
+          "bpRating": "1.10"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "04",
+          "kd": "0.99",
+          "k10m": "25.73",
+          "dmg10m": "3202",
+          "obj10m": "51.32",
+          "eng10m": "62.40"
+        },
+        {
+          "player": "Abuzah",
+          "kd": "1.05",
+          "k10m": "25.18",
+          "dmg10m": "3343",
+          "obj10m": "80.91",
+          "eng10m": "59.84"
+        },
+        {
+          "player": "Drazah",
+          "kd": "1.02",
+          "k10m": "24.82",
+          "dmg10m": "3179",
+          "obj10m": "58.18",
+          "eng10m": "59.82"
+        },
+        {
+          "player": "Simp",
+          "kd": "1.12",
+          "k10m": "27.01",
+          "dmg10m": "3426",
+          "obj10m": "64.08",
+          "eng10m": "61.38"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "04",
+          "kd": "0.96",
+          "kRound": "0.69",
+          "bloods": "52",
+          "plants": "23",
+          "defuses": "7",
+          "snipes": "1",
+          "dmgRound": "96.46"
+        },
+        {
+          "player": "Abuzah",
+          "kd": "1.29",
+          "kRound": "0.77",
+          "bloods": "46",
+          "plants": "12",
+          "defuses": "13",
+          "snipes": "68",
+          "dmgRound": "104.78"
+        },
+        {
+          "player": "Drazah",
+          "kd": "0.95",
+          "kRound": "0.66",
+          "bloods": "38",
+          "plants": "12",
+          "defuses": "5",
+          "snipes": "0",
+          "dmgRound": "98.29"
+        },
+        {
+          "player": "Simp",
+          "kd": "1.16",
+          "kRound": "0.81",
+          "bloods": "40",
+          "plants": "52",
+          "defuses": "4",
+          "snipes": "1",
+          "dmgRound": "109.70"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "04",
+          "kd": "0.92",
+          "k10m": "22.14",
+          "dmg10m": "2749",
+          "goals10m": "0.79",
+          "eng10m": "55.03"
+        },
+        {
+          "player": "Abuzah",
+          "kd": "1.07",
+          "k10m": "22.90",
+          "dmg10m": "2981",
+          "goals10m": "1.37",
+          "eng10m": "53.01"
+        },
+        {
+          "player": "Drazah",
+          "kd": "1.05",
+          "k10m": "23.82",
+          "dmg10m": "3063",
+          "goals10m": "1.10",
+          "eng10m": "55.66"
+        },
+        {
+          "player": "Simp",
+          "kd": "1.08",
+          "k10m": "24.95",
+          "dmg10m": "3095",
+          "goals10m": "0.79",
+          "eng10m": "56.37"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 7,
+          "hpL": 3,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 4,
+          "hpL": 3,
+          "sndW": 5,
+          "sndL": 3,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 3,
+          "hpL": 6,
+          "sndW": 6,
+          "sndL": 2,
+          "ovlW": 8,
+          "ovlL": 5
+        },
+        {
+          "map": "Exposure",
+          "hpW": 6,
+          "hpL": 4,
+          "sndW": 3,
+          "sndL": 2,
+          "ovlW": 8,
+          "ovlL": 3
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 4,
+          "sndL": 3,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 5,
+          "hpL": 4,
+          "sndW": 5,
+          "sndL": 6,
+          "ovlW": 2,
+          "ovlL": 3
+        }
+      ],
+      "totals": {
+        "hpW": 25,
+        "hpL": 20,
+        "sndW": 23,
+        "sndL": 16,
+        "ovlW": 18,
+        "ovlL": 11
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 10,
+          "hpVeto": 15,
+          "sndPick": 9,
+          "sndVeto": 13,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 12,
+          "hpVeto": 11,
+          "sndPick": 13,
+          "sndVeto": 13,
+          "ovlPick": 13,
+          "ovlVeto": 7
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 13,
+          "hpVeto": 7,
+          "sndPick": 8,
+          "sndVeto": 13,
+          "ovlPick": 11,
+          "ovlVeto": 10
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 9,
+          "sndVeto": 15,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 11,
+          "hpVeto": 11,
+          "sndPick": 19,
+          "sndVeto": 4,
+          "ovlPick": 5,
+          "ovlVeto": 12
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 12,
+          "hpVeto": 14,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All values clearly readable and extracted accurately",
+    "teamId": "faze",
+    "teamName": "FaZe Vegas",
+    "parsedAt": 1775001671594,
+    "imageCount": 6
+  },
+  "toronto": {
+    "overall": {
+      "players": [
+        {
+          "player": "CleanX",
+          "kd": "0.96",
+          "slayerRating": "88.37",
+          "respawnKd": "0.96",
+          "ntkPct": "0.67",
+          "bpRating": "0.99"
+        },
+        {
+          "player": "Insight",
+          "kd": "0.99",
+          "slayerRating": "77.85",
+          "respawnKd": "0.98",
+          "ntkPct": "0.71",
+          "bpRating": "1.01"
+        },
+        {
+          "player": "JoeDeceives",
+          "kd": "1.12",
+          "slayerRating": "96.13",
+          "respawnKd": "1.09",
+          "ntkPct": "0.69",
+          "bpRating": "1.08"
+        },
+        {
+          "player": "Kips",
+          "kd": "1.02",
+          "slayerRating": "92.77",
+          "respawnKd": "1.02",
+          "ntkPct": "0.65",
+          "bpRating": "1.09"
+        },
+        {
+          "player": "ReeaL",
+          "kd": "0.92",
+          "slayerRating": "81.89",
+          "respawnKd": "0.89",
+          "ntkPct": "0.66",
+          "bpRating": "0.91"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "CleanX",
+          "kd": "0.96",
+          "k10m": "25.14",
+          "dmg10m": "3164",
+          "obj10m": "61.87",
+          "eng10m": "61.47"
+        },
+        {
+          "player": "Insight",
+          "kd": "0.98",
+          "k10m": "21.90",
+          "dmg10m": "2979",
+          "obj10m": "69.47",
+          "eng10m": "53.73"
+        },
+        {
+          "player": "JoeDeceives",
+          "kd": "1.09",
+          "k10m": "26.85",
+          "dmg10m": "3399",
+          "obj10m": "56.64",
+          "eng10m": "61.40"
+        },
+        {
+          "player": "Kips",
+          "kd": "1.02",
+          "k10m": "26.47",
+          "dmg10m": "3519",
+          "obj10m": "65.11",
+          "eng10m": "63.19"
+        },
+        {
+          "player": "ReeaL",
+          "kd": "0.89",
+          "k10m": "22.40",
+          "dmg10m": "2909",
+          "obj10m": "60.82",
+          "eng10m": "57.03"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "CleanX",
+          "kd": "0.84",
+          "kRound": "0.64",
+          "bloods": "39",
+          "plants": "9",
+          "defuses": "10",
+          "snipes": "3",
+          "dmgRound": "98.42"
+        },
+        {
+          "player": "Insight",
+          "kd": "0.86",
+          "kRound": "0.58",
+          "bloods": "25",
+          "plants": "6",
+          "defuses": "2",
+          "snipes": "23",
+          "dmgRound": "92.70"
+        },
+        {
+          "player": "JoeDeceives",
+          "kd": "1.07",
+          "kRound": "0.75",
+          "bloods": "44",
+          "plants": "56",
+          "defuses": "11",
+          "snipes": "0",
+          "dmgRound": "105.41"
+        },
+        {
+          "player": "Kips",
+          "kd": "1.19",
+          "kRound": "0.82",
+          "bloods": "25",
+          "plants": "0",
+          "defuses": "6",
+          "snipes": "3",
+          "dmgRound": "127.41"
+        },
+        {
+          "player": "ReeaL",
+          "kd": "0.76",
+          "kRound": "0.57",
+          "bloods": "20",
+          "plants": "2",
+          "defuses": "3",
+          "snipes": "0",
+          "dmgRound": "83.50"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "CleanX",
+          "kd": "1.01",
+          "k10m": "23.99",
+          "dmg10m": "3071",
+          "goals10m": "0.86",
+          "eng10m": "57.62"
+        },
+        {
+          "player": "Insight",
+          "kd": "1.07",
+          "k10m": "21.38",
+          "dmg10m": "2748",
+          "goals10m": "1.05",
+          "eng10m": "50.13"
+        },
+        {
+          "player": "JoeDeceives",
+          "kd": "1.19",
+          "k10m": "25.94",
+          "dmg10m": "3070",
+          "goals10m": "0.98",
+          "eng10m": "56.25"
+        },
+        {
+          "player": "Kips",
+          "kd": "0.97",
+          "k10m": "21.68",
+          "dmg10m": "2828",
+          "goals10m": "1.15",
+          "eng10m": "52.85"
+        },
+        {
+          "player": "ReeaL",
+          "kd": "1.04",
+          "k10m": "24.46",
+          "dmg10m": "2916",
+          "goals10m": "1.29",
+          "eng10m": "56.64"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": null,
+          "hpL": "3",
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": "4",
+          "hpL": "4",
+          "sndW": "2",
+          "sndL": "3",
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": "7",
+          "hpL": "6",
+          "sndW": "4",
+          "sndL": "3",
+          "ovlW": "8",
+          "ovlL": "2"
+        },
+        {
+          "map": "Exposure",
+          "hpW": "3",
+          "hpL": "3",
+          "sndW": "2",
+          "sndL": "3",
+          "ovlW": "7",
+          "ovlL": "7"
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": "3",
+          "sndL": "5",
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": "7",
+          "hpL": "1",
+          "sndW": "1",
+          "sndL": "5",
+          "ovlW": null,
+          "ovlL": "2"
+        }
+      ],
+      "totals": {
+        "hpW": "21",
+        "hpL": "17",
+        "sndW": "12",
+        "sndL": "19",
+        "ovlW": "15",
+        "ovlL": "11"
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": "8",
+          "hpVeto": "14",
+          "sndPick": "6",
+          "sndVeto": "15",
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": "13",
+          "hpVeto": "11",
+          "sndPick": "14",
+          "sndVeto": "11",
+          "ovlPick": "10",
+          "ovlVeto": "5"
+        },
+        {
+          "map": "Exposure",
+          "hpPick": "11",
+          "hpVeto": "6",
+          "sndPick": "11",
+          "sndVeto": "7",
+          "ovlPick": "14",
+          "ovlVeto": "5"
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": "12",
+          "sndVeto": "10",
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": "15",
+          "hpVeto": "6",
+          "sndPick": "9",
+          "sndVeto": "9",
+          "ovlPick": "2",
+          "ovlVeto": "16"
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": "5",
+          "hpVeto": "15",
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All values clearly readable. All image types correctly identified based on content.",
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "parsedAt": 1775001760317,
+    "imageCount": 6
+  },
+  "g2": {
+    "overall": {
+      "players": [
+        {
+          "player": "Estreal",
+          "kd": "1.00",
+          "slayerRating": "89.01",
+          "respawnKd": "1.02",
+          "ntkPct": "0.68",
+          "bpRating": "0.99"
+        },
+        {
+          "player": "Kremp",
+          "kd": "1.01",
+          "slayerRating": "96.50",
+          "respawnKd": "1.02",
+          "ntkPct": "0.63",
+          "bpRating": "0.98"
+        },
+        {
+          "player": "Mamba",
+          "kd": "0.94",
+          "slayerRating": "86.60",
+          "respawnKd": "0.95",
+          "ntkPct": "0.64",
+          "bpRating": "0.95"
+        },
+        {
+          "player": "Skyz",
+          "kd": "0.95",
+          "slayerRating": "81.81",
+          "respawnKd": "0.99",
+          "ntkPct": "0.67",
+          "bpRating": "0.97"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Estreal",
+          "kd": "1.02",
+          "k10m": "25.04",
+          "dmg10m": "3120",
+          "obj10m": "68.60",
+          "eng10m": "59.53"
+        },
+        {
+          "player": "Kremp",
+          "kd": "1.02",
+          "k10m": "27.42",
+          "dmg10m": "3384",
+          "obj10m": "57.08",
+          "eng10m": "64.52"
+        },
+        {
+          "player": "Mamba",
+          "kd": "0.95",
+          "k10m": "24.94",
+          "dmg10m": "3247",
+          "obj10m": "53.18",
+          "eng10m": "60.52"
+        },
+        {
+          "player": "Skyz",
+          "kd": "0.99",
+          "k10m": "23.59",
+          "dmg10m": "3203",
+          "obj10m": "66.34",
+          "eng10m": "59.32"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Estreal",
+          "kd": "1.01",
+          "kRound": "0.71",
+          "bloods": "35",
+          "plants": "48",
+          "defuses": "6",
+          "snipes": "0",
+          "dmgRound": "100.18"
+        },
+        {
+          "player": "Kremp",
+          "kd": "1.10",
+          "kRound": "0.79",
+          "bloods": "60",
+          "plants": "8",
+          "defuses": "7",
+          "snipes": "3",
+          "dmgRound": "111.46"
+        },
+        {
+          "player": "Mamba",
+          "kd": "1.00",
+          "kRound": "0.68",
+          "bloods": "29",
+          "plants": "7",
+          "defuses": "3",
+          "snipes": "0",
+          "dmgRound": "104.75"
+        },
+        {
+          "player": "Skyz",
+          "kd": "1.03",
+          "kRound": "0.63",
+          "bloods": "33",
+          "plants": "2",
+          "defuses": "6",
+          "snipes": "45",
+          "dmgRound": "94.48"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Estreal",
+          "kd": "0.97",
+          "k10m": "23.37",
+          "dmg10m": "2988",
+          "goals10m": "0.67",
+          "eng10m": "56.56"
+        },
+        {
+          "player": "Kremp",
+          "kd": "0.97",
+          "k10m": "24.36",
+          "dmg10m": "2971",
+          "goals10m": "0.44",
+          "eng10m": "57.03"
+        },
+        {
+          "player": "Mamba",
+          "kd": "0.90",
+          "k10m": "21.75",
+          "dmg10m": "2833",
+          "goals10m": "0.63",
+          "eng10m": "54.06"
+        },
+        {
+          "player": "Skyz",
+          "kd": "0.87",
+          "k10m": "20.76",
+          "dmg10m": "2903",
+          "goals10m": "0.71",
+          "eng10m": "55.53"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 3,
+          "hpL": 2,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 7,
+          "hpL": 5,
+          "sndW": 4,
+          "sndL": 4,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 6,
+          "hpL": 3,
+          "sndW": null,
+          "sndL": 1,
+          "ovlW": 6,
+          "ovlL": 7
+        },
+        {
+          "map": "Exposure",
+          "hpW": null,
+          "hpL": 2,
+          "sndW": 4,
+          "sndL": 4,
+          "ovlW": 3,
+          "ovlL": 2
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 5,
+          "sndL": 5,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 3,
+          "hpL": 6,
+          "sndW": 5,
+          "sndL": 1,
+          "ovlW": 2,
+          "ovlL": 5
+        }
+      ],
+      "totals": {
+        "hpW": 19,
+        "hpL": 18,
+        "sndW": 18,
+        "sndL": 15,
+        "ovlW": 11,
+        "ovlL": 14
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 14,
+          "hpVeto": 10,
+          "sndPick": 9,
+          "sndVeto": 10,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 10,
+          "hpVeto": 6,
+          "sndPick": 3,
+          "sndVeto": 20,
+          "ovlPick": 13,
+          "ovlVeto": 4
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 5,
+          "hpVeto": 16,
+          "sndPick": 9,
+          "sndVeto": 6,
+          "ovlPick": 5,
+          "ovlVeto": 10
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 14,
+          "sndVeto": 8,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 15,
+          "hpVeto": 4,
+          "sndPick": 15,
+          "sndVeto": 6,
+          "ovlPick": 7,
+          "ovlVeto": 11
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 6,
+          "hpVeto": 14,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All data clearly readable and extracted accurately",
+    "teamId": "g2",
+    "teamName": "G2 Minnesota",
+    "parsedAt": 1775001807284,
+    "imageCount": 6
+  },
+  "lat": {
+    "overall": {
+      "players": [
+        {
+          "player": "HyDra",
+          "kd": "1.05",
+          "slayerRating": "95.06",
+          "respawnKd": "1.04",
+          "ntkPct": "0.64",
+          "bpRating": "1.07"
+        },
+        {
+          "player": "Kenny",
+          "kd": "0.92",
+          "slayerRating": "82.53",
+          "respawnKd": "0.92",
+          "ntkPct": "0.66",
+          "bpRating": "0.92"
+        },
+        {
+          "player": "Nium",
+          "kd": "1.01",
+          "slayerRating": "87.27",
+          "respawnKd": "0.98",
+          "ntkPct": "0.67",
+          "bpRating": "1.07"
+        },
+        {
+          "player": "Scrap",
+          "kd": "1.07",
+          "slayerRating": "95.60",
+          "respawnKd": "1.09",
+          "ntkPct": "0.68",
+          "bpRating": "1.08"
+        },
+        {
+          "player": "aBeZy",
+          "kd": "1.01",
+          "slayerRating": "87.16",
+          "respawnKd": "1.05",
+          "ntkPct": "0.68",
+          "bpRating": "1.04"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "HyDra",
+          "kd": "1.04",
+          "k10m": "25.95",
+          "dmg10m": "3226",
+          "obj10m": "57.23",
+          "eng10m": "60.53"
+        },
+        {
+          "player": "Kenny",
+          "kd": "0.92",
+          "k10m": "23.35",
+          "dmg10m": "3082",
+          "obj10m": "70.44",
+          "eng10m": "60.01"
+        },
+        {
+          "player": "Nium",
+          "kd": "0.98",
+          "k10m": "24.07",
+          "dmg10m": "3104",
+          "obj10m": "64.93",
+          "eng10m": "58.91"
+        },
+        {
+          "player": "Scrap",
+          "kd": "1.09",
+          "k10m": "27.72",
+          "dmg10m": "3697",
+          "obj10m": "68.96",
+          "eng10m": "64.61"
+        },
+        {
+          "player": "aBeZy",
+          "kd": "1.05",
+          "k10m": "24.88",
+          "dmg10m": "3014",
+          "obj10m": "67.99",
+          "eng10m": "58.27"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "HyDra",
+          "kd": "1.10",
+          "kRound": "0.79",
+          "bloods": "41",
+          "plants": "28",
+          "defuses": "7",
+          "snipes": "0",
+          "dmgRound": "101.16"
+        },
+        {
+          "player": "Kenny",
+          "kd": "0.93",
+          "kRound": "0.63",
+          "bloods": "8",
+          "plants": "9",
+          "defuses": "0",
+          "snipes": "0",
+          "dmgRound": "100.10"
+        },
+        {
+          "player": "Nium",
+          "kd": "0.97",
+          "kRound": "0.63",
+          "bloods": "16",
+          "plants": "3",
+          "defuses": "8",
+          "snipes": "17",
+          "dmgRound": "85.27"
+        },
+        {
+          "player": "Scrap",
+          "kd": "1.08",
+          "kRound": "0.75",
+          "bloods": "46",
+          "plants": "13",
+          "defuses": "6",
+          "snipes": "25",
+          "dmgRound": "110.89"
+        },
+        {
+          "player": "aBeZy",
+          "kd": "0.94",
+          "kRound": "0.65",
+          "bloods": "29",
+          "plants": "21",
+          "defuses": "2",
+          "snipes": "0",
+          "dmgRound": "90.77"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "HyDra",
+          "kd": "1.07",
+          "k10m": "25.88",
+          "dmg10m": "3072",
+          "goals10m": "0.74",
+          "eng10m": "57.61"
+        },
+        {
+          "player": "Kenny",
+          "kd": "0.91",
+          "k10m": "22.02",
+          "dmg10m": "2922",
+          "goals10m": "1.12",
+          "eng10m": "55.56"
+        },
+        {
+          "player": "Nium",
+          "kd": "1.08",
+          "k10m": "25.39",
+          "dmg10m": "3162",
+          "goals10m": "1.30",
+          "eng10m": "59.53"
+        },
+        {
+          "player": "Scrap",
+          "kd": "1.02",
+          "k10m": "23.71",
+          "dmg10m": "3099",
+          "goals10m": "1.51",
+          "eng10m": "55.81"
+        },
+        {
+          "player": "aBeZy",
+          "kd": "0.97",
+          "k10m": "23.13",
+          "dmg10m": "2838",
+          "goals10m": "0.57",
+          "eng10m": "55.64"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 1,
+          "hpL": 2,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 5,
+          "hpL": 3,
+          "sndW": 3,
+          "sndL": 6,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 8,
+          "hpL": 6,
+          "sndW": 5,
+          "sndL": 2,
+          "ovlW": 5,
+          "ovlL": 6
+        },
+        {
+          "map": "Exposure",
+          "hpW": 4,
+          "hpL": 1,
+          "sndW": 1,
+          "sndL": 3,
+          "ovlW": 4,
+          "ovlL": 4
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 1,
+          "sndL": 3,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 4,
+          "hpL": 4,
+          "sndW": 5,
+          "sndL": 2,
+          "ovlW": 5,
+          "ovlL": 1
+        }
+      ],
+      "totals": {
+        "hpW": 22,
+        "hpL": 16,
+        "sndW": 15,
+        "sndL": 16,
+        "ovlW": 14,
+        "ovlL": 11
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 9,
+          "hpVeto": 10,
+          "sndPick": 11,
+          "sndVeto": 10,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 14,
+          "hpVeto": 8,
+          "sndPick": 10,
+          "sndVeto": 9,
+          "ovlPick": 11,
+          "ovlVeto": 6
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 10,
+          "hpVeto": 9,
+          "sndPick": 6,
+          "sndVeto": 13,
+          "ovlPick": 8,
+          "ovlVeto": 10
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 8,
+          "sndVeto": 11,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 12,
+          "hpVeto": 7,
+          "sndPick": 15,
+          "sndVeto": 7,
+          "ovlPick": 6,
+          "ovlVeto": 9
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 5,
+          "hpVeto": 16,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All values clearly readable, all images parsed correctly according to their actual content",
+    "teamId": "lat",
+    "teamName": "Los Angeles Thieves",
+    "parsedAt": 1775001854755,
+    "imageCount": 6
+  },
+  "falcons": {
+    "overall": {
+      "players": [
+        {
+          "player": "Cellium",
+          "kd": "1.13",
+          "slayerRating": "85.60",
+          "respawnKd": "1.14",
+          "ntkPct": "0.71",
+          "bpRating": "1.05"
+        },
+        {
+          "player": "Exnid",
+          "kd": "1.01",
+          "slayerRating": "88.68",
+          "respawnKd": "1.04",
+          "ntkPct": "0.65",
+          "bpRating": "1.00"
+        },
+        {
+          "player": "KiSMET",
+          "kd": "0.97",
+          "slayerRating": "85.77",
+          "respawnKd": "1.00",
+          "ntkPct": "0.68",
+          "bpRating": "0.99"
+        },
+        {
+          "player": "Pred",
+          "kd": "1.08",
+          "slayerRating": "91.04",
+          "respawnKd": "1.03",
+          "ntkPct": "0.68",
+          "bpRating": "1.04"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Cellium",
+          "kd": "1.14",
+          "k10m": "24.74",
+          "dmg10m": "3234",
+          "obj10m": "81.06",
+          "eng10m": "56.62"
+        },
+        {
+          "player": "Exnid",
+          "kd": "1.04",
+          "k10m": "26.39",
+          "dmg10m": "3262",
+          "obj10m": "51.76",
+          "eng10m": "60.52"
+        },
+        {
+          "player": "KiSMET",
+          "kd": "1.00",
+          "k10m": "24.34",
+          "dmg10m": "3255",
+          "obj10m": "71.20",
+          "eng10m": "59.47"
+        },
+        {
+          "player": "Pred",
+          "kd": "1.03",
+          "k10m": "25.19",
+          "dmg10m": "3127",
+          "obj10m": "44.21",
+          "eng10m": "59.42"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Cellium",
+          "kd": "0.94",
+          "kRound": "0.67",
+          "bloods": "26",
+          "plants": "6",
+          "defuses": "2",
+          "snipes": "2",
+          "dmgRound": "119.60"
+        },
+        {
+          "player": "Exnid",
+          "kd": "0.78",
+          "kRound": "0.57",
+          "bloods": "20",
+          "plants": "27",
+          "defuses": "7",
+          "snipes": "0",
+          "dmgRound": "87.75"
+        },
+        {
+          "player": "KiSMET",
+          "kd": "0.97",
+          "kRound": "0.73",
+          "bloods": "42",
+          "plants": "31",
+          "defuses": "6",
+          "snipes": "8",
+          "dmgRound": "100.36"
+        },
+        {
+          "player": "Pred",
+          "kd": "1.10",
+          "kRound": "0.76",
+          "bloods": "25",
+          "plants": "4",
+          "defuses": "9",
+          "snipes": "1",
+          "dmgRound": "106.08"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Cellium",
+          "kd": "1.18",
+          "k10m": "21.39",
+          "dmg10m": "2847",
+          "goals10m": "0.94",
+          "eng10m": "47.61"
+        },
+        {
+          "player": "Exnid",
+          "kd": "1.05",
+          "k10m": "23.27",
+          "dmg10m": "2848",
+          "goals10m": "0.60",
+          "eng10m": "53.93"
+        },
+        {
+          "player": "KiSMET",
+          "kd": "0.93",
+          "k10m": "21.14",
+          "dmg10m": "2782",
+          "goals10m": "1.11",
+          "eng10m": "51.96"
+        },
+        {
+          "player": "Pred",
+          "kd": "1.18",
+          "k10m": "24.00",
+          "dmg10m": "2928",
+          "goals10m": "0.68",
+          "eng10m": "52.43"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 5,
+          "hpL": 1,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 6,
+          "hpL": 4,
+          "sndW": 2,
+          "sndL": 7,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 4,
+          "hpL": 4,
+          "sndW": null,
+          "sndL": 3,
+          "ovlW": 2,
+          "ovlL": 5
+        },
+        {
+          "map": "Exposure",
+          "hpW": 3,
+          "hpL": 4,
+          "sndW": 2,
+          "sndL": 3,
+          "ovlW": 8,
+          "ovlL": 3
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 4,
+          "sndL": 3,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 2,
+          "hpL": 4,
+          "sndW": 3,
+          "sndL": 1,
+          "ovlW": 4,
+          "ovlL": 1
+        }
+      ],
+      "totals": {
+        "hpW": 20,
+        "hpL": 17,
+        "sndW": 11,
+        "sndL": 17,
+        "ovlW": 14,
+        "ovlL": 9
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 10,
+          "hpVeto": 8,
+          "sndPick": 9,
+          "sndVeto": 7,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 9,
+          "hpVeto": 12,
+          "sndPick": 5,
+          "sndVeto": 15,
+          "ovlPick": 7,
+          "ovlVeto": 7
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 12,
+          "hpVeto": 2,
+          "sndPick": 10,
+          "sndVeto": 12,
+          "ovlPick": 11,
+          "ovlVeto": 6
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 12,
+          "sndVeto": 8,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 8,
+          "hpVeto": 12,
+          "sndPick": 10,
+          "sndVeto": 4,
+          "ovlPick": 5,
+          "ovlVeto": 10
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 7,
+          "hpVeto": 12,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All images parsed correctly with clear data visibility",
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "parsedAt": 1775001901418,
+    "imageCount": 6
+  },
+  "miami": {
+    "overall": {
+      "players": [
+        {
+          "player": "MettalZ",
+          "kd": "0.92",
+          "slayerRating": "84.69",
+          "respawnKd": "0.94",
+          "ntkPct": "0.67",
+          "bpRating": "0.96"
+        },
+        {
+          "player": "RenKoR",
+          "kd": "1.17",
+          "slayerRating": "91.02",
+          "respawnKd": "1.22",
+          "ntkPct": "0.69",
+          "bpRating": "1.08"
+        },
+        {
+          "player": "SupeR",
+          "kd": "1.14",
+          "slayerRating": "89.04",
+          "respawnKd": "1.07",
+          "ntkPct": "0.71",
+          "bpRating": "1.10"
+        },
+        {
+          "player": "Traixx",
+          "kd": "1.00",
+          "slayerRating": "89.53",
+          "respawnKd": "1.00",
+          "ntkPct": "0.68",
+          "bpRating": "1.01"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "MettalZ",
+          "kd": "0.94",
+          "k10m": "24.00",
+          "dmg10m": "3117",
+          "obj10m": "65.91",
+          "eng10m": "59.29"
+        },
+        {
+          "player": "RenKoR",
+          "kd": "1.22",
+          "k10m": "26.82",
+          "dmg10m": "3343",
+          "obj10m": "63.28",
+          "eng10m": "58.31"
+        },
+        {
+          "player": "SupeR",
+          "kd": "1.07",
+          "k10m": "23.44",
+          "dmg10m": "3042",
+          "obj10m": "56.29",
+          "eng10m": "55.76"
+        },
+        {
+          "player": "Traixx",
+          "kd": "1.00",
+          "k10m": "24.21",
+          "dmg10m": "3149",
+          "obj10m": "52.70",
+          "eng10m": "58.36"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "MettalZ",
+          "kd": "0.84",
+          "kRound": "0.63",
+          "bloods": "48",
+          "plants": "18",
+          "defuses": "7",
+          "snipes": "0",
+          "dmgRound": "95.43"
+        },
+        {
+          "player": "RenKoR",
+          "kd": "1.07",
+          "kRound": "0.62",
+          "bloods": "16",
+          "plants": "22",
+          "defuses": "11",
+          "snipes": "0",
+          "dmgRound": "93.10"
+        },
+        {
+          "player": "SupeR",
+          "kd": "1.39",
+          "kRound": "0.86",
+          "bloods": "58",
+          "plants": "6",
+          "defuses": "5",
+          "snipes": "118",
+          "dmgRound": "107.50"
+        },
+        {
+          "player": "Traixx",
+          "kd": "1.05",
+          "kRound": "0.74",
+          "bloods": "34",
+          "plants": "34",
+          "defuses": "4",
+          "snipes": "1",
+          "dmgRound": "100.30"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "MettalZ",
+          "kd": "0.91",
+          "k10m": "22.76",
+          "dmg10m": "2944",
+          "goals10m": "0.83",
+          "eng10m": "58.65"
+        },
+        {
+          "player": "RenKoR",
+          "kd": "1.11",
+          "k10m": "23.77",
+          "dmg10m": "3001",
+          "goals10m": "0.88",
+          "eng10m": "54.93"
+        },
+        {
+          "player": "SupeR",
+          "kd": "1.18",
+          "k10m": "23.29",
+          "dmg10m": "2906",
+          "goals10m": "0.92",
+          "eng10m": "52.09"
+        },
+        {
+          "player": "Traixx",
+          "kd": "0.98",
+          "k10m": "24.91",
+          "dmg10m": "3044",
+          "goals10m": "0.79",
+          "eng10m": "59.22"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 3,
+          "hpL": null,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": null,
+          "hpL": 1,
+          "sndW": 1,
+          "sndL": 1,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 5,
+          "hpL": 5,
+          "sndW": 3,
+          "sndL": 5,
+          "ovlW": 4,
+          "ovlL": 1
+        },
+        {
+          "map": "Exposure",
+          "hpW": 5,
+          "hpL": 5,
+          "sndW": 3,
+          "sndL": 1,
+          "ovlW": 3,
+          "ovlL": 5
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 5,
+          "sndL": 2,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 5,
+          "hpL": 6,
+          "sndW": 5,
+          "sndL": 3,
+          "ovlW": 5,
+          "ovlL": 5
+        }
+      ],
+      "totals": {
+        "hpW": 18,
+        "hpL": 17,
+        "sndW": 17,
+        "sndL": 12,
+        "ovlW": 12,
+        "ovlL": 11
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 1,
+          "hpVeto": 22,
+          "sndPick": 3,
+          "sndVeto": 17,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 12,
+          "hpVeto": 4,
+          "sndPick": 9,
+          "sndVeto": 11,
+          "ovlPick": 5,
+          "ovlVeto": 7
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 13,
+          "hpVeto": 3,
+          "sndPick": 9,
+          "sndVeto": 6,
+          "ovlPick": 8,
+          "ovlVeto": 10
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 10,
+          "sndVeto": 7,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 13,
+          "hpVeto": 5,
+          "sndPick": 15,
+          "sndVeto": 5,
+          "ovlPick": 10,
+          "ovlVeto": 5
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 7,
+          "hpVeto": 12,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All images clearly readable with accurate data extraction. Player names correctly matched to roster.",
+    "teamId": "miami",
+    "teamName": "Miami Heretics",
+    "parsedAt": 1775001944420,
+    "imageCount": 6
+  },
+  "ravens": {
+    "overall": {
+      "players": [
+        {
+          "player": "Craze",
+          "kd": "0.95",
+          "slayerRating": "89.64",
+          "respawnKd": "0.95",
+          "ntkPct": "0.65",
+          "bpRating": "0.96"
+        },
+        {
+          "player": "Exceed",
+          "kd": "0.99",
+          "slayerRating": "84.44",
+          "respawnKd": "0.96",
+          "ntkPct": "0.68",
+          "bpRating": "1.00"
+        },
+        {
+          "player": "Lurqxx",
+          "kd": "1.06",
+          "slayerRating": "95.07",
+          "respawnKd": "1.11",
+          "ntkPct": "0.66",
+          "bpRating": "1.00"
+        },
+        {
+          "player": "Nero",
+          "kd": "1.01",
+          "slayerRating": "90.82",
+          "respawnKd": "1.04",
+          "ntkPct": "0.65",
+          "bpRating": "0.97"
+        },
+        {
+          "player": "SlasheR",
+          "kd": "0.78",
+          "slayerRating": "63.05",
+          "respawnKd": "0.87",
+          "ntkPct": "0.63",
+          "bpRating": "0.72"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Craze",
+          "kd": "0.95",
+          "k10m": "24.87",
+          "dmg10m": "3073",
+          "obj10m": "50.16",
+          "eng10m": "60.12"
+        },
+        {
+          "player": "Exceed",
+          "kd": "0.96",
+          "k10m": "23.27",
+          "dmg10m": "3091",
+          "obj10m": "74.42",
+          "eng10m": "57.66"
+        },
+        {
+          "player": "Lurqxx",
+          "kd": "1.11",
+          "k10m": "28.19",
+          "dmg10m": "3443",
+          "obj10m": "57.89",
+          "eng10m": "63.30"
+        },
+        {
+          "player": "Nero",
+          "kd": "1.04",
+          "k10m": "25.49",
+          "dmg10m": "3342",
+          "obj10m": "71.41",
+          "eng10m": "59.73"
+        },
+        {
+          "player": "SlasheR",
+          "kd": "0.87",
+          "k10m": "19.12",
+          "dmg10m": "2799",
+          "obj10m": "53.74",
+          "eng10m": "52.42"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Craze",
+          "kd": "1.02",
+          "kRound": "0.77",
+          "bloods": "37",
+          "plants": "27",
+          "defuses": "6",
+          "snipes": "0",
+          "dmgRound": "99.77"
+        },
+        {
+          "player": "Exceed",
+          "kd": "1.14",
+          "kRound": "0.71",
+          "bloods": "26",
+          "plants": "18",
+          "defuses": "4",
+          "snipes": "54",
+          "dmgRound": "87.18"
+        },
+        {
+          "player": "Lurqxx",
+          "kd": "0.93",
+          "kRound": "0.65",
+          "bloods": "27",
+          "plants": "2",
+          "defuses": "4",
+          "snipes": "0",
+          "dmgRound": "90.57"
+        },
+        {
+          "player": "Nero",
+          "kd": "0.97",
+          "kRound": "0.67",
+          "bloods": "22",
+          "plants": "13",
+          "defuses": "2",
+          "snipes": "4",
+          "dmgRound": "105.39"
+        },
+        {
+          "player": "SlasheR",
+          "kd": "0.62",
+          "kRound": "0.42",
+          "bloods": "1",
+          "plants": "0",
+          "defuses": "0",
+          "snipes": "0",
+          "dmgRound": "115.16"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Craze",
+          "kd": "0.91",
+          "k10m": "22.91",
+          "dmg10m": "2875",
+          "goals10m": "0.40",
+          "eng10m": "57.02"
+        },
+        {
+          "player": "Exceed",
+          "kd": "1.01",
+          "k10m": "22.25",
+          "dmg10m": "2781",
+          "goals10m": "1.71",
+          "eng10m": "53.40"
+        },
+        {
+          "player": "Lurqxx",
+          "kd": "1.02",
+          "k10m": "24.39",
+          "dmg10m": "3043",
+          "goals10m": "0.84",
+          "eng10m": "56.77"
+        },
+        {
+          "player": "Nero",
+          "kd": "0.98",
+          "k10m": "25.09",
+          "dmg10m": "3152",
+          "goals10m": "0.64",
+          "eng10m": "59.20"
+        },
+        {
+          "player": "SlasheR",
+          "kd": "0.71",
+          "k10m": "15.55",
+          "dmg10m": "2540",
+          "goals10m": "0.00",
+          "eng10m": "47.61"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 5,
+          "hpL": 3,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 9,
+          "hpL": 2,
+          "sndW": 2,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 2,
+          "hpL": 3,
+          "sndW": 3,
+          "sndL": 3,
+          "ovlW": 2,
+          "ovlL": 5
+        },
+        {
+          "map": "Exposure",
+          "hpW": 5,
+          "hpL": 3,
+          "sndW": 4,
+          "sndL": 2,
+          "ovlW": 4,
+          "ovlL": 3
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 3,
+          "sndL": 2,
+          "ovlW": null,
+          "ovlL": 1
+        },
+        {
+          "map": "Scar",
+          "hpW": 3,
+          "hpL": 1,
+          "sndW": 2,
+          "sndL": 2,
+          "ovlW": 3,
+          "ovlL": 4
+        }
+      ],
+      "totals": {
+        "hpW": 15,
+        "hpL": 18,
+        "sndW": 14,
+        "sndL": 11,
+        "ovlW": 9,
+        "ovlL": 12
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 9,
+          "hpVeto": 9,
+          "sndPick": 6,
+          "sndVeto": 8,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 7,
+          "hpVeto": 7,
+          "sndPick": 9,
+          "sndVeto": 8,
+          "ovlPick": 7,
+          "ovlVeto": 3
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 11,
+          "hpVeto": 7,
+          "sndPick": 10,
+          "sndVeto": 9,
+          "ovlPick": 7,
+          "ovlVeto": 11
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 10,
+          "sndVeto": 6,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 6,
+          "hpVeto": 9,
+          "sndPick": 7,
+          "sndVeto": 11,
+          "ovlPick": 7,
+          "ovlVeto": 7
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 9,
+          "hpVeto": 10,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All values clearly readable and extracted accurately",
+    "teamId": "ravens",
+    "teamName": "Carolina Royal Ravens",
+    "parsedAt": 1775001993552,
+    "imageCount": 6
+  },
+  "boston": {
+    "overall": {
+      "players": [
+        {
+          "player": "Cammy",
+          "kd": "0.89",
+          "slayerRating": "81.11",
+          "respawnKd": "0.93",
+          "ntkPct": "0.65",
+          "bpRating": "0.90"
+        },
+        {
+          "player": "Nastie",
+          "kd": "1.05",
+          "slayerRating": "85.36",
+          "respawnKd": "1.00",
+          "ntkPct": "0.71",
+          "bpRating": "0.98"
+        },
+        {
+          "player": "Purj",
+          "kd": "0.87",
+          "slayerRating": "81.46",
+          "respawnKd": "0.85",
+          "ntkPct": "0.62",
+          "bpRating": "0.88"
+        },
+        {
+          "player": "Snoopy",
+          "kd": "0.96",
+          "slayerRating": "86.70",
+          "respawnKd": "0.91",
+          "ntkPct": "0.65",
+          "bpRating": "0.93"
+        },
+        {
+          "player": "Spart",
+          "kd": "1.08",
+          "slayerRating": "90.02",
+          "respawnKd": "1.05",
+          "ntkPct": "0.67",
+          "bpRating": "0.99"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Cammy",
+          "kd": "0.93",
+          "k10m": "23.90",
+          "dmg10m": "3174",
+          "obj10m": "68.03",
+          "eng10m": "59.67"
+        },
+        {
+          "player": "Nastie",
+          "kd": "1.00",
+          "k10m": "23.63",
+          "dmg10m": "3119",
+          "obj10m": "61.35",
+          "eng10m": "56.58"
+        },
+        {
+          "player": "Purj",
+          "kd": "0.85",
+          "k10m": "23.07",
+          "dmg10m": "3055",
+          "obj10m": "55.54",
+          "eng10m": "59.97"
+        },
+        {
+          "player": "Snoopy",
+          "kd": "0.91",
+          "k10m": "23.29",
+          "dmg10m": "2891",
+          "obj10m": "55.20",
+          "eng10m": "58.51"
+        },
+        {
+          "player": "Spart",
+          "kd": "1.05",
+          "k10m": "24.74",
+          "dmg10m": "3311",
+          "obj10m": "73.23",
+          "eng10m": "59.97"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Cammy",
+          "kd": "0.79",
+          "kRound": "0.57",
+          "bloods": "12",
+          "plants": "2",
+          "defuses": "6",
+          "snipes": "0",
+          "dmgRound": "95.78"
+        },
+        {
+          "player": "Nastie",
+          "kd": "0.97",
+          "kRound": "0.66",
+          "bloods": "17",
+          "plants": "9",
+          "defuses": "8",
+          "snipes": "18",
+          "dmgRound": "97.31"
+        },
+        {
+          "player": "Purj",
+          "kd": "0.81",
+          "kRound": "0.62",
+          "bloods": "34",
+          "plants": "1",
+          "defuses": "3",
+          "snipes": "0",
+          "dmgRound": "87.33"
+        },
+        {
+          "player": "Snoopy",
+          "kd": "0.95",
+          "kRound": "0.74",
+          "bloods": "36",
+          "plants": "32",
+          "defuses": "2",
+          "snipes": "0",
+          "dmgRound": "97.42"
+        },
+        {
+          "player": "Spart",
+          "kd": "1.12",
+          "kRound": "0.75",
+          "bloods": "8",
+          "plants": "3",
+          "defuses": "0",
+          "snipes": "1",
+          "dmgRound": "105.04"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Cammy",
+          "kd": "0.87",
+          "k10m": "20.70",
+          "dmg10m": "2864",
+          "goals10m": "0.40",
+          "eng10m": "53.89"
+        },
+        {
+          "player": "Nastie",
+          "kd": "1.20",
+          "k10m": "23.54",
+          "dmg10m": "2823",
+          "goals10m": "0.87",
+          "eng10m": "50.35"
+        },
+        {
+          "player": "Purj",
+          "kd": "0.93",
+          "k10m": "21.59",
+          "dmg10m": "2716",
+          "goals10m": "0.67",
+          "eng10m": "53.98"
+        },
+        {
+          "player": "Snoopy",
+          "kd": "1.08",
+          "k10m": "23.89",
+          "dmg10m": "2945",
+          "goals10m": "0.41",
+          "eng10m": "53.98"
+        },
+        {
+          "player": "Spart",
+          "kd": "1.12",
+          "k10m": "24.12",
+          "dmg10m": "3012",
+          "goals10m": "0.56",
+          "eng10m": "53.14"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": null,
+          "hpL": 4,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 6,
+          "hpL": 5,
+          "sndW": 4,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": null,
+          "hpL": 7,
+          "sndW": 1,
+          "sndL": 4,
+          "ovlW": 6,
+          "ovlL": 6
+        },
+        {
+          "map": "Exposure",
+          "hpW": 3,
+          "hpL": 2,
+          "sndW": 2,
+          "sndL": 2,
+          "ovlW": null,
+          "ovlL": 4
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 1,
+          "sndL": 3,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 3,
+          "hpL": 4,
+          "sndW": 2,
+          "sndL": 5,
+          "ovlW": 2,
+          "ovlL": 1
+        }
+      ],
+      "totals": {
+        "hpW": 12,
+        "hpL": 22,
+        "sndW": 10,
+        "sndL": 14,
+        "ovlW": 8,
+        "ovlL": 11
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 11,
+          "hpVeto": 7,
+          "sndPick": 6,
+          "sndVeto": 7,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 7,
+          "hpVeto": 10,
+          "sndPick": 9,
+          "sndVeto": 8,
+          "ovlPick": 12,
+          "ovlVeto": 6
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 9,
+          "hpVeto": 4,
+          "sndPick": 7,
+          "sndVeto": 7,
+          "ovlPick": 4,
+          "ovlVeto": 8
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 4,
+          "sndVeto": 12,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 7,
+          "hpVeto": 7,
+          "sndPick": 12,
+          "sndVeto": 4,
+          "ovlPick": 3,
+          "ovlVeto": 5
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 4,
+          "hpVeto": 10,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All values clearly readable",
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "parsedAt": 1774563556902,
+    "imageCount": 6
+  },
+  "vancouver": {
+    "overall": {
+      "players": [
+        {
+          "player": "Abe",
+          "kd": "0.84",
+          "slayerRating": "78.28",
+          "respawnKd": "0.89",
+          "ntkPct": "0.66",
+          "bpRating": "0.81"
+        },
+        {
+          "player": "Capsidal",
+          "kd": "0.87",
+          "slayerRating": "87.29",
+          "respawnKd": "0.86",
+          "ntkPct": "0.62",
+          "bpRating": "0.84"
+        },
+        {
+          "player": "Gwinn",
+          "kd": "0.94",
+          "slayerRating": "87.40",
+          "respawnKd": "0.98",
+          "ntkPct": "0.67",
+          "bpRating": "0.88"
+        },
+        {
+          "player": "Lqgend",
+          "kd": "0.72",
+          "slayerRating": "67.60",
+          "respawnKd": "0.77",
+          "ntkPct": "0.66",
+          "bpRating": "0.69"
+        },
+        {
+          "player": "Lunarz",
+          "kd": "1.00",
+          "slayerRating": "82.36",
+          "respawnKd": "1.05",
+          "ntkPct": "0.69",
+          "bpRating": "0.91"
+        },
+        {
+          "player": "TJHaLy",
+          "kd": "0.90",
+          "slayerRating": "87.30",
+          "respawnKd": "0.89",
+          "ntkPct": "0.63",
+          "bpRating": "0.88"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Abe",
+          "kd": "0.89",
+          "k10m": "22.79",
+          "dmg10m": "2980",
+          "obj10m": "50.00",
+          "eng10m": "57.24"
+        },
+        {
+          "player": "Capsidal",
+          "kd": "0.86",
+          "k10m": "24.17",
+          "dmg10m": "3234",
+          "obj10m": "48.02",
+          "eng10m": "63.58"
+        },
+        {
+          "player": "Gwinn",
+          "kd": "0.99",
+          "k10m": "25.32",
+          "dmg10m": "3327",
+          "obj10m": "80.51",
+          "eng10m": "59.83"
+        },
+        {
+          "player": "Lqgend",
+          "kd": "0.77",
+          "k10m": "20.57",
+          "dmg10m": "2583",
+          "obj10m": "43.32",
+          "eng10m": "55.79"
+        },
+        {
+          "player": "Lunarz",
+          "kd": "1.05",
+          "k10m": "23.63",
+          "dmg10m": "3147",
+          "obj10m": "49.20",
+          "eng10m": "55.77"
+        },
+        {
+          "player": "TJHaLy",
+          "kd": "0.89",
+          "k10m": "23.39",
+          "dmg10m": "3121",
+          "obj10m": "55.43",
+          "eng10m": "58.43"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Abe",
+          "kd": "0.75",
+          "kRound": "0.59",
+          "bloods": "11",
+          "plants": "14",
+          "defuses": "2",
+          "snipes": "0",
+          "dmgRound": "88.68"
+        },
+        {
+          "player": "Capsidal",
+          "kd": "0.98",
+          "kRound": "0.75",
+          "bloods": "16",
+          "plants": "5",
+          "defuses": "1",
+          "snipes": "0",
+          "dmgRound": "92.38"
+        },
+        {
+          "player": "Gwinn",
+          "kd": "0.92",
+          "kRound": "0.66",
+          "bloods": "29",
+          "plants": "5",
+          "defuses": "8",
+          "snipes": "51",
+          "dmgRound": "91.18"
+        },
+        {
+          "player": "Lqgend",
+          "kd": "0.58",
+          "kRound": "0.47",
+          "bloods": "1",
+          "plants": "0",
+          "defuses": "1",
+          "snipes": "0",
+          "dmgRound": "73.57"
+        },
+        {
+          "player": "Lunarz",
+          "kd": "0.93",
+          "kRound": "0.67",
+          "bloods": "11",
+          "plants": "2",
+          "defuses": "4",
+          "snipes": "0",
+          "dmgRound": "98.85"
+        },
+        {
+          "player": "TJHaLy",
+          "kd": "1.08",
+          "kRound": "0.80",
+          "bloods": "27",
+          "plants": "11",
+          "defuses": "5",
+          "snipes": "0",
+          "dmgRound": "107.93"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Abe",
+          "kd": "0.81",
+          "k10m": "19.77",
+          "dmg10m": "2627",
+          "goals10m": "0.49",
+          "eng10m": "51.83"
+        },
+        {
+          "player": "Capsidal",
+          "kd": "0.84",
+          "k10m": "22.46",
+          "dmg10m": "2749",
+          "goals10m": "0.15",
+          "eng10m": "57.32"
+        },
+        {
+          "player": "Gwinn",
+          "kd": "0.87",
+          "k10m": "22.24",
+          "dmg10m": "2966",
+          "goals10m": "0.47",
+          "eng10m": "56.14"
+        },
+        {
+          "player": "Lqgend",
+          "kd": "0.70",
+          "k10m": "16.19",
+          "dmg10m": "2117",
+          "goals10m": "0.00",
+          "eng10m": "44.76"
+        },
+        {
+          "player": "Lunarz",
+          "kd": "0.95",
+          "k10m": "20.36",
+          "dmg10m": "2876",
+          "goals10m": "0.94",
+          "eng10m": "51.15"
+        },
+        {
+          "player": "TJHaLy",
+          "kd": "0.86",
+          "k10m": "22.85",
+          "dmg10m": "2896",
+          "goals10m": "0.55",
+          "eng10m": "57.34"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 1,
+          "hpL": 2,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 2,
+          "hpL": 4,
+          "sndW": 3,
+          "sndL": 2,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 4,
+          "hpL": 1,
+          "sndW": 2,
+          "sndL": 7,
+          "ovlW": 2,
+          "ovlL": 8
+        },
+        {
+          "map": "Exposure",
+          "hpW": 7,
+          "hpL": 1,
+          "sndW": 2,
+          "sndL": 2,
+          "ovlW": 1,
+          "ovlL": 4
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 2,
+          "sndL": 4,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 3,
+          "hpL": 7,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": 1,
+          "ovlL": 5
+        }
+      ],
+      "totals": {
+        "hpW": 10,
+        "hpL": 21,
+        "sndW": 8,
+        "sndL": 15,
+        "ovlW": 4,
+        "ovlL": 17
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 8,
+          "hpVeto": 8,
+          "sndPick": 6,
+          "sndVeto": 10,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 9,
+          "hpVeto": 10,
+          "sndPick": 12,
+          "sndVeto": 8,
+          "ovlPick": 10,
+          "ovlVeto": 4
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 9,
+          "hpVeto": 8,
+          "sndPick": 9,
+          "sndVeto": 7,
+          "ovlPick": 5,
+          "ovlVeto": 9
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 10,
+          "sndVeto": 10,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 12,
+          "hpVeto": 3,
+          "sndPick": 5,
+          "sndVeto": 7,
+          "ovlPick": 6,
+          "ovlVeto": 8
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 4,
+          "hpVeto": 13,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "All data clearly readable with no issues",
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "parsedAt": 1775002133741,
+    "imageCount": 6
+  },
+  "c9": {
+    "overall": {
+      "players": [
+        {
+          "player": "Afro",
+          "kd": "0.94",
+          "slayerRating": "83.51",
+          "respawnKd": "0.97",
+          "ntkPct": "0.66",
+          "bpRating": "0.88"
+        },
+        {
+          "player": "Beans",
+          "kd": "0.89",
+          "slayerRating": "82.32",
+          "respawnKd": "0.85",
+          "ntkPct": "0.66",
+          "bpRating": "0.88"
+        },
+        {
+          "player": "Encourage",
+          "kd": "0.96",
+          "slayerRating": "84.49",
+          "respawnKd": "0.98",
+          "ntkPct": "0.68",
+          "bpRating": "0.84"
+        },
+        {
+          "player": "Hide",
+          "kd": "0.85",
+          "slayerRating": "85.19",
+          "respawnKd": "0.79",
+          "ntkPct": "0.63",
+          "bpRating": "0.78"
+        },
+        {
+          "player": "Mack",
+          "kd": "0.91",
+          "slayerRating": "88.79",
+          "respawnKd": "0.99",
+          "ntkPct": "0.62",
+          "bpRating": "0.84"
+        },
+        {
+          "player": "Nejra",
+          "kd": "0.92",
+          "slayerRating": "89.17",
+          "respawnKd": "0.89",
+          "ntkPct": "0.62",
+          "bpRating": "0.81"
+        },
+        {
+          "player": "Okis",
+          "kd": "0.77",
+          "slayerRating": "77.49",
+          "respawnKd": "0.75",
+          "ntkPct": "0.63",
+          "bpRating": "0.75"
+        },
+        {
+          "player": "Vivid",
+          "kd": "0.88",
+          "slayerRating": "79.49",
+          "respawnKd": "0.91",
+          "ntkPct": "0.64",
+          "bpRating": "0.86"
+        }
+      ]
+    },
+    "hardpoint": {
+      "players": [
+        {
+          "player": "Afro",
+          "kd": "0.97",
+          "k10m": "24.69",
+          "dmg10m": "2949",
+          "obj10m": "55.37",
+          "eng10m": "58.60"
+        },
+        {
+          "player": "Beans",
+          "kd": "0.85",
+          "k10m": "22.45",
+          "dmg10m": "3174",
+          "obj10m": "54.05",
+          "eng10m": "58.86"
+        },
+        {
+          "player": "Encourage",
+          "kd": "0.98",
+          "k10m": "24.61",
+          "dmg10m": "3296",
+          "obj10m": "52.63",
+          "eng10m": "59.52"
+        },
+        {
+          "player": "Hide",
+          "kd": "0.79",
+          "k10m": "22.46",
+          "dmg10m": "2902",
+          "obj10m": "50.65",
+          "eng10m": "59.24"
+        },
+        {
+          "player": "Mack",
+          "kd": "0.99",
+          "k10m": "26.67",
+          "dmg10m": "3237",
+          "obj10m": "53.59",
+          "eng10m": "63.40"
+        },
+        {
+          "player": "Nejra",
+          "kd": "0.89",
+          "k10m": "24.78",
+          "dmg10m": "3065",
+          "obj10m": "34.80",
+          "eng10m": "60.34"
+        },
+        {
+          "player": "Okis",
+          "kd": "0.75",
+          "k10m": "21.25",
+          "dmg10m": "3175",
+          "obj10m": "53.68",
+          "eng10m": "59.46"
+        },
+        {
+          "player": "Vivid",
+          "kd": "0.91",
+          "k10m": "22.78",
+          "dmg10m": "3147",
+          "obj10m": "52.61",
+          "eng10m": "57.68"
+        }
+      ]
+    },
+    "snd": {
+      "players": [
+        {
+          "player": "Afro",
+          "kd": "0.82",
+          "kRound": "0.62",
+          "bloods": "12",
+          "plants": "4",
+          "defuses": "2",
+          "snipes": "0",
+          "dmgRound": "93.49"
+        },
+        {
+          "player": "Beans",
+          "kd": "1.16",
+          "kRound": "0.74",
+          "bloods": "20",
+          "plants": "5",
+          "defuses": "1",
+          "snipes": "29",
+          "dmgRound": "101.63"
+        },
+        {
+          "player": "Encourage",
+          "kd": "0.83",
+          "kRound": "0.58",
+          "bloods": "9",
+          "plants": "4",
+          "defuses": "3",
+          "snipes": "1",
+          "dmgRound": "99.94"
+        },
+        {
+          "player": "Hide",
+          "kd": "1.09",
+          "kRound": "0.81",
+          "bloods": "24",
+          "plants": "4",
+          "defuses": "2",
+          "snipes": "0",
+          "dmgRound": "112.24"
+        },
+        {
+          "player": "Mack",
+          "kd": "0.70",
+          "kRound": "0.60",
+          "bloods": "19",
+          "plants": "17",
+          "defuses": "0",
+          "snipes": "0",
+          "dmgRound": "95.24"
+        },
+        {
+          "player": "Nejra",
+          "kd": "0.89",
+          "kRound": "0.67",
+          "bloods": "12",
+          "plants": "13",
+          "defuses": "5",
+          "snipes": "1",
+          "dmgRound": "90.80"
+        },
+        {
+          "player": "Okis",
+          "kd": "1.04",
+          "kRound": "0.67",
+          "bloods": "10",
+          "plants": "4",
+          "defuses": "5",
+          "snipes": "12",
+          "dmgRound": "98.98"
+        },
+        {
+          "player": "Vivid",
+          "kd": "0.90",
+          "kRound": "0.67",
+          "bloods": "8",
+          "plants": "6",
+          "defuses": "1",
+          "snipes": "0",
+          "dmgRound": "104.63"
+        }
+      ]
+    },
+    "overload": {
+      "players": [
+        {
+          "player": "Afro",
+          "kd": "0.92",
+          "k10m": "20.55",
+          "dmg10m": "2528",
+          "goals10m": "0.49",
+          "eng10m": "48.43"
+        },
+        {
+          "player": "Beans",
+          "kd": "0.86",
+          "k10m": "21.16",
+          "dmg10m": "2988",
+          "goals10m": "0.86",
+          "eng10m": "54.30"
+        },
+        {
+          "player": "Encourage",
+          "kd": "0.96",
+          "k10m": "22.51",
+          "dmg10m": "3026",
+          "goals10m": "0.74",
+          "eng10m": "55.03"
+        },
+        {
+          "player": "Hide",
+          "kd": "0.86",
+          "k10m": "22.51",
+          "dmg10m": "2881",
+          "goals10m": "0.56",
+          "eng10m": "56.61"
+        },
+        {
+          "player": "Mack",
+          "kd": "0.87",
+          "k10m": "22.26",
+          "dmg10m": "2834",
+          "goals10m": "0.12",
+          "eng10m": "54.91"
+        },
+        {
+          "player": "Nejra",
+          "kd": "0.99",
+          "k10m": "24.83",
+          "dmg10m": "2941",
+          "goals10m": "0.56",
+          "eng10m": "58.28"
+        },
+        {
+          "player": "Okis",
+          "kd": "0.72",
+          "k10m": "20.20",
+          "dmg10m": "2770",
+          "goals10m": "0.93",
+          "eng10m": "57.26"
+        },
+        {
+          "player": "Vivid",
+          "kd": "0.82",
+          "k10m": "19.20",
+          "dmg10m": "2711",
+          "goals10m": "0.49",
+          "eng10m": "50.26"
+        }
+      ]
+    },
+    "mapRecords": {
+      "maps": [
+        {
+          "map": "Blackheart",
+          "hpW": 1,
+          "hpL": 3,
+          "sndW": null,
+          "sndL": null,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Colossus",
+          "hpW": 1,
+          "hpL": 8,
+          "sndW": 4,
+          "sndL": 3,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Den",
+          "hpW": 1,
+          "hpL": 5,
+          "sndW": 3,
+          "sndL": 2,
+          "ovlW": null,
+          "ovlL": 5
+        },
+        {
+          "map": "Exposure",
+          "hpW": null,
+          "hpL": 2,
+          "sndW": 2,
+          "sndL": 3,
+          "ovlW": 2,
+          "ovlL": 5
+        },
+        {
+          "map": "Raid",
+          "hpW": null,
+          "hpL": null,
+          "sndW": 1,
+          "sndL": 2,
+          "ovlW": null,
+          "ovlL": null
+        },
+        {
+          "map": "Scar",
+          "hpW": 4,
+          "hpL": 7,
+          "sndW": 3,
+          "sndL": 3,
+          "ovlW": 3,
+          "ovlL": 4
+        }
+      ],
+      "totals": {
+        "hpW": 7,
+        "hpL": 25,
+        "sndW": 13,
+        "sndL": 13,
+        "ovlW": 5,
+        "ovlL": 14
+      }
+    },
+    "picksVetos": {
+      "maps": [
+        {
+          "map": "Colossus",
+          "hpPick": 11,
+          "hpVeto": 5,
+          "sndPick": 8,
+          "sndVeto": 4,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Den",
+          "hpPick": 7,
+          "hpVeto": 8,
+          "sndPick": 5,
+          "sndVeto": 11,
+          "ovlPick": 5,
+          "ovlVeto": 5
+        },
+        {
+          "map": "Exposure",
+          "hpPick": 2,
+          "hpVeto": 9,
+          "sndPick": 6,
+          "sndVeto": 7,
+          "ovlPick": 7,
+          "ovlVeto": 7
+        },
+        {
+          "map": "Raid",
+          "hpPick": null,
+          "hpVeto": null,
+          "sndPick": 9,
+          "sndVeto": 10,
+          "ovlPick": null,
+          "ovlVeto": null
+        },
+        {
+          "map": "Scar",
+          "hpPick": 12,
+          "hpVeto": 7,
+          "sndPick": 10,
+          "sndVeto": 6,
+          "ovlPick": 7,
+          "ovlVeto": 7
+        },
+        {
+          "map": "Blackheart",
+          "hpPick": 6,
+          "hpVeto": 9,
+          "sndPick": null,
+          "sndVeto": null,
+          "ovlPick": null,
+          "ovlVeto": null
+        }
+      ]
+    },
+    "confidence": "high",
+    "notes": "",
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "parsedAt": 1774563693208,
+    "imageCount": 6
+  }
+}
