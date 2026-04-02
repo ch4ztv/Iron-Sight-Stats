@@ -1,0 +1,22 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Node / package managers (only if added later)
+node_modules/
+dist/
+coverage/
+
+# Local env / secrets
+.env
+.env.*
+*.local
+
+# Archives / exports
+*.zip
+*.7z
+
+# Logs
+*.log
