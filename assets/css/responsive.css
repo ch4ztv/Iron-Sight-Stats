@@ -1,21 +1,39 @@
-@media (max-width: 1180px){
-  .bp-roster-strip{grid-template-columns:repeat(2, minmax(0,1fr))}
-  .team-hero-grid{grid-template-columns:1fr}
-  .team-kpis{justify-content:flex-start}
+@media (max-width: 1024px) {
+  .iss-split-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .iss-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .iss-feature-card {
+    grid-template-columns: 180px 1fr;
+  }
 }
-@media (max-width: 900px){
-  .iss-banner{grid-template-columns:1fr auto;gap:10px}
-  .iss-nav{display:none;grid-column:1 / -1;justify-content:flex-start}
-  .iss-nav.open{display:flex}
-  .iss-mobile-toggle{display:grid;place-items:center}
-  .bp-mode-bar{grid-template-columns:repeat(3, minmax(0,1fr))}
-}
-@media (max-width: 640px){
-  .iss-brand{padding:8px 12px 8px 8px}
-  .iss-brand-mark{width:54px;height:54px}
-  .team-toolbar{grid-template-columns:1fr}
-  .team-logo-rail{justify-content:flex-start}
-  .bp-roster-strip{grid-template-columns:1fr}
-  .bp-player-art{height:180px}
-  .bp-mode-bar{grid-template-columns:repeat(2, minmax(0,1fr))}
+
+@media (max-width: 720px) {
+  .iss-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .iss-feature-card,
+  .iss-team-hero,
+  .iss-player-card-top,
+  .iss-roster-card {
+    grid-template-columns: 1fr;
+  }
+
+  .iss-feature-media,
+  .iss-team-hero-media,
+  .iss-player-portrait,
+  .iss-roster-media {
+    min-height: 220px;
+  }
+
+  .iss-card-grid--players,
+  .iss-card-grid--roster,
+  .iss-card-grid--team-stats {
+    grid-template-columns: 1fr;
+  }
 }
