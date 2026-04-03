@@ -18,7 +18,7 @@ export const APP_CONFIG = {
     manifest: './data/manifest.json'
   },
   brackets: [
-    { id: 'major-1', label: 'Major 1', href: './brackets/major-1.html' },
-    { id: 'major-2', label: 'Major 2', href: './brackets/major-2.html' }
+    { id: 'major-1', dataKey: 'M1T', label: 'Major 1', href: './brackets/major-1.html' },
+    { id: 'major-2', dataKey: 'M2T', label: 'Major 2', href: './brackets/major-2.html' }
   ]
 };

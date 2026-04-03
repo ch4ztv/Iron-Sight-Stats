@@ -82,3 +82,4 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
+.betting-grid, .bracket-grid { align-items: start; }

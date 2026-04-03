@@ -2,7 +2,7 @@ import { APP_CONFIG } from './config.js';
 import { loadAllData } from './data-loader.js';
 import { initRouter } from './router.js';
 import { getState, patchState } from './state.js';
-import { qs, showMessage } from './ui.js';
+import { qs, showMessage, wireImageFallbacks } from './ui.js';
 import { renderDashboard } from './sections/dashboard.js';
 import { renderStandings } from './sections/standings.js';
 import { renderMatches } from './sections/matches.js';
@@ -27,7 +27,10 @@ function renderSection(section) {
   const container = qs(`#${section}-section`);
   if (!container) return;
   const render = renderers[section];
-  if (render) render(container, getState());
+  if (render) {
+    render(container, getState());
+    wireImageFallbacks(container);
+  }
 }
 
 function renderAll() {
