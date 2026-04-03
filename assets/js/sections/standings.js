@@ -1,57 +1,69 @@
-(function (window) {
-  'use strict';
+import { getState } from '../state.js';
+import { qs, renderSectionHeader, renderEmptyState, renderErrorState } from '../ui.js';
+import { buildStandingsFromPoints } from '../data-loader.js';
+import { initials } from '../asset-paths.js';
 
-  function renderStandingsSection() {
-    const ui = window.ISSUI;
-    const loader = window.ISSDataLoader;
-    const formatters = window.ISSFormatters;
+export function renderStandings() {
+  const target = qs('#standings-section');
+  if (!target) return;
+  const { data } = getState();
 
-    if (!ui) return;
-
-    const labels = {
-      dashboard: ['Dashboard', 'A public-facing overview of the season, recent results, and featured snapshots.'],
-      standings: ['Standings', 'This section will turn your points and results data into the clean public standings table.'],
-      matches: ['Matches', 'This section will show match cards, map breakdowns, and event filtering.'],
-      players: ['Players', 'This section will become the searchable player stats explorer for the public app.'],
-      teams: ['Teams', 'This section will power team pages, rosters, and team stat visuals.'],
-      betting: ['Betting Lab', 'This section will become the flagship public betting and matchup insights area.'],
-      brackets: ['Brackets', 'This section will connect the public app to your major bracket pages and tournament data.'],
-      matchup: ['Matchup', 'This section is reserved for the future head-to-head comparison builder.']
-    };
-
-    const meta = labels['standings'];
-    const shell = ui.createSectionScaffold(meta[0], meta[1]);
-    const counts = loader ? loader.getSummaryCounts() : {};
-
-    const stats = [
-      { label: 'Matches', value: String(counts.matches || 0) },
-      { label: 'Maps', value: String(counts.maps || 0) },
-      { label: 'Players', value: String(counts.players || 0) }
-    ];
-
-    shell.body.appendChild(ui.createStatGrid(stats));
-
-    if ('standings' === 'dashboard') {
-      const details = ui.createNotice('Build Step 1B is now connected to the public JSON layer. Full section rendering comes next.');
-      shell.body.appendChild(details);
-    } else if ('standings' === 'brackets') {
-      const list = ui.createList([
-        { name: 'Major 1', file: './brackets/major-1.html' },
-        { name: 'Major 2', file: './brackets/major-2.html' }
-      ], function (item) {
-        const row = ui.createElement('div', { className: 'list-row card surface-soft' });
-        row.appendChild(ui.createElement('strong', { text: item.name }));
-        row.appendChild(ui.createElement('p', { text: item.file }));
-        return row;
-      });
-      shell.body.appendChild(list);
-    } else {
-      shell.body.appendChild(ui.createEmptyState(meta[0] + ' module coming next', 'The shell, routing, and data layer are ready. This section will get its full public rendering in the next implementation pass.'));
+  try {
+    const rows = buildStandingsFromPoints(data.points, data.matches);
+    if (!rows.length) {
+      renderEmptyState(target, 'No standings data yet', 'Once points or completed match results are available, standings will appear here.');
+      return;
     }
 
-    ui.renderSectionMount('standings', shell.wrapper);
-  }
+    target.innerHTML = `
+      <div class="stack">
+        <div class="section-card">
+          ${renderSectionHeader('Standings', 'League table generated from public points data or completed series')}
+          <div class="table-shell">
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Points</th>
+                    <th>Record</th>
+                    <th>Map Diff</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows.map((row, index) => `
+                    <tr>
+                      <td><strong>#${index + 1}</strong></td>
+                      <td>
+                        <div class="team-cell">
+                          <div class="logo-fallback">${initials(row.teamId, 1)}</div>
+                          <span>${row.teamId}</span>
+                        </div>
+                      </td>
+                      <td><strong>${row.points}</strong></td>
+                      <td>${row.wins}-${row.losses}</td>
+                      <td class="${row.mapDiff >= 0 ? 'stat-positive' : ''}">${row.mapDiff >= 0 ? '+' : ''}${row.mapDiff}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
 
-  window.ISSSections = window.ISSSections || {};
-  window.ISSSections['standings'] = renderStandingsSection;
-})(window);
+        <div class="grid-3">
+          ${rows.slice(0, 3).map((row, index) => `
+            <div class="kpi-card">
+              <div class="kpi-label">Rank #${index + 1}</div>
+              <div class="kpi-value">${row.teamId}</div>
+              <div class="kpi-meta">${row.wins}-${row.losses} • ${row.points} pts • ${row.mapDiff >= 0 ? '+' : ''}${row.mapDiff} map diff</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } catch (error) {
+    renderErrorState(target, 'Standings failed to render', error.message);
+  }
+}

@@ -1,14 +1,10 @@
 const state = {
-  app: {
-    isLoading: false,
-    isReady: false,
-    hasError: false,
-  },
-  navigation: {
-    currentSection: 'dashboard',
-    previousSection: null,
-    mobileNavOpen: false,
-  },
+  isLoading: false,
+  isReady: false,
+  hasError: false,
+  currentSection: 'dashboard',
+  previousSection: null,
+  mobileNavOpen: false,
   data: {
     meta: null,
     season: null,
@@ -17,51 +13,65 @@ const state = {
     players: [],
     playerStats: [],
     points: [],
-    bracketData: {},
+    bracketData: null,
     teamStats: [],
-    bprCoefficients: {},
+    bprCoefficients: null,
     manifest: null,
   },
-  ui: {
-    selectedTeam: null,
-    selectedPlayer: null,
-    searchQuery: '',
-    sortKey: null,
-    sortDirection: 'desc',
-    expandedMatchId: null,
-  },
 };
+
+const listeners = new Set();
+
+function notify() {
+  listeners.forEach((listener) => listener(getState()));
+}
 
 export function getState() {
   return state;
 }
 
-export function updateState(path, value) {
-  const keys = path.split('.');
-  let target = state;
-  for (let i = 0; i < keys.length - 1; i += 1) {
-    target = target[keys[i]];
-  }
-  target[keys[keys.length - 1]] = value;
-  return state;
+export function subscribe(listener) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
 }
 
-export function mergeState(path, partial) {
-  const keys = path.split('.');
-  let target = state;
-  for (let i = 0; i < keys.length; i += 1) {
-    target = target[keys[i]];
-  }
-  Object.assign(target, partial);
-  return state;
+export function setState(patch) {
+  Object.assign(state, patch);
+  notify();
 }
 
-export function resetUiState() {
-  state.ui.selectedTeam = null;
-  state.ui.selectedPlayer = null;
-  state.ui.searchQuery = '';
-  state.ui.sortKey = null;
-  state.ui.sortDirection = 'desc';
-  state.ui.expandedMatchId = null;
-  return state;
+export function setData(key, value) {
+  state.data[key] = value;
+  notify();
+}
+
+export function mergeData(patch) {
+  state.data = { ...state.data, ...patch };
+  notify();
+}
+
+export function setCurrentSection(section) {
+  state.previousSection = state.currentSection;
+  state.currentSection = section;
+  notify();
+}
+
+export function setLoading(isLoading) {
+  state.isLoading = isLoading;
+  notify();
+}
+
+export function setError(hasError) {
+  state.hasError = hasError;
+  notify();
+}
+
+export function setReady(isReady) {
+  state.isReady = isReady;
+  notify();
+}
+
+export function setMobileNavOpen(isOpen) {
+  state.mobileNavOpen = isOpen;
+  notify();
 }

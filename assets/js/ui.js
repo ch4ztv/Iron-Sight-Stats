@@ -1,125 +1,87 @@
-(function (window) {
-  'use strict';
+export function qs(selector, root = document) {
+  return root.querySelector(selector);
+}
 
-  function qs(selector, root) {
-    return (root || document).querySelector(selector);
-  }
+export function qsa(selector, root = document) {
+  return Array.from(root.querySelectorAll(selector));
+}
 
-  function qsa(selector, root) {
-    return Array.from((root || document).querySelectorAll(selector));
-  }
+export function clearNode(node) {
+  if (!node) return;
+  node.innerHTML = '';
+}
 
-  function clearElement(element) {
-    if (!element) return;
-    element.innerHTML = '';
-  }
+export function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
 
-  function createElement(tag, options) {
-    const el = document.createElement(tag);
-    const opts = options || {};
+export function setHidden(node, isHidden) {
+  if (!node) return;
+  node.hidden = Boolean(isHidden);
+}
 
-    if (opts.className) el.className = opts.className;
-    if (opts.text) el.textContent = opts.text;
-    if (opts.html) el.innerHTML = opts.html;
+export function setLoadingMessage(message = 'Loading data…') {
+  const el = qs('#global-loading');
+  if (!el) return;
+  el.textContent = message;
+  el.hidden = false;
+}
 
-    if (opts.attributes && typeof opts.attributes === 'object') {
-      Object.entries(opts.attributes).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          el.setAttribute(key, String(value));
-        }
-      });
-    }
+export function hideLoadingMessage() {
+  const el = qs('#global-loading');
+  if (!el) return;
+  el.hidden = true;
+}
 
-    if (Array.isArray(opts.children)) {
-      opts.children.forEach((child) => {
-        if (child) el.appendChild(child);
-      });
-    }
+export function showGlobalError(message) {
+  const el = qs('#global-banner');
+  if (!el) return;
+  el.className = 'global-banner global-banner--error';
+  el.textContent = message;
+  el.hidden = false;
+}
 
-    return el;
-  }
+export function clearGlobalError() {
+  const el = qs('#global-banner');
+  if (!el) return;
+  el.hidden = true;
+  el.textContent = '';
+  el.className = 'global-banner';
+}
 
-  function createSectionScaffold(title, description) {
-    const wrapper = createElement('div', { className: 'section-shell' });
-    const header = createElement('div', { className: 'section-heading' });
-    header.appendChild(createElement('h2', { text: title }));
-    if (description) {
-      header.appendChild(createElement('p', { text: description }));
-    }
+export function renderEmptyState(target, title = 'Nothing here yet', text = 'Content will appear once data is available.') {
+  if (!target) return;
+  target.innerHTML = `<div class="empty-state"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></div>`;
+}
 
-    const body = createElement('div', { className: 'section-body card surface-soft' });
-    wrapper.appendChild(header);
-    wrapper.appendChild(body);
+export function renderErrorState(target, title = 'Something went wrong', text = 'Please try again later.') {
+  if (!target) return;
+  target.innerHTML = `<div class="error-state"><h3>${escapeHtml(title)}</h3><p>${escapeHtml(text)}</p></div>`;
+}
 
-    return { wrapper, body, header };
-  }
+export function renderSectionHeader(title, subtitle = '') {
+  return `
+    <div class="section-title">
+      <div>
+        <h2>${escapeHtml(title)}</h2>
+        ${subtitle ? `<p class="section-subtitle">${escapeHtml(subtitle)}</p>` : ''}
+      </div>
+    </div>
+  `;
+}
 
-  function createStatGrid(stats) {
-    const grid = createElement('div', { className: 'stats-grid' });
-    (stats || []).forEach((item) => {
-      const card = createElement('div', { className: 'stat-card card' });
-      card.appendChild(createElement('div', { className: 'stat-label', text: item.label || 'Metric' }));
-      card.appendChild(createElement('div', { className: 'stat-value', text: item.value || '—' }));
-      if (item.helper) {
-        card.appendChild(createElement('div', { className: 'stat-helper', text: item.helper }));
-      }
-      grid.appendChild(card);
-    });
-    return grid;
-  }
+export function renderBadge(text, accent = false) {
+  return `<span class="badge ${accent ? 'badge--accent' : ''}">${escapeHtml(text)}</span>`;
+}
 
-  function createList(items, formatter) {
-    const list = createElement('div', { className: 'stack-list' });
-    (items || []).forEach((item, index) => {
-      const row = formatter ? formatter(item, index) : createElement('div', { className: 'list-row', text: String(item) });
-      list.appendChild(row);
-    });
-    return list;
-  }
-
-  function createNotice(message, variant) {
-    return createElement('div', {
-      className: 'notice-block' + (variant ? ' ' + variant : ''),
-      text: message || 'No additional information available.'
-    });
-  }
-
-  function createEmptyState(title, description) {
-    const wrap = createElement('div', { className: 'empty-state card surface-soft' });
-    wrap.appendChild(createElement('h3', { text: title || 'Nothing here yet' }));
-    if (description) {
-      wrap.appendChild(createElement('p', { text: description }));
-    }
-    return wrap;
-  }
-
-  function setStatusMessage(message, variant) {
-    const node = qs('[data-role="app-status"]');
-    if (!node) return;
-    node.textContent = message || '';
-    node.setAttribute('data-variant', variant || 'default');
-  }
-
-  function renderSectionMount(sectionId, node) {
-    const mount = qs('[data-section="' + sectionId + '"]');
-    if (!mount) return;
-    clearElement(mount);
-    if (node) {
-      mount.appendChild(node);
-    }
-  }
-
-  window.ISSUI = {
-    qs,
-    qsa,
-    clearElement,
-    createElement,
-    createSectionScaffold,
-    createStatGrid,
-    createList,
-    createNotice,
-    createEmptyState,
-    setStatusMessage,
-    renderSectionMount
-  };
-})(window);
+export function updatePageHeading(title, meta = '') {
+  const titleEl = qs('#page-title');
+  const metaEl = qs('#page-meta');
+  if (titleEl) titleEl.textContent = title;
+  if (metaEl) metaEl.textContent = meta;
+}

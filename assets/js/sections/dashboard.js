@@ -1,57 +1,145 @@
-(function (window) {
-  'use strict';
+import { getState } from '../state.js';
+import { qs, renderSectionHeader, renderEmptyState, renderErrorState, renderBadge } from '../ui.js';
+import { buildStandingsFromPoints, getLatestCompletedMatches, getUpcomingMatches } from '../data-loader.js';
+import { formatDateTime, formatEventLabel, formatSeriesLabel } from '../formatters.js';
+import { initials } from '../asset-paths.js';
 
-  function renderDashboardSection() {
-    const ui = window.ISSUI;
-    const loader = window.ISSDataLoader;
-    const formatters = window.ISSFormatters;
+function renderFeaturedMatch(match) {
+  const team1 = match.team1Id || 'TBD';
+  const team2 = match.team2Id || 'TBD';
+  const hasScore = Number.isFinite(Number(match.seriesScore1)) && Number.isFinite(Number(match.seriesScore2));
+  return `
+    <div class="hero-card section-card">
+      ${renderSectionHeader('Featured Match', 'Latest result or next scheduled series')}
+      <div class="hero-card__scoreline">
+        <div class="hero-card__teams">
+          <div class="team-cell"><div class="logo-fallback">${initials(team1, 1)}</div><strong>${team1}</strong></div>
+          <span class="muted">vs</span>
+          <div class="team-cell"><div class="logo-fallback">${initials(team2, 1)}</div><strong>${team2}</strong></div>
+        </div>
+        <div class="hero-card__score">${hasScore ? `${match.seriesScore1} – ${match.seriesScore2}` : 'Upcoming'}</div>
+      </div>
+      <div class="hero-card__meta">
+        ${renderBadge(formatEventLabel(match.eventId), true)}
+        ${renderBadge(formatSeriesLabel(match.format))}
+        ${renderBadge(formatDateTime(match.date, match.time))}
+      </div>
+    </div>
+  `;
+}
 
-    if (!ui) return;
+export function renderDashboard() {
+  const target = qs('#dashboard-section');
+  if (!target) return;
+  const { data } = getState();
 
-    const labels = {
-      dashboard: ['Dashboard', 'A public-facing overview of the season, recent results, and featured snapshots.'],
-      standings: ['Standings', 'This section will turn your points and results data into the clean public standings table.'],
-      matches: ['Matches', 'This section will show match cards, map breakdowns, and event filtering.'],
-      players: ['Players', 'This section will become the searchable player stats explorer for the public app.'],
-      teams: ['Teams', 'This section will power team pages, rosters, and team stat visuals.'],
-      betting: ['Betting Lab', 'This section will become the flagship public betting and matchup insights area.'],
-      brackets: ['Brackets', 'This section will connect the public app to your major bracket pages and tournament data.'],
-      matchup: ['Matchup', 'This section is reserved for the future head-to-head comparison builder.']
-    };
+  try {
+    const standings = buildStandingsFromPoints(data.points, data.matches);
+    const latestResults = getLatestCompletedMatches(data.matches).slice(0, 5);
+    const upcoming = getUpcomingMatches(data.matches).slice(0, 4);
+    const featured = latestResults[0] || upcoming[0] || data.matches[0];
 
-    const meta = labels['dashboard'];
-    const shell = ui.createSectionScaffold(meta[0], meta[1]);
-    const counts = loader ? loader.getSummaryCounts() : {};
+    const totalMatches = (data.matches || []).length;
+    const totalMaps = (data.maps || []).length;
+    const totalPlayers = (data.players || []).length;
+    const totalTeams = new Set((data.matches || []).flatMap((m) => [m.team1Id, m.team2Id]).filter(Boolean)).size;
 
-    const stats = [
-      { label: 'Matches', value: String(counts.matches || 0) },
-      { label: 'Maps', value: String(counts.maps || 0) },
-      { label: 'Players', value: String(counts.players || 0) }
-    ];
-
-    shell.body.appendChild(ui.createStatGrid(stats));
-
-    if ('dashboard' === 'dashboard') {
-      const details = ui.createNotice('Build Step 1B is now connected to the public JSON layer. Full section rendering comes next.');
-      shell.body.appendChild(details);
-    } else if ('dashboard' === 'brackets') {
-      const list = ui.createList([
-        { name: 'Major 1', file: './brackets/major-1.html' },
-        { name: 'Major 2', file: './brackets/major-2.html' }
-      ], function (item) {
-        const row = ui.createElement('div', { className: 'list-row card surface-soft' });
-        row.appendChild(ui.createElement('strong', { text: item.name }));
-        row.appendChild(ui.createElement('p', { text: item.file }));
-        return row;
-      });
-      shell.body.appendChild(list);
-    } else {
-      shell.body.appendChild(ui.createEmptyState(meta[0] + ' module coming next', 'The shell, routing, and data layer are ready. This section will get its full public rendering in the next implementation pass.'));
+    if (!featured) {
+      renderEmptyState(target, 'No match data yet', 'Add your public data files and the dashboard will populate.');
+      return;
     }
 
-    ui.renderSectionMount('dashboard', shell.wrapper);
-  }
+    target.innerHTML = `
+      <div class="stack">
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Teams tracked</div>
+            <div class="kpi-value">${totalTeams}</div>
+            <div class="kpi-meta">Unique teams found in public match data</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Matches tracked</div>
+            <div class="kpi-value">${totalMatches}</div>
+            <div class="kpi-meta">Series currently available in the dataset</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Maps tracked</div>
+            <div class="kpi-value">${totalMaps}</div>
+            <div class="kpi-meta">Map-level results connected to those matches</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Players tracked</div>
+            <div class="kpi-value">${totalPlayers}</div>
+            <div class="kpi-meta">Public player records available to the site</div>
+          </div>
+        </div>
 
-  window.ISSSections = window.ISSSections || {};
-  window.ISSSections['dashboard'] = renderDashboardSection;
-})(window);
+        ${renderFeaturedMatch(featured)}
+
+        <div class="grid-2">
+          <div class="section-card">
+            ${renderSectionHeader('Top teams', 'Quick standings snapshot')}
+            <div class="list">
+              ${standings.slice(0, 5).map((row, index) => `
+                <div class="list-item">
+                  <div>
+                    <strong>#${index + 1} ${row.teamId}</strong>
+                    <div class="muted">${row.wins}-${row.losses} record</div>
+                  </div>
+                  <div>
+                    <strong>${row.points}</strong>
+                    <div class="muted">${row.mapDiff >= 0 ? '+' : ''}${row.mapDiff} map diff</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <div class="section-card">
+            ${renderSectionHeader('Recent results', 'Latest completed matches')}
+            <div class="list">
+              ${latestResults.slice(0, 5).map((match) => `
+                <div class="list-item">
+                  <div>
+                    <strong>${match.team1Id} vs ${match.team2Id}</strong>
+                    <div class="muted">${formatEventLabel(match.eventId)} • ${formatDateTime(match.date, match.time)}</div>
+                  </div>
+                  <div><strong>${match.seriesScore1} – ${match.seriesScore2}</strong></div>
+                </div>
+              `).join('') || '<div class="muted">No completed matches yet.</div>'}
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="section-card">
+            ${renderSectionHeader('Upcoming slate', 'Next scheduled matches')}
+            <div class="list">
+              ${upcoming.map((match) => `
+                <div class="list-item">
+                  <div>
+                    <strong>${match.team1Id} vs ${match.team2Id}</strong>
+                    <div class="muted">${formatEventLabel(match.eventId)}</div>
+                  </div>
+                  <div class="muted">${formatDateTime(match.date, match.time)}</div>
+                </div>
+              `).join('') || '<div class="muted">No upcoming matches found in current data.</div>'}
+            </div>
+          </div>
+
+          <div class="section-card">
+            ${renderSectionHeader('About this build', 'Public read-only foundation')}
+            <div class="stack">
+              <div class="inline-stat"><span>Data model</span><strong>Static JSON</strong></div>
+              <div class="inline-stat"><span>Deployment target</span><strong>GitHub Pages</strong></div>
+              <div class="inline-stat"><span>Current phase</span><strong>Foundation + first live sections</strong></div>
+              <div class="inline-stat"><span>Next step</span><strong>Matches, Players, Teams, Betting</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  } catch (error) {
+    renderErrorState(target, 'Dashboard failed to render', error.message);
+  }
+}

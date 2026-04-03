@@ -1,67 +1,41 @@
-(function (window) {
-  'use strict';
+import { EVENT_LABELS, MODE_LABELS } from './config.js';
 
-  function fallback(value, fallbackValue) {
-    if (value === undefined || value === null || value === '') {
-      return fallbackValue || '—';
-    }
-    return value;
+export function formatDate(value) {
+  if (!value) return '—';
+  try {
+    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
+  } catch {
+    return String(value);
   }
+}
 
-  function formatNumber(value, digits) {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) return '—';
-    const num = Number(value);
-    return typeof digits === 'number' ? num.toFixed(digits) : String(num);
-  }
+export function formatDateTime(dateValue, timeValue = '') {
+  if (!dateValue) return '—';
+  return `${formatDate(dateValue)}${timeValue ? ` • ${timeValue}` : ''}`;
+}
 
-  function formatPercent(value, digits) {
-    if (value === undefined || value === null || Number.isNaN(Number(value))) return '—';
-    return Number(value).toFixed(typeof digits === 'number' ? digits : 1) + '%';
-  }
+export function formatNumber(value, maximumFractionDigits = 2) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
+  return new Intl.NumberFormat('en-US', { maximumFractionDigits }).format(Number(value));
+}
 
-  function formatMode(mode) {
-    const normalized = String(mode || '').toUpperCase();
-    return ({ HP: 'Hardpoint', SND: 'Search & Destroy', OL: 'Overload' })[normalized] || fallback(mode);
-  }
+export function formatPercent(value, digits = 1) {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
+  return `${Number(value).toFixed(digits)}%`;
+}
 
-  function formatSeries(format) {
-    if (!format) return '—';
-    const normalized = String(format).toUpperCase();
-    if (normalized === 'BO5') return 'Best of 5';
-    if (normalized === 'BO7') return 'Best of 7';
-    return normalized;
-  }
+export function formatEventLabel(eventId) {
+  return EVENT_LABELS[eventId] || eventId || '—';
+}
 
-  function formatDate(value) {
-    if (!value) return '—';
-    const date = new Date(value);
-    if (Number.isNaN(date.getTime())) {
-      const plain = new Date(String(value) + 'T12:00:00');
-      if (Number.isNaN(plain.getTime())) return String(value);
-      return plain.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-    }
-    return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
-  }
+export function formatModeLabel(mode) {
+  return MODE_LABELS[mode] || mode || '—';
+}
 
-  function formatDateTime(dateValue, timeValue) {
-    const dateText = formatDate(dateValue);
-    if (!timeValue) return dateText;
-    return dateText + ' • ' + timeValue;
-  }
+export function formatSeriesLabel(format) {
+  return format || 'BO5';
+}
 
-  function formatRecord(wins, losses) {
-    if (wins === undefined && losses === undefined) return '—';
-    return String(wins || 0) + '-' + String(losses || 0);
-  }
-
-  window.ISSFormatters = {
-    fallback,
-    formatNumber,
-    formatPercent,
-    formatMode,
-    formatSeries,
-    formatDate,
-    formatDateTime,
-    formatRecord
-  };
-})(window);
+export function fallback(value, empty = '—') {
+  return value === null || value === undefined || value === '' ? empty : value;
+}

@@ -1,91 +1,61 @@
 import { APP_CONFIG } from './config.js';
-import { getState, updateState } from './state.js';
-import { initializeRouter, initializeMobileNav } from './router.js';
+import { setLoading, setReady, setError, mergeData, getState } from './state.js';
+import { loadAllData } from './data-loader.js';
+import { setLoadingMessage, hideLoadingMessage, showGlobalError, clearGlobalError, qs } from './ui.js';
+import { initRouter, registerRoute, initMobileNav, navigate } from './router.js';
+import { renderDashboard } from './sections/dashboard.js';
+import { renderStandings } from './sections/standings.js';
+import { renderMatches } from './sections/matches.js';
+import { renderPlayers } from './sections/players.js';
+import { renderTeams } from './sections/teams.js';
+import { renderBetting } from './sections/betting.js';
+import { renderBrackets } from './sections/brackets.js';
+import { renderMatchup } from './sections/matchup.js';
 
-function setStatus(text) {
-  const status = document.getElementById('global-status');
-  if (status) status.textContent = text;
-}
-
-function setVersionText() {
-  const versionEl = document.getElementById('app-version');
-  if (versionEl) {
-    versionEl.textContent = APP_CONFIG.versionLabelFallback;
+function registerSections() {
+  registerRoute('dashboard', renderDashboard);
+  registerRoute('standings', renderStandings);
+  registerRoute('matches', renderMatches);
+  registerRoute('players', renderPlayers);
+  registerRoute('teams', renderTeams);
+  registerRoute('betting', renderBetting);
+  registerRoute('brackets', renderBrackets);
+  if (APP_CONFIG.featureFlags.matchup) {
+    registerRoute('matchup', renderMatchup);
   }
 }
 
-function renderSectionPlaceholder(sectionId) {
-  const container = document.getElementById(`${sectionId}-section`);
-  if (!container) return;
+async function init() {
+  try {
+    setLoading(true);
+    setLoadingMessage('Loading Iron Sight Stats…');
+    registerSections();
+    initRouter();
+    initMobileNav();
 
-  const title = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
-  container.innerHTML = `
-    <div class="card">
-      <p class="eyebrow">Foundation Ready</p>
-      <h2>${title}</h2>
-      <p class="muted-text">This section is wired into the public app shell and ready for data-backed implementation in the next build pass.</p>
-      <div class="placeholder-grid">
-        <article class="card placeholder-card">
-          <h3>Section shell</h3>
-          <div class="placeholder-list">
-            <div class="placeholder-line long"></div>
-            <div class="placeholder-line mid"></div>
-            <div class="placeholder-line short"></div>
-          </div>
-        </article>
-        <article class="card placeholder-card">
-          <h3>Data hook</h3>
-          <div class="placeholder-list">
-            <div class="placeholder-line long"></div>
-            <div class="placeholder-line long"></div>
-            <div class="placeholder-line mid"></div>
-          </div>
-        </article>
-        <article class="card placeholder-card">
-          <h3>Mobile pass</h3>
-          <div class="placeholder-list">
-            <div class="placeholder-line mid"></div>
-            <div class="placeholder-line short"></div>
-            <div class="placeholder-line long"></div>
-          </div>
-        </article>
-      </div>
-    </div>
-  `;
-}
+    const data = await loadAllData();
+    mergeData(data);
 
-function renderAllPlaceholders() {
-  APP_CONFIG.sections.filter((section) => section.enabled).forEach((section) => {
-    renderSectionPlaceholder(section.id);
-  });
-}
+    const versionText = data.meta?.version ? `v${data.meta.version}` : 'Public Build';
+    const subtitle = qs('#app-version');
+    const footerMeta = qs('#footer-meta');
+    if (subtitle) subtitle.textContent = versionText;
+    if (footerMeta) footerMeta.textContent = data.meta?.exported ? `Data exported ${data.meta.exported}` : 'Static public build';
 
-function initializeApp() {
-  updateState('app.isLoading', false);
-  updateState('app.isReady', true);
-  updateState('app.hasError', false);
+    clearGlobalError();
+    setReady(true);
+    setError(false);
 
-  setVersionText();
-  renderAllPlaceholders();
-  initializeMobileNav();
-  initializeRouter();
-
-  const footerMeta = document.getElementById('footer-meta');
-  if (footerMeta) {
-    footerMeta.textContent = `Shell ready • active section: ${getState().navigation.currentSection}`;
+    const sectionFromHash = window.location.hash.replace('#', '') || APP_CONFIG.defaultSection;
+    navigate(sectionFromHash, { replaceHash: true });
+  } catch (error) {
+    console.error(error);
+    setError(true);
+    showGlobalError(`App failed to initialize: ${error.message}`);
+  } finally {
+    hideLoadingMessage();
+    setLoading(false);
   }
-  setStatus('Shell ready');
 }
 
-try {
-  initializeApp();
-} catch (error) {
-  console.error(error);
-  updateState('app.hasError', true);
-  const banner = document.getElementById('global-error');
-  if (banner) {
-    banner.hidden = false;
-    banner.textContent = 'The public shell hit an unexpected error during startup.';
-  }
-  setStatus('Startup error');
-}
+init();
