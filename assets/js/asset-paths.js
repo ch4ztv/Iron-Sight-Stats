@@ -1,70 +1,66 @@
-(function () {
-  const IMG_BASE = './assets/img';
+import { slugify } from './formatters.js';
 
-  const fallbackTeamNames = {
-    faze: 'atlanta-faze',
-    optic: 'optic',
-    toronto: 'toronto',
-    ravens: 'ravens',
-    lat: 'lat',
-    miami: 'miami',
-    boston: 'boston',
-    c9: 'c9',
-    falcons: 'falcons',
-    g2: 'g2',
-    pgm: 'pgm',
-    vancouver: 'vancouver'
-  };
+const IMAGE_EXTENSIONS = ['png', 'webp', 'jpg', 'jpeg'];
+const LOGO_EXTENSIONS = ['png', 'webp', 'jpg', 'jpeg', 'svg'];
 
-  function slugify(value) {
-    return String(value || '')
-      .trim()
-      .toLowerCase()
-      .replace(/&/g, 'and')
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-+|-+$/g, '');
-  }
+const TEAM_SLUG_ALIASES = {
+  faze: 'faze',
+  optic: 'optic',
+  toronto: 'toronto',
+  ravens: 'ravens',
+  lat: 'lat',
+  miami: 'miami',
+  boston: 'boston',
+  c9: 'c9',
+  falcons: 'falcons',
+  g2: 'g2',
+  pgm: 'pgm',
+  vancouver: 'vancouver'
+};
 
-  function teamSlug(teamId) {
-    return fallbackTeamNames[teamId] || slugify(teamId);
-  }
+function normalizeTeamSlug(teamId) {
+  const raw = slugify(teamId);
+  return TEAM_SLUG_ALIASES[raw] || raw;
+}
 
-  function buildCandidates(basePath, exts) {
-    return exts.map(ext => `${basePath}.${ext}`);
-  }
+function buildCandidates(basePath, extensions = IMAGE_EXTENSIONS) {
+  return extensions.map(ext => `${basePath}.${ext}`);
+}
 
-  function getLogoCandidates(teamId) {
-    const slug = teamSlug(teamId);
-    return buildCandidates(`${IMG_BASE}/logos/${slug}`, ['png', 'webp', 'jpg', 'jpeg', 'svg']);
-  }
+export function teamLogoCandidates(teamId) {
+  return buildCandidates(`./assets/img/logos/${normalizeTeamSlug(teamId)}`, LOGO_EXTENSIONS);
+}
 
-  function getPlayerCandidates(teamId, playerName) {
-    const team = teamSlug(teamId);
-    const player = slugify(playerName);
-    return buildCandidates(`${IMG_BASE}/players/${team}/${player}`, ['png', 'webp', 'jpg', 'jpeg']);
-  }
+export function teamLogoPath(teamId) {
+  return teamLogoCandidates(teamId)[0] || '';
+}
 
-  function getTeamStatCandidates(teamId, statKey) {
-    const team = teamSlug(teamId);
-    const stat = slugify(statKey);
-    return buildCandidates(`${IMG_BASE}/team-stats/${team}/${stat}`, ['png', 'webp', 'jpg', 'jpeg']);
-  }
+export function playerImageCandidates(teamId, playerSlug) {
+  return buildCandidates(`./assets/img/players/${normalizeTeamSlug(teamId)}/${slugify(playerSlug)}`);
+}
 
-  function getBrandingCandidates(name) {
-    return buildCandidates(`${IMG_BASE}/branding/${slugify(name)}`, ['png', 'webp', 'jpg', 'jpeg', 'svg']);
-  }
+export function playerImagePath(teamId, playerSlug) {
+  return playerImageCandidates(teamId, playerSlug)[0] || '';
+}
 
-  function pickFirstImage(candidates, fallback = '') {
-    return Array.isArray(candidates) && candidates.length ? candidates[0] : fallback;
-  }
+export function teamStatCandidates(teamId, statKey) {
+  return buildCandidates(`./assets/img/team-stats/${normalizeTeamSlug(teamId)}/${slugify(statKey)}`);
+}
 
-  window.ISSAssetPaths = {
-    slugify,
-    teamSlug,
-    getLogoCandidates,
-    getPlayerCandidates,
-    getTeamStatCandidates,
-    getBrandingCandidates,
-    pickFirstImage
-  };
-})();
+export function teamStatPath(teamId, statKey) {
+  return teamStatCandidates(teamId, statKey)[0] || '';
+}
+
+export function brandingCandidates(file = 'logo') {
+  return buildCandidates(`./assets/img/branding/${slugify(file)}`, LOGO_EXTENSIONS);
+}
+
+export function brandingPath(file = 'logo') {
+  return brandingCandidates(file)[0] || '';
+}
+
+// Backward-compatible aliases for any earlier helper names.
+export const getLogoCandidates = teamLogoCandidates;
+export const getPlayerCandidates = playerImageCandidates;
+export const getTeamStatCandidates = teamStatCandidates;
+export const getBrandingCandidates = brandingCandidates;
