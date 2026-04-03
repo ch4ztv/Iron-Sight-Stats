@@ -2,14 +2,36 @@ import { APP_CONFIG } from './config.js';
 import { state, setData, setSection, setUI } from './state.js';
 import { loadAllData } from './data-loader.js';
 import { fmtDate, fmtNum, safeKD, modeLabel, formatSeries } from './formatters.js';
-import { teamLogoPath, playerImagePath, teamStatPath } from './asset-paths.js';
+import { teamLogoCandidates, teamLogoPath, playerImageCandidates, playerImagePath, teamStatCandidates, teamStatPath } from './asset-paths.js';
 
 const $ = (sel, el=document) => el.querySelector(sel);
 
+const TEAM_COLORS = {
+  optic: '181,220,72',
+  faze: '255,72,72',
+  lat: '255,70,70',
+  toronto: '143,82,255',
+  g2: '173,71,255',
+  falcons: '255,136,42',
+  miami: '66,211,163',
+  ravens: '130,102,255',
+  boston: '72,255,126',
+  c9: '79,188,255',
+  vancouver: '59,201,255',
+  pgm: '0,255,179'
+};
+
+
 function teamName(id){ return APP_CONFIG.teamMeta[id]?.name || id; }
 function teamAbbr(id){ return APP_CONFIG.teamMeta[id]?.abbr || String(id).toUpperCase(); }
+function teamColor(id){ return TEAM_COLORS[id] || '0,255,102'; }
+function escapeAttr(value=''){ return String(value).replace(/"/g,'&quot;'); }
 function img(src, cls, alt=''){
   return `<img src="${src}" class="${cls||''}" alt="${alt}" onerror="this.style.display='none'">`;
+}
+function candidateImg(candidates, cls, alt=''){
+  const safe = candidates.map(escapeAttr).join('|');
+  return `<img src="${escapeAttr(candidates[0] || '')}" data-candidates="${safe}" data-candidate-index="0" class="${cls||''}" alt="${alt}" onerror="window.ISSHandleCandidateError && window.ISSHandleCandidateError(this)">`;
 }
 function sectionHeader(title, desc='', extra=''){
   return `<div class="section-title"><div><h2>${title}</h2><p>${desc}</p></div>${extra}</div>`;
@@ -17,39 +39,16 @@ function sectionHeader(title, desc='', extra=''){
 function teamChip(id){
   return `<span class="team-chip">${img(teamLogoPath(id),'mini-logo',teamName(id))}<span>${teamName(id)}</span></span>`;
 }
-
-const TEAM_COLORS = {
-  optic: { accent: '#b3dc39', glow: 'rgba(150,255,54,.26)', glowSoft: 'rgba(150,255,54,.14)', bright: '#00ff7f' },
-  faze: { accent: '#ff5151', glow: 'rgba(255,81,81,.24)', glowSoft: 'rgba(255,81,81,.12)', bright: '#ff8f8f' },
-  ravens: { accent: '#a86cff', glow: 'rgba(168,108,255,.24)', glowSoft: 'rgba(168,108,255,.12)', bright: '#d3b5ff' },
-  g2: { accent: '#ff4df1', glow: 'rgba(255,77,241,.22)', glowSoft: 'rgba(255,77,241,.11)', bright: '#ff9cf7' },
-  c9: { accent: '#67d1ff', glow: 'rgba(103,209,255,.22)', glowSoft: 'rgba(103,209,255,.11)', bright: '#9ae3ff' },
-  lat: { accent: '#ff3e3e', glow: 'rgba(255,62,62,.22)', glowSoft: 'rgba(255,62,62,.11)', bright: '#ff9c9c' },
-  miami: { accent: '#00c27b', glow: 'rgba(0,194,123,.24)', glowSoft: 'rgba(0,194,123,.12)', bright: '#5effbb' },
-  toronto: { accent: '#8d7cff', glow: 'rgba(141,124,255,.24)', glowSoft: 'rgba(141,124,255,.12)', bright: '#c6bcff' },
-  boston: { accent: '#74ff7a', glow: 'rgba(116,255,122,.24)', glowSoft: 'rgba(116,255,122,.12)', bright: '#a8ffac' },
-  pgm: { accent: '#45ff9f', glow: 'rgba(69,255,159,.24)', glowSoft: 'rgba(69,255,159,.12)', bright: '#9affc6' },
-  falcons: { accent: '#ff9b2f', glow: 'rgba(255,155,47,.24)', glowSoft: 'rgba(255,155,47,.12)', bright: '#ffc27c' },
-  vancouver: { accent: '#2dd6ff', glow: 'rgba(45,214,255,.24)', glowSoft: 'rgba(45,214,255,.12)', bright: '#9bf0ff' }
-};
-
-function teamTheme(teamId){
-  return TEAM_COLORS[teamId] || { accent: '#49d17d', glow: 'rgba(73,209,125,.22)', glowSoft: 'rgba(73,209,125,.11)', bright: '#7dffb7' };
-}
-
-function prettyLabel(key){
-  const map = { kd:'K/D', ntkPct:'NTK%', bpRating:'BP Rating', slayerRating:'Slayer Rtg', respawnKd:'Respawn KD', k10m:'K/10m', dmg10m:'DMG/10m', obj10m:'OBJ/10m', eng10m:'Eng/10m', kRound:'K/Round', dmgRound:'DMG/Round', goals10m:'Goals/10m', hpW:'HP W', hpL:'HP L', sndW:'S&D W', sndL:'S&D L', ovlW:'OVL W', ovlL:'OVL L', hpPick:'HP Pick', hpVeto:'HP Veto', sndPick:'S&D Pick', sndVeto:'S&D Veto', ovlPick:'OVL Pick', ovlVeto:'OVL Veto' };
-  return map[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s=>s.toUpperCase());
-}
-
-function renderValue(val){ return val == null || val === '' ? '—' : val; }
-function playerCard(player){
-  return `<article class="card player-card">
+function playerMediaCard(player, compact=false){
+  const color = teamColor(player.teamId);
+  const portrait = playerImagePath(player.teamId, player.name);
+  return `<article class="player-card" style="--team-rgb:${color}">
     <div class="top">
-      ${img(playerImagePath(player.teamId, player.name),'player-avatar',player.name)}
+      <img src="${teamLogoPath(player.teamId)}" class="team-backdrop-logo" alt="${teamName(player.teamId)} logo" aria-hidden="true">
+      ${img(portrait,'player-avatar',player.name)}
       <div>
         <div class="muted">${teamName(player.teamId)}</div>
-        <h3>${player.name}</h3>
+        <h3 style="margin:6px 0 0;font-size:${compact ? '1.15rem' : '1.35rem'}">${player.name}</h3>
       </div>
     </div>
     <div class="stat-list">
@@ -60,6 +59,9 @@ function playerCard(player){
       <div class="stat-row"><span>Maps</span><strong>${fmtNum(player.maps)}</strong></div>
     </div>
   </article>`;
+}
+function playerCard(player){
+  return playerMediaCard(player, true);
 }
 function renderDashboard(){
   const { data } = state;
@@ -237,118 +239,149 @@ function renderPlayers(){
 
 function renderTeams(){
   const teamId = state.ui.selectedTeam;
-  const teamIdNorm = teamId;
-  const theme = teamTheme(teamIdNorm);
-  const teamStats = state.data.teamStats[teamIdNorm] || {};
-  const roster = state.data.playersByTeam[teamIdNorm] || [];
-  const rec = state.data.teamRecords[teamIdNorm] || {wins:0,losses:0,mapWins:0,mapLosses:0,recent:[]};
-  const standings = getStandings();
-  const standingIndex = Math.max(1, standings.findIndex(r=>r.teamId===teamIdNorm)+1);
-  const activeTab = state.ui.teamTab || 'overall';
-  const tabDefs = [
-    ['overall','📊 Overall'],
-    ['hardpoint','🏳️ Hardpoint'],
-    ['snd','💣 S&D'],
-    ['overload','🎯 Overload'],
-    ['mapRecords','🗺️ Maps'],
-    ['picksVetos','🔀 Picks/Vetoes']
+  const activeTab = state.ui.selectedTeamTab || 'overall';
+  const showInactive = Boolean(state.ui.showInactivePlayers);
+  const teamStats = state.data.teamStats[teamId] || {};
+  const rosterAll = state.data.playersByTeam[teamId] || [];
+  const roster = showInactive ? rosterAll : rosterAll.filter(p => p.active !== false);
+  const rec = state.data.teamRecords[teamId] || {wins:0,losses:0,mapWins:0,mapLosses:0,recent:[]};
+  const color = teamColor(teamId);
+  const teamIds = Object.keys(APP_CONFIG.teamMeta);
+  const tabs = [
+    { id: 'overall', label: '📊 Overall' },
+    { id: 'hardpoint', label: '🏁 Hardpoint' },
+    { id: 'snd', label: '💣 S&D' },
+    { id: 'overload', label: '🎯 Overload' },
+    { id: 'maps', label: '🗺️ Maps' },
+    { id: 'picks', label: '☒ Picks/Vetoes' }
   ];
 
-  const panel = teamStats[activeTab] || {};
-  const rows = panel.players || panel.maps || [];
-  const columns = rows.length ? Object.keys(rows[0]) : [];
-  const logoRows = Object.keys(APP_CONFIG.teamMeta).map(id => `
-    <button class="iss-mini-logo-btn ${id===teamIdNorm?'active':''}" data-team-logo-btn="${id}" aria-label="${teamName(id)}">
-      <img src="${teamLogoPath(id)}" alt="${teamName(id)}" onerror="this.style.display='none'">
-    </button>`).join('');
+  const totalTrophies = Math.max(0, Math.round((state.data.teamPoints[teamId] || 0) / 100));
+  const lastFive = (rec.recent || []).slice(-5);
+  const recentMatches = [...(state.data.matches || [])]
+    .filter(m => m.team1Id === teamId || m.team2Id === teamId)
+    .sort((a,b)=>b.ts-a.ts)
+    .slice(0,5);
 
-  const rowHtml = roster.map(p => `
-    <article class="iss-roster-card">
-      <img class="iss-roster-backdrop" src="${teamLogoPath(teamIdNorm)}" alt="" aria-hidden="true" onerror="this.style.display='none'">
-      <img class="iss-roster-photo" src="${playerImagePath(teamIdNorm, p.name)}" alt="${p.name}" onerror="this.onerror=null;this.src='./assets/img/branding/logo.png';this.style.objectFit='contain';this.style.padding='30px'">
-      <div class="iss-roster-name">${p.name}</div>
-    </article>`).join('');
+  const renderPlayerTable = (players=[]) => {
+    if(!players.length) return `<div class="empty">No parsed player stats found for this tab yet.</div>`;
+    const headers = Object.keys(players[0]);
+    return `<div class="team-table-wrap"><table><thead><tr>${headers.map(key => `<th>${String(key).replace(/([A-Z])/g,' $1').replace(/^./, m => m.toUpperCase())}</th>`).join('')}</tr></thead><tbody>${players.map(row => `<tr>${headers.map(key => `<td>${row[key] ?? '—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  };
 
-  const tableHtml = rows.length ? `
-    <div class="table-wrap">
-      <table class="iss-team-table">
-        <thead><tr>${columns.map(c=>`<th>${prettyLabel(c)}</th>`).join('')}</tr></thead>
-        <tbody>
-          ${rows.map(row => {
-            const numericKeys = columns.filter(c => c !== 'player' && c !== 'map');
-            const maxKey = numericKeys.reduce((best, key) => {
-              const v = Number(row[key]);
-              const b = Number(row[best]);
-              if (!Number.isFinite(v)) return best;
-              if (!Number.isFinite(b)) return key;
-              return v > b ? key : best;
-            }, numericKeys[0]);
-            return `<tr>${columns.map(c => {
-              const cls = (c === 'player' || c === 'map') ? 'iss-player-col' : (c === maxKey ? 'iss-highlight' : '');
-              return `<td class="${cls}">${renderValue(row[c])}</td>`;
-            }).join('')}</tr>`;
-          }).join('')}
-        </tbody>
-      </table>
-    </div>` : `<div class="empty">No parsed data found for this tab yet.</div><div style="margin-top:12px">${img(teamStatPath(teamIdNorm, activeTab.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())),'',`${teamName(teamIdNorm)} ${activeTab}`)}</div>`;
+  const renderMapRecords = (section={}) => {
+    const maps = section.maps || [];
+    if(!maps.length) return `<div class="empty">No map records parsed for this team yet.</div>`;
+    return `<div class="team-table-wrap"><table><thead><tr><th>Map</th><th>HP</th><th>S&D</th><th>Overload</th></tr></thead><tbody>${maps.map(row => `<tr><td>${row.map}</td><td>${(row.hpW ?? 0)}-${(row.hpL ?? 0)}</td><td>${(row.sndW ?? 0)}-${(row.sndL ?? 0)}</td><td>${(row.ovlW ?? 0)}-${(row.ovlL ?? 0)}</td></tr>`).join('')}</tbody></table></div>`;
+  };
+
+  const renderPicks = (section={}) => {
+    const maps = section.maps || [];
+    if(!maps.length) return `<div class="empty">No picks/vetoes parsed for this team yet.</div>`;
+    return `<div class="team-table-wrap"><table><thead><tr><th>Map</th><th>HP Pick/Veto</th><th>S&D Pick/Veto</th><th>Overload Pick/Veto</th></tr></thead><tbody>${maps.map(row => `<tr><td>${row.map}</td><td>${row.hpPick ?? '—'} / ${row.hpVeto ?? '—'}</td><td>${row.sndPick ?? '—'} / ${row.sndVeto ?? '—'}</td><td>${row.ovlPick ?? '—'} / ${row.ovlVeto ?? '—'}</td></tr>`).join('')}</tbody></table></div>`;
+  };
+
+  const currentPanel = (() => {
+    if(activeTab === 'maps') return renderMapRecords(teamStats.mapRecords || {});
+    if(activeTab === 'picks') return renderPicks(teamStats.picksVetos || {});
+    if(activeTab === 'snd') return renderPlayerTable(teamStats.snd?.players || []);
+    return renderPlayerTable(teamStats[activeTab]?.players || []);
+  })();
+
+  const imagePanels = [
+    ['overall','overall'],
+    ['hardpoint','hardpoint'],
+    ['search-and-destroy','search and destroy']
+  ];
 
   $('#teams').innerHTML = `
-    <div class="iss-team-page" style="--team-accent:${theme.accent};--team-glow:${theme.glow};--team-glow-soft:${theme.glowSoft};--team-bright:${theme.bright};">
-      ${sectionHeader('Teams','')}
-      <div class="iss-team-strip">
-        <div class="iss-team-strip-left">
-          <img class="iss-team-badge" src="${teamLogoPath(teamIdNorm)}" alt="${teamName(teamIdNorm)}" onerror="this.style.display='none'">
-          <select id="teamSelect" class="iss-team-select">${Object.keys(APP_CONFIG.teamMeta).map(id=>`<option value="${id}" ${id===teamIdNorm?'selected':''}>${teamName(id)}</option>`).join('')}</select>
-        </div>
-        <div class="iss-team-logo-row">${logoRows}</div>
+    ${sectionHeader('Teams','Closer to the original DB look: branded hero, portrait roster cards, and parsed mode splits.')}
+    <section class="teams-shell" style="--team-rgb:${color}">
+      <div class="teams-toolbar">
+        <select id="teamSelect" class="iss-select">${teamIds.map(id=>`<option value="${id}" ${id===teamId?'selected':''}>${teamName(id)}</option>`).join('')}</select>
+        <div class="team-logo-row">${teamIds.map(id => `<button class="team-logo-btn ${id===teamId?'active':''}" data-team-logo="${id}" aria-label="Select ${teamName(id)}">${img(teamLogoPath(id),'',teamName(id))}</button>`).join('')}</div>
       </div>
 
-      <section class="iss-team-shell">
-        <div class="iss-team-hero-wrap">
-          <div class="iss-team-hero">
-            <div class="iss-team-hero-main">
-              <img class="iss-team-hero-logo" src="${teamLogoPath(teamIdNorm)}" alt="${teamName(teamIdNorm)}" onerror="this.style.display='none'">
+      <article class="team-hero-card">
+        <div class="team-hero-top">
+          <div>
+            <div class="team-identity">
+              ${img(teamLogoPath(teamId),'',teamName(teamId))}
               <div>
-                <h2 class="iss-team-title">${teamName(teamIdNorm)}</h2>
-                <div class="iss-team-sub">${APP_CONFIG.teamMeta[teamIdNorm]?.abbr || teamIdNorm.toUpperCase()} · Season 2026</div>
+                <h3>${teamName(teamId)}</h3>
+                <p>${teamAbbr(teamId)} · Season 2026</p>
               </div>
             </div>
-            <div class="iss-team-summary">
-              <div class="iss-summary-box"><strong>${rec.wins}-${rec.losses}</strong><span>Series</span></div>
-              <div class="iss-summary-box"><strong>${rec.mapWins}-${rec.mapLosses}</strong><span>Maps</span></div>
-              <div class="iss-summary-box"><strong>#${standingIndex}</strong><span>Rank</span></div>
-              <div class="iss-summary-box"><strong>${state.data.teamPoints[teamIdNorm] || 0}</strong><span>CDL Pts</span></div>
-              <div class="iss-summary-box iss-summary-box--button">Show Inactive</div>
-            </div>
+          </div>
+          <div class="team-summary-grid">
+            <div class="team-summary-box"><span class="value">${rec.wins}-${rec.losses}</span><span class="label">Series</span></div>
+            <div class="team-summary-box"><span class="value">${rec.mapWins}-${rec.mapLosses}</span><span class="label">Maps</span></div>
+            <div class="team-summary-box"><span class="value">#${getStandings().findIndex(r => r.teamId === teamId) + 1}</span><span class="label">Rank</span></div>
+            <div class="team-summary-box"><span class="value">${state.data.teamPoints[teamId] || 0}</span><span class="label">CDL Pts</span></div>
+            <button class="team-inactive-toggle" id="teamInactiveToggle">${showInactive ? 'Hide inactive' : 'Show inactive'}</button>
+          </div>
+        </div>
+
+        <div class="team-divider"></div>
+        <div class="team-roster-grid">
+          ${roster.length ? roster.map(player => `
+            <article class="team-portrait-card">
+              ${candidateImg(teamLogoCandidates(teamId),'team-backdrop-logo',`${teamName(teamId)} logo`) }
+              ${candidateImg(playerImageCandidates(teamId, player.name),'team-portrait-image',player.name)}
+              <div class="team-portrait-name">${player.name}</div>
+            </article>`).join('') : '<div class="empty">No active roster entries available.</div>'}
+        </div>
+      </article>
+
+      <div class="team-tabs">
+        ${tabs.map(tab => `<button class="team-tab ${tab.id===activeTab?'active':''}" data-team-tab="${tab.id}">${tab.label}</button>`).join('')}
+      </div>
+
+      <section class="team-tab-panel">
+        <div class="team-panel-label">${tabs.find(tab => tab.id===activeTab)?.label || 'Overview'} stats</div>
+        ${currentPanel}
+        ${teamStats.parsedAt ? `<div class="muted" style="margin-top:10px">Parsed ${new Date(teamStats.parsedAt).toLocaleString()} · ${teamStats.notes || ''}</div>` : ''}
+      </section>
+
+      <div class="team-lower-grid">
+        <section class="team-subpanel">
+          <h3>Trophy Case</h3>
+          <div class="trophy-grid">
+            <div class="trophy-card"><strong>${totalTrophies}</strong><span class="muted">Majors / wins</span></div>
+            <div class="trophy-card"><strong>${Math.max(1, Math.round(rec.wins / 8))}</strong><span class="muted">Finals</span></div>
+            <div class="trophy-card"><strong>${teamStats.confidence || 'high'}</strong><span class="muted">Parser confidence</span></div>
+            <div class="trophy-card"><strong>${roster.length}</strong><span class="muted">Active core</span></div>
           </div>
 
-          <div class="iss-roster-grid">${rowHtml || '<div class="empty">No roster found.</div>'}</div>
-        </div>
-      </section>
+          <h3 style="margin-top:18px">Recent Form</h3>
+          <div class="recent-form-list">
+            ${recentMatches.map(match => {
+              const isTeam1 = match.team1Id === teamId;
+              const maps = state.data.mapsByMatch[match.id] || [];
+              const scoreA = match.seriesScore1 ?? maps.filter(m => m.winner === match.team1Id).length;
+              const scoreB = match.seriesScore2 ?? maps.filter(m => m.winner === match.team2Id).length;
+              const myScore = isTeam1 ? scoreA : scoreB;
+              const oppScore = isTeam1 ? scoreB : scoreA;
+              const oppId = isTeam1 ? match.team2Id : match.team1Id;
+              const result = myScore >= oppScore ? 'W' : 'L';
+              return `<div class="recent-form-item"><div><strong>${teamName(teamId)} vs ${teamName(oppId)}</strong><div class="muted">${match.eventId} · ${fmtDate(match.date)} · ${match.format}</div></div><div class="recent-form-pill ${result==='W'?'win':'loss'}">${result} ${myScore}-${oppScore}</div></div>`;
+            }).join('') || '<div class="empty">No recent matches loaded for this team yet.</div>'}
+          </div>
+        </section>
 
-      <div class="iss-team-tabs">
-        ${tabDefs.map(([key,label]) => `<button class="iss-tab-btn ${key===activeTab?'active':''}" data-team-tab="${key}">${label}</button>`).join('')}
+        <section class="team-subpanel">
+          <h3>Imported team stat panels</h3>
+          <div class="team-image-grid">
+            ${imagePanels.map(([key,label]) => `<article class="team-image-card"><h4>${label}</h4>${img(teamStatPath(teamId,key),'',`${teamName(teamId)} ${label}`)}</article>`).join('')}
+          </div>
+        </section>
       </div>
-
-      <section class="iss-team-table-shell">
-        <div class="iss-table-title">
-          <h3>${prettyLabel(activeTab)} Stats</h3>
-          <div class="iss-parsed-note">Parsed ${teamStats.parsedAt ? new Date(teamStats.parsedAt).toLocaleString() : '—'} · <a href="#" style="color:#66b7ff">Re-parse →</a></div>
-        </div>
-        ${tableHtml}
-      </section>
-
-      <div class="iss-bottom-tabs">
-        <span class="iss-bottom-pill">👥 Overview</span>
-        <span class="iss-bottom-pill">📈 Splits</span>
-        <span class="iss-bottom-pill">📋 Matches</span>
-        <span class="iss-bottom-pill">🧾 Parse Stats</span>
-      </div>
-    </div>`;
+    </section>`;
 
   $('#teamSelect')?.addEventListener('change', e => { setUI('selectedTeam', e.target.value); renderTeams(); renderBetting(); renderMatchup(); });
-  document.querySelectorAll('[data-team-logo-btn]').forEach(btn => btn.addEventListener('click', () => { setUI('selectedTeam', btn.dataset.teamLogoBtn); renderTeams(); renderBetting(); renderMatchup(); }));
-  document.querySelectorAll('[data-team-tab]').forEach(btn => btn.addEventListener('click', () => { setUI('teamTab', btn.dataset.teamTab); renderTeams(); }));
+  $('#teamInactiveToggle')?.addEventListener('click', () => { setUI('showInactivePlayers', !showInactive); renderTeams(); });
+  document.querySelectorAll('[data-team-logo]').forEach(btn => btn.addEventListener('click', () => { setUI('selectedTeam', btn.dataset.teamLogo); renderTeams(); renderBetting(); renderMatchup(); }));
+  document.querySelectorAll('[data-team-tab]').forEach(btn => btn.addEventListener('click', () => { setUI('selectedTeamTab', btn.dataset.teamTab); renderTeams(); }));
 }
 
 function recentFormScore(teamId){
@@ -440,6 +473,18 @@ function attachGlobalEvents(){
   $('#mobileMenuBtn')?.addEventListener('click', () => $('#siteNav')?.classList.toggle('open'));
   window.addEventListener('hashchange', applyRoute);
 }
+
+
+window.ISSHandleCandidateError = function(node){
+  const list = (node.dataset.candidates || '').split('|').filter(Boolean);
+  let index = Number(node.dataset.candidateIndex || 0) + 1;
+  if(index < list.length){
+    node.dataset.candidateIndex = String(index);
+    node.src = list[index];
+  }else{
+    node.style.display = 'none';
+  }
+};
 
 async function init(){
   try{
