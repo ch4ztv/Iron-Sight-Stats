@@ -1,16 +1,96 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Iron Sight Stats public build." />
   <title>Iron Sight Stats</title>
-  <meta name="description" content="Public GitHub scaffold for the Iron Sight Stats app.">
+  <link rel="stylesheet" href="./assets/css/app.css" />
+  <link rel="stylesheet" href="./assets/css/layout.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/responsive.css" />
 </head>
 <body>
-  <main>
-    <h1>Iron Sight Stats</h1>
-    <p>This repository currently contains the public project scaffold only.</p>
-    <p>No build output has been added yet.</p>
-  </main>
+  <div id="app" class="app-shell">
+    <header class="site-header">
+      <div class="header-inner app-container">
+        <a class="brand" href="#dashboard" aria-label="Iron Sight Stats home">
+          <div class="brand-mark">IS</div>
+          <div class="brand-copy">
+            <span class="brand-title">Iron Sight Stats</span>
+            <span class="brand-subtitle" id="app-version">Public Build</span>
+          </div>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Primary">
+          <button class="nav-link is-active" data-route="dashboard">Dashboard</button>
+          <button class="nav-link" data-route="standings">Standings</button>
+          <button class="nav-link" data-route="matches">Matches</button>
+          <button class="nav-link" data-route="players">Players</button>
+          <button class="nav-link" data-route="teams">Teams</button>
+          <button class="nav-link" data-route="betting">Betting Lab</button>
+          <button class="nav-link" data-route="brackets">Brackets</button>
+          <button class="nav-link" data-route="matchup">Matchup</button>
+        </nav>
+
+        <button id="mobile-nav-toggle" class="icon-button mobile-only" aria-expanded="false" aria-controls="mobile-nav-drawer" aria-label="Open navigation">
+          ☰
+        </button>
+      </div>
+
+      <div id="mobile-nav-drawer" class="mobile-nav-drawer" hidden>
+        <div class="mobile-nav-inner app-container" aria-label="Mobile primary navigation">
+          <button class="nav-link is-active" data-route="dashboard">Dashboard</button>
+          <button class="nav-link" data-route="standings">Standings</button>
+          <button class="nav-link" data-route="matches">Matches</button>
+          <button class="nav-link" data-route="players">Players</button>
+          <button class="nav-link" data-route="teams">Teams</button>
+          <button class="nav-link" data-route="betting">Betting Lab</button>
+          <button class="nav-link" data-route="brackets">Brackets</button>
+          <button class="nav-link" data-route="matchup">Matchup</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="site-main app-container">
+      <section class="hero-card card">
+        <div>
+          <p class="eyebrow">Public App Foundation</p>
+          <h1 id="page-title">Dashboard</h1>
+          <p id="page-description" class="muted-text">
+            Core shell, routing, and data bootstrapping for the public build.
+          </p>
+        </div>
+        <div id="global-status" class="status-pill">Starting up…</div>
+      </section>
+
+      <div id="global-error" class="global-banner banner-error" hidden></div>
+
+      <div id="global-loading" class="global-loading" hidden>
+        <div class="loading-card card">
+          <div class="spinner" aria-hidden="true"></div>
+          <p>Loading public data…</p>
+        </div>
+      </div>
+
+      <section id="dashboard-section" class="app-section is-active" data-section="dashboard"></section>
+      <section id="standings-section" class="app-section" data-section="standings" hidden></section>
+      <section id="matches-section" class="app-section" data-section="matches" hidden></section>
+      <section id="players-section" class="app-section" data-section="players" hidden></section>
+      <section id="teams-section" class="app-section" data-section="teams" hidden></section>
+      <section id="betting-section" class="app-section" data-section="betting" hidden></section>
+      <section id="brackets-section" class="app-section" data-section="brackets" hidden></section>
+      <section id="matchup-section" class="app-section" data-section="matchup" hidden></section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="app-container footer-inner">
+        <span>Iron Sight Stats</span>
+        <span id="footer-meta">Static public shell</span>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="./assets/js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,116 @@
+.card {
+  background: linear-gradient(180deg, rgba(24, 33, 61, 0.95), rgba(19, 26, 47, 0.96));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+}
+
+.nav-link {
+  padding: 0.72rem 1rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  color: var(--muted);
+  transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  border-color: var(--line);
+  outline: none;
+}
+
+.nav-link.is-active {
+  background: var(--accent-soft);
+  color: var(--text);
+  border-color: rgba(86, 227, 159, 0.28);
+}
+
+.icon-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.global-banner {
+  margin-bottom: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 107, 122, 0.28);
+}
+
+.banner-error {
+  background: rgba(255, 107, 122, 0.12);
+  color: #ffd8de;
+}
+
+.global-loading {
+  margin-bottom: 1rem;
+}
+
+.loading-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-top-color: var(--accent);
+  animation: spin 0.9s linear infinite;
+}
+
+.placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+.placeholder-card {
+  grid-column: span 4;
+  min-height: 160px;
+}
+
+.placeholder-card h3 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.placeholder-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.placeholder-line {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.08);
+}
+
+.placeholder-line.short { width: 38%; }
+.placeholder-line.mid { width: 62%; }
+.placeholder-line.long { width: 88%; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
