@@ -1,1 +1,1 @@
-This folder is reserved for shared reusable components in later build phases.
+Placeholder for future shared components.

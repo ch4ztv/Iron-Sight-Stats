@@ -11,45 +11,47 @@
   <link rel="stylesheet" href="./assets/css/responsive.css" />
 </head>
 <body>
-  <div id="app" class="app-shell">
+  <div class="app-shell">
     <header class="site-header">
-      <div class="site-header__inner app-container">
-        <a class="brand" href="#dashboard" aria-label="Iron Sight Stats home">
-          <div class="brand__mark">IS</div>
-          <div class="brand__text">
-            <span class="brand__title">Iron Sight Stats</span>
-            <span class="brand__subtitle" id="app-version">Public Build</span>
+      <div class="header-inner shell-width">
+        <div class="brand-block">
+          <img id="brand-logo" class="brand-logo" src="./assets/img/branding/logo.png" alt="Iron Sight Stats logo" onerror="this.style.display='none'" />
+          <div>
+            <div class="eyebrow">Public Build</div>
+            <h1 class="brand-title">Iron Sight Stats</h1>
           </div>
-        </a>
+        </div>
 
-        <button id="mobile-nav-toggle" class="mobile-nav-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav">
+        <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-expanded="false" aria-controls="mobile-nav">
           Menu
         </button>
 
-        <nav class="site-nav" aria-label="Primary">
-          <ul id="desktop-nav" class="nav-list"></ul>
+        <nav class="desktop-nav" aria-label="Primary navigation">
+          <a href="#dashboard" data-route="dashboard">Dashboard</a>
+          <a href="#standings" data-route="standings">Standings</a>
+          <a href="#matches" data-route="matches">Matches</a>
+          <a href="#players" data-route="players">Players</a>
+          <a href="#teams" data-route="teams">Teams</a>
+          <a href="#betting" data-route="betting">Betting Lab</a>
+          <a href="#brackets" data-route="brackets">Brackets</a>
+          <a href="#matchup" data-route="matchup">Matchup</a>
         </nav>
       </div>
 
-      <div id="mobile-nav" class="mobile-nav" hidden>
-        <div class="app-container">
-          <ul id="mobile-nav-list" class="nav-list nav-list--mobile"></ul>
-        </div>
-      </div>
+      <nav id="mobile-nav" class="mobile-nav shell-width" aria-label="Mobile navigation" hidden>
+        <a href="#dashboard" data-route="dashboard">Dashboard</a>
+        <a href="#standings" data-route="standings">Standings</a>
+        <a href="#matches" data-route="matches">Matches</a>
+        <a href="#players" data-route="players">Players</a>
+        <a href="#teams" data-route="teams">Teams</a>
+        <a href="#betting" data-route="betting">Betting Lab</a>
+        <a href="#brackets" data-route="brackets">Brackets</a>
+        <a href="#matchup" data-route="matchup">Matchup</a>
+      </nav>
     </header>
 
-    <main class="app-main app-container">
-      <section id="global-banner" class="global-banner" hidden></section>
-
-      <section class="page-heading">
-        <div>
-          <p class="eyebrow">Call of Duty League</p>
-          <h1 id="page-title">Dashboard</h1>
-        </div>
-        <div id="page-meta" class="page-meta"></div>
-      </section>
-
-      <div id="global-loading" class="global-loading" hidden>Loading data…</div>
+    <main class="main-content shell-width">
+      <div id="global-message" class="global-message" hidden></div>
 
       <section id="dashboard-section" class="app-section"></section>
       <section id="standings-section" class="app-section" hidden></section>
@@ -61,11 +63,9 @@
       <section id="matchup-section" class="app-section" hidden></section>
     </main>
 
-    <footer class="site-footer">
-      <div class="app-container site-footer__inner">
-        <span>Iron Sight Stats</span>
-        <span id="footer-meta">Static public build</span>
-      </div>
+    <footer class="site-footer shell-width">
+      <span>Iron Sight Stats</span>
+      <span id="footer-version">Loading…</span>
     </footer>
   </div>
 

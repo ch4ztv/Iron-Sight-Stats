@@ -1,41 +1,21 @@
-import { EVENT_LABELS, MODE_LABELS } from './config.js';
-
-export function formatDate(value) {
-  if (!value) return '—';
-  try {
-    return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(value));
-  } catch {
-    return String(value);
-  }
+export function formatMode(mode) {
+  const map = { HP: 'Hardpoint', SND: 'Search & Destroy', OL: 'Overload' };
+  return map[mode] || mode || '—';
 }
-
-export function formatDateTime(dateValue, timeValue = '') {
-  if (!dateValue) return '—';
-  return `${formatDate(dateValue)}${timeValue ? ` • ${timeValue}` : ''}`;
+export function formatEvent(eventId) {
+  const map = { M1Q: 'Major 1 Qualifiers', M1T: 'Major 1', M2Q: 'Major 2 Qualifiers', M2T: 'Major 2' };
+  return map[eventId] || eventId || 'Event';
 }
-
-export function formatNumber(value, maximumFractionDigits = 2) {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
-  return new Intl.NumberFormat('en-US', { maximumFractionDigits }).format(Number(value));
+export function formatDate(dateStr) {
+  if (!dateStr) return '—';
+  const d = new Date(`${dateStr}T12:00:00`);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
-
-export function formatPercent(value, digits = 1) {
-  if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
-  return `${Number(value).toFixed(digits)}%`;
+export function safe(value, fallback = '—') {
+  return value === undefined || value === null || value === '' ? fallback : value;
 }
-
-export function formatEventLabel(eventId) {
-  return EVENT_LABELS[eventId] || eventId || '—';
-}
-
-export function formatModeLabel(mode) {
-  return MODE_LABELS[mode] || mode || '—';
-}
-
-export function formatSeriesLabel(format) {
-  return format || 'BO5';
-}
-
-export function fallback(value, empty = '—') {
-  return value === null || value === undefined || value === '' ? empty : value;
+export function titleizeSlug(slug) {
+  if (!slug) return 'Unknown';
+  const overrides = { faze: 'Atlanta FaZe', optic: 'OpTic Texas', lat: 'LA Thieves', c9: 'Cloud9', pgm: 'Paris Gaming', toronto: 'Toronto Ultra', ravens: 'Carolina Ravens', miami: 'Miami Heretics', boston: 'Boston Breach', falcons: 'Vegas Falcons', vancouver: 'Vancouver Surge', g2: 'G2' };
+  return overrides[slug] || slug.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }

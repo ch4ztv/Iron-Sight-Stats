@@ -1,8 +1,8 @@
 import { APP_CONFIG } from './config.js';
-import { setLoading, setReady, setError, mergeData, getState } from './state.js';
 import { loadAllData } from './data-loader.js';
-import { setLoadingMessage, hideLoadingMessage, showGlobalError, clearGlobalError, qs } from './ui.js';
-import { initRouter, registerRoute, initMobileNav, navigate } from './router.js';
+import { initRouter } from './router.js';
+import { getState, patchState } from './state.js';
+import { qs, showMessage } from './ui.js';
 import { renderDashboard } from './sections/dashboard.js';
 import { renderStandings } from './sections/standings.js';
 import { renderMatches } from './sections/matches.js';
@@ -12,50 +12,59 @@ import { renderBetting } from './sections/betting.js';
 import { renderBrackets } from './sections/brackets.js';
 import { renderMatchup } from './sections/matchup.js';
 
-function registerSections() {
-  registerRoute('dashboard', renderDashboard);
-  registerRoute('standings', renderStandings);
-  registerRoute('matches', renderMatches);
-  registerRoute('players', renderPlayers);
-  registerRoute('teams', renderTeams);
-  registerRoute('betting', renderBetting);
-  registerRoute('brackets', renderBrackets);
-  if (APP_CONFIG.featureFlags.matchup) {
-    registerRoute('matchup', renderMatchup);
-  }
+const renderers = {
+  dashboard: renderDashboard,
+  standings: renderStandings,
+  matches: renderMatches,
+  players: renderPlayers,
+  teams: renderTeams,
+  betting: renderBetting,
+  brackets: renderBrackets,
+  matchup: renderMatchup
+};
+
+function renderSection(section) {
+  const container = qs(`#${section}-section`);
+  if (!container) return;
+  const render = renderers[section];
+  if (render) render(container, getState());
 }
 
-async function init() {
+function renderAll() {
+  APP_CONFIG.sections.forEach(renderSection);
+}
+
+function initMobileNav() {
+  const toggle = qs('#mobile-nav-toggle');
+  const mobileNav = qs('#mobile-nav');
+  if (!toggle || !mobileNav) return;
+  toggle.addEventListener('click', () => {
+    const next = mobileNav.hidden;
+    mobileNav.hidden = !next;
+    toggle.setAttribute('aria-expanded', String(next));
+    patchState({ mobileNavOpen: next });
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobileNav.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    patchState({ mobileNavOpen: false });
+  }));
+}
+
+async function boot() {
   try {
-    setLoading(true);
-    setLoadingMessage('Loading Iron Sight Stats…');
-    registerSections();
-    initRouter();
+    patchState({ isLoading: true });
     initMobileNav();
-
-    const data = await loadAllData();
-    mergeData(data);
-
-    const versionText = data.meta?.version ? `v${data.meta.version}` : 'Public Build';
-    const subtitle = qs('#app-version');
-    const footerMeta = qs('#footer-meta');
-    if (subtitle) subtitle.textContent = versionText;
-    if (footerMeta) footerMeta.textContent = data.meta?.exported ? `Data exported ${data.meta.exported}` : 'Static public build';
-
-    clearGlobalError();
-    setReady(true);
-    setError(false);
-
-    const sectionFromHash = window.location.hash.replace('#', '') || APP_CONFIG.defaultSection;
-    navigate(sectionFromHash, { replaceHash: true });
+    await loadAllData();
+    patchState({ isLoading: false, isReady: true });
+    const meta = getState().data.meta;
+    qs('#footer-version').textContent = meta?.version ? `v${meta.version}` : 'Public build';
+    renderAll();
+    initRouter((section) => renderSection(section));
   } catch (error) {
     console.error(error);
-    setError(true);
-    showGlobalError(`App failed to initialize: ${error.message}`);
-  } finally {
-    hideLoadingMessage();
-    setLoading(false);
+    showMessage('The public data layer failed to load. Check that your JSON files are in /data and named correctly.');
   }
 }
 
-init();
+boot();

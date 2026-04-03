@@ -1,11 +1,9 @@
-import { qs, renderSectionHeader } from '../ui.js';
-export function renderMatchup() {
-  const target = qs('#matchup-section');
-  if (!target) return;
-  target.innerHTML = `
-    <div class="section-card section-placeholder">
-      ${renderSectionHeader('Matchup', 'This module is scaffolded and ready for the next build pass.')}
-      <p class="muted">The shell, routing, and data pipeline are already connected. This section is next in line for full implementation.</p>
-    </div>
+import { sectionFrame, emptyState } from '../ui.js';
+export function renderMatchup(container) {
+  container.innerHTML = `
+    <div class="panel"><div class="panel-body">
+      ${sectionFrame('Matchup', 'Reserved for the full compare-builder pass')}
+      ${emptyState('This section is scaffolded and routed, but the real compare logic is still ahead.')}
+    </div></div>
   `;
 }

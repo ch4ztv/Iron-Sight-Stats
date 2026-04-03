@@ -1,90 +1,42 @@
 :root {
-  --bg: #0a0d11;
-  --bg-elevated: #11161d;
-  --bg-soft: #151c24;
-  --surface: #10151c;
-  --card: #121922;
-  --border: #243140;
-  --text: #f4f7fb;
-  --text-soft: #b1bdcb;
-  --accent: #42d48b;
-  --accent-soft: rgba(66, 212, 139, 0.18);
+  --bg: #081018;
+  --panel: #101b29;
+  --panel-2: #152131;
+  --line: rgba(255,255,255,0.08);
+  --text: #f5f7fb;
+  --muted: #9fb0c6;
+  --accent: #38d26d;
+  --accent-soft: rgba(56,210,109,0.14);
   --danger: #ff6b6b;
-  --warning: #ffcb6b;
-  --shadow: 0 12px 40px rgba(0, 0, 0, 0.28);
-  --radius-lg: 24px;
-  --radius-md: 16px;
-  --radius-sm: 12px;
-  --container: 1280px;
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 0.75rem;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --space-7: 3rem;
-  --space-8: 4rem;
-  --transition: 160ms ease;
-  color-scheme: dark;
+  --shadow: 0 18px 40px rgba(0,0,0,0.22);
+  --radius: 20px;
+  --radius-sm: 14px;
+  --shell: 1400px;
 }
-
-*,
-*::before,
-*::after { box-sizing: border-box; }
-
+* { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-
 body {
   margin: 0;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background:
-    radial-gradient(circle at top, rgba(66, 212, 139, 0.09), transparent 22%),
-    var(--bg);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: linear-gradient(180deg, #060d14 0%, #0b1621 100%);
   color: var(--text);
 }
-
-img { max-width: 100%; display: block; }
-
 a { color: inherit; text-decoration: none; }
-
-button, input, select {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-  border: 0;
-}
-
+button, select, input { font: inherit; }
+img { max-width: 100%; display: block; }
 [hidden] { display: none !important; }
-
-.app-container {
-  width: min(calc(100% - 2rem), var(--container));
-  margin: 0 auto;
-}
-
+.shell-width { width: min(100% - 28px, var(--shell)); margin: 0 auto; }
 .eyebrow {
-  margin: 0 0 var(--space-2);
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.72rem;
-  color: var(--accent);
+  letter-spacing: .12em;
+  font-size: .72rem;
+  color: var(--muted);
 }
-
-.global-loading,
-.global-banner {
-  border: 1px solid var(--border);
-  background: var(--bg-elevated);
-  border-radius: var(--radius-md);
-  padding: var(--space-4) var(--space-5);
-  margin-bottom: var(--space-5);
+.global-message {
+  margin-bottom: 16px;
+  background: rgba(255,107,107,.1);
+  border: 1px solid rgba(255,107,107,.25);
+  color: #ffd5d5;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
 }
-
-.global-banner--error { border-color: rgba(255, 107, 107, 0.45); color: #ffd5d5; }
-
-.app-section { padding-bottom: var(--space-7); }
-
-.stat-positive { color: var(--accent); }
-.stat-muted { color: var(--text-soft); }
-
-.placeholder.txt {}

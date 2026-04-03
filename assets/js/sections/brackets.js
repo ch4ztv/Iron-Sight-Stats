@@ -1,24 +1,18 @@
 import { APP_CONFIG } from '../config.js';
-import { qs, renderSectionHeader } from '../ui.js';
-
-export function renderBrackets() {
-  const target = qs('#brackets-section');
-  if (!target) return;
-  target.innerHTML = `
-    <div class="stack">
-      <div class="section-card">
-        ${renderSectionHeader('Brackets', 'Major event bracket files already connected')}
-        <div class="grid-2">
-          <a class="panel" href="${APP_CONFIG.bracketPages.major1}" target="_blank" rel="noopener noreferrer">
-            <h3>Major 1 Bracket</h3>
-            <p class="muted">Open the standalone bracket page in a new tab.</p>
+import { sectionFrame } from '../ui.js';
+export function renderBrackets(container) {
+  container.innerHTML = `
+    <div class="panel"><div class="panel-body">
+      ${sectionFrame('Brackets', 'Major bracket pages already placed in the public repo')}
+      <div class="link-grid">
+        ${APP_CONFIG.brackets.map(bracket => `
+          <a class="link-card" href="${bracket.href}" target="_blank" rel="noopener noreferrer">
+            <div class="eyebrow">Bracket</div>
+            <h3 style="margin:6px 0 8px">${bracket.label}</h3>
+            <div class="muted">Open the standalone bracket page</div>
           </a>
-          <a class="panel" href="${APP_CONFIG.bracketPages.major2}" target="_blank" rel="noopener noreferrer">
-            <h3>Major 2 Bracket</h3>
-            <p class="muted">Open the standalone bracket page in a new tab.</p>
-          </a>
-        </div>
+        `).join('')}
       </div>
-    </div>
+    </div></div>
   `;
 }
