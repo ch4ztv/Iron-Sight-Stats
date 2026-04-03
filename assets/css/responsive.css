@@ -1,62 +1,39 @@
-/* Build Step 7 responsive polish */
-
-@media (max-width: 980px) {
-  .team-hero,
-  .player-hero,
-  .compare-row {
+@media (max-width: 1024px) {
+  .iss-split-layout {
     grid-template-columns: 1fr;
   }
 
-  .section-header {
-    align-items: start;
-    flex-direction: column;
+  .iss-toolbar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .embed-shell,
-  .embed-shell iframe {
-    min-height: 420px;
+  .iss-feature-card {
+    grid-template-columns: 180px 1fr;
   }
 }
 
-@media (max-width: 700px) {
-  .hero-card,
-  .match-card,
-  .player-card,
-  .team-card,
-  .bet-card,
-  .bracket-card,
-  .compare-card {
-    padding: 16px;
-    border-radius: 18px;
-  }
-
-  .controls-row {
-    flex-direction: column;
-  }
-
-  .controls-row input,
-  .controls-row select,
-  .controls-row button {
-    width: 100%;
-  }
-
-  .stats-grid,
-  .metric-grid,
-  .team-grid,
-  .players-grid,
-  .bet-grid,
-  .bracket-grid,
-  .compare-grid {
+@media (max-width: 720px) {
+  .iss-toolbar {
     grid-template-columns: 1fr;
   }
 
-  .table-shell th,
-  .table-shell td {
-    padding: 10px 12px;
+  .iss-feature-card,
+  .iss-team-hero,
+  .iss-player-card-top,
+  .iss-roster-card {
+    grid-template-columns: 1fr;
   }
 
-  .embed-shell,
-  .embed-shell iframe {
-    min-height: 340px;
+  .iss-feature-media,
+  .iss-team-hero-media,
+  .iss-player-portrait,
+  .iss-roster-media {
+    min-height: 220px;
+  }
+
+  .iss-card-grid--players,
+  .iss-card-grid--roster,
+  .iss-card-grid--team-stats {
+    grid-template-columns: 1fr;
   }
 }

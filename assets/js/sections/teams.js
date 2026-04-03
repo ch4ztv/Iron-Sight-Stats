@@ -1,160 +1,170 @@
-import { sectionFrame, emptyState, selectControl } from '../ui.js';
-import { titleizeSlug, slugify, safe } from '../formatters.js';
-import { playerImageCandidates, playerImagePath, teamLogoCandidates, teamLogoPath, teamStatCandidates, teamStatPath } from '../asset-paths.js';
+import { normalizeTeamId, playerImageCandidates, teamLogoCandidates, teamStatCandidates } from '../asset-paths.js';
 
-function getUniqueTeams(matches) {
-  return [...new Set(matches.flatMap(m => [m.team1Id, m.team2Id]).filter(Boolean))].sort();
+const TEAM_STAT_PANELS = [
+  { key: 'overall', label: 'Overall' },
+  { key: 'hardpoint', label: 'Hardpoint' },
+  { key: 'search-and-destroy', label: 'Search & Destroy' },
+  { key: 'overload', label: 'Overload' },
+  { key: 'map-records', label: 'Map Records' },
+  { key: 'picks-vetoes', label: 'Picks & Vetoes' },
+];
+
+function createCandidateImg(candidates, alt, className = 'iss-media-img') {
+  const img = document.createElement('img');
+  img.alt = alt;
+  img.className = className;
+  const list = Array.isArray(candidates) ? [...candidates] : [];
+  const fallback = './assets/img/branding/logo.png';
+
+  const tryNext = () => {
+    const next = list.shift();
+    img.src = next || fallback;
+    img.onerror = () => {
+      img.onerror = null;
+      tryNext();
+    };
+  };
+
+  tryNext();
+  return img;
 }
-function getTeamRoster(teamId, players) {
-  return players.filter(player => (player.teamId || player.team || player.teamSlug) === teamId);
-}
-function playerName(player) {
-  return player.displayName || player.name || player.playerName || player.id || 'Unknown';
-}
-function playerSlug(player) {
-  return slugify(player.slug || player.id || playerName(player));
-}
-function computeTeamSummary(teamId, matches, maps) {
-  const teamMatches = matches.filter(match => [match.team1Id, match.team2Id].includes(teamId));
+
+function computeRecord(teamId, matches = []) {
   let wins = 0;
   let losses = 0;
-  teamMatches.forEach(match => {
-    const mapRows = maps.filter(map => map.matchId === match.id);
-    const score1 = match.seriesScore1 ?? mapRows.filter(m => m.winner === match.team1Id).length;
-    const score2 = match.seriesScore2 ?? mapRows.filter(m => m.winner === match.team2Id).length;
-    if (!score1 && !score2) return;
-    const won = (match.team1Id === teamId && score1 > score2) || (match.team2Id === teamId && score2 > score1);
-    if (won) wins += 1; else losses += 1;
-  });
-  const recent = teamMatches.sort((a, b) => (b.ts || 0) - (a.ts || 0)).slice(0, 5).map(match => {
+  let lastFive = [];
+
+  matches.forEach(match => {
+    if (![match.team1Id, match.team2Id].includes(teamId)) return;
+    if (!Number.isFinite(Number(match.seriesScore1)) || !Number.isFinite(Number(match.seriesScore2))) return;
+
     const isTeam1 = match.team1Id === teamId;
-    const opp = isTeam1 ? match.team2Id : match.team1Id;
-    const mapRows = maps.filter(map => map.matchId === match.id);
-    const score1 = match.seriesScore1 ?? mapRows.filter(m => m.winner === match.team1Id).length;
-    const score2 = match.seriesScore2 ?? mapRows.filter(m => m.winner === match.team2Id).length;
-    const won = (isTeam1 && score1 > score2) || (!isTeam1 && score2 > score1);
-    return `${won ? 'W' : 'L'} vs ${titleizeSlug(opp)}`;
+    const teamScore = isTeam1 ? Number(match.seriesScore1) : Number(match.seriesScore2);
+    const oppScore = isTeam1 ? Number(match.seriesScore2) : Number(match.seriesScore1);
+    const win = teamScore > oppScore;
+    if (win) wins += 1; else losses += 1;
+    lastFive.push(win ? 'W' : 'L');
   });
-  return { wins, losses, total: wins + losses, recent };
+
+  return { wins, losses, lastFive: lastFive.slice(-5).reverse() };
 }
 
-function rowTable(title, rows, columns) {
-  if (!rows?.length) return emptyState(`${title} data is not available yet.`);
-  return `
-    <div class="table-wrap compact-table">
-      <table>
-        <thead><tr>${columns.map(col => `<th>${col.label}</th>`).join('')}</tr></thead>
-        <tbody>
-          ${rows.map(row => `<tr>${columns.map(col => `<td>${safe(row[col.key])}</td>`).join('')}</tr>`).join('')}
-        </tbody>
-      </table>
-    </div>
-  `;
-}
+export function renderTeamsSection({ state, data } = {}) {
+  const container = document.getElementById('teams-section');
+  if (!container) return;
 
-export function renderTeams(container, state) {
-  const teams = getUniqueTeams(state.data.matches || []);
-  const selected = state.currentTeamView && teams.includes(state.currentTeamView) ? state.currentTeamView : teams[0];
-  const roster = getTeamRoster(selected, state.data.players || []);
-  const importedTeamStats = state.data.teamStats?.[selected] || null;
-  const confidence = importedTeamStats?.confidence || '—';
-  const summary = computeTeamSummary(selected, state.data.matches || [], state.data.maps || []);
-  const overviewRows = importedTeamStats?.overall?.players || [];
-  const hardpointRows = importedTeamStats?.hardpoint?.players || [];
-  const sndRows = importedTeamStats?.snd?.players || [];
-  const overloadRows = importedTeamStats?.overload?.players || [];
+  const teams = Array.isArray(data?.teams) ? data.teams : [];
+  const players = Array.isArray(data?.players) ? data.players : [];
+  const matches = Array.isArray(data?.matches) ? data.matches : [];
+
+  const teamIds = Array.from(new Set([
+    ...teams.map(t => normalizeTeamId(t.id || t.teamId || t.name)),
+    ...players.map(p => normalizeTeamId(p.teamId || p.team || p.org)),
+    ...matches.flatMap(m => [normalizeTeamId(m.team1Id), normalizeTeamId(m.team2Id)]),
+  ].filter(Boolean))).sort();
+
+  const selected = state?.ui?.selectedTeam || teamIds[0] || 'optic';
+  const roster = players.filter(p => normalizeTeamId(p.teamId || p.team || p.org) === selected);
+  const record = computeRecord(selected, matches);
 
   container.innerHTML = `
-    <div class="section-stack">
-      <div class="panel hero-card"><div class="panel-body">
-        ${sectionFrame('Teams', 'Team pages with roster view, team summary, and imported parser-backed stat tables/images', `
-          <div class="filters-row compact toolbar-wrap">
-            ${selectControl('team-select', teams.map(teamId => ({ value: teamId, label: titleizeSlug(teamId) })), selected)}
-          </div>
-        `)}
-        <div class="team-hero enhanced">
-          <img class="team-logo-lg" src="${teamLogoPath(selected)}" data-fallbacks="${teamLogoCandidates(selected).slice(1).join(',')}" alt="${titleizeSlug(selected)} logo" />
-          <div>
-            <div class="eyebrow">Team profile</div>
-            <h2 style="margin:6px 0 10px">${titleizeSlug(selected)}</h2>
-            <div class="inline-pills">
-              <span class="pill accent">Record ${summary.wins}-${summary.losses}</span>
-              <span class="pill">Recent ${summary.recent.join(' • ') || '—'}</span>
-              <span class="pill">Parser confidence ${confidence}</span>
-            </div>
-            <p class="muted" style="margin-top:12px">${safe(importedTeamStats?.notes, 'Imported overview images and player tables will appear here when assets and parsed stats line up with the public build.')}</p>
+    <section class="iss-section-shell">
+      <div class="iss-team-hero">
+        <div class="iss-team-hero-media" id="iss-team-hero-media"></div>
+        <div class="iss-team-hero-copy">
+          <p class="iss-eyebrow">Team hub</p>
+          <h2 class="iss-section-title">${selected.toUpperCase()}</h2>
+          <p class="iss-section-copy">Roster, recent form, and imported team stat panels with stronger fallback handling.</p>
+          <div class="iss-team-meta-row">
+            <span class="iss-meta-chip">Record: ${record.wins}-${record.losses}</span>
+            <span class="iss-meta-chip">Last 5: ${record.lastFive.join(' · ') || '—'}</span>
           </div>
         </div>
-      </div></div>
+      </div>
 
-      <div class="grid-2 roster-layout">
-        <div class="panel"><div class="panel-body">
-          <div class="subsection-title-row"><h3>Roster</h3><span class="muted">${roster.length} players</span></div>
-          ${roster.length ? `
-            <div class="card-list compact-gap">
+      <div class="iss-toolbar">
+        <label class="iss-field iss-field--wide">
+          <span>Team</span>
+          <select id="iss-team-select">
+            ${teamIds.map(teamId => `<option value="${teamId}" ${teamId === selected ? 'selected' : ''}>${teamId.toUpperCase()}</option>`).join('')}
+          </select>
+        </label>
+      </div>
+
+      <div class="iss-split-layout">
+        <div class="iss-split-main">
+          <section class="iss-panel">
+            <div class="iss-panel-head">
+              <h3>Roster</h3>
+              <p>${roster.length} players</p>
+            </div>
+            <div class="iss-card-grid iss-card-grid--roster">
               ${roster.map(player => `
-                <div class="player-card team-roster-card">
-                  <img class="player-photo" src="${playerImagePath(selected, playerSlug(player))}" data-fallbacks="${playerImageCandidates(selected, playerSlug(player)).slice(1).concat(teamLogoCandidates(selected)).join(',')}" alt="${playerName(player)}" />
-                  <div>
-                    <strong>${playerName(player)}</strong>
-                    <div class="muted">${safe(player.role || player.position || 'Active roster')}</div>
+                <article class="iss-roster-card">
+                  <div class="iss-roster-media" data-roster-player="${player.id ?? player.tag ?? player.name}"></div>
+                  <div class="iss-roster-copy">
+                    <h4>${player.tag || player.name || 'Unknown player'}</h4>
+                    <p>${selected.toUpperCase()}</p>
                   </div>
-                </div>
+                </article>
+              `).join('') || '<p class="iss-empty-copy">No roster data found for this team yet.</p>'}
+            </div>
+          </section>
+
+          <section class="iss-panel">
+            <div class="iss-panel-head">
+              <h3>Imported team stat panels</h3>
+              <p>Rendered from your assets folder</p>
+            </div>
+            <div class="iss-card-grid iss-card-grid--team-stats">
+              ${TEAM_STAT_PANELS.map(panel => `
+                <article class="iss-stat-image-card">
+                  <div class="iss-stat-image-head">
+                    <h4>${panel.label}</h4>
+                  </div>
+                  <div class="iss-stat-image-wrap" data-team-stat="${panel.key}"></div>
+                </article>
               `).join('')}
             </div>
-          ` : emptyState('No roster rows matched this team yet.')}
-        </div></div>
-
-        <div class="panel"><div class="panel-body">
-          <div class="subsection-title-row"><h3>Imported overview</h3><span class="muted">From team-stats.json</span></div>
-          ${rowTable('Overall', overviewRows, [
-            { key: 'player', label: 'Player' },
-            { key: 'kd', label: 'K/D' },
-            { key: 'slayerRating', label: 'Slayer' },
-            { key: 'respawnKd', label: 'Respawn K/D' },
-            { key: 'bpRating', label: 'BP Rating' }
-          ])}
-        </div></div>
-      </div>
-
-      <div class="grid-3 compact-stats">
-        <div class="panel"><div class="panel-body"><div class="subsection-title-row"><h3>Hardpoint</h3></div>${rowTable('Hardpoint', hardpointRows, [
-          { key: 'player', label: 'Player' }, { key: 'kd', label: 'K/D' }, { key: 'k10m', label: 'K/10m' }, { key: 'dmg10m', label: 'DMG/10m' }
-        ])}</div></div>
-        <div class="panel"><div class="panel-body"><div class="subsection-title-row"><h3>Search & Destroy</h3></div>${rowTable('S&D', sndRows, [
-          { key: 'player', label: 'Player' }, { key: 'kd', label: 'K/D' }, { key: 'kRound', label: 'K/Round' }, { key: 'dmgRound', label: 'DMG/Round' }
-        ])}</div></div>
-        <div class="panel"><div class="panel-body"><div class="subsection-title-row"><h3>Overload</h3></div>${rowTable('Overload', overloadRows, [
-          { key: 'player', label: 'Player' }, { key: 'kd', label: 'K/D' }, { key: 'k10m', label: 'K/10m' }, { key: 'goals10m', label: 'Goals/10m' }
-        ])}</div></div>
-      </div>
-
-      <div class="panel"><div class="panel-body">
-        <div class="subsection-title-row"><h3>Team stat images</h3><span class="muted">Public asset hooks</span></div>
-        <div class="team-stats-grid expanded">
-          ${[
-            ['overall', 'Overall'],
-            ['hardpoint', 'Hardpoint'],
-            ['search-and-destroy', 'Search & Destroy'],
-            ['overload', 'Overload'],
-            ['map-records', 'Map Records'],
-            ['picks-vetoes', 'Picks / Vetoes']
-          ].map(([key, label]) => `
-            <div class="image-panel">
-              <div class="label">${label}</div>
-              <img src="${teamStatPath(selected, key)}" data-fallbacks="${teamStatCandidates(selected, key).slice(1).join(',')}" alt="${titleizeSlug(selected)} ${label}" />
-            </div>
-          `).join('')}
+          </section>
         </div>
-      </div></div>
-    </div>
+
+        <aside class="iss-split-side">
+          <section class="iss-panel">
+            <div class="iss-panel-head">
+              <h3>Quick snapshot</h3>
+            </div>
+            <div class="iss-mini-stat-grid">
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Wins</span><strong class="iss-mini-stat-value">${record.wins}</strong></div>
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Losses</span><strong class="iss-mini-stat-value">${record.losses}</strong></div>
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Roster size</span><strong class="iss-mini-stat-value">${roster.length}</strong></div>
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Recent form</span><strong class="iss-mini-stat-value">${record.lastFive.join(' ') || '—'}</strong></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+    </section>
   `;
 
-  const select = container.querySelector('#team-select');
-  if (select) {
-    select.addEventListener('change', () => {
-      state.currentTeamView = select.value;
-      renderTeams(container, state);
-    });
-  }
+  container.querySelector('#iss-team-hero-media')?.appendChild(
+    createCandidateImg(teamLogoCandidates(selected), `${selected} logo`, 'iss-team-hero-logo')
+  );
+
+  container.querySelectorAll('[data-roster-player]').forEach(node => {
+    const key = node.getAttribute('data-roster-player');
+    const player = roster.find(p => String(p.id ?? p.tag ?? p.name) === key);
+    if (!player) return;
+    node.appendChild(createCandidateImg(playerImageCandidates(selected, player.tag || player.name), `${player.tag || player.name} portrait`, 'iss-roster-img'));
+    node.appendChild(createCandidateImg(teamLogoCandidates(selected), `${selected} logo`, 'iss-roster-logo'));
+  });
+
+  container.querySelectorAll('[data-team-stat]').forEach(node => {
+    const stat = node.getAttribute('data-team-stat');
+    node.appendChild(createCandidateImg(teamStatCandidates(selected, stat), `${selected} ${stat}`, 'iss-team-stat-img'));
+  });
+
+  container.querySelector('#iss-team-select')?.addEventListener('change', (e) => {
+    state.ui.selectedTeam = e.target.value;
+    renderTeamsSection({ state, data });
+  });
 }
