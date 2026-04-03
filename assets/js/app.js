@@ -17,6 +17,32 @@ function sectionHeader(title, desc='', extra=''){
 function teamChip(id){
   return `<span class="team-chip">${img(teamLogoPath(id),'mini-logo',teamName(id))}<span>${teamName(id)}</span></span>`;
 }
+
+const TEAM_COLORS = {
+  optic: { accent: '#b3dc39', glow: 'rgba(150,255,54,.26)', glowSoft: 'rgba(150,255,54,.14)', bright: '#00ff7f' },
+  faze: { accent: '#ff5151', glow: 'rgba(255,81,81,.24)', glowSoft: 'rgba(255,81,81,.12)', bright: '#ff8f8f' },
+  ravens: { accent: '#a86cff', glow: 'rgba(168,108,255,.24)', glowSoft: 'rgba(168,108,255,.12)', bright: '#d3b5ff' },
+  g2: { accent: '#ff4df1', glow: 'rgba(255,77,241,.22)', glowSoft: 'rgba(255,77,241,.11)', bright: '#ff9cf7' },
+  c9: { accent: '#67d1ff', glow: 'rgba(103,209,255,.22)', glowSoft: 'rgba(103,209,255,.11)', bright: '#9ae3ff' },
+  lat: { accent: '#ff3e3e', glow: 'rgba(255,62,62,.22)', glowSoft: 'rgba(255,62,62,.11)', bright: '#ff9c9c' },
+  miami: { accent: '#00c27b', glow: 'rgba(0,194,123,.24)', glowSoft: 'rgba(0,194,123,.12)', bright: '#5effbb' },
+  toronto: { accent: '#8d7cff', glow: 'rgba(141,124,255,.24)', glowSoft: 'rgba(141,124,255,.12)', bright: '#c6bcff' },
+  boston: { accent: '#74ff7a', glow: 'rgba(116,255,122,.24)', glowSoft: 'rgba(116,255,122,.12)', bright: '#a8ffac' },
+  pgm: { accent: '#45ff9f', glow: 'rgba(69,255,159,.24)', glowSoft: 'rgba(69,255,159,.12)', bright: '#9affc6' },
+  falcons: { accent: '#ff9b2f', glow: 'rgba(255,155,47,.24)', glowSoft: 'rgba(255,155,47,.12)', bright: '#ffc27c' },
+  vancouver: { accent: '#2dd6ff', glow: 'rgba(45,214,255,.24)', glowSoft: 'rgba(45,214,255,.12)', bright: '#9bf0ff' }
+};
+
+function teamTheme(teamId){
+  return TEAM_COLORS[teamId] || { accent: '#49d17d', glow: 'rgba(73,209,125,.22)', glowSoft: 'rgba(73,209,125,.11)', bright: '#7dffb7' };
+}
+
+function prettyLabel(key){
+  const map = { kd:'K/D', ntkPct:'NTK%', bpRating:'BP Rating', slayerRating:'Slayer Rtg', respawnKd:'Respawn KD', k10m:'K/10m', dmg10m:'DMG/10m', obj10m:'OBJ/10m', eng10m:'Eng/10m', kRound:'K/Round', dmgRound:'DMG/Round', goals10m:'Goals/10m', hpW:'HP W', hpL:'HP L', sndW:'S&D W', sndL:'S&D L', ovlW:'OVL W', ovlL:'OVL L', hpPick:'HP Pick', hpVeto:'HP Veto', sndPick:'S&D Pick', sndVeto:'S&D Veto', ovlPick:'OVL Pick', ovlVeto:'OVL Veto' };
+  return map[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, s=>s.toUpperCase());
+}
+
+function renderValue(val){ return val == null || val === '' ? '—' : val; }
 function playerCard(player){
   return `<article class="card player-card">
     <div class="top">
@@ -211,404 +237,165 @@ function renderPlayers(){
 
 function renderTeams(){
   const teamId = state.ui.selectedTeam;
-  const teamStats = state.data.teamStats[teamId];
-  const roster = state.data.playersByTeam[teamId] || [];
-  const rec = state.data.teamRecords[teamId] || {wins:0,losses:0,mapWins:0,mapLosses:0,recent:[]};
-  $('#teams').innerHTML = `
-    ${sectionHeader('Teams','Roster view, records, and imported team stat images.',
-      `<div class="controls">
-        <select id="teamSelect">${Object.keys(APP_CONFIG.teamMeta).map(id=>`<option value="${id}" ${id===teamId?'selected':''}>${teamName(id)}</option>`).join('')}</select>
-      </div>`)}
-    <div class="hero">
-      <article class="card team-hero">
-        ${img(teamLogoPath(teamId),'brand-logo',teamName(teamId))}
-        <div>
-          <h3 style="font-size:1.9rem">${teamName(teamId)}</h3>
-          <div class="muted">Series ${rec.wins}-${rec.losses} · Maps ${rec.mapWins}-${rec.mapLosses}</div>
-          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
-            <span class="pill">Points ${state.data.teamPoints[teamId] || 0}</span>
-            <span class="pill">Recent ${rec.recent.join(' ') || '—'}</span>
-            <span class="pill">Confidence ${teamStats?.confidence || '—'}</span>
-          </div>
-        </div>
-      </article>
-      <article class="card">
-        <h3>Imported notes</h3>
-        <p class="muted">${teamStats?.notes || 'No parser notes available.'}</p>
-      </article>
-    </div>
-    <div class="grid cols-2">
-      <article class="card">
-        <h3>Roster</h3>
-        <div class="roster-grid">
-          ${roster.map(p => `<div class="card" style="padding:14px">
-            <div class="top" style="display:flex;gap:12px;align-items:center">
-              ${img(playerImagePath(teamId,p.name),'player-avatar',p.name)}
-              <div><strong>${p.name}</strong><div class="muted">${p.active ? 'Active' : 'Inactive'}</div></div>
-            </div>
-          </div>`).join('')}
-        </div>
-      </article>
-      <article class="card">
-        <h3>Overall player metrics</h3>
-        <div class="table-wrap">
-          <table><thead><tr><th>Player</th><th>KD</th><th>Slayer</th><th>Respawn KD</th><th>NTK%</th><th>BP</th></tr></thead>
-          <tbody>
-            ${(teamStats?.overall?.players || []).map(p => `<tr><td>${p.player}</td><td>${p.kd}</td><td>${p.slayerRating}</td><td>${p.respawnKd}</td><td>${p.ntkPct}</td><td>${p.bpRating}</td></tr>`).join('')}
-          </tbody></table>
-        </div>
-      </article>
-    </div>
-    <div class="grid cols-3" style="margin-top:18px">
-      ${['overall','hardpoint','search-and-destroy','overload','map-records','picks-vetoes'].map(key => `<article class="card">
-        <h3>${key.replace(/-/g,' ')}</h3>
-        ${img(teamStatPath(teamId,key),'',`${teamName(teamId)} ${key}`)}
-      </article>`).join('')}
-    </div>`;
-  $('#teamSelect')?.addEventListener('change', e => { setUI('selectedTeam', e.target.value); renderTeams(); renderBetting(); renderMatchup(); });
-}
+  const teamIdNorm = teamId;
+  const theme = teamTheme(teamIdNorm);
+  const teamStats = state.data.teamStats[teamIdNorm] || {};
+  const roster = state.data.playersByTeam[teamIdNorm] || [];
+  const rec = state.data.teamRecords[teamIdNorm] || {wins:0,losses:0,mapWins:0,mapLosses:0,recent:[]};
+  const standings = getStandings();
+  const standingIndex = Math.max(1, standings.findIndex(r=>r.teamId===teamIdNorm)+1);
+  const activeTab = state.ui.teamTab || 'overall';
+  const tabDefs = [
+    ['overall','📊 Overall'],
+    ['hardpoint','🏳️ Hardpoint'],
+    ['snd','💣 S&D'],
+    ['overload','🎯 Overload'],
+    ['mapRecords','🗺️ Maps'],
+    ['picksVetos','🔀 Picks/Vetoes']
+  ];
 
+  const panel = teamStats[activeTab] || {};
+  const rows = panel.players || panel.maps || [];
+  const columns = rows.length ? Object.keys(rows[0]) : [];
+  const logoRows = Object.keys(APP_CONFIG.teamMeta).map(id => `
+    <button class="iss-mini-logo-btn ${id===teamIdNorm?'active':''}" data-team-logo-btn="${id}" aria-label="${teamName(id)}">
+      <img src="${teamLogoPath(id)}" alt="${teamName(id)}" onerror="this.style.display='none'">
+    </button>`).join('');
+
+  const rowHtml = roster.map(p => `
+    <article class="iss-roster-card">
+      <img class="iss-roster-backdrop" src="${teamLogoPath(teamIdNorm)}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+      <img class="iss-roster-photo" src="${playerImagePath(teamIdNorm, p.name)}" alt="${p.name}" onerror="this.onerror=null;this.src='./assets/img/branding/logo.png';this.style.objectFit='contain';this.style.padding='30px'">
+      <div class="iss-roster-name">${p.name}</div>
+    </article>`).join('');
+
+  const tableHtml = rows.length ? `
+    <div class="table-wrap">
+      <table class="iss-team-table">
+        <thead><tr>${columns.map(c=>`<th>${prettyLabel(c)}</th>`).join('')}</tr></thead>
+        <tbody>
+          ${rows.map(row => {
+            const numericKeys = columns.filter(c => c !== 'player' && c !== 'map');
+            const maxKey = numericKeys.reduce((best, key) => {
+              const v = Number(row[key]);
+              const b = Number(row[best]);
+              if (!Number.isFinite(v)) return best;
+              if (!Number.isFinite(b)) return key;
+              return v > b ? key : best;
+            }, numericKeys[0]);
+            return `<tr>${columns.map(c => {
+              const cls = (c === 'player' || c === 'map') ? 'iss-player-col' : (c === maxKey ? 'iss-highlight' : '');
+              return `<td class="${cls}">${renderValue(row[c])}</td>`;
+            }).join('')}</tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>` : `<div class="empty">No parsed data found for this tab yet.</div><div style="margin-top:12px">${img(teamStatPath(teamIdNorm, activeTab.replace(/[A-Z]/g,m=>'-'+m.toLowerCase())),'',`${teamName(teamIdNorm)} ${activeTab}`)}</div>`;
+
+  $('#teams').innerHTML = `
+    <div class="iss-team-page" style="--team-accent:${theme.accent};--team-glow:${theme.glow};--team-glow-soft:${theme.glowSoft};--team-bright:${theme.bright};">
+      ${sectionHeader('Teams','')}
+      <div class="iss-team-strip">
+        <div class="iss-team-strip-left">
+          <img class="iss-team-badge" src="${teamLogoPath(teamIdNorm)}" alt="${teamName(teamIdNorm)}" onerror="this.style.display='none'">
+          <select id="teamSelect" class="iss-team-select">${Object.keys(APP_CONFIG.teamMeta).map(id=>`<option value="${id}" ${id===teamIdNorm?'selected':''}>${teamName(id)}</option>`).join('')}</select>
+        </div>
+        <div class="iss-team-logo-row">${logoRows}</div>
+      </div>
+
+      <section class="iss-team-shell">
+        <div class="iss-team-hero-wrap">
+          <div class="iss-team-hero">
+            <div class="iss-team-hero-main">
+              <img class="iss-team-hero-logo" src="${teamLogoPath(teamIdNorm)}" alt="${teamName(teamIdNorm)}" onerror="this.style.display='none'">
+              <div>
+                <h2 class="iss-team-title">${teamName(teamIdNorm)}</h2>
+                <div class="iss-team-sub">${APP_CONFIG.teamMeta[teamIdNorm]?.abbr || teamIdNorm.toUpperCase()} · Season 2026</div>
+              </div>
+            </div>
+            <div class="iss-team-summary">
+              <div class="iss-summary-box"><strong>${rec.wins}-${rec.losses}</strong><span>Series</span></div>
+              <div class="iss-summary-box"><strong>${rec.mapWins}-${rec.mapLosses}</strong><span>Maps</span></div>
+              <div class="iss-summary-box"><strong>#${standingIndex}</strong><span>Rank</span></div>
+              <div class="iss-summary-box"><strong>${state.data.teamPoints[teamIdNorm] || 0}</strong><span>CDL Pts</span></div>
+              <div class="iss-summary-box iss-summary-box--button">Show Inactive</div>
+            </div>
+          </div>
+
+          <div class="iss-roster-grid">${rowHtml || '<div class="empty">No roster found.</div>'}</div>
+        </div>
+      </section>
+
+      <div class="iss-team-tabs">
+        ${tabDefs.map(([key,label]) => `<button class="iss-tab-btn ${key===activeTab?'active':''}" data-team-tab="${key}">${label}</button>`).join('')}
+      </div>
+
+      <section class="iss-team-table-shell">
+        <div class="iss-table-title">
+          <h3>${prettyLabel(activeTab)} Stats</h3>
+          <div class="iss-parsed-note">Parsed ${teamStats.parsedAt ? new Date(teamStats.parsedAt).toLocaleString() : '—'} · <a href="#" style="color:#66b7ff">Re-parse →</a></div>
+        </div>
+        ${tableHtml}
+      </section>
+
+      <div class="iss-bottom-tabs">
+        <span class="iss-bottom-pill">👥 Overview</span>
+        <span class="iss-bottom-pill">📈 Splits</span>
+        <span class="iss-bottom-pill">📋 Matches</span>
+        <span class="iss-bottom-pill">🧾 Parse Stats</span>
+      </div>
+    </div>`;
+
+  $('#teamSelect')?.addEventListener('change', e => { setUI('selectedTeam', e.target.value); renderTeams(); renderBetting(); renderMatchup(); });
+  document.querySelectorAll('[data-team-logo-btn]').forEach(btn => btn.addEventListener('click', () => { setUI('selectedTeam', btn.dataset.teamLogoBtn); renderTeams(); renderBetting(); renderMatchup(); }));
+  document.querySelectorAll('[data-team-tab]').forEach(btn => btn.addEventListener('click', () => { setUI('teamTab', btn.dataset.teamTab); renderTeams(); }));
+}
 
 function recentFormScore(teamId){
   const rec = state.data.teamRecords[teamId] || {recent:[]};
   return (rec.recent || []).reduce((acc,r)=>acc + (r==='W' ? 1 : -1), 0);
 }
-
-function eventLabel(eventId=''){
-  const labels = {
-    M1Q: 'Major 1 Qualifiers',
-    M1T: 'Major 1 Tournament',
-    M2Q: 'Major 2 Qualifiers',
-    M2T: 'Major 2 Tournament'
-  };
-  return labels[eventId] || eventId || 'Unknown Event';
-}
-function splitLabel(split='full'){
-  const labels = {
-    full: 'Full Season',
-    last10: 'Last 10',
-    last5: 'Last 5',
-    m1q: 'Major 1 Qualifiers',
-    m1t: 'Major 1 Tournament',
-    m2q: 'Major 2 Qualifiers',
-    m2t: 'Major 2 Tournament'
-  };
-  return labels[split] || split;
-}
-function median(nums){
-  const values = nums.filter(v => Number.isFinite(v)).sort((a,b)=>a-b);
-  if(!values.length) return null;
-  const mid = Math.floor(values.length/2);
-  return values.length % 2 ? values[mid] : (values[mid-1]+values[mid])/2;
-}
-function buildPlayerSeriesLogs(playerId){
-  const playerRows = (state.data.playerStats || []).filter(row => row.playerId === playerId);
-  const mapById = Object.fromEntries((state.data.maps || []).map(map => [map.id, map]));
-  const matchById = Object.fromEntries((state.data.matches || []).map(match => [match.id, match]));
-  const grouped = {};
-  for(const row of playerRows){
-    const map = mapById[row.mapId];
-    if(!map) continue;
-    const match = matchById[map.matchId];
-    if(!match) continue;
-    const bucket = grouped[match.id] ||= {
-      match,
-      maps: [],
-      kills: 0,
-      deaths: 0,
-      damage: 0,
-      teamId: row.teamId,
-      playerId
-    };
-    bucket.maps.push({ ...row, map });
-    bucket.kills += Number(row.kills || 0);
-    bucket.deaths += Number(row.deaths || 0);
-    bucket.damage += Number(row.damage || 0);
-  }
-  return Object.values(grouped).map(series => {
-    series.maps.sort((a,b)=>(a.map.mapNum||0)-(b.map.mapNum||0));
-    const { match } = series;
-    const oppTeamId = match.team1Id === series.teamId ? match.team2Id : match.team1Id;
-    const mapSequence = series.maps.map(entry => `M${entry.map.mapNum} ${entry.map.mapName}`).join(' · ');
-    const maps13 = series.maps.filter(entry => Number(entry.map.mapNum) <= 3);
-    return {
-      ...series,
-      date: match.date,
-      time: match.time,
-      eventId: match.eventId,
-      eventLabel: eventLabel(match.eventId),
-      format: match.format,
-      ts: match.ts || 0,
-      opponentTeamId: oppTeamId,
-      seriesKD: safeKD(series.kills, series.deaths),
-      maps13Kills: maps13.reduce((sum, entry) => sum + Number(entry.kills || 0), 0),
-      maps13Deaths: maps13.reduce((sum, entry) => sum + Number(entry.deaths || 0), 0),
-      maps13KD: safeKD(
-        maps13.reduce((sum, entry) => sum + Number(entry.kills || 0), 0),
-        maps13.reduce((sum, entry) => sum + Number(entry.deaths || 0), 0)
-      ),
-      mapSequence
-    };
-  }).sort((a,b)=>b.ts-a.ts);
-}
-function filterSeriesBySplit(seriesLogs, split){
-  if(split === 'last5') return seriesLogs.slice(0,5);
-  if(split === 'last10') return seriesLogs.slice(0,10);
-  if(['m1q','m1t','m2q','m2t'].includes(split)) return seriesLogs.filter(log => String(log.eventId || '').toLowerCase() === split);
-  return seriesLogs;
-}
-function marketTabs(statType='kills'){
-  if(statType === 'kd'){
-    return [
-      { key: 'series-kd', label: 'Series K/D' },
-      { key: 'maps13-kd', label: 'Maps 1-3 K/D' },
-      { key: 'map1-kd', label: 'Map 1 K/D' },
-      { key: 'map2-kd', label: 'Map 2 K/D' },
-      { key: 'map3-kd', label: 'Map 3 K/D' }
-    ];
-  }
-  return [
-    { key: 'maps13-kills', label: 'Maps 1-3 Kills' },
-    { key: 'series-kd', label: 'Series K/D' },
-    { key: 'map1-kills', label: 'Map 1 Kills' },
-    { key: 'map2-kills', label: 'Map 2 Kills' },
-    { key: 'map3-kills', label: 'Map 3 Kills' }
-  ];
-}
-function marketValue(series, marketKey){
-  if(marketKey === 'series-kd') return safeKD(series.kills, series.deaths);
-  if(marketKey === 'maps13-kd') return series.maps13KD;
-  if(marketKey === 'maps13-kills') return series.maps13Kills;
-  const mapNum = Number((marketKey.match(/map(\d+)/) || [])[1] || 0);
-  const entry = series.maps.find(item => Number(item.map.mapNum) === mapNum);
-  if(!entry) return null;
-  if(marketKey.endsWith('-kd')) return safeKD(entry.kills, entry.deaths);
-  return Number(entry.kills || 0);
-}
-function marketLineLabel(value, marketKey){
-  if(value == null) return '—';
-  return marketKey.includes('kd') ? fmtNum(value,2) : fmtNum(value,0);
-}
 function renderBetting(){
-  const teamOptions = Object.keys(APP_CONFIG.teamMeta);
-  const selectedTeam = state.ui.bettingTeam || state.ui.selectedTeam || 'optic';
-  let roster = (state.data.playersByTeam[selectedTeam] || []).slice();
-  const showInactive = state.ui.bettingRosterScope === 'all';
-  if(!showInactive) roster = roster.filter(player => player.active !== false);
-  if(!roster.length) roster = (state.data.playersByTeam[selectedTeam] || []).slice();
-  const selectedPlayerId = roster.find(player => player.id === state.ui.bettingPlayerId)?.id || roster[0]?.id || '';
-  const selectedPlayer = state.data.playerById[selectedPlayerId] || null;
-  const selectedSplit = state.ui.bettingSplit || 'full';
-  const selectedLabStat = state.ui.bettingLabStat || 'kills';
-  const tabs = marketTabs(selectedLabStat);
-  const selectedMarket = tabs.find(tab => tab.key === state.ui.bettingMarket)?.key || tabs[0]?.key || 'maps13-kills';
-  const lineValue = state.ui.bettingLine ?? '';
-  const selectedMode = state.ui.bettingMode || 'all';
-  const selectedMapName = state.ui.bettingMapName || 'all';
-
-  const playerSeries = selectedPlayerId ? buildPlayerSeriesLogs(selectedPlayerId) : [];
-  const filteredSeries = filterSeriesBySplit(playerSeries, selectedSplit);
-  const marketLogs = filteredSeries
-    .map(series => ({ ...series, value: marketValue(series, selectedMarket) }))
-    .filter(entry => entry.value != null);
-  const recentMarketLogs = marketLogs.slice(0,5);
-  const values = marketLogs.map(entry => Number(entry.value)).filter(Number.isFinite);
-  const lineNumber = lineValue !== '' ? Number(lineValue) : null;
-  const hitCount = Number.isFinite(lineNumber)
-    ? marketLogs.filter(entry => Number(entry.value) >= lineNumber).length
-    : null;
-
-  const mapRows = filteredSeries.flatMap(series => series.maps.map(entry => ({
-    ...entry,
-    series,
-    statValue: selectedLabStat === 'kd' ? safeKD(entry.kills, entry.deaths) : Number(entry.kills || 0),
-    mode: entry.map.mode,
-    mapName: entry.map.mapName,
-    mapNum: entry.map.mapNum,
-    opponentTeamId: series.opponentTeamId,
-    eventLabel: series.eventLabel,
-    date: series.date,
-    format: series.format
-  })));
-  const modeOptions = ['all', ...new Set(mapRows.map(row => row.mode).filter(Boolean))];
-  const mapOptions = ['all', ...new Set(mapRows.map(row => row.mapName).filter(Boolean))];
-  const labRows = mapRows.filter(row => (selectedMode === 'all' || row.mode === selectedMode) && (selectedMapName === 'all' || row.mapName === selectedMapName));
-  const labValues = labRows.map(row => Number(row.statValue)).filter(Number.isFinite);
-
-  const playerLabel = selectedPlayer ? `${teamName(selectedPlayer.teamId)} · ${splitLabel(selectedSplit)} · ${filteredSeries.length} series logs` : 'Select a player';
-  const infoBanner = 'Track player props by series or map. Use the line box for hit rate, then drill into specific map + mode filters below.';
-
+  const a = state.ui.selectedTeam;
+  const b = state.ui.selectedTeamB;
+  const recA = state.data.teamRecords[a] || {wins:0,losses:0,recent:[]};
+  const recB = state.data.teamRecords[b] || {wins:0,losses:0,recent:[]};
+  const coeff = state.data.bpr || {};
+  const overallA = Number(state.data.teamStats[a]?.overall?.players?.[0]?.bpRating || 1);
+  const overallB = Number(state.data.teamStats[b]?.overall?.players?.[0]?.bpRating || 1);
+  const scoreA = (state.data.teamPoints[a] || 0) + recentFormScore(a)*6 + overallA*25;
+  const scoreB = (state.data.teamPoints[b] || 0) + recentFormScore(b)*6 + overallB*25;
+  const lean = scoreA === scoreB ? 'Even' : scoreA > scoreB ? teamName(a) : teamName(b);
   $('#betting').innerHTML = `
-    ${sectionHeader('Betting Lab','Player prop research workstation built around kills and K/D.')} 
-    <div class="notice betting-banner">🎯 ${infoBanner}</div>
-
-    <article class="card betting-shell">
-      <div class="betting-control-grid">
-        <label class="betting-field">
-          <span>Team</span>
-          <select id="betTeamSelect">${teamOptions.map(teamId => `<option value="${teamId}" ${teamId===selectedTeam?'selected':''}>${teamName(teamId)}</option>`).join('')}</select>
-        </label>
-        <label class="betting-field">
-          <span>Player</span>
-          <select id="betPlayerSelect">${roster.map(player => `<option value="${player.id}" ${player.id===selectedPlayerId?'selected':''}>${player.name}</option>`).join('')}</select>
-        </label>
-        <label class="betting-field">
-          <span>Split</span>
-          <select id="betSplitSelect">
-            ${[
-              ['full','Full Season'],['last10','Last 10'],['last5','Last 5'],['m2q','Major 2 Qualifiers'],['m2t','Major 2 Tournament'],['m1q','Major 1 Qualifiers'],['m1t','Major 1 Tournament']
-            ].map(([value,label]) => `<option value="${value}" ${value===selectedSplit?'selected':''}>${label}</option>`).join('')}
-          </select>
-        </label>
-        <label class="betting-field">
-          <span>Line (optional)</span>
-          <input id="betLineInput" type="number" step="${selectedMarket.includes('kd') ? '0.01' : '1'}" value="${lineValue}">
-        </label>
-        <label class="betting-field betting-field--wide">
-          <span>Map + Mode Stat</span>
-          <select id="betLabStatSelect">
-            <option value="kills" ${selectedLabStat==='kills'?'selected':''}>Kills</option>
-            <option value="kd" ${selectedLabStat==='kd'?'selected':''}>K/D</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="betting-player-strip">
-        <div class="betting-player-main">
-          <div class="betting-player-media">
-            ${selectedPlayer ? img(playerImagePath(selectedPlayer.teamId, selectedPlayer.name),'betting-player-photo',selectedPlayer.name) : ''}
-            ${selectedPlayer ? img(teamLogoPath(selectedPlayer.teamId),'betting-player-logo',teamName(selectedPlayer.teamId)) : ''}
-          </div>
-          <div class="betting-player-copy">
-            <div class="muted">${selectedPlayer ? teamName(selectedPlayer.teamId) : 'No Team Selected'}</div>
-            <h3>${selectedPlayer ? selectedPlayer.name : 'Select a player'}</h3>
-            <p class="muted">${playerLabel}</p>
-          </div>
+    ${sectionHeader('Betting Lab','Public-facing lean tools using team form, points, and imported coefficient context.',
+      `<div class="controls">
+        <select id="betTeamA">${Object.keys(APP_CONFIG.teamMeta).map(id=>`<option value="${id}" ${id===a?'selected':''}>Team A · ${teamName(id)}</option>`).join('')}</select>
+        <select id="betTeamB">${Object.keys(APP_CONFIG.teamMeta).map(id=>`<option value="${id}" ${id===b?'selected':''}>Team B · ${teamName(id)}</option>`).join('')}</select>
+      </div>`)}
+    <div class="grid cols-3">
+      <article class="card kpi"><span class="label">Model lean</span><span class="value" style="font-size:1.4rem">${lean}</span></article>
+      <article class="card kpi"><span class="label">${teamName(a)} score</span><span class="value">${fmtNum(scoreA,1)}</span></article>
+      <article class="card kpi"><span class="label">${teamName(b)} score</span><span class="value">${fmtNum(scoreB,1)}</span></article>
+    </div>
+    <div class="grid cols-2" style="margin-top:18px">
+      <article class="card">
+        <h3>Coefficient snapshot</h3>
+        <div class="stat-list">
+          ${Object.entries(coeff).map(([mode,obj]) => `<div class="stat-row"><span>${modeLabel(mode)}</span><strong>Kill ${obj.killWeight ?? '—'} · Assist ${obj.assistWeight ?? '—'} · Damage ${obj.damageWeight ?? '—'}</strong></div>`).join('')}
         </div>
-        <button class="pill betting-roster-btn" id="betRosterToggle">${showInactive ? 'All Players' : 'Active Roster'}</button>
-      </div>
-    </article>
-
-    <article class="card betting-shell">
-      <div class="betting-panel-head">
-        <div>
-          <div class="eyebrow">PrizePicks Market Tracker</div>
-          <h3>Quick-read tracker for recent player prop results</h3>
+      </article>
+      <article class="card">
+        <h3>Recent form</h3>
+        <div class="stat-list">
+          <div class="stat-row"><span>${teamName(a)}</span><strong>${recA.recent?.join(' ') || '—'} · ${recA.wins}-${recA.losses}</strong></div>
+          <div class="stat-row"><span>${teamName(b)}</span><strong>${recB.recent?.join(' ') || '—'} · ${recB.wins}-${recB.losses}</strong></div>
         </div>
-        <p class="muted">Recent samples use the latest ${Math.min(5, marketLogs.length)} matching performances.</p>
-      </div>
-      <div class="betting-tab-row">
-        ${tabs.map(tab => `<button class="betting-tab ${tab.key===selectedMarket?'active':''}" data-market="${tab.key}">${tab.label}</button>`).join('')}
-      </div>
-      <div class="grid cols-5 betting-kpi-grid">
-        <article class="card betting-kpi"><span class="label">Samples</span><span class="value">${fmtNum(values.length)}</span></article>
-        <article class="card betting-kpi"><span class="label">Average</span><span class="value">${values.length ? marketLineLabel(values.reduce((sum, value)=>sum+value,0)/values.length, selectedMarket) : '—'}</span></article>
-        <article class="card betting-kpi"><span class="label">Median</span><span class="value">${values.length ? marketLineLabel(median(values), selectedMarket) : '—'}</span></article>
-        <article class="card betting-kpi"><span class="label">Best</span><span class="value">${values.length ? marketLineLabel(Math.max(...values), selectedMarket) : '—'}</span></article>
-        <article class="card betting-kpi"><span class="label">Line Hit Rate</span><span class="value">${hitCount == null ? '—' : `${hitCount}/${marketLogs.length || 0}`}</span></article>
-      </div>
-      <div class="betting-result-grid">
-        ${recentMarketLogs.length ? recentMarketLogs.map(log => {
-          const hit = Number.isFinite(lineNumber) ? Number(log.value) >= lineNumber : null;
-          const resultClass = hit == null ? '' : hit ? 'hit' : 'miss';
-          const titleValue = marketLineLabel(log.value, selectedMarket);
-          const lineSummary = Number.isFinite(lineNumber) ? `${marketLineLabel(log.value, selectedMarket)} / ${marketLineLabel(lineNumber, selectedMarket)}` : 'No line entered';
-          const detailLine = selectedMarket === 'series-kd'
-            ? `${fmtNum(log.kills,0)}K / ${fmtNum(log.deaths,0)}D`
-            : log.mapSequence || '—';
-          return `<article class="betting-result-card ${resultClass}">
-            <div class="betting-result-top">
-              <span class="muted">${fmtDate(log.date)}</span>
-              <strong>${hit == null ? 'LOG' : hit ? 'HIT' : 'MISS'}</strong>
-            </div>
-            <div class="betting-result-value">${titleValue}</div>
-            <div class="betting-result-meta">
-              <div>${tabs.find(tab => tab.key===selectedMarket)?.label || ''} · vs ${teamAbbr(log.opponentTeamId)}</div>
-              <div>${detailLine}</div>
-              <div>${log.eventLabel}</div>
-              <div>${lineSummary}</div>
-            </div>
-          </article>`;
-        }).join('') : '<div class="empty">No matching market logs yet for this player and split.</div>'}
-      </div>
-      <p class="muted betting-note">Line hit rate uses over logic against the number you enter above, just like a prop check.</p>
-    </article>
-
-    <article class="card betting-shell">
-      <div class="betting-panel-head">
-        <div>
-          <div class="eyebrow">Map + Mode Lab</div>
-          <h3>Filter down to exact map pools and mode performance</h3>
-        </div>
-      </div>
-      <div class="betting-control-grid betting-control-grid--lab">
-        <label class="betting-field">
-          <span>Mode</span>
-          <select id="betModeSelect">${modeOptions.map(value => `<option value="${value}" ${value===selectedMode?'selected':''}>${value==='all' ? 'All Modes' : modeLabel(value)}</option>`).join('')}</select>
-        </label>
-        <label class="betting-field">
-          <span>Map</span>
-          <select id="betMapSelect">${mapOptions.map(value => `<option value="${value}" ${value===selectedMapName?'selected':''}>${value==='all' ? 'All Maps' : value}</option>`).join('')}</select>
-        </label>
-        <label class="betting-field">
-          <span>Stat</span>
-          <select id="betLabStatMirror">
-            <option value="kills" ${selectedLabStat==='kills'?'selected':''}>Kills</option>
-            <option value="kd" ${selectedLabStat==='kd'?'selected':''}>K/D</option>
-          </select>
-        </label>
-        <div class="betting-field betting-reset-wrap"><button id="betResetFilters" class="pill betting-reset-btn">Reset Filters</button></div>
-      </div>
-      <div class="grid cols-4 betting-kpi-grid">
-        <article class="card betting-kpi"><span class="label">Map Logs</span><span class="value">${fmtNum(labRows.length)}</span></article>
-        <article class="card betting-kpi"><span class="label">Average</span><span class="value">${labValues.length ? marketLineLabel(labValues.reduce((sum, value)=>sum+value,0)/labValues.length, selectedLabStat==='kd' ? 'series-kd' : 'map1-kills') : '—'}</span></article>
-        <article class="card betting-kpi"><span class="label">Median</span><span class="value">${labValues.length ? marketLineLabel(median(labValues), selectedLabStat==='kd' ? 'series-kd' : 'map1-kills') : '—'}</span></article>
-        <article class="card betting-kpi"><span class="label">Best</span><span class="value">${labValues.length ? marketLineLabel(Math.max(...labValues), selectedLabStat==='kd' ? 'series-kd' : 'map1-kills') : '—'}</span></article>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Date</th><th>Opponent</th><th>Map</th><th>Mode</th><th>Stat</th><th>Event</th></tr></thead>
-          <tbody>
-            ${labRows.length ? labRows.slice(0,40).map(row => `<tr>
-              <td>${fmtDate(row.date)}</td>
-              <td>${teamAbbr(row.opponentTeamId)}</td>
-              <td>Map ${row.mapNum} · ${row.mapName}</td>
-              <td>${modeLabel(row.mode)}</td>
-              <td>${selectedLabStat === 'kd' ? fmtNum(row.statValue,2) : fmtNum(row.statValue,0)}</td>
-              <td>${row.eventLabel}</td>
-            </tr>`).join('') : '<tr><td colspan="6">No map logs match the current filters.</td></tr>'}
-          </tbody>
-        </table>
-      </div>
-    </article>`;
-
-  $('#betTeamSelect')?.addEventListener('change', e => {
-    const nextTeam = e.target.value;
-    const nextRoster = ((state.data.playersByTeam[nextTeam] || []).filter(player => showInactive || player.active !== false));
-    setUI('bettingTeam', nextTeam);
-    setUI('bettingPlayerId', nextRoster[0]?.id || '');
-    renderBetting();
-  });
-  $('#betPlayerSelect')?.addEventListener('change', e => { setUI('bettingPlayerId', e.target.value); renderBetting(); });
-  $('#betSplitSelect')?.addEventListener('change', e => { setUI('bettingSplit', e.target.value); renderBetting(); });
-  $('#betLabStatSelect')?.addEventListener('change', e => { setUI('bettingLabStat', e.target.value); setUI('bettingMarket',''); renderBetting(); });
-  $('#betLabStatMirror')?.addEventListener('change', e => { setUI('bettingLabStat', e.target.value); setUI('bettingMarket',''); renderBetting(); });
-  $('#betLineInput')?.addEventListener('input', e => { setUI('bettingLine', e.target.value); renderBetting(); });
-  $('#betModeSelect')?.addEventListener('change', e => { setUI('bettingMode', e.target.value); renderBetting(); });
-  $('#betMapSelect')?.addEventListener('change', e => { setUI('bettingMapName', e.target.value); renderBetting(); });
-  $('#betResetFilters')?.addEventListener('click', () => {
-    setUI('bettingMode', 'all');
-    setUI('bettingMapName', 'all');
-    renderBetting();
-  });
-  $('#betRosterToggle')?.addEventListener('click', () => {
-    setUI('bettingRosterScope', showInactive ? 'active' : 'all');
-    renderBetting();
-  });
-  document.querySelectorAll('[data-market]').forEach(button => {
-    button.addEventListener('click', () => { setUI('bettingMarket', button.dataset.market); renderBetting(); });
-  });
+      </article>
+    </div>`;
+  $('#betTeamA')?.addEventListener('change', e => { setUI('selectedTeam', e.target.value); renderTeams(); renderBetting(); renderMatchup(); });
+  $('#betTeamB')?.addEventListener('change', e => { setUI('selectedTeamB', e.target.value); renderBetting(); renderMatchup(); });
 }
+
 function renderBrackets(){
   $('#brackets').innerHTML = `
     ${sectionHeader('Brackets','Major event bracket pages and bracket-data summary.')}
