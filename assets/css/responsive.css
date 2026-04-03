@@ -1,64 +1,62 @@
-@media (max-width: 1080px) {
-  .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .grid-3, .grid-2, .team-stats-grid, .betting-grid, .bracket-grid { grid-template-columns: 1fr; }
-}
-@media (max-width: 820px) {
-  .desktop-nav { display: none; }
-  .mobile-nav-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 14px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--panel);
-    color: var(--text);
-  }
-  .site-footer { flex-direction: column; }
-  .panel-header { align-items: start; flex-direction: column; }
-  .panel-actions { width: 100%; }
-}
-@media (max-width: 640px) {
-  .shell-width { width: min(100% - 20px, var(--shell)); }
-  .main-content { padding-top: 18px; }
-  .hero { padding: 20px; }
-  .hero h2 { font-size: 1.55rem; }
-  .small-grid, .link-grid, .grid-4, .grid-3, .compact-stats { grid-template-columns: 1fr; }
-  .player-row {
-    grid-template-columns: 56px 1fr;
-  }
-  .player-row > :last-child {
-    grid-column: 1 / -1;
-  }
-  .team-hero, .betting-team-header {
-    grid-template-columns: 1fr;
-  }
-  .bracket-frame { min-height: 520px; }
-}
+/* Build Step 7 responsive polish */
+
 @media (max-width: 980px) {
-  .player-grid.enhanced,
-  .team-stats-grid.expanded {
+  .team-hero,
+  .player-hero,
+  .compare-row {
     grid-template-columns: 1fr;
   }
-}
-@media (max-width: 820px) {
-  .match-side-meta {
+
+  .section-header {
     align-items: start;
-  }
-  .featured-player-card {
-    grid-template-columns: 1fr;
-  }
-}
-@media (max-width: 640px) {
-  .match-top {
     flex-direction: column;
-    align-items: start;
   }
-  .toolbar-wrap {
+
+  .embed-shell,
+  .embed-shell iframe {
+    min-height: 420px;
+  }
+}
+
+@media (max-width: 700px) {
+  .hero-card,
+  .match-card,
+  .player-card,
+  .team-card,
+  .bet-card,
+  .bracket-card,
+  .compare-card {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .controls-row {
+    flex-direction: column;
+  }
+
+  .controls-row input,
+  .controls-row select,
+  .controls-row button {
     width: 100%;
   }
-  .toolbar-wrap .control,
-  .toolbar-wrap .search-input {
-    width: 100%;
+
+  .stats-grid,
+  .metric-grid,
+  .team-grid,
+  .players-grid,
+  .bet-grid,
+  .bracket-grid,
+  .compare-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-shell th,
+  .table-shell td {
+    padding: 10px 12px;
+  }
+
+  .embed-shell,
+  .embed-shell iframe {
+    min-height: 340px;
   }
 }
