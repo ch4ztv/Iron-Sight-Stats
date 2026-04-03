@@ -1,52 +1,57 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iron Sight Stats</title>
-  <meta name="description" content="CDL stats, standings, matches, teams, betting tools, and brackets.">
-  <link rel="icon" type="image/png" href="./assets/img/branding/logo.png">
-  <link rel="stylesheet" href="./assets/css/app.css">
+  <meta name="description" content="Iron Sight Stats public build" />
+  <link rel="stylesheet" href="./assets/css/app.css" />
+  <link rel="stylesheet" href="./assets/css/layout.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/responsive.css" />
+  <script type="module" src="./assets/js/app.js"></script>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="site-header">
-      <div class="brand-wrap">
-        <img class="brand-logo" src="./assets/img/branding/logo.png" alt="Iron Sight Stats logo">
-        <div>
-          <div class="eyebrow">Public Build</div>
-          <h1>Iron Sight Stats</h1>
-        </div>
+  <div id="app" class="iss-app">
+    <header class="iss-topbar">
+      <div class="iss-banner shell">
+        <a href="#dashboard" class="iss-brand" aria-label="Iron Sight Stats home">
+          <div class="iss-brand-mark">
+            <img src="./assets/img/branding/logo.png" alt="Iron Sight Stats" />
+          </div>
+          <div class="iss-brand-text">
+            <div class="iss-brand-title"><span>IRON SIGHT</span></div>
+            <div class="iss-brand-subtitle">STATS</div>
+          </div>
+        </a>
+
+        <button id="mobile-nav-toggle" class="iss-mobile-toggle" type="button" aria-label="Toggle navigation">
+          ☰
+        </button>
+
+        <nav id="primary-nav" class="iss-nav" aria-label="Primary">
+          <a href="#dashboard" data-route="dashboard">Dashboard</a>
+          <a href="#standings" data-route="standings">Standings</a>
+          <a href="#matches" data-route="matches">Matches</a>
+          <a href="#players" data-route="players">Players</a>
+          <a href="#teams" data-route="teams">Teams</a>
+          <a href="#betting" data-route="betting">Betting Lab</a>
+          <a href="#brackets" data-route="brackets">Brackets</a>
+          <a href="#matchup" data-route="matchup">Matchup</a>
+        </nav>
       </div>
-      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">☰</button>
-      <nav class="site-nav" id="siteNav">
-        <a href="#dashboard">Dashboard</a>
-        <a href="#standings">Standings</a>
-        <a href="#matches">Matches</a>
-        <a href="#players">Players</a>
-        <a href="#teams">Teams</a>
-        <a href="#betting">Betting Lab</a>
-        <a href="#brackets">Brackets</a>
-        <a href="#matchup">Matchup</a>
-      </nav>
     </header>
 
-    <main class="site-main">
-      <section id="dashboard" class="page-section active"></section>
-      <section id="standings" class="page-section"></section>
-      <section id="matches" class="page-section"></section>
-      <section id="players" class="page-section"></section>
-      <section id="teams" class="page-section"></section>
-      <section id="betting" class="page-section"></section>
-      <section id="brackets" class="page-section"></section>
-      <section id="matchup" class="page-section"></section>
+    <main class="iss-main shell">
+      <section id="dashboard-section" class="iss-section"></section>
+      <section id="standings-section" class="iss-section" hidden></section>
+      <section id="matches-section" class="iss-section" hidden></section>
+      <section id="players-section" class="iss-section" hidden></section>
+      <section id="teams-section" class="iss-section" hidden></section>
+      <section id="betting-section" class="iss-section" hidden></section>
+      <section id="brackets-section" class="iss-section" hidden></section>
+      <section id="matchup-section" class="iss-section" hidden></section>
     </main>
-
-    <footer class="site-footer">
-      <span id="footerMeta">Loading data…</span>
-    </footer>
   </div>
-
-  <script type="module" src="./assets/js/app.js"></script>
 </body>
 </html>
