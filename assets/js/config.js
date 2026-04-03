@@ -1,9 +1,6 @@
 export const APP_CONFIG = {
-  appName: 'Iron Sight Stats',
+  sections: ['dashboard','standings','matches','players','teams','betting','brackets','matchup'],
   defaultSection: 'dashboard',
-  sections: [
-    'dashboard','standings','matches','players','teams','betting','brackets','matchup'
-  ],
   dataFiles: {
     meta: './data/meta.json',
     season: './data/season.json',
@@ -12,13 +9,23 @@ export const APP_CONFIG = {
     players: './data/players.json',
     playerStats: './data/player-stats.json',
     points: './data/points.json',
-    bracketData: './data/bracket-data.json',
+    teams: './data/teams.json',
     teamStats: './data/team-stats.json',
-    bprCoefficients: './data/bpr-coefficients.json',
-    manifest: './data/manifest.json'
+    bracketData: './data/bracket-data.json',
+    bpr: './data/bpr-coefficients.json'
   },
-  brackets: [
-    { id: 'major-1', dataKey: 'M1T', label: 'Major 1', href: './brackets/major-1.html' },
-    { id: 'major-2', dataKey: 'M2T', label: 'Major 2', href: './brackets/major-2.html' }
-  ]
+  teamMeta: {
+    boston: {name:'Boston Breach',abbr:'BOS'},
+    ravens: {name:'Carolina Royal Ravens',abbr:'CRR'},
+    c9: {name:'Cloud9 New York',abbr:'C9'},
+    faze: {name:'FaZe Vegas',abbr:'FAZE'},
+    g2: {name:'G2 Minnesota',abbr:'G2'},
+    lat: {name:'Los Angeles Thieves',abbr:'LAT'},
+    miami: {name:'Miami Heretics',abbr:'MIA'},
+    optic: {name:'OpTic Texas',abbr:'OPT'},
+    pgm: {name:'Paris Gentle Mates',abbr:'PGM'},
+    falcons: {name:'Riyadh Falcons',abbr:'RF'},
+    toronto: {name:'Toronto KOI',abbr:'TOR'},
+    vancouver: {name:'Vancouver Surge',abbr:'VAN'}
+  }
 };

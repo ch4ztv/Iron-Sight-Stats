@@ -1,23 +1,15 @@
-const state = {
-  isLoading: false,
-  isReady: false,
-  hasError: false,
+export const state = {
+  data: {},
   currentSection: 'dashboard',
-  mobileNavOpen: false,
-  data: {
-    meta: null,
-    season: null,
-    matches: [],
-    maps: [],
-    players: [],
-    playerStats: [],
-    points: [],
-    bracketData: [],
-    teamStats: [],
-    bprCoefficients: [],
-    manifest: null
+  ui: {
+    selectedTeam: 'optic',
+    selectedTeamB: 'faze',
+    matchFilter: 'all',
+    playerSearch: '',
+    playerSort: 'kd'
   }
 };
-export function getState() { return state; }
-export function patchState(partial) { Object.assign(state, partial); }
-export function setData(key, value) { state.data[key] = value; }
+
+export function setData(next){ state.data = next; }
+export function setSection(section){ state.currentSection = section; }
+export function setUI(key,val){ state.ui[key]=val; }
