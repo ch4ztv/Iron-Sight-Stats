@@ -1,386 +1,170 @@
+import { normalizeTeamId, playerImageCandidates, teamLogoCandidates, teamStatCandidates } from '../asset-paths.js';
 
-import { teamLogoCandidates, playerImageCandidates, teamStatCandidates } from '../asset-paths.js';
+const TEAM_STAT_PANELS = [
+  { key: 'overall', label: 'Overall' },
+  { key: 'hardpoint', label: 'Hardpoint' },
+  { key: 'search-and-destroy', label: 'Search & Destroy' },
+  { key: 'overload', label: 'Overload' },
+  { key: 'map-records', label: 'Map Records' },
+  { key: 'picks-vetoes', label: 'Picks & Vetoes' },
+];
 
-function esc(str='') {
-  return String(str)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
+function createCandidateImg(candidates, alt, className = 'iss-media-img') {
+  const img = document.createElement('img');
+  img.alt = alt;
+  img.className = className;
+  const list = Array.isArray(candidates) ? [...candidates] : [];
+  const fallback = './assets/img/branding/logo.png';
 
-function q(id){ return document.getElementById(id); }
-
-function num(v){
-  if (v === null || v === undefined || v === '') return '—';
-  return String(v);
-}
-
-function imgWithFallback(candidates, cls, alt, extra=''){
-  if (!candidates?.length) {
-    return `<div class="${cls} iss-missing" ${extra}></div>`;
-  }
-  const first = candidates[0];
-  const handler = candidates.slice(1).map(x => `'${x}'`).join(',');
-  return `<img src="${first}" class="${cls}" alt="${esc(alt)}" data-fallbacks="[${handler}]"
-    onerror="(function(img){try{const arr=JSON.parse(img.dataset.fallbacks||'[]');const next=arr.shift();img.dataset.fallbacks=JSON.stringify(arr);if(next){img.src=next;return;}img.style.display='none';const init=img.parentElement?.querySelector('.bp-player-init');if(init)init.style.display='flex';}catch(e){img.style.display='none';}})(this)">`;
-}
-
-function getGlobalData(){
-  const src =
-    window.ISS_DATA ||
-    window.__ISS_DATA__ ||
-    window.appState?.data ||
-    {};
-  const season = src.season || src;
-  return {
-    meta: src.meta || season.meta || {},
-    matches: src.matches || season.matches || [],
-    maps: src.maps || season.maps || [],
-    players: src.players || season.players || [],
-    points: src.points || season.points || [],
-    teamStats: src.teamStats || src['team-stats'] || season.teamStats || season.team_stats || {},
+  const tryNext = () => {
+    const next = list.shift();
+    img.src = next || fallback;
+    img.onerror = () => {
+      img.onerror = null;
+      tryNext();
+    };
   };
+
+  tryNext();
+  return img;
 }
 
-function getTeamsFromData(data){
-  const map = new Map();
-  (data.players || []).forEach(p => {
-    if (!p?.teamId) return;
-    if (!map.has(p.teamId)) {
-      map.set(p.teamId, {
-        id: p.teamId,
-        name: p.teamName || titleize(p.teamId),
-        shortName: p.teamAbbr || (p.teamId || '').toUpperCase(),
-        color: p.teamColor || '#17ff6d',
-      });
-    }
-  });
-  (data.points || []).forEach(row => {
-    if (!row?.teamId) return;
-    if (!map.has(row.teamId)) {
-      map.set(row.teamId, {
-        id: row.teamId,
-        name: row.teamName || titleize(row.teamId),
-        shortName: row.teamAbbr || (row.teamId || '').toUpperCase(),
-        color: row.teamColor || '#17ff6d',
-      });
-    }
-  });
-  return [...map.values()].sort((a,b)=>a.name.localeCompare(b.name));
-}
+function computeRecord(teamId, matches = []) {
+  let wins = 0;
+  let losses = 0;
+  let lastFive = [];
 
-function titleize(value=''){
-  return String(value).split(/[-_\s]+/).map(x => x ? x[0].toUpperCase()+x.slice(1) : '').join(' ');
-}
-
-function rosterForTeam(data, teamId){
-  return (data.players || [])
-    .filter(p => p.teamId === teamId)
-    .sort((a,b) => Number(Boolean(b.active ?? true)) - Number(Boolean(a.active ?? true)) || String(a.name||'').localeCompare(String(b.name||'')));
-}
-
-function summaryForTeam(data, teamId){
-  const matches = (data.matches || []).filter(m => m.team1Id === teamId || m.team2Id === teamId);
-  let seriesW = 0, seriesL = 0, mapW = 0, mapL = 0;
   matches.forEach(match => {
-    const maps = (data.maps || []).filter(mp => mp.matchId === match.id);
-    let t = 0, o = 0;
-    maps.forEach(mp => {
-      if (mp.winner === teamId) { t++; mapW++; }
-      else if (mp.winner) { o++; mapL++; }
-    });
-    if (t > o) seriesW++;
-    if (o > t) seriesL++;
+    if (![match.team1Id, match.team2Id].includes(teamId)) return;
+    if (!Number.isFinite(Number(match.seriesScore1)) || !Number.isFinite(Number(match.seriesScore2))) return;
+
+    const isTeam1 = match.team1Id === teamId;
+    const teamScore = isTeam1 ? Number(match.seriesScore1) : Number(match.seriesScore2);
+    const oppScore = isTeam1 ? Number(match.seriesScore2) : Number(match.seriesScore1);
+    const win = teamScore > oppScore;
+    if (win) wins += 1; else losses += 1;
+    lastFive.push(win ? 'W' : 'L');
   });
 
-  const pointsRows = (data.points || []).filter(p => p.teamId === teamId);
-  const cdlPoints = pointsRows.reduce((sum, row) => sum + Number(row.points || row.cdlPoints || 0), 0);
-  const rank = 1 + getTeamsFromData(data)
-    .map(team => ({
-      id: team.id,
-      pts: (data.points || []).filter(p => p.teamId === team.id)
-        .reduce((sum, row) => sum + Number(row.points || row.cdlPoints || 0), 0)
-    }))
-    .sort((a,b)=>b.pts-a.pts)
-    .findIndex(x => x.id === teamId);
-
-  return { seriesW, seriesL, mapW, mapL, cdlPoints, rank: rank > 0 ? rank : '—' };
+  return { wins, losses, lastFive: lastFive.slice(-5).reverse() };
 }
 
-function modeKeyToLabel(mode){
-  return ({
-    overall: 'Overall',
-    hardpoint: 'Hardpoint',
-    snd: 'S&D',
-    overload: 'Overload',
-    maprecords: 'Maps',
-    picksvetos: 'Picks/Vetos',
-  })[mode] || mode;
-}
+export function renderTeamsSection({ state, data } = {}) {
+  const container = document.getElementById('teams-section');
+  if (!container) return;
 
-function parsedStatsForTeam(data, teamId){
-  return data.teamStats?.[teamId] || null;
-}
+  const teams = Array.isArray(data?.teams) ? data.teams : [];
+  const players = Array.isArray(data?.players) ? data.players : [];
+  const matches = Array.isArray(data?.matches) ? data.matches : [];
 
-function renderParsedTable(stats, mode){
-  if (!stats) return `<div class="team-empty">No parsed team stats available yet.</div>`;
+  const teamIds = Array.from(new Set([
+    ...teams.map(t => normalizeTeamId(t.id || t.teamId || t.name)),
+    ...players.map(p => normalizeTeamId(p.teamId || p.team || p.org)),
+    ...matches.flatMap(m => [normalizeTeamId(m.team1Id), normalizeTeamId(m.team2Id)]),
+  ].filter(Boolean))).sort();
 
-  if (mode === 'overall' && stats.overall?.players?.length) {
-    return renderPlayerMetricTable('Overall Stats', stats.overall.players, [
-      ['player','Player','text'],
-      ['kd','K/D','num'],
-      ['slayerRating','Slayer RTG','num'],
-      ['respawnKd','Respawn KD','num'],
-      ['ntkPct','NTK%','num hi'],
-      ['bpRating','BP Rating','num']
-    ]);
-  }
-  if (mode === 'hardpoint' && stats.hardpoint?.players?.length) {
-    return renderPlayerMetricTable('Hardpoint Stats', stats.hardpoint.players, [
-      ['player','Player','text'],
-      ['kd','K/D','num'],
-      ['k10m','K/10m','num'],
-      ['dmg10m','DMG/10m','num'],
-      ['obj10m','OBJ/10m','num hi'],
-      ['eng10m','Eng/10m','num']
-    ]);
-  }
-  if (mode === 'snd' && stats.snd?.players?.length) {
-    return renderPlayerMetricTable('Search & Destroy', stats.snd.players, [
-      ['player','Player','text'],
-      ['kd','K/D','num'],
-      ['kRound','K/Round','num'],
-      ['bloods','Bloods','num hi'],
-      ['plants','Plants','num'],
-      ['defuses','Defuses','num'],
-      ['snipes','Snipes','num'],
-      ['dmgRound','DMG/Round','num']
-    ]);
-  }
-  if (mode === 'overload' && stats.overload?.players?.length) {
-    return renderPlayerMetricTable('Overload Stats', stats.overload.players, [
-      ['player','Player','text'],
-      ['kd','K/D','num'],
-      ['k10m','K/10m','num'],
-      ['dmg10m','DMG/10m','num'],
-      ['goals10m','Goals/10m','num hi'],
-      ['eng10m','Eng/10m','num']
-    ]);
-  }
-  if (mode === 'maprecords' && stats.mapRecords?.maps?.length) {
-    const rows = stats.mapRecords.maps;
-    const totals = stats.mapRecords.totals || {};
-    return `
-      <div class="team-parsed-head">
-        <div><div class="label">Map Records</div><div class="title">Mode records by map</div></div>
-      </div>
-      <div class="tbl-wrap">
-        <table class="ts-table">
-          <thead><tr>
-            <th>Map</th>
-            <th class="num">HP W</th><th class="num">HP L</th>
-            <th class="num">S&D W</th><th class="num">S&D L</th>
-            <th class="num">OVL W</th><th class="num">OVL L</th>
-          </tr></thead>
-          <tbody>
-            ${rows.map(r => `
-              <tr>
-                <td><strong>${esc(r.map)}</strong></td>
-                <td class="num">${num(r.hpW)}</td><td class="num">${num(r.hpL)}</td>
-                <td class="num">${num(r.sndW)}</td><td class="num">${num(r.sndL)}</td>
-                <td class="num">${num(r.ovlW)}</td><td class="num">${num(r.ovlL)}</td>
-              </tr>`).join('')}
-            <tr>
-              <td><strong>Totals</strong></td>
-              <td class="num hi">${num(totals.hpW)}</td><td class="num">${num(totals.hpL)}</td>
-              <td class="num hi">${num(totals.sndW)}</td><td class="num">${num(totals.sndL)}</td>
-              <td class="num hi">${num(totals.ovlW)}</td><td class="num">${num(totals.ovlL)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>`;
-  }
-  if (mode === 'picksvetos' && stats.picksVetos?.maps?.length) {
-    return `
-      <div class="team-parsed-head">
-        <div><div class="label">Picks / Vetos</div><div class="title">Map tendencies</div></div>
-      </div>
-      <div class="tbl-wrap">
-        <table class="ts-table">
-          <thead><tr>
-            <th>Map</th>
-            <th class="num">HP Pick</th><th class="num">HP Veto</th>
-            <th class="num">S&D Pick</th><th class="num">S&D Veto</th>
-            <th class="num">OVL Pick</th><th class="num">OVL Veto</th>
-          </tr></thead>
-          <tbody>
-            ${stats.picksVetos.maps.map(r => `
-              <tr>
-                <td><strong>${esc(r.map)}</strong></td>
-                <td class="num hi">${num(r.hpPick)}</td><td class="num">${num(r.hpVeto)}</td>
-                <td class="num hi">${num(r.sndPick)}</td><td class="num">${num(r.sndVeto)}</td>
-                <td class="num hi">${num(r.ovlPick)}</td><td class="num">${num(r.ovlVeto)}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`;
-  }
-  return `<div class="team-empty">No ${esc(modeKeyToLabel(mode))} parsed data for this team yet.</div>`;
-}
+  const selected = state?.ui?.selectedTeam || teamIds[0] || 'optic';
+  const roster = players.filter(p => normalizeTeamId(p.teamId || p.team || p.org) === selected);
+  const record = computeRecord(selected, matches);
 
-function renderPlayerMetricTable(label, rows, columns){
-  return `
-    <div class="team-parsed-head">
-      <div><div class="label">${esc(label)}</div><div class="title">Parsed from JSON</div></div>
-    </div>
-    <div class="tbl-wrap">
-      <table class="ts-table">
-        <thead><tr>${columns.map(c => `<th class="${c[2] === 'text' ? '' : 'num'}">${esc(c[1])}</th>`).join('')}</tr></thead>
-        <tbody>
-          ${rows.map(row => `
-            <tr>
-              ${columns.map(col => {
-                const key = col[0];
-                const cls = col[2] === 'text' ? '' : 'num';
-                const value = num(row[key]);
-                const plus = col[2]?.includes('hi') ? ' hi' : '';
-                return `<td class="${cls}${plus}">${esc(value)}</td>`;
-              }).join('')}
-            </tr>`).join('')}
-        </tbody>
-      </table>
-    </div>`;
-}
-
-function fallbackStatImage(teamId, mode){
-  const candidates = teamStatCandidates(teamId, mode);
-  if (!candidates.length) return `<div class="bp-img-err">No stat image found.</div>`;
-  const first = candidates[0];
-  const handler = candidates.slice(1).map(x => `'${x}'`).join(',');
-  return `
-    <div class="bp-stat-frame">
-      <img src="${first}" class="bp-stat-image" alt="${esc(modeKeyToLabel(mode))}"
-        data-fallbacks="[${handler}]"
-        onerror="(function(img){try{const arr=JSON.parse(img.dataset.fallbacks||'[]');const next=arr.shift();img.dataset.fallbacks=JSON.stringify(arr);if(next){img.src=next;return;}img.outerHTML='<div class=\\'bp-img-err\\'>📁 No parsed data and no stat image found for this mode.</div>';}catch(e){img.outerHTML='<div class=\\'bp-img-err\\'>📁 Missing team stat image.</div>';}})(this)">
-    </div>`;
-}
-
-export function renderTeamsSection(){
-  const mount = q('teams-section');
-  if (!mount) return;
-
-  const data = getGlobalData();
-  const teams = getTeamsFromData(data);
-  if (!teams.length) {
-    mount.innerHTML = `<div class="iss-card team-empty">No teams available.</div>`;
-    return;
-  }
-
-  window.ISS_TEAMS_UI = window.ISS_TEAMS_UI || { teamId: teams.find(t => t.id === 'optic')?.id || teams[0].id, mode: 'overall', showInactive: false };
-  const ui = window.ISS_TEAMS_UI;
-  const team = teams.find(t => t.id === ui.teamId) || teams[0];
-  ui.teamId = team.id;
-
-  const roster = rosterForTeam(data, team.id).filter(p => ui.showInactive ? true : (p.active ?? true));
-  const summary = summaryForTeam(data, team.id);
-  const parsed = parsedStatsForTeam(data, team.id);
-
-  const modes = ['overall','hardpoint','snd','overload','maprecords','picksvetos'];
-
-  mount.innerHTML = `
-    <div class="team-shell">
-      <div class="section-title">
-        <h2>Teams</h2>
-      </div>
-
-      <div class="team-toolbar">
-        <select id="team-selector" class="select" aria-label="Select team">
-          ${teams.map(t => `<option value="${esc(t.id)}" ${t.id === team.id ? 'selected' : ''}>${esc(t.name)}</option>`).join('')}
-        </select>
-        <div class="team-logo-rail">
-          ${teams.map(t => `
-            <button class="team-mini-logo ${t.id === team.id ? 'active' : ''}" type="button" data-team-jump="${esc(t.id)}" title="${esc(t.name)}">
-              ${imgWithFallback(teamLogoCandidates(t.id), '', t.name)}
-              <span class="team-check">✓</span>
-            </button>`).join('')}
-        </div>
-      </div>
-
-      <div class="team-hero card">
-        <div class="team-hero-grid">
-          <div>
-            <div class="team-hero-head">
-              <div class="team-hero-logo">${imgWithFallback(teamLogoCandidates(team.id), '', team.name)}</div>
-              <div class="team-hero-copy">
-                <h1>${esc(team.name)}</h1>
-                <p>${esc((team.shortName || team.id).toUpperCase())} · Season 2026</p>
-              </div>
-            </div>
-
-            <div class="bp-roster-strip">
-              ${roster.map(player => {
-                const initials = (player.name || '').slice(0,3).toUpperCase();
-                return `
-                  <div class="bp-player-chip ${player.active === false ? 'bp-player-inactive' : ''}">
-                    <div class="bp-player-art">
-                      <div class="bp-player-backdrop">${imgWithFallback(teamLogoCandidates(team.id), '', team.name)}</div>
-                      ${imgWithFallback(playerImageCandidates(team.id, player.name), 'bp-player-img', player.name)}
-                      <div class="bp-player-init">${esc(initials || 'ISS')}</div>
-                    </div>
-                    <div class="bp-player-meta">
-                      <div class="bp-player-name">${esc(player.name || 'Unknown')}</div>
-                      ${player.active === false ? '<div class="bp-player-sub">Inactive</div>' : ''}
-                    </div>
-                  </div>`;
-              }).join('')}
-            </div>
-          </div>
-
-          <div>
-            <div class="team-kpis">
-              <div class="team-kpi"><span class="v">${summary.seriesW}&ndash;${summary.seriesL}</span><span class="l">Series</span></div>
-              <div class="team-kpi"><span class="v">${summary.mapW}&ndash;${summary.mapL}</span><span class="l">Maps</span></div>
-              <div class="team-kpi"><span class="v">#${summary.rank}</span><span class="l">Rank</span></div>
-              <div class="team-kpi"><span class="v">${summary.cdlPoints}</span><span class="l">CDL Pts</span></div>
-              <button id="toggle-inactive" class="btn ghost" type="button">${ui.showInactive ? 'Hide Inactive' : 'Show Inactive'}</button>
-            </div>
+  container.innerHTML = `
+    <section class="iss-section-shell">
+      <div class="iss-team-hero">
+        <div class="iss-team-hero-media" id="iss-team-hero-media"></div>
+        <div class="iss-team-hero-copy">
+          <p class="iss-eyebrow">Team hub</p>
+          <h2 class="iss-section-title">${selected.toUpperCase()}</h2>
+          <p class="iss-section-copy">Roster, recent form, and imported team stat panels with stronger fallback handling.</p>
+          <div class="iss-team-meta-row">
+            <span class="iss-meta-chip">Record: ${record.wins}-${record.losses}</span>
+            <span class="iss-meta-chip">Last 5: ${record.lastFive.join(' · ') || '—'}</span>
           </div>
         </div>
       </div>
 
-      <div class="bp-mode-bar">
-        ${modes.map(mode => `<button class="bp-mode-btn ${ui.mode === mode ? 'active' : ''}" type="button" data-mode="${mode}">${modeKeyToLabel(mode)}</button>`).join('')}
+      <div class="iss-toolbar">
+        <label class="iss-field iss-field--wide">
+          <span>Team</span>
+          <select id="iss-team-select">
+            ${teamIds.map(teamId => `<option value="${teamId}" ${teamId === selected ? 'selected' : ''}>${teamId.toUpperCase()}</option>`).join('')}
+          </select>
+        </label>
       </div>
 
-      <div class="team-parsed-wrap">
-        ${parsed ? renderParsedTable(parsed, ui.mode) : fallbackStatImage(team.id, ui.mode)}
+      <div class="iss-split-layout">
+        <div class="iss-split-main">
+          <section class="iss-panel">
+            <div class="iss-panel-head">
+              <h3>Roster</h3>
+              <p>${roster.length} players</p>
+            </div>
+            <div class="iss-card-grid iss-card-grid--roster">
+              ${roster.map(player => `
+                <article class="iss-roster-card">
+                  <div class="iss-roster-media" data-roster-player="${player.id ?? player.tag ?? player.name}"></div>
+                  <div class="iss-roster-copy">
+                    <h4>${player.tag || player.name || 'Unknown player'}</h4>
+                    <p>${selected.toUpperCase()}</p>
+                  </div>
+                </article>
+              `).join('') || '<p class="iss-empty-copy">No roster data found for this team yet.</p>'}
+            </div>
+          </section>
+
+          <section class="iss-panel">
+            <div class="iss-panel-head">
+              <h3>Imported team stat panels</h3>
+              <p>Rendered from your assets folder</p>
+            </div>
+            <div class="iss-card-grid iss-card-grid--team-stats">
+              ${TEAM_STAT_PANELS.map(panel => `
+                <article class="iss-stat-image-card">
+                  <div class="iss-stat-image-head">
+                    <h4>${panel.label}</h4>
+                  </div>
+                  <div class="iss-stat-image-wrap" data-team-stat="${panel.key}"></div>
+                </article>
+              `).join('')}
+            </div>
+          </section>
+        </div>
+
+        <aside class="iss-split-side">
+          <section class="iss-panel">
+            <div class="iss-panel-head">
+              <h3>Quick snapshot</h3>
+            </div>
+            <div class="iss-mini-stat-grid">
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Wins</span><strong class="iss-mini-stat-value">${record.wins}</strong></div>
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Losses</span><strong class="iss-mini-stat-value">${record.losses}</strong></div>
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Roster size</span><strong class="iss-mini-stat-value">${roster.length}</strong></div>
+              <div class="iss-mini-stat"><span class="iss-mini-stat-label">Recent form</span><strong class="iss-mini-stat-value">${record.lastFive.join(' ') || '—'}</strong></div>
+            </div>
+          </section>
+        </aside>
       </div>
-    </div>
+    </section>
   `;
 
-  q('team-selector')?.addEventListener('change', e => {
-    ui.teamId = e.target.value;
-    renderTeamsSection();
+  container.querySelector('#iss-team-hero-media')?.appendChild(
+    createCandidateImg(teamLogoCandidates(selected), `${selected} logo`, 'iss-team-hero-logo')
+  );
+
+  container.querySelectorAll('[data-roster-player]').forEach(node => {
+    const key = node.getAttribute('data-roster-player');
+    const player = roster.find(p => String(p.id ?? p.tag ?? p.name) === key);
+    if (!player) return;
+    node.appendChild(createCandidateImg(playerImageCandidates(selected, player.tag || player.name), `${player.tag || player.name} portrait`, 'iss-roster-img'));
+    node.appendChild(createCandidateImg(teamLogoCandidates(selected), `${selected} logo`, 'iss-roster-logo'));
   });
 
-  mount.querySelectorAll('[data-team-jump]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      ui.teamId = btn.getAttribute('data-team-jump');
-      renderTeamsSection();
-    });
+  container.querySelectorAll('[data-team-stat]').forEach(node => {
+    const stat = node.getAttribute('data-team-stat');
+    node.appendChild(createCandidateImg(teamStatCandidates(selected, stat), `${selected} ${stat}`, 'iss-team-stat-img'));
   });
 
-  mount.querySelectorAll('[data-mode]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      ui.mode = btn.getAttribute('data-mode');
-      renderTeamsSection();
-    });
-  });
-
-  q('toggle-inactive')?.addEventListener('click', () => {
-    ui.showInactive = !ui.showInactive;
-    renderTeamsSection();
+  container.querySelector('#iss-team-select')?.addEventListener('change', (e) => {
+    state.ui.selectedTeam = e.target.value;
+    renderTeamsSection({ state, data });
   });
 }

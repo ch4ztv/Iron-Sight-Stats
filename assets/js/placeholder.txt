@@ -1,1 +1,1 @@
-Placeholder so GitHub keeps this folder.
+Placeholder file to keep folder visible in GitHub uploads.
