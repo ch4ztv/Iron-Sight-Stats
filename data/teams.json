@@ -1,0 +1,74 @@
+[
+  {
+    "id": "boston",
+    "name": "Boston Breach",
+    "slug": "boston",
+    "abbr": "BOS"
+  },
+  {
+    "id": "ravens",
+    "name": "Carolina Royal Ravens",
+    "slug": "ravens",
+    "abbr": "CRR"
+  },
+  {
+    "id": "c9",
+    "name": "Cloud9 New York",
+    "slug": "c9",
+    "abbr": "C9"
+  },
+  {
+    "id": "faze",
+    "name": "FaZe Vegas",
+    "slug": "faze",
+    "abbr": "FAZE"
+  },
+  {
+    "id": "g2",
+    "name": "G2 Minnesota",
+    "slug": "g2",
+    "abbr": "G2"
+  },
+  {
+    "id": "lat",
+    "name": "Los Angeles Thieves",
+    "slug": "lat",
+    "abbr": "LAT"
+  },
+  {
+    "id": "miami",
+    "name": "Miami Heretics",
+    "slug": "miami",
+    "abbr": "MIA"
+  },
+  {
+    "id": "optic",
+    "name": "OpTic Texas",
+    "slug": "optic",
+    "abbr": "OPT"
+  },
+  {
+    "id": "pgm",
+    "name": "Paris Gentle Mates",
+    "slug": "pgm",
+    "abbr": "PGM"
+  },
+  {
+    "id": "falcons",
+    "name": "Riyadh Falcons",
+    "slug": "falcons",
+    "abbr": "RF"
+  },
+  {
+    "id": "toronto",
+    "name": "Toronto KOI",
+    "slug": "toronto",
+    "abbr": "TOR"
+  },
+  {
+    "id": "vancouver",
+    "name": "Vancouver Surge",
+    "slug": "vancouver",
+    "abbr": "VAN"
+  }
+]

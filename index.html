@@ -1,71 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Iron Sight Stats</title>
-  <meta name="description" content="Iron Sight Stats public build" />
-  <link rel="stylesheet" href="./assets/css/app.css" />
-  <link rel="stylesheet" href="./assets/css/layout.css" />
-  <link rel="stylesheet" href="./assets/css/components.css" />
-  <link rel="stylesheet" href="./assets/css/responsive.css" />
+  <meta name="description" content="CDL stats, standings, matches, teams, betting tools, and brackets.">
+  <link rel="icon" type="image/png" href="./assets/img/branding/logo.png">
+  <link rel="stylesheet" href="./assets/css/app.css">
 </head>
 <body>
   <div class="app-shell">
     <header class="site-header">
-      <div class="header-inner shell-width">
-        <div class="brand-block">
-          <img id="brand-logo" class="brand-logo" src="./assets/img/branding/logo.png" alt="Iron Sight Stats logo" onerror="this.style.display='none'" />
-          <div>
-            <div class="eyebrow">Public Build</div>
-            <h1 class="brand-title">Iron Sight Stats</h1>
-          </div>
+      <div class="brand-wrap">
+        <img class="brand-logo" src="./assets/img/branding/logo.png" alt="Iron Sight Stats logo">
+        <div>
+          <div class="eyebrow">Public Build</div>
+          <h1>Iron Sight Stats</h1>
         </div>
-
-        <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-expanded="false" aria-controls="mobile-nav">
-          Menu
-        </button>
-
-        <nav class="desktop-nav" aria-label="Primary navigation">
-          <a href="#dashboard" data-route="dashboard">Dashboard</a>
-          <a href="#standings" data-route="standings">Standings</a>
-          <a href="#matches" data-route="matches">Matches</a>
-          <a href="#players" data-route="players">Players</a>
-          <a href="#teams" data-route="teams">Teams</a>
-          <a href="#betting" data-route="betting">Betting Lab</a>
-          <a href="#brackets" data-route="brackets">Brackets</a>
-          <a href="#matchup" data-route="matchup">Matchup</a>
-        </nav>
       </div>
-
-      <nav id="mobile-nav" class="mobile-nav shell-width" aria-label="Mobile navigation" hidden>
-        <a href="#dashboard" data-route="dashboard">Dashboard</a>
-        <a href="#standings" data-route="standings">Standings</a>
-        <a href="#matches" data-route="matches">Matches</a>
-        <a href="#players" data-route="players">Players</a>
-        <a href="#teams" data-route="teams">Teams</a>
-        <a href="#betting" data-route="betting">Betting Lab</a>
-        <a href="#brackets" data-route="brackets">Brackets</a>
-        <a href="#matchup" data-route="matchup">Matchup</a>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation">☰</button>
+      <nav class="site-nav" id="siteNav">
+        <a href="#dashboard">Dashboard</a>
+        <a href="#standings">Standings</a>
+        <a href="#matches">Matches</a>
+        <a href="#players">Players</a>
+        <a href="#teams">Teams</a>
+        <a href="#betting">Betting Lab</a>
+        <a href="#brackets">Brackets</a>
+        <a href="#matchup">Matchup</a>
       </nav>
     </header>
 
-    <main class="main-content shell-width">
-      <div id="global-message" class="global-message" hidden></div>
-
-      <section id="dashboard-section" class="app-section"></section>
-      <section id="standings-section" class="app-section" hidden></section>
-      <section id="matches-section" class="app-section" hidden></section>
-      <section id="players-section" class="app-section" hidden></section>
-      <section id="teams-section" class="app-section" hidden></section>
-      <section id="betting-section" class="app-section" hidden></section>
-      <section id="brackets-section" class="app-section" hidden></section>
-      <section id="matchup-section" class="app-section" hidden></section>
+    <main class="site-main">
+      <section id="dashboard" class="page-section active"></section>
+      <section id="standings" class="page-section"></section>
+      <section id="matches" class="page-section"></section>
+      <section id="players" class="page-section"></section>
+      <section id="teams" class="page-section"></section>
+      <section id="betting" class="page-section"></section>
+      <section id="brackets" class="page-section"></section>
+      <section id="matchup" class="page-section"></section>
     </main>
 
-    <footer class="site-footer shell-width">
-      <span>Iron Sight Stats</span>
-      <span id="footer-version">Loading…</span>
+    <footer class="site-footer">
+      <span id="footerMeta">Loading data…</span>
     </footer>
   </div>
 

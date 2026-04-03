@@ -1,24 +1,8 @@
-# Iron Sight Stats
+# Iron Sight Stats Public Build
 
-This repository is the **public GitHub Pages scaffold** for Iron Sight Stats.
+Static public site for GitHub Pages.
 
-It is intentionally limited to:
-- project structure
-- planning documentation
-- placeholder folders
-- deployment notes
-- data and asset conventions
-
-It does **not** include the actual public app build yet.
-
-## Recommended GitHub setup
-- Repository name: `iron-sight-stats`
-- Visibility: Public
-- Default branch: `main`
-- GitHub Pages source: `main` / root
-- Site type: Static project site
-
-## Public v1 scope
+## Includes
 - Dashboard
 - Standings
 - Matches
@@ -26,22 +10,9 @@ It does **not** include the actual public app build yet.
 - Teams
 - Betting Lab
 - Brackets
-- Optional Matchup page if polished enough
+- Matchup
 
-## Keep private / local
-- admin tools
-- add/edit/delete workflows
-- parser tools
-- import/export UI
-- IndexedDB maintenance logic
-- API key flows
-- backups and raw maintenance utilities
-
-## Top-level folders
-- `assets/` — styles, scripts, images
-- `data/` — public read-only JSON
-- `brackets/` — standalone bracket pages
-- `docs/` — planning and implementation notes
-
-## Notes
-This scaffold is meant to be the starting point for the public GitHub project only.
+## Deploy
+- Push to GitHub
+- Enable GitHub Pages
+- Use GitHub Actions or branch publishing
