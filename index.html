@@ -43,8 +43,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
 /* ── HEADER ── */
-#hdr{display:flex;align-items:center;gap:22px;padding:0 24px;min-height:124px;background:radial-gradient(circle at 12% 38%, rgba(0,232,64,.22) 0%, rgba(0,232,64,.07) 20%, rgba(6,11,7,0) 42%), linear-gradient(180deg, #04100c 0%, #050b09 100%);border-bottom:1px solid rgba(0,232,64,.28);flex-shrink:0;z-index:50;box-shadow:inset 0 -1px 0 rgba(0,232,64,.18)}
-#hdr-logo{height:108px;width:auto;max-width:none;cursor:pointer;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 0 14px rgba(0,255,102,.18));display:block;flex-shrink:0}
+#hdr{display:flex;align-items:center;gap:24px;padding:0 22px;min-height:126px;background:radial-gradient(circle at 12% 38%, rgba(0,232,64,.22) 0%, rgba(0,232,64,.07) 20%, rgba(6,11,7,0) 42%), linear-gradient(180deg, #04100c 0%, #050b09 100%);border-bottom:1px solid rgba(0,232,64,.28);flex-shrink:0;z-index:50;box-shadow:inset 0 -1px 0 rgba(0,232,64,.18)}
+#hdr-logo{height:104px;width:auto;max-width:none;cursor:pointer;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 0 14px rgba(0,255,102,.18));display:block;flex-shrink:0}
 #hdr-title{display:flex !important;flex-direction:column;justify-content:center;gap:2px;line-height:1}
 #hdr-title .line1{font-size:clamp(34px,3.4vw,58px);font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#f5f7fb;text-shadow:0 2px 10px rgba(0,0,0,.32)}
 #hdr-title .line2{display:flex;align-items:center;gap:18px;font-size:clamp(20px,2vw,36px);font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);text-shadow:0 0 16px rgba(0,232,64,.2)}
@@ -885,6 +885,8 @@ const IS = {
     current: 'dashboard',
     goto(tab){
       if(['addmatch','settings'].includes(tab)) tab='dashboard';
+    if(tab==='rosters') tab='teams';
+      if(tab==='rosters') tab='teams';
       document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on', b.dataset.tab===tab));
       document.querySelectorAll('.tab').forEach(p=>p.classList.toggle('on', p.id===`tab-${tab}`));
       IS.tabs.current = tab;
@@ -893,6 +895,7 @@ const IS = {
   },
   render(tab){
     if(['addmatch','settings'].includes(tab)) tab='dashboard';
+      if(tab==='rosters') tab='teams';
     const fn = { dashboard:renderDashboard, standings:renderStandings, matches:renderMatches,
                  playerstats:renderPlayerStats, betting:renderBettingLab, matchup:renderMatchup,
                  rosters:renderRosters }[tab];
@@ -1066,8 +1069,8 @@ async function renderDashboard(){
   }).join('');
 
   // Recent matches
-  const recent = [...S.matches].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).slice(0,5);
-  const recentHTML = recent.length===0 ? `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches recorded yet</div><p>No public match results are available yet.</p></div>` :
+  const recent = [...S.matches].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5);
+  const recentHTML = recent.length===0 ? `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches recorded yet</div><p>Use <strong>Add Match</strong> to log your first result</p></div>` :
     recent.map(m=>{
       const t1=U.team(m.team1Id), t2=U.team(m.team2Id);
       const mapsPlayed=S.maps.filter(mp=>mp.matchId===m.id);
@@ -1239,7 +1242,7 @@ function renderStandings(){
       <button class="stb on" onclick="switchSTab(this,'st-season')">Season</button>
       ${qualEvents.map(e=>`<button class="stb" onclick="switchSTab(this,'st-${e.id}')">${e.name}</button>`).join('')}
       <button class="stb" onclick="switchSTab(this,'st-brackets')">🗂️ Brackets</button>
-      
+      <button class="stb" onclick="switchSTab(this,'st-ledger')">🏅 Points Ledger</button>
     </div>
     <div id="st-season" class="stpanel on">${buildTable(null)}</div>
     ${qualEvents.map(e=>`<div id="st-${e.id}" class="stpanel">${buildTable(e.id)}</div>`).join('')}
@@ -1321,7 +1324,7 @@ async function savePointsAward(){
   renderStandings();
 }
 
-async function deletePoints(id){ return; 
+async function deletePoints(id){
   if(!confirm('Delete this points entry?')) return;
   await DB.del('points',id);
   await S.loadAll();
@@ -1359,7 +1362,7 @@ function renderMatches(){
   });
 
   const matchCards = filtered.length===0 ?
-    `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches found</div><p>Try different filters.</p></div>` :
+    `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches found</div><p>Try different filters or add matches via <strong>Add Match</strong></p></div>` :
     dayKeys.map(day=>{
       const label = day==='Undated' ? 'Undated Matches' : new Date(day+'T12:00:00').toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric', year:'numeric'});
       const cards = grouped[day].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>buildMatchCard(m)).join('');
@@ -1368,7 +1371,7 @@ function renderMatches(){
 
   el.innerHTML=`
     <div class="sh"><div><div class="sh-title">Match Results</div><div class="sh-sub">${filtered.length} matches</div></div>
-      
+      <button class="btn btn-primary btn-sm" onclick="IS.tabs.goto('addmatch')">➕ Add Match</button>
     </div>
     <div class="fbar">
       <div class="fg"><label>Event</label><select onchange="S.matchFilter.eventId=this.value;renderMatches()">${evOpts}</select></div>
@@ -1541,7 +1544,8 @@ function buildMatchCard(m){
       <div class="mc-meta"><strong>${ev.name}</strong><br>${matchDateLabel(m)}<br><span class="text-muted text-sm">${m.format}</span></div>
       <div class="mc-actions">
         <button class="btn btn-secondary btn-xs" title="View stats" onclick="event.stopPropagation();toggleMatch(${m.id}, true)">View</button>
-        
+        <button class="btn btn-secondary btn-xs" title="Edit match" onclick="event.stopPropagation();editMatchFromCard(${m.id})">Edit</button>
+        <button class="btn btn-danger btn-xs" title="Delete match" onclick="event.stopPropagation();deleteMatch(${m.id})">✕</button>
       </div>
     </div>
     ${bodyHTML}
@@ -1568,7 +1572,7 @@ function toggleMatch(id, forceOpen=false){
   if(shouldOpen) requestAnimationFrame(()=>bd.scrollIntoView({block:'nearest', behavior:'smooth'}));
 }
 
-async function deleteMatch(id){ return; 
+async function deleteMatch(id){
   if(!confirm('Delete this match and all its map/player data?')) return;
   await DB.del('matches', id);
   const maps=S.maps.filter(m=>m.matchId===id);
@@ -4729,22 +4733,31 @@ boot();
 
   /* Responsive */
   @media(max-width:1100px){.team-directory{grid-template-columns:repeat(3,minmax(0,1fr))}.bp-hero-inner{flex-wrap:wrap}.team-roster-strip{grid-template-columns:repeat(2,1fr)}.bp-roster-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.bp-player-art{height:176px}}
-  @media(max-width:700px){.team-directory{grid-template-columns:1fr 1fr}.team-roster-strip{grid-template-columns:1fr}.bp-roster-strip{grid-template-columns:1fr 1fr}.bp-player-art{height:154px}.bp-hero-stats{flex-wrap:wrap}.bp-mode-tab{flex:1 1 calc(33% - 6px)}.match-teams-grid{grid-template-columns:1fr}.match-side.right{justify-content:flex-start;text-align:left}#hdr{padding:0 12px;min-height:94px;gap:12px}#hdr-logo{height:64px;width:auto}#hdr-title .line1{font-size:clamp(24px,8vw,34px)}#hdr-title .line2{font-size:clamp(15px,5vw,22px);gap:10px}#hdr-title .line2::before,#hdr-title .line2::after{width:28px}}
+  @media(max-width:700px){.team-directory{grid-template-columns:1fr 1fr}.team-roster-strip{grid-template-columns:1fr}.bp-roster-strip{grid-template-columns:1fr 1fr}.bp-player-art{height:154px}.bp-hero-stats{flex-wrap:wrap}.bp-mode-tab{flex:1 1 calc(33% - 6px)}.match-teams-grid{grid-template-columns:1fr}.match-side.right{justify-content:flex-start;text-align:left}#hdr{padding:0 12px;min-height:102px;gap:14px}#hdr-logo{height:72px;width:auto}#hdr-title .line1{font-size:clamp(24px,8vw,34px)}#hdr-title .line2{font-size:clamp(15px,5vw,22px);gap:10px}#hdr-title .line2::before,#hdr-title .line2::after{width:28px}}
   `;
   const style=document.createElement('style'); style.textContent=extraCSS; document.head.appendChild(style);
 
   function ensureTeamTab(){
     const nav=document.getElementById('nav');
-    if(nav && !nav.querySelector('[data-tab="teams"]')){
-      const btn=document.createElement('button');
-      btn.className='nb'; btn.dataset.tab='teams'; btn.textContent='🏟️ Teams';
-      nav.insertBefore(btn, nav.querySelector('[data-tab="rosters"]'));
+    if(nav){
+      const rostersBtn = nav.querySelector('[data-tab="rosters"]');
+      if(rostersBtn) rostersBtn.remove();
+      if(!nav.querySelector('[data-tab="teams"]')){
+        const btn=document.createElement('button');
+        btn.className='nb'; btn.dataset.tab='teams'; btn.textContent='🏟️ Teams';
+        nav.appendChild(btn);
+      }
     }
     const main=document.getElementById('main');
-    if(main && !document.getElementById('tab-teams')){
-      const div=document.createElement('div'); div.id='tab-teams'; div.className='tab';
-      main.insertBefore(div, document.getElementById('tab-rosters'));
+    if(main){
+      const rostersTab = document.getElementById('tab-rosters');
+      if(rostersTab) rostersTab.remove();
+      if(!document.getElementById('tab-teams')){
+        const div=document.createElement('div'); div.id='tab-teams'; div.className='tab';
+        main.appendChild(div);
+      }
     }
+    if(IS.tabs.current==='rosters') IS.tabs.current='teams';
     document.querySelectorAll('.nb').forEach(b=>{
       if(!b._isBound){ b._isBound=true; b.addEventListener('click',()=>IS.tabs.goto(b.dataset.tab)); }
     });
@@ -4767,33 +4780,10 @@ boot();
   function eventShort(eid){
     return ({M1Q:'M1 Qualifiers',M1T:'M1 Tournament',M2Q:'M2 Qualifiers',M2T:'M2 Tournament',M3Q:'M3 Qualifiers',M4Q:'M4 Qualifiers',CHAMPS:'Champs'})[eid] || eid;
   }
-  function parseMatchDateTime(dateStr, timeStr=''){
-    if(!dateStr) return Number.NaN;
-    if(typeof timeStr!=='string' || !timeStr.trim()){
-      const dt = Date.parse(`${dateStr}T12:00:00`);
-      return Number.isNaN(dt) ? Number.NaN : dt;
-    }
-    const m = timeStr.trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
-    if(m){
-      let hh = parseInt(m[1], 10);
-      const mm = parseInt(m[2], 10);
-      const ap = m[3].toUpperCase();
-      if(ap==='PM' && hh!==12) hh += 12;
-      if(ap==='AM' && hh===12) hh = 0;
-      const iso = `${dateStr}T${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:00`;
-      const dt = Date.parse(iso);
-      return Number.isNaN(dt) ? Number.NaN : dt;
-    }
-    const fallback = Date.parse(`${dateStr}T${timeStr}`);
-    return Number.isNaN(fallback) ? Number.NaN : fallback;
-  }
   function matchSortValue(m){
-    if(Number.isFinite(m?.ts)) return m.ts;
-    if(m?.date){
-      const dt = parseMatchDateTime(m.date, m.time || '');
-      if(!Number.isNaN(dt)) return dt;
-    }
-    return 0;
+    if(m.date && m.time){ const dt = Date.parse(`${m.date}T${m.time}`); if(!Number.isNaN(dt)) return dt; }
+    if(m.date){ const dt = Date.parse(`${m.date}T12:00:00`); if(!Number.isNaN(dt)) return dt; }
+    return m.ts || 0;
   }
   window.matchSortValue = matchSortValue;
   function matchDateLabel(m){
@@ -4908,7 +4898,7 @@ boot();
       const splitRows=['M1Q','M1T','M2Q','M2T'].map(eid=>{ const s=teamSeriesSummary(team.id,eid); return `<tr><td>${eventShort(eid)}</td><td>${s.seriesW}-${s.seriesL}</td><td>${s.mapW}-${s.mapL}</td><td class="${s.mapDiff>=0?'green':'red'}">${s.mapDiff>0?'+':''}${s.mapDiff}</td></tr>`; }).join('');
       secHTML=`<div class="card"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between">Season By Split<div class="split-pills">${splitPills}</div></div><div class="g2" style="margin-bottom:14px"><div class="team-kpi" style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="v" style="font-size:20px;font-weight:900;font-family:var(--mono)">${splitSummary.seriesW}-${splitSummary.seriesL}</div><div class="l" style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em">Series Record</div></div><div class="team-kpi" style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="v" style="font-size:20px;font-weight:900;font-family:var(--mono)">${splitSummary.mapW}-${splitSummary.mapL}</div><div class="l" style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em">Map Record</div></div></div><div class="tbl-wrap"><table><thead><tr><th>Split</th><th>Series</th><th>Maps</th><th>Diff</th></tr></thead><tbody>${splitRows}</tbody></table></div></div>`;
     } else if(S.teamPage.section==='matches'){
-      const rows=[...teamMatches(team.id,splitId)].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>{ const [a,b]=seriesScore(m); const isT1=m.team1Id===team.id; const mine=isT1?a:b; const opp=isT1?b:a; const oppId=isT1?m.team2Id:m.team1Id; return `<tr><td>${matchDateLabel(m)}</td><td>${eventShort(m.eventId)}</td><td>${U.teamTag(oppId)}</td><td><span class="${mine>opp?'green':'red'} bold">${mine>opp?'W':'L'}</span></td><td class="tbl-num">${mine}:${opp}</td><td></td></tr>`; }).join('')||'<tr><td colspan="6" class="text-muted">No matches yet.</td></tr>';
+      const rows=[...teamMatches(team.id,splitId)].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>{ const [a,b]=seriesScore(m); const isT1=m.team1Id===team.id; const mine=isT1?a:b; const opp=isT1?b:a; const oppId=isT1?m.team2Id:m.team1Id; return `<tr><td>${matchDateLabel(m)}</td><td>${eventShort(m.eventId)}</td><td>${U.teamTag(oppId)}</td><td><span class="${mine>opp?'green':'red'} bold">${mine>opp?'W':'L'}</span></td><td class="tbl-num">${mine}:${opp}</td><td><button class="btn btn-ghost btn-xs" onclick="editMatchFromCard(${m.id})">Edit</button></td></tr>`; }).join('')||'<tr><td colspan="6" class="text-muted">No matches yet.</td></tr>';
       secHTML=`<div class="card"><div class="card-title">Match Log</div><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Event</th><th>Opponent</th><th>Result</th><th>Score</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
     } else if(S.teamPage.section==='parse'){
       secHTML = (typeof renderTeamParser==='function') ? renderTeamParser(team.id) : '';
@@ -5012,7 +5002,7 @@ boot();
     const tab=document.getElementById('tab-addmatch'); if(!tab) return;
     const title=tab.querySelector('.sh-title');
     const sub=tab.querySelector('.sh-sub');
-    if(title) title.textContent = 'Match Entry Disabled';
+    if(title) title.textContent = S.editingMatchId ? 'Edit Match' : 'Add Match';
     if(sub) sub.textContent = S.editingMatchId ? `Editing match #${S.editingMatchId} · update date, time, teams, maps, and player stats` : 'Log a new CDL match result · AI screenshot parsing enabled';
     const detailsCard=[...tab.querySelectorAll('.card')].find(c=>c.textContent.includes('MATCH DETAILS'));
     if(detailsCard){
