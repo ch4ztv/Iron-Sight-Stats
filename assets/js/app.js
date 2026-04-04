@@ -2,53 +2,37 @@ import { APP_CONFIG } from './config.js';
 import { state, setData, setSection, setUI } from './state.js';
 import { loadAllData } from './data-loader.js';
 import { fmtDate, fmtNum, safeKD, modeLabel, formatSeries } from './formatters.js';
-import { teamLogoCandidates, teamLogoPath, playerImageCandidates, playerImagePath, teamStatCandidates, teamStatPath } from './asset-paths.js';
+import { teamLogoCandidates, playerImageCandidates, teamStatCandidates, brandingPath } from './asset-paths.js';
 
 const $ = (sel, el=document) => el.querySelector(sel);
 
-const TEAM_COLORS = {
-  optic: '181,220,72',
-  faze: '255,72,72',
-  lat: '255,70,70',
-  toronto: '143,82,255',
-  g2: '173,71,255',
-  falcons: '255,136,42',
-  miami: '66,211,163',
-  ravens: '130,102,255',
-  boston: '72,255,126',
-  c9: '79,188,255',
-  vancouver: '59,201,255',
-  pgm: '0,255,179'
-};
-
-
 function teamName(id){ return APP_CONFIG.teamMeta[id]?.name || id; }
 function teamAbbr(id){ return APP_CONFIG.teamMeta[id]?.abbr || String(id).toUpperCase(); }
-function teamColor(id){ return TEAM_COLORS[id] || '0,255,102'; }
-function escapeAttr(value=''){ return String(value).replace(/"/g,'&quot;'); }
-function img(src, cls, alt=''){
-  return `<img src="${src}" class="${cls||''}" alt="${alt}" onerror="this.style.display='none'">`;
+function escapeAttr(value=''){
+  return String(value).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-function candidateImg(candidates, cls, alt=''){
-  const safe = candidates.map(escapeAttr).join('|');
-  return `<img src="${escapeAttr(candidates[0] || '')}" data-candidates="${safe}" data-candidate-index="0" class="${cls||''}" alt="${alt}" onerror="window.ISSHandleCandidateError && window.ISSHandleCandidateError(this)">`;
+function img(srcOrCandidates, cls, alt=''){
+  const fallback = brandingPath('logo.png');
+  const candidates = Array.isArray(srcOrCandidates)
+    ? [...srcOrCandidates, fallback]
+    : [srcOrCandidates, fallback];
+  const first = candidates[0] || fallback;
+  const encoded = escapeAttr(JSON.stringify(candidates));
+  return `<img src="${first}" class="${cls||''}" alt="${escapeAttr(alt)}" data-candidates="${encoded}" data-candidate-index="0" onerror="(function(img){try{const list=JSON.parse(img.dataset.candidates||'[]');let i=Number(img.dataset.candidateIndex||0)+1;img.dataset.candidateIndex=String(i);if(i<list.length){img.src=list[i];return;}img.style.display='none';}catch(e){img.style.display='none';}})(this)">`;
 }
 function sectionHeader(title, desc='', extra=''){
   return `<div class="section-title"><div><h2>${title}</h2><p>${desc}</p></div>${extra}</div>`;
 }
 function teamChip(id){
-  return `<span class="team-chip">${img(teamLogoPath(id),'mini-logo',teamName(id))}<span>${teamName(id)}</span></span>`;
+  return `<span class="team-chip">${img(teamLogoCandidates(id),'mini-logo',teamName(id))}<span>${teamName(id)}</span></span>`;
 }
-function playerMediaCard(player, compact=false){
-  const color = teamColor(player.teamId);
-  const portrait = playerImagePath(player.teamId, player.name);
-  return `<article class="player-card" style="--team-rgb:${color}">
+function playerCard(player){
+  return `<article class="card player-card">
     <div class="top">
-      <img src="${teamLogoPath(player.teamId)}" class="team-backdrop-logo" alt="${teamName(player.teamId)} logo" aria-hidden="true">
-      ${img(portrait,'player-avatar',player.name)}
+      ${img(playerImageCandidates(player.teamId, player.name),'player-avatar',player.name)}
       <div>
         <div class="muted">${teamName(player.teamId)}</div>
-        <h3 style="margin:6px 0 0;font-size:${compact ? '1.15rem' : '1.35rem'}">${player.name}</h3>
+        <h3>${player.name}</h3>
       </div>
     </div>
     <div class="stat-list">
@@ -59,9 +43,6 @@ function playerMediaCard(player, compact=false){
       <div class="stat-row"><span>Maps</span><strong>${fmtNum(player.maps)}</strong></div>
     </div>
   </article>`;
-}
-function playerCard(player){
-  return playerMediaCard(player, true);
 }
 function renderDashboard(){
   const { data } = state;
@@ -239,149 +220,61 @@ function renderPlayers(){
 
 function renderTeams(){
   const teamId = state.ui.selectedTeam;
-  const activeTab = state.ui.selectedTeamTab || 'overall';
-  const showInactive = Boolean(state.ui.showInactivePlayers);
-  const teamStats = state.data.teamStats[teamId] || {};
-  const rosterAll = state.data.playersByTeam[teamId] || [];
-  const roster = showInactive ? rosterAll : rosterAll.filter(p => p.active !== false);
+  const teamStats = state.data.teamStats[teamId];
+  const roster = state.data.playersByTeam[teamId] || [];
   const rec = state.data.teamRecords[teamId] || {wins:0,losses:0,mapWins:0,mapLosses:0,recent:[]};
-  const color = teamColor(teamId);
-  const teamIds = Object.keys(APP_CONFIG.teamMeta);
-  const tabs = [
-    { id: 'overall', label: '📊 Overall' },
-    { id: 'hardpoint', label: '🏁 Hardpoint' },
-    { id: 'snd', label: '💣 S&D' },
-    { id: 'overload', label: '🎯 Overload' },
-    { id: 'maps', label: '🗺️ Maps' },
-    { id: 'picks', label: '☒ Picks/Vetoes' }
-  ];
-
-  const totalTrophies = Math.max(0, Math.round((state.data.teamPoints[teamId] || 0) / 100));
-  const lastFive = (rec.recent || []).slice(-5);
-  const recentMatches = [...(state.data.matches || [])]
-    .filter(m => m.team1Id === teamId || m.team2Id === teamId)
-    .sort((a,b)=>b.ts-a.ts)
-    .slice(0,5);
-
-  const renderPlayerTable = (players=[]) => {
-    if(!players.length) return `<div class="empty">No parsed player stats found for this tab yet.</div>`;
-    const headers = Object.keys(players[0]);
-    return `<div class="team-table-wrap"><table><thead><tr>${headers.map(key => `<th>${String(key).replace(/([A-Z])/g,' $1').replace(/^./, m => m.toUpperCase())}</th>`).join('')}</tr></thead><tbody>${players.map(row => `<tr>${headers.map(key => `<td>${row[key] ?? '—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-  };
-
-  const renderMapRecords = (section={}) => {
-    const maps = section.maps || [];
-    if(!maps.length) return `<div class="empty">No map records parsed for this team yet.</div>`;
-    return `<div class="team-table-wrap"><table><thead><tr><th>Map</th><th>HP</th><th>S&D</th><th>Overload</th></tr></thead><tbody>${maps.map(row => `<tr><td>${row.map}</td><td>${(row.hpW ?? 0)}-${(row.hpL ?? 0)}</td><td>${(row.sndW ?? 0)}-${(row.sndL ?? 0)}</td><td>${(row.ovlW ?? 0)}-${(row.ovlL ?? 0)}</td></tr>`).join('')}</tbody></table></div>`;
-  };
-
-  const renderPicks = (section={}) => {
-    const maps = section.maps || [];
-    if(!maps.length) return `<div class="empty">No picks/vetoes parsed for this team yet.</div>`;
-    return `<div class="team-table-wrap"><table><thead><tr><th>Map</th><th>HP Pick/Veto</th><th>S&D Pick/Veto</th><th>Overload Pick/Veto</th></tr></thead><tbody>${maps.map(row => `<tr><td>${row.map}</td><td>${row.hpPick ?? '—'} / ${row.hpVeto ?? '—'}</td><td>${row.sndPick ?? '—'} / ${row.sndVeto ?? '—'}</td><td>${row.ovlPick ?? '—'} / ${row.ovlVeto ?? '—'}</td></tr>`).join('')}</tbody></table></div>`;
-  };
-
-  const currentPanel = (() => {
-    if(activeTab === 'maps') return renderMapRecords(teamStats.mapRecords || {});
-    if(activeTab === 'picks') return renderPicks(teamStats.picksVetos || {});
-    if(activeTab === 'snd') return renderPlayerTable(teamStats.snd?.players || []);
-    return renderPlayerTable(teamStats[activeTab]?.players || []);
-  })();
-
-  const imagePanels = [
-    ['overall','overall'],
-    ['hardpoint','hardpoint'],
-    ['search-and-destroy','search and destroy']
-  ];
-
   $('#teams').innerHTML = `
-    ${sectionHeader('Teams','Closer to the original DB look: branded hero, portrait roster cards, and parsed mode splits.')}
-    <section class="teams-shell" style="--team-rgb:${color}">
-      <div class="teams-toolbar">
-        <select id="teamSelect" class="iss-select">${teamIds.map(id=>`<option value="${id}" ${id===teamId?'selected':''}>${teamName(id)}</option>`).join('')}</select>
-        <div class="team-logo-row">${teamIds.map(id => `<button class="team-logo-btn ${id===teamId?'active':''}" data-team-logo="${id}" aria-label="Select ${teamName(id)}">${img(teamLogoPath(id),'',teamName(id))}</button>`).join('')}</div>
-      </div>
-
-      <article class="team-hero-card">
-        <div class="team-hero-top">
-          <div>
-            <div class="team-identity">
-              ${img(teamLogoPath(teamId),'',teamName(teamId))}
-              <div>
-                <h3>${teamName(teamId)}</h3>
-                <p>${teamAbbr(teamId)} · Season 2026</p>
-              </div>
-            </div>
+    ${sectionHeader('Teams','Roster view, records, and imported team stat images.',
+      `<div class="controls">
+        <select id="teamSelect">${Object.keys(APP_CONFIG.teamMeta).map(id=>`<option value="${id}" ${id===teamId?'selected':''}>${teamName(id)}</option>`).join('')}</select>
+      </div>`)}
+    <div class="hero">
+      <article class="card team-hero">
+        ${img(teamLogoCandidates(teamId),'brand-logo',teamName(teamId))}
+        <div>
+          <h3 style="font-size:1.9rem">${teamName(teamId)}</h3>
+          <div class="muted">Series ${rec.wins}-${rec.losses} · Maps ${rec.mapWins}-${rec.mapLosses}</div>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <span class="pill">Points ${state.data.teamPoints[teamId] || 0}</span>
+            <span class="pill">Recent ${rec.recent.join(' ') || '—'}</span>
+            <span class="pill">Confidence ${teamStats?.confidence || '—'}</span>
           </div>
-          <div class="team-summary-grid">
-            <div class="team-summary-box"><span class="value">${rec.wins}-${rec.losses}</span><span class="label">Series</span></div>
-            <div class="team-summary-box"><span class="value">${rec.mapWins}-${rec.mapLosses}</span><span class="label">Maps</span></div>
-            <div class="team-summary-box"><span class="value">#${getStandings().findIndex(r => r.teamId === teamId) + 1}</span><span class="label">Rank</span></div>
-            <div class="team-summary-box"><span class="value">${state.data.teamPoints[teamId] || 0}</span><span class="label">CDL Pts</span></div>
-            <button class="team-inactive-toggle" id="teamInactiveToggle">${showInactive ? 'Hide inactive' : 'Show inactive'}</button>
-          </div>
-        </div>
-
-        <div class="team-divider"></div>
-        <div class="team-roster-grid">
-          ${roster.length ? roster.map(player => `
-            <article class="team-portrait-card">
-              ${candidateImg(teamLogoCandidates(teamId),'team-backdrop-logo',`${teamName(teamId)} logo`) }
-              ${candidateImg(playerImageCandidates(teamId, player.name),'team-portrait-image',player.name)}
-              <div class="team-portrait-name">${player.name}</div>
-            </article>`).join('') : '<div class="empty">No active roster entries available.</div>'}
         </div>
       </article>
-
-      <div class="team-tabs">
-        ${tabs.map(tab => `<button class="team-tab ${tab.id===activeTab?'active':''}" data-team-tab="${tab.id}">${tab.label}</button>`).join('')}
-      </div>
-
-      <section class="team-tab-panel">
-        <div class="team-panel-label">${tabs.find(tab => tab.id===activeTab)?.label || 'Overview'} stats</div>
-        ${currentPanel}
-        ${teamStats.parsedAt ? `<div class="muted" style="margin-top:10px">Parsed ${new Date(teamStats.parsedAt).toLocaleString()} · ${teamStats.notes || ''}</div>` : ''}
-      </section>
-
-      <div class="team-lower-grid">
-        <section class="team-subpanel">
-          <h3>Trophy Case</h3>
-          <div class="trophy-grid">
-            <div class="trophy-card"><strong>${totalTrophies}</strong><span class="muted">Majors / wins</span></div>
-            <div class="trophy-card"><strong>${Math.max(1, Math.round(rec.wins / 8))}</strong><span class="muted">Finals</span></div>
-            <div class="trophy-card"><strong>${teamStats.confidence || 'high'}</strong><span class="muted">Parser confidence</span></div>
-            <div class="trophy-card"><strong>${roster.length}</strong><span class="muted">Active core</span></div>
-          </div>
-
-          <h3 style="margin-top:18px">Recent Form</h3>
-          <div class="recent-form-list">
-            ${recentMatches.map(match => {
-              const isTeam1 = match.team1Id === teamId;
-              const maps = state.data.mapsByMatch[match.id] || [];
-              const scoreA = match.seriesScore1 ?? maps.filter(m => m.winner === match.team1Id).length;
-              const scoreB = match.seriesScore2 ?? maps.filter(m => m.winner === match.team2Id).length;
-              const myScore = isTeam1 ? scoreA : scoreB;
-              const oppScore = isTeam1 ? scoreB : scoreA;
-              const oppId = isTeam1 ? match.team2Id : match.team1Id;
-              const result = myScore >= oppScore ? 'W' : 'L';
-              return `<div class="recent-form-item"><div><strong>${teamName(teamId)} vs ${teamName(oppId)}</strong><div class="muted">${match.eventId} · ${fmtDate(match.date)} · ${match.format}</div></div><div class="recent-form-pill ${result==='W'?'win':'loss'}">${result} ${myScore}-${oppScore}</div></div>`;
-            }).join('') || '<div class="empty">No recent matches loaded for this team yet.</div>'}
-          </div>
-        </section>
-
-        <section class="team-subpanel">
-          <h3>Imported team stat panels</h3>
-          <div class="team-image-grid">
-            ${imagePanels.map(([key,label]) => `<article class="team-image-card"><h4>${label}</h4>${img(teamStatPath(teamId,key),'',`${teamName(teamId)} ${label}`)}</article>`).join('')}
-          </div>
-        </section>
-      </div>
-    </section>`;
-
+      <article class="card">
+        <h3>Imported notes</h3>
+        <p class="muted">${teamStats?.notes || 'No parser notes available.'}</p>
+      </article>
+    </div>
+    <div class="grid cols-2">
+      <article class="card">
+        <h3>Roster</h3>
+        <div class="roster-grid">
+          ${roster.map(p => `<div class="card" style="padding:14px">
+            <div class="top" style="display:flex;gap:12px;align-items:center">
+              ${img(playerImageCandidates(teamId,p.name),'player-avatar',p.name)}
+              <div><strong>${p.name}</strong><div class="muted">${p.active ? 'Active' : 'Inactive'}</div></div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </article>
+      <article class="card">
+        <h3>Overall player metrics</h3>
+        <div class="table-wrap">
+          <table><thead><tr><th>Player</th><th>KD</th><th>Slayer</th><th>Respawn KD</th><th>NTK%</th><th>BP</th></tr></thead>
+          <tbody>
+            ${(teamStats?.overall?.players || []).map(p => `<tr><td>${p.player}</td><td>${p.kd}</td><td>${p.slayerRating}</td><td>${p.respawnKd}</td><td>${p.ntkPct}</td><td>${p.bpRating}</td></tr>`).join('')}
+          </tbody></table>
+        </div>
+      </article>
+    </div>
+    <div class="grid cols-3" style="margin-top:18px">
+      ${['overall','hardpoint','search-and-destroy','overload','map-records','picks-vetoes'].map(key => `<article class="card">
+        <h3>${key.replace(/-/g,' ')}</h3>
+        ${img(teamStatCandidates(teamId,key),'',`${teamName(teamId)} ${key}`)}
+      </article>`).join('')}
+    </div>`;
   $('#teamSelect')?.addEventListener('change', e => { setUI('selectedTeam', e.target.value); renderTeams(); renderBetting(); renderMatchup(); });
-  $('#teamInactiveToggle')?.addEventListener('click', () => { setUI('showInactivePlayers', !showInactive); renderTeams(); });
-  document.querySelectorAll('[data-team-logo]').forEach(btn => btn.addEventListener('click', () => { setUI('selectedTeam', btn.dataset.teamLogo); renderTeams(); renderBetting(); renderMatchup(); }));
-  document.querySelectorAll('[data-team-tab]').forEach(btn => btn.addEventListener('click', () => { setUI('selectedTeamTab', btn.dataset.teamTab); renderTeams(); }));
 }
 
 function recentFormScore(teamId){
@@ -473,18 +366,6 @@ function attachGlobalEvents(){
   $('#mobileMenuBtn')?.addEventListener('click', () => $('#siteNav')?.classList.toggle('open'));
   window.addEventListener('hashchange', applyRoute);
 }
-
-
-window.ISSHandleCandidateError = function(node){
-  const list = (node.dataset.candidates || '').split('|').filter(Boolean);
-  let index = Number(node.dataset.candidateIndex || 0) + 1;
-  if(index < list.length){
-    node.dataset.candidateIndex = String(index);
-    node.src = list[index];
-  }else{
-    node.style.display = 'none';
-  }
-};
 
 async function init(){
   try{
