@@ -44,7 +44,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:13
 
 /* ── HEADER ── */
 #hdr{display:flex;align-items:center;gap:18px;padding:0 22px;min-height:108px;background:radial-gradient(circle at 12% 38%, rgba(0,232,64,.22) 0%, rgba(0,232,64,.07) 20%, rgba(6,11,7,0) 42%), linear-gradient(180deg, #04100c 0%, #050b09 100%);border-bottom:1px solid rgba(0,232,64,.28);flex-shrink:0;z-index:50;box-shadow:inset 0 -1px 0 rgba(0,232,64,.18)}
-#hdr-logo{height:76px;width:auto;max-width:none;cursor:pointer;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 0 14px rgba(0,255,102,.18));display:block;flex-shrink:0}
+#hdr-logo{height:92px;width:auto;max-width:none;cursor:pointer;object-fit:contain;image-rendering:auto;filter:drop-shadow(0 0 14px rgba(0,255,102,.18));display:block;flex-shrink:0}
 #hdr-title{display:flex !important;flex-direction:column;justify-content:center;gap:2px;line-height:1}
 #hdr-title .line1{font-size:clamp(34px,3.4vw,58px);font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#f5f7fb;text-shadow:0 2px 10px rgba(0,0,0,.32)}
 #hdr-title .line2{display:flex;align-items:center;gap:18px;font-size:clamp(20px,2vw,36px);font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);text-shadow:0 0 16px rgba(0,232,64,.2)}
@@ -1210,11 +1210,9 @@ function renderStandings(){
         <span style="font-size:10px;color:var(--text2);font-weight:400">${filledCount}/${totalMatches} matches filled</span>
         <div style="margin-left:auto;display:flex;gap:8px">
           <button class="btn btn-ghost btn-xs" onclick="clearBracket('${eventId}')">Clear</button>
-          ${!ptAlreadyAwarded&&allFilled?`<button class="btn btn-success btn-sm" onclick="awardBracketPoints('${eventId}')">🏆 Award Points</button>`:''}
-          ${ptAlreadyAwarded?`<span class="pill pill-w" style="font-size:10px">✓ Points Awarded</span>`:''}
         </div>
       </div>
-      <div class="info-box text-sm" style="margin-bottom:12px">Click any match slot to enter teams and results · Points are awarded once all matches are filled</div>
+      <div class="info-box text-sm" style="margin-bottom:12px">Bracket view only for the public build.</div>
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--cyan);padding:4px 0 8px">WINNERS BRACKET</div>
       <div class="bracket-scroll"><div class="bracket">${buildCols(def.winners)}</div></div>
       ${def.losers&&def.losers.length?`
@@ -1232,522 +1230,16 @@ function renderStandings(){
   el.innerHTML=`
     <div class="sh">
       <div><div class="sh-title">CDL Standings</div><div class="sh-sub">Sorted by CDL Points · Tiebreakers: H2H → Series W% → Map W%</div></div>
-      <button class="btn btn-secondary btn-sm" onclick="openPointsAward()">＋ Award Points</button>
+
     </div>
-    <div class="info-box">ℹ️ CDL Points are awarded via <strong>Award Points</strong> for tournament placings. Qualifier stage wins (10 pts/win) are tracked in match entry.</div>
     <div class="stabs">
       <button class="stb on" onclick="switchSTab(this,'st-season')">Season</button>
       ${qualEvents.map(e=>`<button class="stb" onclick="switchSTab(this,'st-${e.id}')">${e.name}</button>`).join('')}
       <button class="stb" onclick="switchSTab(this,'st-brackets')">🗂️ Brackets</button>
-      <button class="stb" onclick="switchSTab(this,'st-ledger')">🏅 Points Ledger</button>
     </div>
     <div id="st-season" class="stpanel on">${buildTable(null)}</div>
     ${qualEvents.map(e=>`<div id="st-${e.id}" class="stpanel">${buildTable(e.id)}</div>`).join('')}
     <div id="st-brackets" class="stpanel">${bracketTabHTML}</div>
-    <div id="st-ledger" class="stpanel">
-      <div class="card" style="margin-top:14px">
-        <div class="card-title">CDL POINTS LEDGER</div>
-        ${S.points.length===0?`<div class="empty"><div class="empty-ico">🏅</div><div class="empty-lbl">No points awarded yet</div></div>`:''}
-        ${S.points.map(p=>{
-          const t=U.team(p.teamId), ev=U.event(p.eventId);
-          return `<div class="pa-row">
-            ${U.logoHTML(p.teamId)} <strong>${t.name}</strong>
-            <span class="text-muted">·</span> ${ev.name}
-            <span class="text-muted">·</span> <span class="text-muted">${p.reason}</span>
-            <span class="pa-pts">+${p.pts}</span>
-            <button class="btn btn-ghost btn-xs" onclick="deletePoints(${p.id})">✕</button>
-          </div>`;
-        }).join('')}
-      </div>
-    </div>`;
-  U.updateLogos();
-}
-
-function switchSTab(btn, id){
-  btn.closest('.tab').querySelectorAll('.stb').forEach(b=>b.classList.remove('on'));
-  btn.closest('.tab').querySelectorAll('.stpanel').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById(id)?.classList.add('on');
-}
-
-async function openPointsAward(){
-  const teamOpts = TEAMS.map(t=>`<option value="${t.id}">${t.name}</option>`).join('');
-  const evOpts   = EVENTS.map(e=>`<option value="${e.id}">${e.name}</option>`).join('');
-  Modal.open(`
-    <div class="modal-hd"><h3>Award CDL Points</h3><button class="btn btn-ghost btn-xs" onclick="Modal.close()">✕</button></div>
-    <div class="modal-bd">
-      <div class="fg"><label>Team</label><select id="pa-team">${teamOpts}</select></div>
-      <div class="fg"><label>Event</label><select id="pa-event">${evOpts}</select></div>
-      <div class="fg"><label>Reason / Placing</label>
-        <select id="pa-reason" onchange="updatePaAmt()">
-          <option value="1st Place (Major)">1st Place (Major) — 100 pts</option>
-          <option value="2nd Place (Major)">2nd Place (Major) — 75 pts</option>
-          <option value="3rd Place (Major)">3rd Place (Major) — 60 pts</option>
-          <option value="4th Place (Major)">4th Place (Major) — 45 pts</option>
-          <option value="5th-6th Place (Major)">5th-6th Place (Major) — 30 pts</option>
-          <option value="7th-8th Place (Major)">7th-8th Place (Major) — 15 pts</option>
-          <option value="1st Place (Minor)">1st Place (Minor) — 30 pts</option>
-          <option value="2nd Place (Minor)">2nd Place (Minor) — 20 pts</option>
-          <option value="3rd-4th Place (Minor)">3rd-4th Place (Minor) — 10 pts</option>
-          <option value="Qualifier Stage Win">Qualifier Stage Win — 10 pts</option>
-          <option value="Custom">Custom</option>
-        </select>
-      </div>
-      <div class="fg"><label>Points</label><input type="number" id="pa-pts" value="100" min="1"></div>
-    </div>
-    <div class="modal-ft">
-      <button class="btn btn-ghost" onclick="Modal.close()">Cancel</button>
-      <button class="btn btn-primary" onclick="savePointsAward()">Award Points</button>
-    </div>`);
-}
-
-function updatePaAmt(){
-  const reason=document.getElementById('pa-reason').value;
-  const map={'1st Place (Major)':100,'2nd Place (Major)':75,'3rd Place (Major)':60,'4th Place (Major)':45,'5th-6th Place (Major)':30,'7th-8th Place (Major)':15,'1st Place (Minor)':30,'2nd Place (Minor)':20,'3rd-4th Place (Minor)':10,'Qualifier Stage Win':10};
-  const pts=map[reason];
-  if(pts) document.getElementById('pa-pts').value=pts;
-}
-
-async function savePointsAward(){
-  const teamId=document.getElementById('pa-team').value;
-  const eventId=document.getElementById('pa-event').value;
-  const reason=document.getElementById('pa-reason').value;
-  const pts=parseInt(document.getElementById('pa-pts').value)||0;
-  if(!pts){ toast('Points must be > 0','err'); return; }
-  await DB.add('points',{teamId, eventId, reason, pts, type:'manual', ts:Date.now()});
-  Modal.close();
-  await S.loadAll();
-  toast(`Awarded ${pts} pts to ${U.team(teamId).name}`, 'ok');
-  renderStandings();
-}
-
-async function deletePoints(id){
-  if(!confirm('Delete this points entry?')) return;
-  await DB.del('points',id);
-  await S.loadAll();
-  renderStandings();
-  toast('Points entry deleted','info');
-}
-
-// ── RENDER: MATCHES ────────────────────────────────────────────────
-function renderMatches(){
-  const el=document.getElementById('tab-matches');
-  const {eventId, team, search} = S.matchFilter;
-  const evOpts=`<option value="">All Events</option>${EVENTS.map(e=>`<option value="${e.id}" ${e.id===eventId?'selected':''}>${e.name}</option>`).join('')}`;
-  const teamOpts=`<option value="">All Teams</option>${TEAMS.map(t=>`<option value="${t.id}" ${t.id===team?'selected':''}>${t.name}</option>`).join('')}`;
-
-  let filtered=[...S.matches].filter(m=>{
-    if(eventId && m.eventId!==eventId) return false;
-    if(team && m.team1Id!==team && m.team2Id!==team) return false;
-    if(search){
-      const q=search.toLowerCase();
-      const t1=U.team(m.team1Id).name.toLowerCase(), t2=U.team(m.team2Id).name.toLowerCase();
-      if(!t1.includes(q)&&!t2.includes(q)) return false;
-    }
-    return true;
-  }).sort((a,b)=>matchSortValue(b)-matchSortValue(a));
-
-  const grouped = {};
-  for(const m of filtered){
-    const key = m.date || 'Undated';
-    (grouped[key] ||= []).push(m);
-  }
-  const dayKeys = Object.keys(grouped).sort((a,b)=>{
-    if(a==='Undated') return 1;
-    if(b==='Undated') return -1;
-    return matchSortValue({date:b,time:'23:59'}) - matchSortValue({date:a,time:'23:59'});
-  });
-
-  const matchCards = filtered.length===0 ?
-    `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches found</div><p>Try different filters or add matches via <strong>Add Match</strong></p></div>` :
-    dayKeys.map(day=>{
-      const label = day==='Undated' ? 'Undated Matches' : new Date(day+'T12:00:00').toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric', year:'numeric'});
-      const cards = grouped[day].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>buildMatchCard(m)).join('');
-      return `<section class="match-day"><div class="match-day-hd">${label}</div><div class="match-day-list">${cards}</div></section>`;
-    }).join('');
-
-  el.innerHTML=`
-    <div class="sh"><div><div class="sh-title">Match Results</div><div class="sh-sub">${filtered.length} matches</div></div>
-      <button class="btn btn-primary btn-sm" onclick="IS.tabs.goto('addmatch')">➕ Add Match</button>
-    </div>
-    <div class="fbar">
-      <div class="fg"><label>Event</label><select onchange="S.matchFilter.eventId=this.value;renderMatches()">${evOpts}</select></div>
-      <div class="fg"><label>Team</label><select onchange="S.matchFilter.team=this.value;renderMatches()">${teamOpts}</select></div>
-      <div class="fg"><label>Search</label><input type="text" placeholder="Team name…" value="${U.escHTML(search)}" oninput="S.matchFilter.search=this.value;renderMatches()"></div>
-    </div>
-    ${matchCards}`;
-  U.updateLogos();
-}
-
-function buildMatchCard(m){
-  const t1=U.team(m.team1Id), t2=U.team(m.team2Id);
-  const allMaps=S.maps.filter(mp=>mp.matchId===m.id).sort((a,b)=>a.mapNum-b.mapNum);
-  const s1=allMaps.filter(mp=>mp.winner===m.team1Id).length;
-  const s2=allMaps.filter(mp=>mp.winner===m.team2Id).length;
-  const ev=U.event(m.eventId);
-  const hasStats = S.pstats.some(s=>allMaps.find(mp=>mp.id===s.mapId));
-
-  // ── Series-level aggregated stats per player ──
-  const allStats = S.pstats.filter(s=>allMaps.find(mp=>mp.id===s.mapId));
-  const playerTotals = {}; // pid -> {kills,deaths,damage,bprSum,bprCount,maps}
-  allStats.forEach(st=>{
-    const mp=allMaps.find(x=>x.id===st.mapId);
-    if(!playerTotals[st.playerId]) playerTotals[st.playerId]={kills:0,deaths:0,damage:0,bprSum:0,bprCount:0,maps:0,teamId:st.teamId};
-    const r=playerTotals[st.playerId];
-    r.kills  += st.kills||0;
-    r.deaths += st.deaths||0;
-    r.damage += st.damage||0;
-    r.maps++;
-    const bpr=U.calcBPR(st.kills||0,st.deaths||0,mp?.mode||'HP');
-    if(bpr!=null){ r.bprSum+=bpr; r.bprCount++; }
-  });
-
-  const seriesPlayerRow=(pid,side)=>{
-    const r=playerTotals[pid]; if(!r) return '';
-    const pl=S.playerById(pid); if(!pl) return '';
-    const kd=r.deaths>0?(r.kills/r.deaths).toFixed(2):r.kills.toFixed(2);
-    const kdCls=parseFloat(kd)>=1?'green':parseFloat(kd)<1?'red':'';
-    const bpr=r.bprCount>0?r.bprSum/r.bprCount:null;
-    const t1kills=side==='t1'?r.kills:null, t2kills=side==='t2'?r.kills:null;
-    const maxKills=40; // normalise bar
-    const barW=Math.min(100,(r.kills/maxKills)*100).toFixed(0);
-    const barCol=side==='t1'?t1.color:t2.color;
-    return `<tr>
-      <td class="bold">${pl.name}</td>
-      <td class="num bold">${r.kills}</td>
-      <td class="num">${r.deaths}</td>
-      <td class="num ${kdCls}">${kd}</td>
-      <td class="num text-muted">${r.damage||'—'}</td>
-      <td>${U.fmtBPR(bpr)}</td>
-      <td style="width:80px"><div class="kd-bar-wrap"><div class="kd-bar" style="width:${barW}%;background:${barCol}"></div></div></td>
-    </tr>`;
-  };
-
-  // Build series panel player lists per team
-  const t1pids=Object.entries(playerTotals).filter(([,r])=>r.teamId===m.team1Id).map(([k])=>k);
-  const t2pids=Object.entries(playerTotals).filter(([,r])=>r.teamId===m.team2Id).map(([k])=>k);
-  // sort by kills desc
-  t1pids.sort((a,b)=>(playerTotals[b].kills)-(playerTotals[a].kills));
-  t2pids.sort((a,b)=>(playerTotals[b].kills)-(playerTotals[a].kills));
-
-  const seriesPanel=`
-    <div class="sv-panel on" id="sv-${m.id}-series">
-      ${!hasStats?`<div class="empty" style="padding:30px"><div class="empty-ico" style="font-size:24px">📊</div><div class="empty-lbl">No player stats recorded for this series</div></div>`:`
-      <div class="series-tbl tbl-wrap">
-        <table>
-          <thead>
-            <tr><th>Player</th><th>K</th><th>D</th><th>K/D</th><th>Dmg</th><th>BPR</th><th></th></tr>
-          </thead>
-          <tbody>
-            <tr class="team-sect-hd"><td colspan="7" style="border-left:3px solid ${t1.color}">${t1.name}</td></tr>
-            ${t1pids.map(pid=>seriesPlayerRow(pid,'t1')).join('')}
-            <tr class="team-sect-hd"><td colspan="7" style="border-left:3px solid ${t2.color}">${t2.name}</td></tr>
-            ${t2pids.map(pid=>seriesPlayerRow(pid,'t2')).join('')}
-          </tbody>
-        </table>
-      </div>`}
-    </div>`;
-
-  // ── Per-map panels ──
-  const mapPanels = allMaps.map((mp,i)=>{
-    const stats=S.pstats.filter(s=>s.mapId===mp.id);
-    const t1stats=stats.filter(s=>S.players.find(p=>p.id===s.playerId&&p.teamId===m.team1Id))
-                       .sort((a,b)=>(b.kills||0)-(a.kills||0));
-    const t2stats=stats.filter(s=>S.players.find(p=>p.id===s.playerId&&p.teamId===m.team2Id))
-                       .sort((a,b)=>(b.kills||0)-(a.kills||0));
-    const win1=mp.winner===m.team1Id, win2=mp.winner===m.team2Id;
-
-    const playerMapRow=(st,side)=>{
-      const pl=S.playerById(st.playerId); if(!pl) return '';
-      const bpr=U.calcBPR(st.kills||0,st.deaths||0,mp.mode);
-      const kd=st.deaths>0?((st.kills||0)/st.deaths).toFixed(2):(st.kills||0).toFixed(2);
-      const kdCls=parseFloat(kd)>=1?'green':parseFloat(kd)<1?'red':'';
-      const maxK=side==='t1'?Math.max(...t1stats.map(s=>s.kills||0),1):Math.max(...t2stats.map(s=>s.kills||0),1);
-      const barW=Math.min(100,((st.kills||0)/maxK)*100).toFixed(0);
-      const barCol=side==='t1'?t1.color:t2.color;
-      return `<tr>
-        <td class="bold">${pl.name}</td>
-        <td class="num bold">${st.kills||0}</td>
-        <td class="num">${st.deaths||0}</td>
-        <td class="num ${kdCls}">${kd}</td>
-        <td class="num text-muted">${st.damage||'—'}</td>
-        <td>${U.fmtBPR(bpr)}</td>
-        <td style="width:80px"><div class="kd-bar-wrap"><div class="kd-bar" style="width:${barW}%;background:${barCol}"></div></div></td>
-      </tr>`;
-    };
-
-    return `<div class="sv-panel" id="sv-${m.id}-map${i}">
-      <div class="map-score-banner">
-        <div class="map-score-team">
-          ${U.logoHTML(m.team1Id,'t-logo')}
-          <div class="map-score-name">${t1.name}</div>
-          <div class="map-score-val ${win1?'w':win2?'l':'d'}">${mp.score1??'?'}</div>
-        </div>
-        <div>
-          <div class="map-score-sep">—</div>
-          <div style="text-align:center;margin-top:4px">${U.modePill(mp.mode)}</div>
-          <div style="text-align:center;font-size:11px;color:var(--text2);margin-top:2px">${mp.mapName||'Unknown'}</div>
-          ${mp.duration?`<div style="text-align:center;font-size:10px;color:var(--text3)">${mp.duration}min</div>`:''}
-        </div>
-        <div class="map-score-team">
-          ${U.logoHTML(m.team2Id,'t-logo')}
-          <div class="map-score-name">${t2.name}</div>
-          <div class="map-score-val ${win2?'w':win1?'l':'d'}">${mp.score2??'?'}</div>
-        </div>
-      </div>
-      ${stats.length===0?`<div class="empty" style="padding:20px"><div class="empty-ico" style="font-size:20px">📋</div><div class="empty-lbl">No player stats for this map</div></div>`:`
-      <div class="series-tbl tbl-wrap"><table>
-        <thead><tr><th>Player</th><th>K</th><th>D</th><th>K/D</th><th>Dmg</th><th>BPR</th><th></th></tr></thead>
-        <tbody>
-          <tr class="team-sect-hd"><td colspan="7" style="border-left:3px solid ${t1.color}">${t1.name}</td></tr>
-          ${t1stats.map(st=>playerMapRow(st,'t1')).join('')}
-          <tr class="team-sect-hd"><td colspan="7" style="border-left:3px solid ${t2.color}">${t2.name}</td></tr>
-          ${t2stats.map(st=>playerMapRow(st,'t2')).join('')}
-        </tbody>
-      </table></div>`}
-    </div>`;
-  }).join('');
-
-  // ── Map tab labels ──
-  const mapTabs = allMaps.map((mp,i)=>{
-    const isWin=mp.winner===m.team1Id, isLoss=mp.winner===m.team2Id;
-    // from perspective of team1
-    const cls=isWin?'map-w':isLoss?'map-l':'';
-    const dot=isWin?'●':isLoss?'○':'·';
-    return `<button class="svt ${cls}" onclick="switchSVTab(this,'sv-${m.id}-map${i}','${m.id}')" data-mid="${m.id}">${dot} Map ${mp.mapNum} · ${mp.mode}${mp.mapName?' · '+mp.mapName:''}</button>`;
-  }).join('');
-
-  const bodyHTML=`
-    <div class="mc-bd" id="mc-bd-${m.id}">
-      <div class="sv-nav">
-        <button class="svt on" onclick="switchSVTab(this,'sv-${m.id}-series','${m.id}')" data-mid="${m.id}">📊 Series Stats</button>
-        ${mapTabs}
-      </div>
-      ${seriesPanel}
-      ${mapPanels}
-    </div>`;
-
-  return `<div class="mc" id="mc-${m.id}">
-    <div class="mc-hd" onclick="toggleMatch(${m.id})">
-      <div class="mc-teams">
-        ${U.logoHTML(m.team1Id)} <span class="bold">${t1.name}</span>
-        <span class="mc-score"><span class="${s1>s2?'sw':'sl'}">${s1}</span>–<span class="${s2>s1?'sw':'sl'}">${s2}</span></span>
-        <span class="bold">${t2.name}</span> ${U.logoHTML(m.team2Id)}
-        ${allMaps.length>0?`<div style="display:flex;gap:3px;margin-left:8px">${allMaps.map(mp=>{
-          const isW=mp.winner===m.team1Id,isL=mp.winner===m.team2Id;
-          return `<span style="width:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;background:${isW?'rgba(34,197,94,.2)':isL?'rgba(239,68,68,.15)':'var(--s3)'};color:${isW?'var(--green)':isL?'var(--red)':'var(--text2)'}">${mp.mode[0]}</span>`;
-        }).join('')}</div>`:''}
-      </div>
-      <div class="mc-meta"><strong>${ev.name}</strong><br>${matchDateLabel(m)}<br><span class="text-muted text-sm">${m.format}</span></div>
-      <div class="mc-actions">
-        <button class="btn btn-secondary btn-xs" title="View stats" onclick="event.stopPropagation();toggleMatch(${m.id}, true)">View</button>
-        <button class="btn btn-secondary btn-xs" title="Edit match" onclick="event.stopPropagation();editMatchFromCard(${m.id})">Edit</button>
-        <button class="btn btn-danger btn-xs" title="Delete match" onclick="event.stopPropagation();deleteMatch(${m.id})">✕</button>
-      </div>
-    </div>
-    ${bodyHTML}
-  </div>`;
-}
-
-function switchSVTab(btn, panelId, mid){
-  // Only affect panels within this match
-  const mc=document.getElementById('mc-'+mid);
-  if(!mc) return;
-  mc.querySelectorAll('.svt').forEach(b=>b.classList.remove('on'));
-  mc.querySelectorAll('.sv-panel').forEach(p=>p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById(panelId)?.classList.add('on');
-}
-
-function toggleMatch(id, forceOpen=false){
-  const bd=document.getElementById('mc-bd-'+id);
-  if(!bd) return;
-  const shouldOpen = forceOpen ? true : !bd.classList.contains('open');
-  bd.classList.toggle('open', shouldOpen);
-  const card=document.getElementById('mc-'+id);
-  if(card) card.classList.toggle('open', shouldOpen);
-  if(shouldOpen) requestAnimationFrame(()=>bd.scrollIntoView({block:'nearest', behavior:'smooth'}));
-}
-
-async function deleteMatch(id){
-  if(!confirm('Delete this match and all its map/player data?')) return;
-  await DB.del('matches', id);
-  const maps=S.maps.filter(m=>m.matchId===id);
-  for(const m of maps){
-    await DB.del('maps', m.id);
-    const ps=S.pstats.filter(s=>s.mapId===m.id);
-    for(const s of ps) await DB.del('pstats', s.id);
-  }
-  await S.loadAll();
-  renderMatches();
-  toast('Match deleted','info');
-}
-
-// ── RENDER: ADD MATCH ─────────────────────────────────────────────
-function renderAddMatch(){
-  const el=document.getElementById('tab-addmatch');
-  const st=S.addMatch;
-  if(!st.maps) st.maps=[];
-
-  const teamOpts=(sel='')=>TEAMS.map(t=>`<option value="${t.id}" ${t.id===sel?'selected':''}>${t.name}</option>`).join('');
-  const evOpts  =(sel='')=>EVENTS.map(e=>`<option value="${e.id}" ${e.id===sel?'selected':''}>${e.name}</option>`).join('');
-
-  const modeOrder = st.format==='BO7' ? BO7 : BO5;
-
-  const mapBlocks = st.maps.map((mp,i)=>{
-    const autoMode = modeOrder[i]||'HP';
-    const mode = mp.mode||autoMode;
-    const mapOpts = (MAPS[mode]||[]).map(n=>`<option value="${n}" ${n===mp.mapName?'selected':''}>${n}</option>`).join('');
-    const modeOpts = ['HP','SND','OL'].map(m=>`<option value="${m}" ${m===mode?'selected':''}>${MODE_LABEL[m]}</option>`).join('');
-
-    const t1players = st.team1 ? S.teamRoster(st.team1, true) : [];
-    const t2players = st.team2 ? S.teamRoster(st.team2, true) : [];
-
-    const playerRows=(players,side)=>players.map(p=>`
-      <div class="psg">
-        <span style="font-weight:700;font-size:12px;padding:8px 4px;opacity:${p.active?1:0.55}">${p.name}${!p.active?' <span style="font-size:9px;color:var(--amber);font-weight:700">INA</span>':''}</span>
-        <input type="number" min="0" placeholder="K" value="${(mp[`${side}_${p.id}_k`])||''}" 
-          onchange="S.addMatch.maps[${i}]['${side}_${p.id}_k']=+this.value">
-        <input type="number" min="0" placeholder="D" value="${(mp[`${side}_${p.id}_d`])||''}"
-          onchange="S.addMatch.maps[${i}]['${side}_${p.id}_d']=+this.value">
-        <input type="number" min="0" placeholder="Dmg" value="${(mp[`${side}_${p.id}_dmg`])||''}"
-          onchange="S.addMatch.maps[${i}]['${side}_${p.id}_dmg']=+this.value">
-        <input type="number" min="0" step="0.1" placeholder="Ast" value="${(mp[`${side}_${p.id}_ast`])||''}"
-          onchange="S.addMatch.maps[${i}]['${side}_${p.id}_ast']=+this.value">
-      </div>`).join('');
-
-    return `<div class="meb">
-      <div class="meb-hd">
-        <span class="meb-lbl">MAP ${i+1} · ${U.modeLabel(mode)}</span>
-        <button class="btn btn-danger btn-xs" onclick="removeMap(${i})">✕ Remove</button>
-      </div>
-      <div class="g3" style="margin-bottom:12px">
-        <div class="fg" style="margin-bottom:0"><label>Mode</label>
-          <select onchange="S.addMatch.maps[${i}].mode=this.value;renderAddMatch()">
-            ${modeOpts}
-          </select>
-        </div>
-        <div class="fg" style="margin-bottom:0"><label>Map</label>
-          <select onchange="S.addMatch.maps[${i}].mapName=this.value">
-            <option value="">-- Select --</option>${mapOpts}
-          </select>
-        </div>
-        <div class="fg" style="margin-bottom:0"><label>Duration (min, optional)</label>
-          <input type="number" min="0" step="0.5" placeholder="e.g. 12.5" value="${mp.duration||''}"
-            onchange="S.addMatch.maps[${i}].duration=+this.value">
-        </div>
-      </div>
-      <div class="g2" style="margin-bottom:10px">
-        <div class="fg" style="margin-bottom:0"><label>${st.team1?U.team(st.team1).name:'Team 1'} Score</label>
-          <input type="number" min="0" placeholder="Score" value="${mp.score1||''}"
-            onchange="S.addMatch.maps[${i}].score1=+this.value">
-        </div>
-        <div class="fg" style="margin-bottom:0"><label>${st.team2?U.team(st.team2).name:'Team 2'} Score</label>
-          <input type="number" min="0" placeholder="Score" value="${mp.score2||''}"
-            onchange="S.addMatch.maps[${i}].score2=+this.value">
-        </div>
-      </div>
-      ${t1players.length>0||t2players.length>0?`
-        <div class="psg-hd"><span>${st.team1?U.team(st.team1).name:'Team 1'} Players</span><span>K</span><span>D</span><span>Dmg</span><span>Ast</span></div>
-        ${t1players.length>0?playerRows(t1players,'t1'):'<p class="text-muted text-sm">Select Team 1 above</p>'}
-        <div class="team-divider">${st.team2?U.team(st.team2).name:'Team 2'} Players</div>
-        <div class="psg-hd"><span></span><span>K</span><span>D</span><span>Dmg</span><span>Ast</span></div>
-        ${t2players.length>0?playerRows(t2players,'t2'):'<p class="text-muted text-sm">Select Team 2 above</p>'}
-      `:'<p class="text-muted text-sm">Select both teams above to enter player stats</p>'}
-    </div>`;
-  }).join('');
-
-  el.innerHTML=`
-    <div class="sh"><div><div class="sh-title">Add Match</div><div class="sh-sub">Log a new CDL match result · AI screenshot parsing enabled</div></div></div>
-
-    <div class="stabs" style="margin-bottom:14px">
-      <button class="stb ${(S._addMatchTab||'single')==='single'?'on':''}" onclick="switchAddMatchTab('single')">➕ Single Match</button>
-      <button class="stb ${(S._addMatchTab||'single')==='bulk'?'on':''}" onclick="switchAddMatchTab('bulk')">📁 Bulk Import</button>
-    </div>
-
-    <div id="addmatch-single" style="display:${(S._addMatchTab||'single')==='single'?'block':'none'}">
-
-    <div class="card" style="border-color:var(--cyan);margin-bottom:14px">
-      <div class="ai-header">
-        <div style="font-size:20px">🤖</div>
-        <div><div style="font-weight:800;font-size:14px;color:var(--cyan)">AI Screenshot Parser</div><div class="text-sm text-muted">Drop CDL scoreboard screenshots — Claude reads them and fills the form automatically</div></div>
-        <div class="ai-badge" style="margin-left:auto">LIVE</div>
-      </div>
-      <div class="ai-zone" id="ai-dropzone"
-        ondragover="event.preventDefault();this.classList.add('drag')"
-        ondragleave="this.classList.remove('drag')"
-        ondrop="handleScreenshotDrop(event)">
-        <div class="ai-zone-inner" onclick="document.getElementById('ss-upload').click()">
-          <div class="ai-zone-ico">📸</div>
-          <div class="ai-zone-lbl">Drop screenshots here or click to browse</div>
-          <div class="ai-zone-sub">Upload individual map scoreboards or the series overview · PNG, JPG, WEBP</div>
-        </div>
-        <div class="ai-thumb-row" id="ss-thumbs" style="display:none"></div>
-      </div>
-      <input type="file" id="ss-upload" accept="image/*" multiple style="display:none" onchange="handleScreenshotFiles(this.files)">
-      <div style="display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap">
-        <button class="ai-parse-btn" id="ai-parse-btn" onclick="runAIParse()" disabled>
-          <span>🤖</span> Parse with Claude AI
-        </button>
-        <button class="btn btn-ghost btn-sm" onclick="clearScreenshots()">Clear Screenshots</button>
-        <div class="text-sm text-muted" id="ai-file-count">0 screenshots loaded</div>
-      </div>
-      <div id="parse-progress-area"></div>
-      <div id="parse-results-area"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">MATCH DETAILS</div>
-      <div class="g3">
-        <div class="fg"><label>Event</label>
-          <select onchange="S.addMatch.event=this.value">
-            <option value="">-- Select Event --</option>${evOpts(st.event)}
-          </select>
-        </div>
-        <div class="fg"><label>Date</label>
-          <input type="date" value="${st.date||''}" onchange="S.addMatch.date=this.value">
-        </div>
-        <div class="fg"><label>Format</label>
-          <select onchange="S.addMatch.format=this.value;renderAddMatch()">
-            <option value="BO5" ${st.format==='BO5'?'selected':''}>Best of 5</option>
-            <option value="BO7" ${st.format==='BO7'?'selected':''}>Best of 7</option>
-          </select>
-        </div>
-      </div>
-      <div class="g2">
-        <div class="fg"><label>Team 1</label>
-          <select onchange="S.addMatch.team1=this.value;renderAddMatch()">
-            <option value="">-- Select Team --</option>${teamOpts(st.team1)}
-          </select>
-        </div>
-        <div class="fg"><label>Team 2</label>
-          <select onchange="S.addMatch.team2=this.value;renderAddMatch()">
-            <option value="">-- Select Team --</option>${teamOpts(st.team2)}
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">MAP RESULTS (${st.maps.length} maps entered)</div>
-      ${st.maps.length===0?`<p class="text-muted text-sm" style="margin-bottom:12px">No maps added yet. Click <strong>+ Add Map</strong> below.</p>`:''}
-      ${mapBlocks}
-      <div class="flex" style="gap:10px;margin-top:10px">
-        <button class="btn btn-secondary" onclick="addMap()">＋ Add Map ${st.maps.length+1}</button>
-        ${st.maps.length>0?`<button class="btn btn-ghost btn-sm" onclick="clearMaps()">Clear All Maps</button>`:''}
-      </div>
-    </div>
-
-    <div class="flex" style="gap:10px;justify-content:flex-end">
-      <button class="btn btn-ghost" onclick="S.addMatch={maps:[],team1:null,team2:null,event:null,format:'BO5'};renderAddMatch()">Reset Form</button>
-      <button class="btn btn-primary" onclick="saveMatch()">💾 Save Match</button>
-    </div>
-
-    </div><!-- /addmatch-single -->
-
-    <div id="addmatch-bulk" style="display:${(S._addMatchTab||'single')==='bulk'?'block':'none'}">
-      ${renderBulkImportHTML()}
-    </div>
   `;
 }
 
@@ -4730,7 +4222,7 @@ boot();
 
   /* Responsive */
   @media(max-width:1100px){.team-directory{grid-template-columns:repeat(3,minmax(0,1fr))}.bp-hero-inner{flex-wrap:wrap}.team-roster-strip{grid-template-columns:repeat(2,1fr)}.bp-roster-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.bp-player-art{height:176px}}
-  @media(max-width:700px){.team-directory{grid-template-columns:1fr 1fr}.team-roster-strip{grid-template-columns:1fr}.bp-roster-strip{grid-template-columns:1fr 1fr}.bp-player-art{height:154px}.bp-hero-stats{flex-wrap:wrap}.bp-mode-tab{flex:1 1 calc(33% - 6px)}.match-teams-grid{grid-template-columns:1fr}.match-side.right{justify-content:flex-start;text-align:left}#hdr{padding:0 12px;min-height:88px;gap:12px}#hdr-logo{height:56px;width:auto}#hdr-title .line1{font-size:clamp(24px,8vw,34px)}#hdr-title .line2{font-size:clamp(15px,5vw,22px);gap:10px}#hdr-title .line2::before,#hdr-title .line2::after{width:28px}}
+  @media(max-width:700px){.team-directory{grid-template-columns:1fr 1fr}.team-roster-strip{grid-template-columns:1fr}.bp-roster-strip{grid-template-columns:1fr 1fr}.bp-player-art{height:154px}.bp-hero-stats{flex-wrap:wrap}.bp-mode-tab{flex:1 1 calc(33% - 6px)}.match-teams-grid{grid-template-columns:1fr}.match-side.right{justify-content:flex-start;text-align:left}#hdr{padding:0 12px;min-height:88px;gap:12px}#hdr-logo{height:68px;width:auto}#hdr-title .line1{font-size:clamp(24px,8vw,34px)}#hdr-title .line2{font-size:clamp(15px,5vw,22px);gap:10px}#hdr-title .line2::before,#hdr-title .line2::after{width:28px}}
   `;
   const style=document.createElement('style'); style.textContent=extraCSS; document.head.appendChild(style);
 
@@ -4754,16 +4246,35 @@ boot();
   function teamStatsBase(team){
     return `./assets/img/team-stats/${team.id}`;
   }
-  function playerImageSrc(team, playerName){
-    return `./assets/img/players/${team.id}/${playerName}.png`;
+  function playerImageUrlList(team, playerName){
+    const raw = String(playerName||'').trim();
+    const compact = raw.replace(/[^A-Za-z0-9]/g,'');
+    const lower = raw.toLowerCase();
+    const lowerCompact = compact.toLowerCase();
+    const variants = [...new Set([raw, compact, lower, lowerCompact].filter(Boolean))];
+    const exts = ['.png','.webp','.jpg','.jpeg'];
+    return variants.flatMap(v=>exts.map(ext=>`./assets/img/players/${team.id}/${v}${ext}`));
   }
+  function playerImageSrc(team, playerName){
+    return playerImageUrlList(team, playerName)[0] || './assets/img/branding/logo.png';
+  }
+  window.cycleImgFallback = function(img){
+    const list = (img.dataset.fallbacks||'').split('|').filter(Boolean);
+    const idx = Number(img.dataset.fallbackIndex||0);
+    if(idx < list.length){
+      img.dataset.fallbackIndex = String(idx + 1);
+      img.src = list[idx];
+      return;
+    }
+    img.style.display='none';
+    const fallback = img.parentElement && img.parentElement.querySelector('.bp-player-init');
+    if(fallback) fallback.style.display='flex';
+  };
   function playerImageHTML(team, playerName, cssClass, initials, color){
-    const base = `./assets/img/players/${team.id}/${playerName}`;
-    // Try png → webp → jpg → initials fallback via onerror chain
-    return `<img src="${base}.png" class="${cssClass}" alt="${playerName}"
-      onerror="if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.webp')}
-               else if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}
-               else{this.style.display='none';this.nextElementSibling.style.display='flex'}">`;
+    const urls = playerImageUrlList(team, playerName);
+    const first = urls.shift() || './assets/img/branding/logo.png';
+    const cls = cssClass ? ` class="${cssClass}"` : '';
+    return `<img src="${first}"${cls} alt="${playerName}" data-fallback-index="0" data-fallbacks="${urls.join('|')}" onerror="window.cycleImgFallback(this)">`;
   }
   function eventShort(eid){
     return ({M1Q:'M1 Qualifiers',M1T:'M1 Tournament',M2Q:'M2 Qualifiers',M2T:'M2 Tournament',M3Q:'M3 Qualifiers',M4Q:'M4 Qualifiers',CHAMPS:'Champs'})[eid] || eid;
@@ -4874,8 +4385,7 @@ boot();
       const placementBadges=teamPlacements(team.id).slice(0,6).map(p=>`<div class="trophy-pill">🏆 <span><strong>${p.reason.replace(' Place','')}</strong><br><span class="text-muted text-sm">${eventShort(p.eventId)} · +${p.pts}</span></span></div>`).join('')||'<div class="text-sm text-muted">No tournament placements logged yet.</div>';
       const roster=S.teamRoster(team.id, !!S.teamPage.showInactive);
       const rosterHTML=roster.map(p=>{
-        const base=`./assets/img/players/${team.id}/${p.name}`;
-        const imgTag=`<img src="${base}.png" alt="${U.escHTML(p.name)}" onerror="if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.webp')}else if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.display='none';this.nextElementSibling.nextElementSibling.style.display='flex'}">`;
+        const imgTag = playerImageHTML(team, p.name, '', p.name.slice(0,3).toUpperCase(), team.color);
         return `<div class="player-spotlight" style="--team-color:${team.color}"><div class="art"><div class="bglogo">${U.logoHTML(team.id,'bp-team-logo')}</div>${imgTag}<div class="bp-player-init" style="display:none;background:${team.color}16;color:${team.color}">${U.escHTML(p.name.slice(0,3).toUpperCase())}</div></div><div class="meta"><div class="nm">${U.escHTML(p.name)}</div><div class="sb">${p.active?'Active':'Inactive'}</div></div></div>`;
       }).join('');
       const recentForm=teamLastFive(team.id).map(r=>`<div class="team-recent-item"><div class="text-sm text-muted">${r.match.date||'Undated'}</div><div>${U.teamTag(r.oppId)}<div class="text-sm text-muted">${eventShort(r.match.eventId)}</div></div><div style="text-align:right"><div class="${r.won?'tag-win':'tag-loss'}">${r.won?'W':'L'}</div><div class="num">${r.mine}:${r.opp}</div></div></div>`).join('')||'<div class="text-sm text-muted">No matches yet.</div>';
@@ -4917,10 +4427,8 @@ boot();
           </div>
           <div class="bp-roster-strip">
             ${S.teamRoster(team.id, !!S.teamPage.showInactive).map(p=>{
-              const base = `./assets/img/players/${team.id}/${p.name}`;
               const initials = p.name.slice(0,3).toUpperCase();
-              const imgTag = `<img src="${base}.png" class="bp-player-img" alt="${U.escHTML(p.name)}"
-                onerror="if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.webp')}else if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.display='none';this.nextElementSibling.nextElementSibling.style.display='flex'}">`;
+              const imgTag = playerImageHTML(team, p.name, 'bp-player-img', initials, team.color);
               return `<div class="bp-player-chip${p.active?'':' bp-player-inactive'}" style="--team-color:${team.color}" title="${U.escHTML(p.name)}${p.active?'':' (Inactive)'}">
                 <div class="bp-player-art">
                   <div class="bp-player-backdrop">${U.logoHTML(team.id,'bp-team-logo')}</div>
