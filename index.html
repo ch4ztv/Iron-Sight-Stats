@@ -4766,16 +4766,39 @@ boot();
   function teamStatsBase(team){
     return `./assets/img/team-stats/${team.id}`;
   }
+  function normalizePlayerAssetName(name){
+    return String(name||'')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g,'')
+      .replace(/[^a-z0-9]/g,'');
+  }
+  function playerImageCandidates(teamId, playerName){
+    const team = String(teamId||'').trim().toLowerCase();
+    const normalized = normalizePlayerAssetName(playerName);
+    const exts = ['png','webp','jpg','jpeg'];
+    return exts.map(ext => `./assets/img/players/${team}/${normalized}.${ext}`);
+  }
+  function teamPortraitFallback(img){
+    let list = [];
+    try { list = JSON.parse(img.dataset.candidates || '[]'); } catch(e) { list = []; }
+    let idx = Number(img.dataset.idx || '0') + 1;
+    if (idx < list.length) {
+      img.dataset.idx = String(idx);
+      img.src = list[idx];
+      return;
+    }
+    img.style.display = 'none';
+    const wrap = img.closest('.bp-player-art, .art') || img.parentElement;
+    const fb = wrap ? wrap.querySelector('.bp-player-init') : null;
+    if (fb) fb.style.display = 'flex';
+  }
   function playerImageSrc(team, playerName){
-    return `./assets/img/players/${team.id}/${playerName}.png`;
+    return playerImageCandidates(team.id, playerName)[0];
   }
   function playerImageHTML(team, playerName, cssClass, initials, color){
-    const base = `./assets/img/players/${team.id}/${playerName}`;
-    // Try png → webp → jpg → initials fallback via onerror chain
-    return `<img src="${base}.png" class="${cssClass}" alt="${playerName}"
-      onerror="if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.webp')}
-               else if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}
-               else{this.style.display='none';this.nextElementSibling.style.display='flex'}">`;
+    const candidates = playerImageCandidates(team.id, playerName);
+    return `<img src="${candidates[0]}" data-candidates='${JSON.stringify(candidates)}' data-idx="0" class="${cssClass}" alt="${playerName}" onerror="teamPortraitFallback(this)">`;
   }
   function eventShort(eid){
     return ({M1Q:'M1 Qualifiers',M1T:'M1 Tournament',M2Q:'M2 Qualifiers',M2T:'M2 Tournament',M3Q:'M3 Qualifiers',M4Q:'M4 Qualifiers',CHAMPS:'Champs'})[eid] || eid;
@@ -4886,9 +4909,9 @@ boot();
       const placementBadges=teamPlacements(team.id).slice(0,6).map(p=>`<div class="trophy-pill">🏆 <span><strong>${p.reason.replace(' Place','')}</strong><br><span class="text-muted text-sm">${eventShort(p.eventId)} · +${p.pts}</span></span></div>`).join('')||'<div class="text-sm text-muted">No tournament placements logged yet.</div>';
       const roster=S.teamRoster(team.id, !!S.teamPage.showInactive);
       const rosterHTML=roster.map(p=>{
-        const base=`./assets/img/players/${team.id}/${p.name}`;
-        const imgTag=`<img src="${base}.png" alt="${U.escHTML(p.name)}" onerror="if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.webp')}else if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.display='none';this.nextElementSibling.nextElementSibling.style.display='flex'}">`;
-        return `<div class="player-spotlight" style="--team-color:${team.color}"><div class="art"><div class="bglogo">${U.logoHTML(team.id,'bp-team-logo')}</div>${imgTag}<div class="bp-player-init" style="display:none;background:${team.color}16;color:${team.color}">${U.escHTML(p.name.slice(0,3).toUpperCase())}</div></div><div class="meta"><div class="nm">${U.escHTML(p.name)}</div><div class="sb">${p.active?'Active':'Inactive'}</div></div></div>`;
+        const initials = U.escHTML(p.name.slice(0,3).toUpperCase());
+        const imgTag = playerImageHTML(team, p.name, '', initials, team.color);
+        return `<div class="player-spotlight" style="--team-color:${team.color}"><div class="art"><div class="bglogo">${U.logoHTML(team.id,'bp-team-logo')}</div>${imgTag}<div class="bp-player-init" style="display:none;background:${team.color}16;color:${team.color}">${initials}</div></div><div class="meta"><div class="nm">${U.escHTML(p.name)}</div><div class="sb">${p.active?'Active':'Inactive'}</div></div></div>`;
       }).join('');
       const recentForm=teamLastFive(team.id).map(r=>`<div class="team-recent-item"><div class="text-sm text-muted">${r.match.date||'Undated'}</div><div>${U.teamTag(r.oppId)}<div class="text-sm text-muted">${eventShort(r.match.eventId)}</div></div><div style="text-align:right"><div class="${r.won?'tag-win':'tag-loss'}">${r.won?'W':'L'}</div><div class="num">${r.mine}:${r.opp}</div></div></div>`).join('')||'<div class="text-sm text-muted">No matches yet.</div>';
       secHTML=`<div class="g2" style="margin-bottom:12px"><div class="card"><div class="card-title">Trophy Case</div><div class="team-trophies">${placementBadges}</div></div><div class="card"><div class="card-title">Recent Form</div><div class="team-recent-list">${recentForm}</div></div></div><div class="card"><div class="card-title">${S.teamPage.showInactive?'Roster':'Active Roster'}</div><div class="team-roster-tools"><button class="roster-toggle ${S.teamPage.showInactive?'on':''}" onclick="S.teamPage.showInactive=!S.teamPage.showInactive;window.renderTeams()">${S.teamPage.showInactive?'Hide Inactive':'Show Inactive'}</button></div><div class="team-roster-strip">${rosterHTML||'<div class="text-sm text-muted">No players.</div>'}</div></div>`;
@@ -4929,10 +4952,8 @@ boot();
           </div>
           <div class="bp-roster-strip">
             ${S.teamRoster(team.id, !!S.teamPage.showInactive).map(p=>{
-              const base = `./assets/img/players/${team.id}/${p.name}`;
               const initials = p.name.slice(0,3).toUpperCase();
-              const imgTag = `<img src="${base}.png" class="bp-player-img" alt="${U.escHTML(p.name)}"
-                onerror="if(this.src.endsWith('.png')){this.src=this.src.replace('.png','.webp')}else if(this.src.endsWith('.webp')){this.src=this.src.replace('.webp','.jpg')}else{this.style.display='none';this.nextElementSibling.nextElementSibling.style.display='flex'}">`;
+              const imgTag = playerImageHTML(team, p.name, 'bp-player-img', initials, team.color);
               return `<div class="bp-player-chip${p.active?'':' bp-player-inactive'}" style="--team-color:${team.color}" title="${U.escHTML(p.name)}${p.active?'':' (Inactive)'}">
                 <div class="bp-player-art">
                   <div class="bp-player-backdrop">${U.logoHTML(team.id,'bp-team-logo')}</div>
