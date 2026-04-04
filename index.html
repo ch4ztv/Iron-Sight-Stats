@@ -1067,7 +1067,7 @@ async function renderDashboard(){
 
   // Recent matches
   const recent = [...S.matches].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).slice(0,5);
-  const recentHTML = recent.length===0 ? `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches recorded yet</div><p>Use <strong>Add Match</strong> to log your first result</p></div>` :
+  const recentHTML = recent.length===0 ? `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches recorded yet</div><p>No public match results are available yet.</p></div>` :
     recent.map(m=>{
       const t1=U.team(m.team1Id), t2=U.team(m.team2Id);
       const mapsPlayed=S.maps.filter(mp=>mp.matchId===m.id);
@@ -1239,7 +1239,7 @@ function renderStandings(){
       <button class="stb on" onclick="switchSTab(this,'st-season')">Season</button>
       ${qualEvents.map(e=>`<button class="stb" onclick="switchSTab(this,'st-${e.id}')">${e.name}</button>`).join('')}
       <button class="stb" onclick="switchSTab(this,'st-brackets')">🗂️ Brackets</button>
-      <button class="stb" onclick="switchSTab(this,'st-ledger')">🏅 Points Ledger</button>
+      
     </div>
     <div id="st-season" class="stpanel on">${buildTable(null)}</div>
     ${qualEvents.map(e=>`<div id="st-${e.id}" class="stpanel">${buildTable(e.id)}</div>`).join('')}
@@ -1321,7 +1321,7 @@ async function savePointsAward(){
   renderStandings();
 }
 
-async function deletePoints(id){
+async function deletePoints(id){ return; 
   if(!confirm('Delete this points entry?')) return;
   await DB.del('points',id);
   await S.loadAll();
@@ -1359,7 +1359,7 @@ function renderMatches(){
   });
 
   const matchCards = filtered.length===0 ?
-    `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches found</div><p>Try different filters or add matches via <strong>Add Match</strong></p></div>` :
+    `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches found</div><p>Try different filters.</p></div>` :
     dayKeys.map(day=>{
       const label = day==='Undated' ? 'Undated Matches' : new Date(day+'T12:00:00').toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric', year:'numeric'});
       const cards = grouped[day].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>buildMatchCard(m)).join('');
@@ -1368,7 +1368,7 @@ function renderMatches(){
 
   el.innerHTML=`
     <div class="sh"><div><div class="sh-title">Match Results</div><div class="sh-sub">${filtered.length} matches</div></div>
-      <button class="btn btn-primary btn-sm" onclick="IS.tabs.goto('addmatch')">➕ Add Match</button>
+      
     </div>
     <div class="fbar">
       <div class="fg"><label>Event</label><select onchange="S.matchFilter.eventId=this.value;renderMatches()">${evOpts}</select></div>
@@ -1541,8 +1541,7 @@ function buildMatchCard(m){
       <div class="mc-meta"><strong>${ev.name}</strong><br>${matchDateLabel(m)}<br><span class="text-muted text-sm">${m.format}</span></div>
       <div class="mc-actions">
         <button class="btn btn-secondary btn-xs" title="View stats" onclick="event.stopPropagation();toggleMatch(${m.id}, true)">View</button>
-        <button class="btn btn-secondary btn-xs" title="Edit match" onclick="event.stopPropagation();editMatchFromCard(${m.id})">Edit</button>
-        <button class="btn btn-danger btn-xs" title="Delete match" onclick="event.stopPropagation();deleteMatch(${m.id})">✕</button>
+        
       </div>
     </div>
     ${bodyHTML}
@@ -1569,7 +1568,7 @@ function toggleMatch(id, forceOpen=false){
   if(shouldOpen) requestAnimationFrame(()=>bd.scrollIntoView({block:'nearest', behavior:'smooth'}));
 }
 
-async function deleteMatch(id){
+async function deleteMatch(id){ return; 
   if(!confirm('Delete this match and all its map/player data?')) return;
   await DB.del('matches', id);
   const maps=S.maps.filter(m=>m.matchId===id);
@@ -4909,7 +4908,7 @@ boot();
       const splitRows=['M1Q','M1T','M2Q','M2T'].map(eid=>{ const s=teamSeriesSummary(team.id,eid); return `<tr><td>${eventShort(eid)}</td><td>${s.seriesW}-${s.seriesL}</td><td>${s.mapW}-${s.mapL}</td><td class="${s.mapDiff>=0?'green':'red'}">${s.mapDiff>0?'+':''}${s.mapDiff}</td></tr>`; }).join('');
       secHTML=`<div class="card"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between">Season By Split<div class="split-pills">${splitPills}</div></div><div class="g2" style="margin-bottom:14px"><div class="team-kpi" style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="v" style="font-size:20px;font-weight:900;font-family:var(--mono)">${splitSummary.seriesW}-${splitSummary.seriesL}</div><div class="l" style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em">Series Record</div></div><div class="team-kpi" style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="v" style="font-size:20px;font-weight:900;font-family:var(--mono)">${splitSummary.mapW}-${splitSummary.mapL}</div><div class="l" style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em">Map Record</div></div></div><div class="tbl-wrap"><table><thead><tr><th>Split</th><th>Series</th><th>Maps</th><th>Diff</th></tr></thead><tbody>${splitRows}</tbody></table></div></div>`;
     } else if(S.teamPage.section==='matches'){
-      const rows=[...teamMatches(team.id,splitId)].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>{ const [a,b]=seriesScore(m); const isT1=m.team1Id===team.id; const mine=isT1?a:b; const opp=isT1?b:a; const oppId=isT1?m.team2Id:m.team1Id; return `<tr><td>${matchDateLabel(m)}</td><td>${eventShort(m.eventId)}</td><td>${U.teamTag(oppId)}</td><td><span class="${mine>opp?'green':'red'} bold">${mine>opp?'W':'L'}</span></td><td class="tbl-num">${mine}:${opp}</td><td><button class="btn btn-ghost btn-xs" onclick="editMatchFromCard(${m.id})">Edit</button></td></tr>`; }).join('')||'<tr><td colspan="6" class="text-muted">No matches yet.</td></tr>';
+      const rows=[...teamMatches(team.id,splitId)].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>{ const [a,b]=seriesScore(m); const isT1=m.team1Id===team.id; const mine=isT1?a:b; const opp=isT1?b:a; const oppId=isT1?m.team2Id:m.team1Id; return `<tr><td>${matchDateLabel(m)}</td><td>${eventShort(m.eventId)}</td><td>${U.teamTag(oppId)}</td><td><span class="${mine>opp?'green':'red'} bold">${mine>opp?'W':'L'}</span></td><td class="tbl-num">${mine}:${opp}</td><td></td></tr>`; }).join('')||'<tr><td colspan="6" class="text-muted">No matches yet.</td></tr>';
       secHTML=`<div class="card"><div class="card-title">Match Log</div><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Event</th><th>Opponent</th><th>Result</th><th>Score</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
     } else if(S.teamPage.section==='parse'){
       secHTML = (typeof renderTeamParser==='function') ? renderTeamParser(team.id) : '';
@@ -5013,7 +5012,7 @@ boot();
     const tab=document.getElementById('tab-addmatch'); if(!tab) return;
     const title=tab.querySelector('.sh-title');
     const sub=tab.querySelector('.sh-sub');
-    if(title) title.textContent = S.editingMatchId ? 'Edit Match' : 'Add Match';
+    if(title) title.textContent = 'Match Entry Disabled';
     if(sub) sub.textContent = S.editingMatchId ? `Editing match #${S.editingMatchId} · update date, time, teams, maps, and player stats` : 'Log a new CDL match result · AI screenshot parsing enabled';
     const detailsCard=[...tab.querySelectorAll('.card')].find(c=>c.textContent.includes('MATCH DETAILS'));
     if(detailsCard){
