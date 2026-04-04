@@ -1070,7 +1070,7 @@ async function renderDashboard(){
 
   // Recent matches
   const recent = [...S.matches].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,5);
-  const recentHTML = recent.length===0 ? `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches recorded yet</div><p>Match history will appear here as results are recorded</p></div>` :
+  const recentHTML = recent.length===0 ? `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches recorded yet</div><p>Use <strong>Add Match</strong> to log your first result</p></div>` :
     recent.map(m=>{
       const t1=U.team(m.team1Id), t2=U.team(m.team2Id);
       const mapsPlayed=S.maps.filter(mp=>mp.matchId===m.id);
@@ -1212,6 +1212,8 @@ function renderStandings(){
       <div class="card-title">${def.name}
         <span style="font-size:10px;color:var(--text2);font-weight:400">${filledCount}/${totalMatches} matches filled</span>
         <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn btn-ghost btn-xs" onclick="clearBracket('${eventId}')">Clear</button>
+          ${!ptAlreadyAwarded&&allFilled?`<button class="btn btn-success btn-sm" onclick="awardBracketPoints('${eventId}')">🏆 Award Points</button>`:''}
           ${ptAlreadyAwarded?`<span class="pill pill-w" style="font-size:10px">✓ Points Awarded</span>`:''}
         </div>
       </div>
@@ -1233,16 +1235,31 @@ function renderStandings(){
   el.innerHTML=`
     <div class="sh">
       <div><div class="sh-title">CDL Standings</div><div class="sh-sub">Sorted by CDL Points · Tiebreakers: H2H → Series W% → Map W%</div></div>
+      <button class="btn btn-secondary btn-sm" onclick="openPointsAward()">＋ Award Points</button>
     </div>
+    <div class="info-box">ℹ️ CDL Points are awarded via <strong>Award Points</strong> for tournament placings. Qualifier stage wins (10 pts/win) are tracked in match entry.</div>
     <div class="stabs">
       <button class="stb on" onclick="switchSTab(this,'st-season')">Season</button>
       ${qualEvents.map(e=>`<button class="stb" onclick="switchSTab(this,'st-${e.id}')">${e.name}</button>`).join('')}
       <button class="stb" onclick="switchSTab(this,'st-brackets')">🗂️ Brackets</button>
+      <button class="stb" onclick="switchSTab(this,'st-ledger')">🏅 Points Ledger</button>
     </div>
     <div id="st-season" class="stpanel on">${buildTable(null)}</div>
     ${qualEvents.map(e=>`<div id="st-${e.id}" class="stpanel">${buildTable(e.id)}</div>`).join('')}
     <div id="st-brackets" class="stpanel">${bracketTabHTML}</div>
-    `;
+    <div id="st-ledger" class="stpanel">
+      <div class="card" style="margin-top:14px">
+        <div class="card-title">CDL POINTS LEDGER</div>
+        ${S.points.length===0?`<div class="empty"><div class="empty-ico">🏅</div><div class="empty-lbl">No points awarded yet</div></div>`:''}
+        ${S.points.map(p=>{
+          const t=U.team(p.teamId), ev=U.event(p.eventId);
+          return `<div class="pa-row">
+            ${U.logoHTML(p.teamId)} <strong>${t.name}</strong>
+            <span class="text-muted">·</span> ${ev.name}
+            <span class="text-muted">·</span> <span class="text-muted">${p.reason}</span>
+            <span class="pa-pts">+${p.pts}</span>
+            <button class="btn btn-ghost btn-xs" onclick="deletePoints(${p.id})">✕</button>
+          </div>`;
         }).join('')}
       </div>
     </div>`;
@@ -1345,7 +1362,7 @@ function renderMatches(){
   });
 
   const matchCards = filtered.length===0 ?
-    `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches found</div><p>Try different filters to narrow the list</p></div>` :
+    `<div class="empty"><div class="empty-ico">📭</div><div class="empty-lbl">No matches found</div><p>Try different filters or add matches via <strong>Add Match</strong></p></div>` :
     dayKeys.map(day=>{
       const label = day==='Undated' ? 'Undated Matches' : new Date(day+'T12:00:00').toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric', year:'numeric'});
       const cards = grouped[day].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>buildMatchCard(m)).join('');
@@ -1354,6 +1371,7 @@ function renderMatches(){
 
   el.innerHTML=`
     <div class="sh"><div><div class="sh-title">Match Results</div><div class="sh-sub">${filtered.length} matches</div></div>
+      <button class="btn btn-primary btn-sm" onclick="IS.tabs.goto('addmatch')">➕ Add Match</button>
     </div>
     <div class="fbar">
       <div class="fg"><label>Event</label><select onchange="S.matchFilter.eventId=this.value;renderMatches()">${evOpts}</select></div>
@@ -1526,6 +1544,8 @@ function buildMatchCard(m){
       <div class="mc-meta"><strong>${ev.name}</strong><br>${matchDateLabel(m)}<br><span class="text-muted text-sm">${m.format}</span></div>
       <div class="mc-actions">
         <button class="btn btn-secondary btn-xs" title="View stats" onclick="event.stopPropagation();toggleMatch(${m.id}, true)">View</button>
+        <button class="btn btn-secondary btn-xs" title="Edit match" onclick="event.stopPropagation();editMatchFromCard(${m.id})">Edit</button>
+        <button class="btn btn-danger btn-xs" title="Delete match" onclick="event.stopPropagation();deleteMatch(${m.id})">✕</button>
       </div>
     </div>
     ${bodyHTML}
@@ -3953,6 +3973,8 @@ function refreshBracketPanel(eventId){
     <div class="card-title">${def.name}
       <span style="font-size:10px;color:var(--text2);font-weight:400">${filledCount}/${allMatchIds.length} matches filled</span>
       <div style="margin-left:auto;display:flex;gap:8px">
+        <button class="btn btn-ghost btn-xs" onclick="clearBracket('${eventId}')">Clear</button>
+        ${!ptAlreadyAwarded&&allFilled?`<button class="btn btn-success btn-sm" onclick="awardBracketPoints('${eventId}')">🏆 Award Points</button>`:''}
         ${ptAlreadyAwarded?`<span class="pill pill-w" style="font-size:10px">✓ Points Awarded</span>`:''}
       </div>
     </div>
@@ -4412,6 +4434,8 @@ boot();
       <div class="card-title">${def.name}
         <span style="font-size:10px;color:var(--text2);font-weight:400">${filledCount}/${ids.length} matches filled</span>
         <div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-xs" onclick="clearBracket('${eventId}')">Clear</button>
+          ${!ptAlreadyAwarded && allFilled ? `<button class="btn btn-success btn-sm" onclick="awardBracketPoints('${eventId}')">🏆 Award Points</button>` : ''}
           ${ptAlreadyAwarded ? `<span class="pill pill-w" style="font-size:10px">✓ Points Awarded</span>` : ''}
         </div>
       </div>
@@ -4879,7 +4903,7 @@ boot();
       const splitRows=['M1Q','M1T','M2Q','M2T'].map(eid=>{ const s=teamSeriesSummary(team.id,eid); return `<tr><td>${eventShort(eid)}</td><td>${s.seriesW}-${s.seriesL}</td><td>${s.mapW}-${s.mapL}</td><td class="${s.mapDiff>=0?'green':'red'}">${s.mapDiff>0?'+':''}${s.mapDiff}</td></tr>`; }).join('');
       secHTML=`<div class="card"><div class="card-title" style="display:flex;align-items:center;justify-content:space-between">Season By Split<div class="split-pills">${splitPills}</div></div><div class="g2" style="margin-bottom:14px"><div class="team-kpi" style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="v" style="font-size:20px;font-weight:900;font-family:var(--mono)">${splitSummary.seriesW}-${splitSummary.seriesL}</div><div class="l" style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em">Series Record</div></div><div class="team-kpi" style="background:rgba(0,0,0,.18);border:1px solid var(--border);border-radius:14px;padding:12px"><div class="v" style="font-size:20px;font-weight:900;font-family:var(--mono)">${splitSummary.mapW}-${splitSummary.mapL}</div><div class="l" style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.1em">Map Record</div></div></div><div class="tbl-wrap"><table><thead><tr><th>Split</th><th>Series</th><th>Maps</th><th>Diff</th></tr></thead><tbody>${splitRows}</tbody></table></div></div>`;
     } else if(S.teamPage.section==='matches'){
-      const rows=[...teamMatches(team.id,splitId)].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>{ const [a,b]=seriesScore(m); const isT1=m.team1Id===team.id; const mine=isT1?a:b; const opp=isT1?b:a; const oppId=isT1?m.team2Id:m.team1Id; return `<tr><td>${matchDateLabel(m)}</td><td>${eventShort(m.eventId)}</td><td>${U.teamTag(oppId)}</td><td><span class="${mine>opp?'green':'red'} bold">${mine>opp?'W':'L'}</span></td><td class="tbl-num">${mine}:${opp}</td><td><span class="text-muted text-sm">View only</span></td></tr>`; }).join('')||'<tr><td colspan="6" class="text-muted">No matches yet.</td></tr>';
+      const rows=[...teamMatches(team.id,splitId)].sort((a,b)=>matchSortValue(b)-matchSortValue(a)).map(m=>{ const [a,b]=seriesScore(m); const isT1=m.team1Id===team.id; const mine=isT1?a:b; const opp=isT1?b:a; const oppId=isT1?m.team2Id:m.team1Id; return `<tr><td>${matchDateLabel(m)}</td><td>${eventShort(m.eventId)}</td><td>${U.teamTag(oppId)}</td><td><span class="${mine>opp?'green':'red'} bold">${mine>opp?'W':'L'}</span></td><td class="tbl-num">${mine}:${opp}</td><td><button class="btn btn-ghost btn-xs" onclick="editMatchFromCard(${m.id})">Edit</button></td></tr>`; }).join('')||'<tr><td colspan="6" class="text-muted">No matches yet.</td></tr>';
       secHTML=`<div class="card"><div class="card-title">Match Log</div><div class="tbl-wrap"><table><thead><tr><th>Date</th><th>Event</th><th>Opponent</th><th>Result</th><th>Score</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
     } else if(S.teamPage.section==='parse'){
       secHTML = (typeof renderTeamParser==='function') ? renderTeamParser(team.id) : '';
@@ -5081,7 +5105,7 @@ boot();
   window.loadBracketData = async function(){ S._bracketData=S._bracketData||{}; for(const eid of Object.keys(BRACKET_DEFS)){ const saved=await DB.getSetting('bracket_'+eid, null); S._bracketData[eid]=saved?JSON.parse(saved):{}; normalizeBracketState(eid);} };
   window.saveBracketData = async function(eventId){ normalizeBracketState(eventId); await DB.setSetting('bracket_'+eventId, JSON.stringify(S._bracketData[eventId]||{})); };
   function bracketRenderCard(eventId, m, data){ const d=data[m.id]||{}; const t1=d.t1||''; const t2=d.t2||''; const s1=d.score1 ?? '–'; const s2=d.score2 ?? '–'; const w=d.winner||''; const n1=t1?U.team(t1).name:'TBD'; const n2=t2?U.team(t2).name:'TBD'; return `<div class="bm" id="bm-${m.id}" onclick="openBracketMatchEdit('${eventId}','${m.id}')" style="cursor:pointer" title="Edit bracket match"><div class="bm-side ${w===t1?'win':''}">${t1?U.logoHTML(t1,'t-logo'):''}<span>${n1}</span><strong>${s1}</strong></div><div class="bm-side ${w===t2?'win':''}">${t2?U.logoHTML(t2,'t-logo'):''}<span>${n2}</span><strong>${s2}</strong></div></div>`; }
-  window.renderBracketPanel = function(eventId){ const def=BRACKET_DEFS[eventId]; if(!def) return '<div class="empty">No bracket loaded.</div>'; const data=normalizeBracketState(eventId); const ids=allIds(def); const filled=ids.filter(id=>data[id]?.winner).length; const buildCols=(rounds)=>rounds.map((r,idx)=>`<div class="bracket-col"><div class="bracket-col-lbl">${r.round}</div>${r.matches.map(m=>bracketRenderCard(eventId,m,data)).join('')}${idx<rounds.length-1?'<div class="bracket-connector"></div>':''}</div>`).join(''); return `<div class="card"><div class="card-title">${def.name}<span style="font-size:10px;color:var(--text2);font-weight:400">${filled}/${ids.length} matches filled</span></div><div class="text-sm text-muted" style="margin-bottom:12px">Bracket progress is view-only in the public build.</div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--cyan);padding:4px 0 8px">WINNERS BRACKET</div><div class="bracket-scroll"><div class="bracket">${buildCols(def.winners||[])}</div></div>${(def.losers&&def.losers.length)?`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--red);padding:12px 0 6px">ELIMINATION BRACKET</div><div class="bracket-scroll"><div class="bracket">${buildCols(def.losers)}</div></div>`:''}</div>`; };
+  window.renderBracketPanel = function(eventId){ const def=BRACKET_DEFS[eventId]; if(!def) return '<div class="empty">No bracket loaded.</div>'; const data=normalizeBracketState(eventId); const ids=allIds(def); const filled=ids.filter(id=>data[id]?.winner).length; const allFilled=filled===ids.length; const ptAlready=S.points.some(p=>p.eventId===eventId&&p.type==='bracket'); const buildCols=(rounds)=>rounds.map((r,idx)=>`<div class="bracket-col"><div class="bracket-col-lbl">${r.round}</div>${r.matches.map(m=>bracketRenderCard(eventId,m,data)).join('')}${idx<rounds.length-1?'<div class="bracket-connector"></div>':''}</div>`).join(''); return `<div class="card"><div class="card-title">${def.name}<span style="font-size:10px;color:var(--text2);font-weight:400">${filled}/${ids.length} matches filled</span><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-ghost btn-xs" onclick="clearBracket('${eventId}')">Clear</button>${!ptAlready&&allFilled?`<button class="btn btn-success btn-sm" onclick="awardBracketPoints('${eventId}')">🏆 Award Points</button>`:''}</div></div><div class="text-sm text-muted" style="margin-bottom:12px">You can edit any match, correct the teams, and the downstream slots will update after you save a winner.</div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--cyan);padding:4px 0 8px">WINNERS BRACKET</div><div class="bracket-scroll"><div class="bracket">${buildCols(def.winners||[])}</div></div>${(def.losers&&def.losers.length)?`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--red);padding:12px 0 6px">ELIMINATION BRACKET</div><div class="bracket-scroll"><div class="bracket">${buildCols(def.losers)}</div></div>`:''}</div>`; };
   window.refreshBracketPanel = function(eventId){ const el=document.getElementById('bp-'+eventId); if(el){ el.innerHTML=window.renderBracketPanel(eventId); U.updateLogos(); } };
   window.openBracketMatchEdit = function(eventId, matchId){ const def=BRACKET_DEFS[eventId]; const data=normalizeBracketState(eventId)[matchId]||{}; const isGF=!!(mMap(def)[matchId]||{}).isGF; const winsNeeded=isGF?4:3; const opts=`<option value="">— TBD —</option>`+TEAMS.map(t=>`<option value="${t.id}" ${data.t1===t.id||data.t2===t.id?'':' '}></option>`).join(''); const teamOpts=(sel='')=>`<option value="">— TBD —</option>`+TEAMS.map(t=>`<option value="${t.id}" ${t.id===sel?'selected':''}>${t.name}</option>`).join(''); Modal.open(`<div class="modal-hd"><h3>${def.name} · ${matchId}</h3><button class="btn btn-ghost btn-xs" onclick="Modal.close()">✕</button></div><div class="modal-bd"><div class="g2"><div class="fg"><label>Team 1</label><select id="bme-t1">${teamOpts(data.t1||'')}</select></div><div class="fg"><label>Team 2</label><select id="bme-t2">${teamOpts(data.t2||'')}</select></div><div class="fg"><label>Team 1 Score</label><input id="bme-s1" type="number" min="0" max="${winsNeeded}" value="${data.score1 ?? ''}"></div><div class="fg"><label>Team 2 Score</label><input id="bme-s2" type="number" min="0" max="${winsNeeded}" value="${data.score2 ?? ''}"></div></div><div class="fg"><label>Winner</label><select id="bme-winner"><option value="">— Select Winner —</option><option value="t1" ${(data.winner && data.winner===data.t1)?'selected':''}>Team 1</option><option value="t2" ${(data.winner && data.winner===data.t2)?'selected':''}>Team 2</option></select></div><div class="text-sm text-muted">Winner must have exactly ${winsNeeded} wins.</div><div id="bme-error" style="color:var(--red);margin-top:6px"></div></div><div class="modal-ft"><button class="btn btn-ghost" onclick="Modal.close()">Cancel</button><button class="btn btn-danger btn-xs" onclick="clearBracketMatch('${eventId}','${matchId}')">Clear</button><button class="btn btn-primary" onclick="saveBracketMatch('${eventId}','${matchId}',${isGF})">Save & Advance</button></div>`); };
   window.saveBracketMatch = async function(eventId, matchId, isGF){ const err=document.getElementById('bme-error'); const t1=document.getElementById('bme-t1').value; const t2=document.getElementById('bme-t2').value; const s1=parseInt(document.getElementById('bme-s1').value||'0',10); const s2=parseInt(document.getElementById('bme-s2').value||'0',10); const wSlot=document.getElementById('bme-winner').value; const need=isGF?4:3; if(!t1||!t2) return err.textContent='Select both teams.'; if(t1===t2) return err.textContent='Teams must be different.'; if(!wSlot) return err.textContent='Pick a winner.'; if(Math.max(s1,s2)!==need) return err.textContent=`Winner must have exactly ${need} wins.`; if(s1===s2) return err.textContent='Scores cannot tie.'; const winner=wSlot==='t1'?t1:t2; if((s1>s2?t1:t2)!==winner) return err.textContent='Winner must match the higher score.'; S._bracketData=S._bracketData||{}; S._bracketData[eventId]=S._bracketData[eventId]||{}; S._bracketData[eventId][matchId]={...(S._bracketData[eventId][matchId]||{}), t1,t2,score1:s1,score2:s2,winner}; normalizeBracketState(eventId); await saveBracketData(eventId); Modal.close(); refreshBracketPanel(eventId); toast('Bracket updated. Teams advanced automatically.','ok'); };
@@ -6299,8 +6323,8 @@ Rules:
     const labels = layout.labels.map(lbl => `<div class="iss-bracket-round" style="left:${lbl.x}px;top:${lbl.y}px">${lbl.text}</div>`).join('');
     const sections = layout.sections.map(sec => `<div class="iss-bracket-sec ${sec.cls||''}" style="left:${sec.x}px;top:${sec.y}px">${sec.text}</div>`).join('');
     return `<div class="card iss-bracket-shell">
-      <div class="card-title">${def.name}<span style="font-size:10px;color:var(--text2);font-weight:400">${filled}/${ids.length} matches filled</span><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"></div></div>
-      <div class="iss-bracket-help">Bracket display is view-only in the public build.</div>
+      <div class="card-title">${def.name}<span style="font-size:10px;color:var(--text2);font-weight:400">${filled}/${ids.length} matches filled</span><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-ghost btn-xs" onclick="clearBracket('${eventId}')">Clear</button>${!ptAlready&&allFilled?`<button class="btn btn-success btn-sm" onclick="awardBracketPoints('${eventId}')">🏆 Award Points</button>`:''}</div></div>
+      <div class="iss-bracket-help">Click any matchup card to edit teams or scores. Downstream slots redraw after every save.</div>
       <div class="iss-bracket-scroll"><div class="iss-bracket-stage" style="width:${layout.width}px;height:${layout.height}px">${sections}${labels}<svg class="iss-bracket-svg" width="${layout.width}" height="${layout.height}" viewBox="0 0 ${layout.width} ${layout.height}" preserveAspectRatio="none">${lines}</svg>${cards}</div></div>
     </div>`;
   }
