@@ -5,6 +5,10 @@ export const state = {
     selectedTeam: 'optic',
     selectedTeamB: 'faze',
     matchFilter: 'all',
+    matchEvent: 'all',
+    matchSearch: '',
+    matchExpandedId: null,
+    matchStatsTab: 'series',
     playerSearch: '',
     playerSort: 'isr',
     bettingTeam: 'optic',
@@ -13,7 +17,9 @@ export const state = {
     bettingEvent: 'all',
     bettingMode: 'all',
     bettingMarket: 'seriesKills',
-    bettingLine: ''
+    bettingLine: '',
+    bettingMapName: 'all',
+    bettingMapStat: 'kills'
   }
 };
 

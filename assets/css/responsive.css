@@ -70,7 +70,23 @@
   .bet-form-grid,
   .bet-kpis,
   .mu-grid{grid-template-columns:1fr 1fr}
+  .bet-insight-row,
+  .bet-form-grid-secondary{grid-template-columns:1fr 1fr}
   .recent-results-card{grid-column:auto}
+  .match-row-head,
+  .match-score-banner{grid-template-columns:1fr}
+  .match-row-head{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .match-row-actions{
+    width:100%;
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+  }
+  .match-score-team,
+  .match-score-team.right{justify-content:space-between}
 }
 
 @media (max-width: 700px){
@@ -85,6 +101,8 @@
   .bet-form-grid,
   .bet-kpis,
   .bet-games,
+  .bet-insight-row,
+  .bet-form-grid-secondary,
   .mu-grid{grid-template-columns:1fr}
   .bet-hero,
   .bet-flex,
@@ -94,4 +112,25 @@
   .bet-hero{flex-direction:column}
   .bet-hero-right{justify-content:flex-start}
   .team-sel-card{padding:12px}
+  .match-row-line{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .match-row-mapchips{margin-left:0}
+  .match-row-actions{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .match-detail-tabs{
+    flex-wrap:nowrap;
+    overflow:auto;
+    padding-bottom:4px;
+  }
+  .match-detail-tab{flex:0 0 auto}
+  .match-score-banner{gap:12px}
+  .match-score-val{
+    min-width:40px;
+    min-height:40px;
+    font-size:18px;
+  }
 }
