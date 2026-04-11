@@ -12,7 +12,7 @@ export const APP_CONFIG = {
     teams: './data/teams.json',
     teamStats: './data/team-stats.json',
     bracketData: './data/bracket-data.json',
-    bpr: './data/bpr-coefficients.json'
+    isr: './data/isr-config.json'
   },
   teamMeta: {
     boston: {name:'Boston Breach',abbr:'BOS'},

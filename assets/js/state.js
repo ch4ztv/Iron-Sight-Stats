@@ -6,7 +6,7 @@ export const state = {
     selectedTeamB: 'faze',
     matchFilter: 'all',
     playerSearch: '',
-    playerSort: 'kd'
+    playerSort: 'isr'
   }
 };
 

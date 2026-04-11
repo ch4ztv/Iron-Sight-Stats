@@ -1,6 +1,6 @@
 (function () {
   const results = [];
-  const check = (label, ok, details = "") => {
+  const check = (label, ok, details = '') => {
     results.push({ label, ok, details });
   };
 
@@ -13,7 +13,7 @@
     './data/points.json',
     './data/team-stats.json',
     './data/bracket-data.json',
-    './data/bpr-coefficients.json',
+    './data/isr-config.json',
     './brackets/major-1.html',
     './brackets/major-2.html'
   ];
@@ -31,7 +31,7 @@
     console.group('Iron Sight Stats diagnostics');
     for (const item of results) {
       const fn = item.ok ? console.log : console.warn;
-      fn(`${item.ok ? '✅' : '❌'} ${item.label}${item.details ? ` — ${item.details}` : ''}`);
+      fn(`${item.ok ? 'OK' : 'FAIL'} ${item.label}${item.details ? ` - ${item.details}` : ''}`);
     }
     console.groupEnd();
     return results;
