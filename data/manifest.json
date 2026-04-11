@@ -34,9 +34,9 @@
       "description": "Standings/event points transactions"
     },
     {
-      "file": "bpr-coefficients.json",
-      "source": "bprCoefficients",
-      "description": "BPR calculation coefficients by mode"
+      "file": "isr-config.json",
+      "source": "isrConfig",
+      "description": "ISR calculation config, weights, and mode multipliers"
     },
     {
       "file": "bracket-data.json",

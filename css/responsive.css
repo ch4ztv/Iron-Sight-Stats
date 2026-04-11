@@ -1,0 +1,24 @@
+@media (max-width: 700px){
+  .site-header{padding:14px}
+  .brand-logo{width:42px;height:42px;border-radius:14px}
+  .site-header h1{font-size:1.1rem}
+  .eyebrow,.brand-subtitle{display:none}
+  .site-main{padding:20px 14px 44px}
+  .controls,.betting-controls{flex-direction:column}
+  .controls input,.controls select,.betting-controls select{width:100%;min-width:0}
+  .stat-list.compact{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .team-hero,.player-card .top,.roster-card .top,.match-head{align-items:flex-start}
+  .table-wrap table{min-width:0}
+  .stack-on-mobile .responsive-table,
+  .stack-on-mobile .responsive-table tbody,
+  .stack-on-mobile .responsive-table tr,
+  .stack-on-mobile .responsive-table td{display:block;width:100%}
+  .stack-on-mobile .responsive-table thead{display:none}
+  .stack-on-mobile .responsive-table tbody{display:grid;gap:12px;padding:12px}
+  .stack-on-mobile .responsive-table tr{border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.03);padding:10px}
+  .stack-on-mobile .responsive-table td{border:0;padding:8px 8px 8px 110px;position:relative;min-height:38px}
+  .stack-on-mobile .responsive-table td::before{content:attr(data-label);position:absolute;left:8px;top:8px;font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .player-grid,.roster-grid{grid-template-columns:1fr}
+  .weight-grid{grid-template-columns:1fr}
+  .embed-wrap iframe{height:680px}
+}
