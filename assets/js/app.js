@@ -7,6 +7,20 @@ import { computeISR, isrTier, buildIsrPlayerFromTeamStats } from './isr.js';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const TEAM_IDS = Object.keys(APP_CONFIG.teamMeta);
+const TEAM_ACCENTS = {
+  optic: '#9cc43d',
+  pgm: '#ce00c9',
+  faze: '#ff00ff',
+  toronto: '#782cf2',
+  g2: '#e72328',
+  lat: '#ff0000',
+  falcons: '#1a835a',
+  miami: '#fd6905',
+  ravens: '#0087dd',
+  boston: '#02ff5b',
+  vancouver: '#116781',
+  c9: '#00bdff'
+};
 let globalEventsAttached = false;
 
 function teamName(teamId){
@@ -15,6 +29,10 @@ function teamName(teamId){
 
 function teamAbbr(teamId){
   return APP_CONFIG.teamMeta[teamId]?.abbr || String(teamId || '').toUpperCase();
+}
+
+function teamColor(teamId){
+  return TEAM_ACCENTS[teamId] || '#1cff6a';
 }
 
 function normalizeName(value = ''){
@@ -46,6 +64,15 @@ function average(values){
     : null;
 }
 
+function median(values){
+  const filtered = values.map(num).filter(value => value !== null).sort((left, right) => left - right);
+  if(!filtered.length) return null;
+  const middle = Math.floor(filtered.length / 2);
+  return filtered.length % 2
+    ? filtered[middle]
+    : (filtered[middle - 1] + filtered[middle]) / 2;
+}
+
 function unique(values){
   return Array.from(new Set(values.filter(Boolean)));
 }
@@ -63,11 +90,11 @@ function img(candidates, className, alt = ''){
 }
 
 function sectionHeader(title, description = '', extra = ''){
-  return `<div class="section-title"><div><h2>${title}</h2><p>${description}</p></div>${extra}</div>`;
+  return `<div class="sh"><div><div class="sh-title">${title}</div>${description ? `<div class="sh-sub">${description}</div>` : ''}</div>${extra || ''}</div>`;
 }
 
 function kpiCard(label, value, detail = ''){
-  return `<article class="card kpi"><span class="label">${label}</span><span class="value">${value}</span>${detail ? `<span class="kpi-detail">${detail}</span>` : ''}</article>`;
+  return `<article class="kpi"><div class="kpi-val">${value}</div><div class="kpi-lbl">${label}</div>${detail ? `<div class="kpi-sub">${detail}</div>` : ''}</article>`;
 }
 
 function recentPills(results = []){
@@ -79,6 +106,15 @@ function isrBadge(score){
   const tier = isrTier(score);
   const formattedScore = num(score) === null ? 'ISR unavailable' : `${fmtNum(score, 1)} ${tier.label}`;
   return `<span class="isr-badge ${tier.colorClass}"><span class="isr-dot"></span>${formattedScore}</span>`;
+}
+
+function modePill(mode){
+  const className = mode === 'HP'
+    ? 'pill pill-hp'
+    : mode === 'SND'
+      ? 'pill pill-snd'
+      : 'pill pill-ol';
+  return `<span class="${className}">${escapeHtml(modeLabel(mode))}</span>`;
 }
 
 function playerCard(player, options = {}){
@@ -248,6 +284,265 @@ function teamLeanScore(teamId){
   return winRate + points * 0.35 + avgIsr * 0.35;
 }
 
+const BETTING_MARKETS = [
+  {
+    id: 'seriesKills',
+    label: 'Series Kills',
+    shortLabel: 'Kills',
+    sampleDigits: 0,
+    displayDigits: 1,
+    description: 'Total kills across the selected series filters.'
+  },
+  {
+    id: 'seriesDamage',
+    label: 'Series Damage',
+    shortLabel: 'Damage',
+    sampleDigits: 0,
+    displayDigits: 0,
+    description: 'Total damage across the selected series filters.'
+  },
+  {
+    id: 'seriesAssists',
+    label: 'Series Assists',
+    shortLabel: 'Assists',
+    sampleDigits: 0,
+    displayDigits: 1,
+    description: 'Total assists across the selected series filters.'
+  },
+  {
+    id: 'seriesKillsAssists',
+    label: 'Kills + Assists',
+    shortLabel: 'K+A',
+    sampleDigits: 0,
+    displayDigits: 1,
+    description: 'Kills plus assists across the selected series filters.'
+  },
+  {
+    id: 'seriesKD',
+    label: 'Series K/D',
+    shortLabel: 'K/D',
+    sampleDigits: 2,
+    displayDigits: 2,
+    description: 'Kills divided by deaths across the selected series filters.'
+  }
+];
+
+const BETTING_EVENT_ORDER = ['M1Q', 'M1T', 'M2Q', 'M2T', 'CHAMPS', 'EWC'];
+const BETTING_EVENT_LABELS = {
+  M1Q: 'Major 1 Qualifiers',
+  M1T: 'Major 1 Tournament',
+  M2Q: 'Major 2 Qualifiers',
+  M2T: 'Major 2 Tournament',
+  CHAMPS: 'Championship Weekend',
+  EWC: 'Esports World Cup'
+};
+
+const BETTING_MODE_OPTIONS = [
+  { id: 'all', label: 'All Modes' },
+  { id: 'HP', label: 'Hardpoint' },
+  { id: 'SND', label: 'Search & Destroy' },
+  { id: 'OL', label: 'Overload' }
+];
+
+function getBettingMarket(marketId = state.ui.bettingMarket){
+  return BETTING_MARKETS.find(market => market.id === marketId) || BETTING_MARKETS[0];
+}
+
+function formatBettingEvent(eventId){
+  return BETTING_EVENT_LABELS[eventId] || eventId || 'Full Season';
+}
+
+function normalizeBettingLine(value = ''){
+  return String(value)
+    .replace(/[^\d.]/g, '')
+    .replace(/(\..*)\./g, '$1')
+    .trim();
+}
+
+function parseBettingLine(){
+  const parsed = Number.parseFloat(state.ui.bettingLine);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function formatPropValue(value, marketId, kind = 'sample'){
+  const market = getBettingMarket(marketId);
+  const digits = kind === 'sample' ? market.sampleDigits : market.displayDigits;
+  return fmtNum(value, digits);
+}
+
+function formatBettingDate(match){
+  return `${fmtDate(match.date)}${match.time ? ` | ${escapeHtml(match.time)}` : ''}`;
+}
+
+function getBettingRoster(teamId){
+  const roster = state.data.computed?.profilesByTeam?.[teamId] || [];
+  if(roster.length) return roster;
+  return (state.data.playersByTeam?.[teamId] || []).map(player => ({
+    playerId: player.id,
+    displayName: player.name,
+    teamId,
+    active: player.active ?? true,
+    overallISR: null,
+    tier: isrTier(null)
+  }));
+}
+
+function getBettingPlayer(playerId){
+  if(!playerId) return null;
+  return state.data.playerById?.[playerId] || state.data.computed?.allProfiles?.find(profile => profile.playerId === playerId) || null;
+}
+
+function getBettingProfile(playerId){
+  return state.data.computed?.allProfiles?.find(profile => profile.playerId === playerId) || null;
+}
+
+function buildBettingEventOptions(teamId, opponentId = 'all'){
+  const eventIds = unique((state.data.matches || [])
+    .filter(match => (match.team1Id === teamId || match.team2Id === teamId))
+    .filter(match => opponentId === 'all' || match.team1Id === opponentId || match.team2Id === opponentId)
+    .map(match => match.eventId));
+
+  eventIds.sort((left, right) => {
+    const leftIndex = BETTING_EVENT_ORDER.indexOf(left);
+    const rightIndex = BETTING_EVENT_ORDER.indexOf(right);
+    if(leftIndex !== -1 || rightIndex !== -1){
+      return (leftIndex === -1 ? BETTING_EVENT_ORDER.length : leftIndex) - (rightIndex === -1 ? BETTING_EVENT_ORDER.length : rightIndex);
+    }
+    return String(left).localeCompare(String(right));
+  });
+
+  return [{ id: 'all', label: 'Full Season' }, ...eventIds.map(eventId => ({ id: eventId, label: formatBettingEvent(eventId) }))];
+}
+
+function ensureBettingSelections(){
+  const defaultTeam = TEAM_IDS.includes(state.ui.selectedTeam) ? state.ui.selectedTeam : TEAM_IDS[0];
+  const teamId = TEAM_IDS.includes(state.ui.bettingTeam) ? state.ui.bettingTeam : defaultTeam;
+  if(state.ui.bettingTeam !== teamId){
+    setUI('bettingTeam', teamId);
+  }
+
+  const roster = getBettingRoster(teamId);
+  const playerId = roster.some(player => player.playerId === state.ui.bettingPlayerId)
+    ? state.ui.bettingPlayerId
+    : (roster[0]?.playerId || '');
+  if(state.ui.bettingPlayerId !== playerId){
+    setUI('bettingPlayerId', playerId);
+  }
+
+  const opponentOptions = [
+    { id: 'all', label: 'All Opponents' },
+    ...TEAM_IDS
+      .filter(id => id !== teamId)
+      .sort((left, right) => teamName(left).localeCompare(teamName(right)))
+      .map(id => ({ id, label: teamName(id) }))
+  ];
+  const opponentId = opponentOptions.some(option => option.id === state.ui.bettingOpponent)
+    ? state.ui.bettingOpponent
+    : 'all';
+  if(state.ui.bettingOpponent !== opponentId){
+    setUI('bettingOpponent', opponentId);
+  }
+
+  const eventOptions = buildBettingEventOptions(teamId, opponentId);
+  const eventId = eventOptions.some(option => option.id === state.ui.bettingEvent)
+    ? state.ui.bettingEvent
+    : 'all';
+  if(state.ui.bettingEvent !== eventId){
+    setUI('bettingEvent', eventId);
+  }
+
+  const modeId = BETTING_MODE_OPTIONS.some(option => option.id === state.ui.bettingMode)
+    ? state.ui.bettingMode
+    : 'all';
+  if(state.ui.bettingMode !== modeId){
+    setUI('bettingMode', modeId);
+  }
+
+  const market = getBettingMarket(state.ui.bettingMarket);
+  if(state.ui.bettingMarket !== market.id){
+    setUI('bettingMarket', market.id);
+  }
+
+  const line = normalizeBettingLine(state.ui.bettingLine);
+  if(state.ui.bettingLine !== line){
+    setUI('bettingLine', line);
+  }
+
+  return { teamId, playerId, roster, opponentId, opponentOptions, eventId, eventOptions, modeId, market, line };
+}
+
+function aggregatePropRows(rows){
+  return rows.reduce((totals, entry) => ({
+    kills: totals.kills + Number(entry.row.kills || 0),
+    deaths: totals.deaths + Number(entry.row.deaths || 0),
+    assists: totals.assists + Number(entry.row.assists || 0),
+    damage: totals.damage + Number(entry.row.damage || 0)
+  }), { kills: 0, deaths: 0, assists: 0, damage: 0 });
+}
+
+function propValueFromTotals(totals, marketId){
+  if(marketId === 'seriesDamage') return totals.damage;
+  if(marketId === 'seriesAssists') return totals.assists;
+  if(marketId === 'seriesKillsAssists') return totals.kills + totals.assists;
+  if(marketId === 'seriesKD') return totals.deaths ? totals.kills / totals.deaths : totals.kills;
+  return totals.kills;
+}
+
+function buildBettingSampleLabel(marketId, modeId){
+  const market = getBettingMarket(marketId);
+  return modeId === 'all' ? market.label : `${market.shortLabel} | ${modeLabel(modeId)}`;
+}
+
+function buildBettingSamples({ teamId, playerId, opponentId, eventId, modeId, marketId, lineValue }){
+  if(!teamId || !playerId) return [];
+  const matches = (state.data.matches || [])
+    .filter(match => match.team1Id === teamId || match.team2Id === teamId)
+    .filter(match => opponentId === 'all' || match.team1Id === opponentId || match.team2Id === opponentId)
+    .filter(match => eventId === 'all' || match.eventId === eventId)
+    .sort((left, right) => (right.ts || 0) - (left.ts || 0));
+
+  return matches.map(match => {
+    const rows = (state.data.mapsByMatch?.[match.id] || [])
+      .filter(map => modeId === 'all' || map.mode === modeId)
+      .map(map => {
+        const row = (state.data.playerStatsByMap?.[map.id] || []).find(playerStat => playerStat.playerId === playerId);
+        return row ? { map, row } : null;
+      })
+      .filter(Boolean);
+
+    if(!rows.length) return null;
+
+    const totals = aggregatePropRows(rows);
+    const value = propValueFromTotals(totals, marketId);
+    const opponent = match.team1Id === teamId ? match.team2Id : match.team1Id;
+    return {
+      match,
+      ts: match.ts || 0,
+      eventLabel: formatBettingEvent(match.eventId),
+      opponentId: opponent,
+      opponentName: teamName(opponent),
+      value,
+      label: buildBettingSampleLabel(marketId, modeId),
+      mapsUsed: rows.map(entry => entry.map),
+      hit: lineValue === null ? null : value > lineValue,
+      totals,
+      displayDate: formatBettingDate(match)
+    };
+  }).filter(Boolean);
+}
+
+function buildBettingProjection(samples, marketId){
+  if(!samples.length) return null;
+  const values = samples.map(sample => sample.value);
+  const recentAverage = average(values.slice(0, 5));
+  const seasonAverage = average(values);
+  const medianValue = median(values);
+  if(recentAverage === null || seasonAverage === null || medianValue === null) return null;
+  const projection = recentAverage * 0.55 + seasonAverage * 0.3 + medianValue * 0.15;
+  const digits = getBettingMarket(marketId).displayDigits;
+  return Number(projection.toFixed(digits));
+}
+
 function matchupHeadToHead(teamA, teamB){
   const matches = (state.data.matches || [])
     .filter(match =>
@@ -311,79 +606,87 @@ function renderDashboard(){
     .slice(0, 5);
   const standings = getStandings().slice(0, 5);
   const topPlayers = [...(data.computed?.allProfiles || [])]
-    .sort((a, b) => (num(b.kd) ?? -1) - (num(a.kd) ?? -1))
-    .slice(0, 6);
-  const exported = data.meta?.exported ? new Date(data.meta.exported) : null;
+    .sort((a, b) => (num(b.kills) ?? -1) - (num(a.kills) ?? -1))
+    .slice(0, 5);
+  const seasonPoints = Object.values(data.teamPoints || {}).reduce((sum, value) => sum + (num(value) ?? 0), 0);
+  const eventSteps = BETTING_EVENT_ORDER.filter(eventId => (data.matches || []).some(match => match.eventId === eventId));
 
   $('#dashboard').innerHTML = `
-    ${sectionHeader('Dashboard', 'Season snapshot, recent results, and player leaders.')}
-    <div class="hero">
-      <article class="card hero-card">
-        <div class="hero-copy">
-          <div class="pill accent">Last updated ${exported ? exported.toLocaleString() : 'recently'}</div>
-          <h3>ISR-powered CDL tracking built for standings, matchup reads, roster context, and betting support.</h3>
-          <p class="muted">This shell now runs the modular app directly, so GitHub Pages serves the live public build instead of the old monolith.</p>
-        </div>
-      </article>
-      <div class="grid cols-2 compact-grid">
-        ${kpiCard('Matches', fmtNum((data.matches || []).length))}
-        ${kpiCard('Maps', fmtNum((data.maps || []).length))}
-        ${kpiCard('Players', fmtNum((data.computed?.allProfiles || []).length))}
-        ${kpiCard('Teams', fmtNum(TEAM_IDS.length))}
-      </div>
+    ${sectionHeader('Season Overview', 'CDL 2026 | Black Ops 7 | 12 Teams')}
+    <div class="season-strip">
+      ${eventSteps.map((eventId, index) => `<div class="season-step active">
+        <span class="season-step-dot">${index + 1}</span>
+        <span class="season-step-label">${escapeHtml(formatBettingEvent(eventId))}</span>
+      </div>`).join('')}
+    </div>
+    <div class="dashboard-kpis">
+      ${kpiCard('Matches Logged', fmtNum((data.matches || []).length))}
+      ${kpiCard('Maps Played', fmtNum((data.maps || []).length))}
+      ${kpiCard('CDL Points Awarded', fmtNum(seasonPoints))}
+      ${kpiCard('Player-Map Stats', fmtNum((data.playerStats || []).length))}
     </div>
 
-    <div class="grid cols-2">
+    <div class="dashboard-panels">
       <article class="card">
-        <h3>Top 5 standings</h3>
+        <div class="card-title">CDL Standings <span class="small">Top 5</span></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>#</th><th>Team</th><th>Pts</th><th>Series</th><th>Recent</th></tr></thead>
+            <thead><tr><th>#</th><th>Team</th><th>CDL Pts</th><th>Series</th><th>Maps</th></tr></thead>
             <tbody>
               ${standings.map((row, index) => `<tr>
-                ${tableCell('#', index + 1)}
+                ${tableCell('#', `<span class="rnk ${index === 0 ? 'r1' : index === 1 ? 'r2' : index === 2 ? 'r3' : 'rd'}">${index + 1}</span>`)}
                 ${tableCell('Team', `<span class="team-chip">${img(teamLogoCandidates(row.teamId), 'mini-logo', teamName(row.teamId))}<span>${teamName(row.teamId)}</span></span>`)}
-                ${tableCell('Points', row.pts)}
-                ${tableCell('Series', `${row.wins}-${row.losses}`)}
-                ${tableCell('Recent', recentPills(row.recent))}
+                ${tableCell('CDL Pts', `<strong>${fmtNum(row.pts)}</strong>`)}
+                ${tableCell('Series', `<span class="value-pos">${row.wins}</span> - <span class="value-neg">${row.losses}</span>`)}
+                ${tableCell('Maps', `${row.mapWins}-${row.mapLosses}`)}
               </tr>`).join('')}
             </tbody>
           </table>
         </div>
       </article>
+
       <article class="card">
-        <h3>Recent matches</h3>
-        <div class="grid">
+        <div class="card-title">Kill Leaders <span class="small">Season total</span></div>
+        <div class="leader-list">
+          ${topPlayers.map(player => `<div class="leader-row">
+            <div>
+              <div class="leader-name">${escapeHtml(player.displayName)}</div>
+              <div class="leader-team" style="color:${teamColor(player.teamId)}">${escapeHtml(teamName(player.teamId))}</div>
+            </div>
+            <div class="leader-metrics">
+              <strong>${fmtNum(player.kills)}</strong>
+              <span>${fmtNum(player.maps ? player.kills / player.maps : null, 1)}/map</span>
+            </div>
+          </div>`).join('')}
+        </div>
+      </article>
+
+      <article class="card recent-results-card">
+        <div class="card-title">Recent Results <span class="small">Latest completed series</span></div>
+        <div class="result-list">
           ${recentMatches.map(match => {
             const { s1, s2 } = getSeriesScore(match);
-            return `<a class="match-card match-card-link" href="#matches">
-              <div class="match-head">
-                <div>
-                  <div class="muted">${escapeHtml(match.eventId || 'Event')} - ${fmtDate(match.date)} - ${escapeHtml(match.time || '')}</div>
-                  <div class="match-teams">
-                    <div class="match-team">${img(teamLogoCandidates(match.team1Id), 'mini-logo', teamName(match.team1Id))}<strong>${teamName(match.team1Id)}</strong></div>
-                    <div class="match-team">${img(teamLogoCandidates(match.team2Id), 'mini-logo', teamName(match.team2Id))}<strong>${teamName(match.team2Id)}</strong></div>
-                  </div>
+            return `<div class="result-item">
+              <div class="result-main">
+                <div class="result-line">
+                  <span class="team-chip">${img(teamLogoCandidates(match.team1Id), 'mini-logo', teamName(match.team1Id))}<strong>${teamName(match.team1Id)}</strong></span>
+                  <span class="result-score"><span class="${s1 > s2 ? 'value-pos' : 'value-neg'}">${s1}</span> - <span class="${s2 > s1 ? 'value-pos' : 'value-neg'}">${s2}</span></span>
+                  <span class="team-chip"><strong>${teamName(match.team2Id)}</strong>${img(teamLogoCandidates(match.team2Id), 'mini-logo', teamName(match.team2Id))}</span>
                 </div>
-                <div class="score-badge">${s1}-${s2}</div>
               </div>
-            </a>`;
+              <div class="result-meta">${escapeHtml(formatBettingEvent(match.eventId || ''))}<br>${fmtDate(match.date)}</div>
+            </div>`;
           }).join('')}
         </div>
       </article>
     </div>
-
-    <article class="card">
-      <h3>Top K/D leaders</h3>
-      <div class="player-grid">${topPlayers.map(player => playerCard(player, { precomputedISR: player.overallISR, isrConfig: data.isr })).join('')}</div>
-    </article>
   `;
 }
 
 function renderStandings(){
   const rows = getStandings();
   $('#standings').innerHTML = `
-    ${sectionHeader('Standings', 'Points combined with series, maps, and recent form.')}
+    ${sectionHeader('CDL Standings', 'Sorted by CDL points with series, maps, and recent form.')}
     <div class="table-wrap stack-on-mobile">
       <table class="responsive-table">
         <thead><tr><th>#</th><th>Team</th><th>Points</th><th>Series</th><th>Map Record</th><th>Map Diff</th><th>Recent</th></tr></thead>
@@ -412,7 +715,7 @@ function renderMatches(){
   }
 
   $('#matches').innerHTML = `
-    ${sectionHeader('Matches', 'Series results with map detail and public event context.', `<div class="controls"><select id="matchFilter">${options.map(teamId => `<option value="${teamId}" ${teamId === filter ? 'selected' : ''}>${teamId === 'all' ? 'All teams' : teamName(teamId)}</option>`).join('')}</select></div>`)}
+    ${sectionHeader('Match Results', 'Series results with map detail and public event context.', `<div class="controls"><select id="matchFilter">${options.map(teamId => `<option value="${teamId}" ${teamId === filter ? 'selected' : ''}>${teamId === 'all' ? 'All teams' : teamName(teamId)}</option>`).join('')}</select></div>`)}
     <div class="grid">
       ${matches.slice(0, 60).map(match => {
         const { s1, s2, maps } = getSeriesScore(match);
@@ -463,7 +766,7 @@ function renderPlayers(){
   const featurePlayer = [...rows].sort((a, b) => (num(b.overallISR) ?? -1) - (num(a.overallISR) ?? -1))[0] || null;
 
   $('#players').innerHTML = `
-    ${sectionHeader('Players', 'ISR rankings and searchable player performance from the public data package.', `<div class="controls"><input id="playerSearch" placeholder="Search players or teams" value="${escapeAttr(state.ui.playerSearch)}"><select id="playerSort"><option value="isr" ${sort === 'isr' ? 'selected' : ''}>Sort by ISR</option><option value="kd" ${sort === 'kd' ? 'selected' : ''}>Sort by K/D</option><option value="kills" ${sort === 'kills' ? 'selected' : ''}>Sort by kills</option><option value="damage" ${sort === 'damage' ? 'selected' : ''}>Sort by damage / map</option></select></div>`)}
+    ${sectionHeader('Player Stats', 'ISR rankings and searchable player performance from the public data package.', `<div class="controls"><input id="playerSearch" placeholder="Search players or teams" value="${escapeAttr(state.ui.playerSearch)}"><select id="playerSort"><option value="isr" ${sort === 'isr' ? 'selected' : ''}>Sort by ISR</option><option value="kd" ${sort === 'kd' ? 'selected' : ''}>Sort by K/D</option><option value="kills" ${sort === 'kills' ? 'selected' : ''}>Sort by kills</option><option value="damage" ${sort === 'damage' ? 'selected' : ''}>Sort by damage / map</option></select></div>`)}
     ${featurePlayer ? `<article class="card player-feature">
       <div class="player-feature-media">
         ${img(playerImageCandidates(featurePlayer.teamId, featurePlayer.displayName), 'player-avatar feature-avatar', featurePlayer.displayName)}
@@ -605,60 +908,217 @@ function renderTeams(){
 }
 
 function renderBetting(){
-  const teamA = state.ui.selectedTeam;
-  const teamB = state.ui.selectedTeamB;
-  const recordA = state.data.teamRecords?.[teamA] || { wins: 0, losses: 0, recent: [] };
-  const recordB = state.data.teamRecords?.[teamB] || { wins: 0, losses: 0, recent: [] };
-  const avgIsrA = state.data.computed?.avgIsrByTeam?.[teamA] || 0;
-  const avgIsrB = state.data.computed?.avgIsrByTeam?.[teamB] || 0;
-  const scoreA = (state.data.teamPoints?.[teamA] || 0) * 0.4 + recentFormScore(teamA) * 8 + avgIsrA * 0.6;
-  const scoreB = (state.data.teamPoints?.[teamB] || 0) * 0.4 + recentFormScore(teamB) * 8 + avgIsrB * 0.6;
-  const totalScore = Math.max(scoreA + scoreB, 0);
-  const confidencePct = totalScore > 0 ? (scoreA / totalScore) * 100 : 50;
-  const lean = Math.abs(scoreA - scoreB) < 0.5 ? 'Even matchup' : (scoreA > scoreB ? teamName(teamA) : teamName(teamB));
+  const { teamId, playerId, roster, opponentId, opponentOptions, eventId, eventOptions, modeId, market, line } = ensureBettingSelections();
+  const player = getBettingPlayer(playerId);
+  const profile = getBettingProfile(playerId);
+  const lineValue = parseBettingLine();
+  const samples = buildBettingSamples({ teamId, playerId, opponentId, eventId, modeId, marketId: market.id, lineValue });
+  const values = samples.map(sample => sample.value);
+  const seasonAverage = average(values);
+  const recentAverage = average(values.slice(0, 5));
+  const medianValue = median(values);
+  const bestValue = values.length ? Math.max(...values) : null;
+  const projection = buildBettingProjection(samples, market.id);
+  const hits = samples.filter(sample => sample.hit === true).length;
+  const hitRate = lineValue !== null && samples.length ? (hits / samples.length) * 100 : null;
+  const edge = lineValue !== null && projection !== null ? projection - lineValue : null;
+  const playerName = player?.displayName || player?.name || profile?.displayName || 'Select a player';
+  const selectedRosterEntry = roster.find(entry => entry.playerId === playerId) || player || null;
+  const selectedSplitLabel = eventId === 'all' ? 'Full Season' : formatBettingEvent(eventId);
+  const filterSummary = [
+    opponentId === 'all' ? 'All Opponents' : `Vs ${teamName(opponentId)}`,
+    modeId === 'all' ? 'All Modes' : modeLabel(modeId)
+  ].join(' | ');
+
+  const summaryMarkup = [
+    { label: 'Samples', value: fmtNum(samples.length) },
+    { label: 'Average', value: seasonAverage === null ? '-' : formatPropValue(seasonAverage, market.id, 'display') },
+    { label: 'Median', value: medianValue === null ? '-' : formatPropValue(medianValue, market.id, 'display') },
+    { label: 'Projection', value: projection === null ? '-' : formatPropValue(projection, market.id, 'display') },
+    { label: 'Edge', value: edge === null ? '-' : `${edge >= 0 ? '+' : ''}${formatPropValue(edge, market.id, 'display')}`, tone: edge === null ? '' : edge >= 0 ? 'value-pos' : 'value-neg' },
+    { label: 'Line Hit Rate', value: hitRate === null ? '-' : `${hits}/${samples.length}` }
+  ].map(item => `<div class="bet-kpi"><div class="v ${item.tone || ''}">${item.value}</div><div class="l">${item.label}</div></div>`).join('');
+
+  const lastFiveMarkup = samples.length
+    ? `<div class="bet-games">${samples.slice(0, 5).map(sample => {
+        const mapsText = sample.mapsUsed.map(map => `M${map.mapNum} ${modeLabel(map.mode)} ${escapeHtml(map.mapName)}`).join(' | ');
+        const badge = sample.hit === null
+          ? '<div class="res">-</div>'
+          : `<div class="res ${sample.hit ? 'hit' : 'miss'}">${sample.hit ? 'HIT' : 'MISS'}</div>`;
+        return `<div class="bet-game ${sample.hit === true ? 'hit' : sample.hit === false ? 'miss' : ''}">
+          <div class="top">
+            <div class="bet-mini">${sample.displayDate}</div>
+            ${badge}
+          </div>
+          <div class="val">${formatPropValue(sample.value, market.id, 'sample')}</div>
+          <div class="meta">
+            <div>${escapeHtml(sample.eventLabel)} | vs ${escapeHtml(sample.opponentName)}</div>
+            <div>${mapsText || escapeHtml(sample.label)}</div>
+            <div>${fmtNum(sample.totals.kills)}K / ${fmtNum(sample.totals.deaths)}D / ${fmtNum(sample.totals.assists)}A</div>
+            <div>${fmtNum(sample.totals.damage)} DMG</div>
+          </div>
+        </div>`;
+      }).join('')}</div>`
+    : '<div class="empty">No matching player prop samples for the current filters yet.</div>';
+
+  const logMarkup = samples.length
+    ? samples.map(sample => {
+        const mapsText = sample.mapsUsed.map(map => `M${map.mapNum} ${escapeHtml(map.mapName)}`).join(', ');
+        const lineResult = lineValue === null
+          ? '<span class="muted">-</span>'
+          : `<span class="${sample.hit ? 'value-pos' : 'value-neg'}">${sample.hit ? 'Over' : 'Under'} ${formatPropValue(lineValue, market.id, 'display')}</span>`;
+        return `<tr>
+          ${tableCell('Date', sample.displayDate)}
+          ${tableCell('Event', escapeHtml(sample.eventLabel))}
+          ${tableCell('Opponent', escapeHtml(sample.opponentName))}
+          ${tableCell('Maps', mapsText)}
+          ${tableCell('Result', `<strong>${formatPropValue(sample.value, market.id, 'sample')}</strong>`)}
+          ${tableCell('K / D / A', `${fmtNum(sample.totals.kills)} / ${fmtNum(sample.totals.deaths)} / ${fmtNum(sample.totals.assists)}`)}
+          ${tableCell('Damage', fmtNum(sample.totals.damage))}
+          ${tableCell('Line Result', lineResult)}
+        </tr>`;
+      }).join('')
+    : '<tr><td colspan="8" class="empty">No matching performances yet.</td></tr>';
 
   $('#betting').innerHTML = `
-    ${sectionHeader('Betting Lab', 'Public model lean using standings points, recent form, and team ISR averages.', `<div class="controls betting-controls"><select id="betTeamA">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamA ? 'selected' : ''}>Team A - ${teamName(id)}</option>`).join('')}</select><select id="betTeamB">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamB ? 'selected' : ''}>Team B - ${teamName(id)}</option>`).join('')}</select></div>`)}
-    <div class="grid cols-3">
-      <article class="card kpi model-lean-card"><span class="label">Model lean</span><span class="value">${lean}</span><span class="lean-summary">${teamAbbr(teamA)} ${fmtNum(scoreA, 1)} - ${fmtNum(scoreB, 1)} ${teamAbbr(teamB)}</span></article>
-      ${kpiCard(`${teamAbbr(teamA)} score`, fmtNum(scoreA, 1), `Avg ISR ${fmtNum(avgIsrA, 1)}`)}
-      ${kpiCard(`${teamAbbr(teamB)} score`, fmtNum(scoreB, 1), `Avg ISR ${fmtNum(avgIsrB, 1)}`)}
+    ${sectionHeader('Betting Lab', 'PrizePicks-style player prop tracker built from live series samples in the public data package.')}
+    <div class="info-box"><strong>Player prop line engine:</strong> enter a line, compare it to real series history, and use the opponent, split, and mode filters to tighten the read before lock.</div>
+    <div class="card bet-card">
+      <div class="bet-form-grid">
+        <div class="fg">
+          <label for="bettingTeamSelect">Team</label>
+          <select id="bettingTeamSelect">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamId ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select>
+        </div>
+        <div class="fg">
+          <label for="bettingPlayerSelect">Player</label>
+          <select id="bettingPlayerSelect">${roster.map(entry => `<option value="${entry.playerId}" ${entry.playerId === playerId ? 'selected' : ''}>${escapeHtml(entry.displayName || entry.name || entry.playerId)}</option>`).join('')}</select>
+        </div>
+        <div class="fg">
+          <label for="bettingOpponentSelect">Opponent</label>
+          <select id="bettingOpponentSelect">${opponentOptions.map(option => `<option value="${option.id}" ${option.id === opponentId ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+        </div>
+        <div class="fg">
+          <label for="bettingEventSelect">Split</label>
+          <select id="bettingEventSelect">${eventOptions.map(option => `<option value="${option.id}" ${option.id === eventId ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+        </div>
+        <div class="fg">
+          <label for="bettingLineInput">Line (Optional)</label>
+          <input id="bettingLineInput" type="text" inputmode="decimal" placeholder="Ex: 23.5" value="${escapeAttr(line)}">
+        </div>
+        <div class="fg">
+          <label for="bettingModeSelect">Mode Drill-Down</label>
+          <select id="bettingModeSelect">${BETTING_MODE_OPTIONS.map(option => `<option value="${option.id}" ${option.id === modeId ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+        </div>
+      </div>
+      ${selectedRosterEntry ? `<div class="bet-hero">
+        <div class="bet-hero-id">
+          ${img(teamLogoCandidates(teamId), 't-logo-lg', teamName(teamId))}
+          <div>
+            <div class="bet-hero-name" style="color:${teamColor(teamId)}">${escapeHtml(playerName)}</div>
+            <div class="bet-hero-sub">${escapeHtml(teamName(teamId))} | ${escapeHtml(selectedSplitLabel)} | ${fmtNum(samples.length)} series logs</div>
+          </div>
+        </div>
+        <div class="bet-hero-right">
+          <div class="bet-pill">${selectedRosterEntry.active === false ? 'Inactive / Bench' : 'Active Roster'}</div>
+          ${profile ? isrBadge(profile.overallISR) : '<span class="bet-pill">ISR unavailable</span>'}
+        </div>
+      </div>` : `<div class="bet-empty">Choose a player to start building a card.</div>`}
     </div>
-    <article class="card confidence-card">
-      <div class="confidence-head"><h3>Confidence bar</h3><span class="muted">${fmtPct(confidencePct, 1)} ${teamAbbr(teamA)} lean</span></div>
-      <div class="confidence-meter"><span style="width:${confidencePct}%"></span></div>
-      <div class="confidence-foot"><span>${teamName(teamA)}</span><span>${teamName(teamB)}</span></div>
-    </article>
-    <div class="grid cols-2">
-      <article class="card">
-        <h3>ISR weights snapshot</h3>
-        <div class="weight-grid">
-          ${Object.entries(state.data.isr?.weights || {}).map(([key, value]) => `<div class="weight-card"><span>${key.replace(/([A-Z])/g, ' $1').replace(/^./, character => character.toUpperCase())}</span><strong>${fmtNum(value, 2)}</strong></div>`).join('')}
+
+    <div class="bet-panel">
+      <div class="bet-flex">
+        <div>
+          <div class="card-title">Player Prop Market Tracker</div>
+          <div class="bet-subtle">Quick read on the selected market, recent form, and the entered line.</div>
         </div>
-        <p class="muted">Sample threshold ${fmtNum(state.data.isr?.samplePenaltyThreshold)} maps. Max rating ${fmtNum(state.data.isr?.maxRating)}.</p>
-      </article>
-      <article class="card">
-        <h3>Recent form</h3>
-        <div class="stat-list">
-          <div class="stat-row"><span>${teamName(teamA)}</span><strong>${recordA.wins}-${recordA.losses}</strong></div>
-          <div class="stat-row"><span>${teamName(teamA)} trend</span><strong>${recordA.recent.join(' ') || '-'}</strong></div>
-          <div class="stat-row"><span>${teamName(teamB)}</span><strong>${recordB.wins}-${recordB.losses}</strong></div>
-          <div class="stat-row"><span>${teamName(teamB)} trend</span><strong>${recordB.recent.join(' ') || '-'}</strong></div>
+        <div class="bet-subtle">${lineValue === null ? 'Enter a line to unlock projection edge and hit-rate grading.' : `Line ${formatPropValue(lineValue, market.id, 'display')} | ${edge === null ? 'No lean yet' : edge >= 0 ? 'Lean over' : 'Lean under'}`}</div>
+      </div>
+      <div class="bet-market-row">
+        ${BETTING_MARKETS.map(entry => `<button class="bet-chip ${entry.id === market.id ? 'on' : ''}" type="button" data-prop-market="${entry.id}">${entry.shortLabel}</button>`).join('')}
+      </div>
+      <div class="bet-kpis">${summaryMarkup}</div>
+      <div class="bet-filter-line">
+        <span class="bet-mini-pill">${escapeHtml(selectedSplitLabel)}</span>
+        <span class="bet-mini-pill">${escapeHtml(filterSummary)}</span>
+        <span class="bet-mini-pill">${market.label}</span>
+      </div>
+      ${lastFiveMarkup}
+      <div class="bet-table-note">${lineValue === null ? 'Projection blends the full-sample average, median, and recent form. Add a line to grade overs against the prop number.' : `Hit rate uses over logic against ${formatPropValue(lineValue, market.id, 'display')}. Projection blends the full-sample average, median, and last 5.`}</div>
+    </div>
+
+    <div class="bet-panel">
+      <div class="bet-flex">
+        <div>
+          <div class="card-title">Filtered Prop Log</div>
+          <div class="bet-subtle">Every matching series result, map context, and line outcome for the selected player prop.</div>
         </div>
-      </article>
+      </div>
+      <div class="table-wrap stack-on-mobile">
+        <table class="responsive-table table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Event</th>
+              <th>Opponent</th>
+              <th>Maps</th>
+              <th>Result</th>
+              <th>K / D / A</th>
+              <th>Damage</th>
+              <th>Line Result</th>
+            </tr>
+          </thead>
+          <tbody>${logMarkup}</tbody>
+        </table>
+      </div>
     </div>
   `;
 
-  $('#betTeamA')?.addEventListener('change', event => {
-    setUI('selectedTeam', event.target.value);
-    renderTeams();
+  $('#bettingTeamSelect')?.addEventListener('change', event => {
+    setUI('bettingTeam', event.target.value);
+    setUI('bettingPlayerId', '');
+    if(state.ui.bettingOpponent === event.target.value){
+      setUI('bettingOpponent', 'all');
+    }
     renderBetting();
-    renderMatchup();
   });
-  $('#betTeamB')?.addEventListener('change', event => {
-    setUI('selectedTeamB', event.target.value);
+  $('#bettingPlayerSelect')?.addEventListener('change', event => {
+    setUI('bettingPlayerId', event.target.value);
     renderBetting();
-    renderMatchup();
+  });
+  $('#bettingOpponentSelect')?.addEventListener('change', event => {
+    setUI('bettingOpponent', event.target.value);
+    renderBetting();
+  });
+  $('#bettingEventSelect')?.addEventListener('change', event => {
+    setUI('bettingEvent', event.target.value);
+    renderBetting();
+  });
+  $('#bettingModeSelect')?.addEventListener('change', event => {
+    setUI('bettingMode', event.target.value);
+    renderBetting();
+  });
+  document.querySelectorAll('[data-prop-market]').forEach(button => button.addEventListener('click', () => {
+    setUI('bettingMarket', button.dataset.propMarket);
+    renderBetting();
+  }));
+  $('#bettingLineInput')?.addEventListener('input', event => {
+    const next = normalizeBettingLine(event.target.value);
+    setUI('bettingLine', next);
+    event.target.value = next;
+  });
+  $('#bettingLineInput')?.addEventListener('change', event => {
+    const next = normalizeBettingLine(event.target.value);
+    setUI('bettingLine', next);
+    event.target.value = next;
+    renderBetting();
+  });
+  $('#bettingLineInput')?.addEventListener('keydown', event => {
+    if(event.key === 'Enter'){
+      const next = normalizeBettingLine(event.target.value);
+      setUI('bettingLine', next);
+      event.target.value = next;
+      renderBetting();
+    }
   });
 }
 
@@ -675,52 +1135,117 @@ function renderMatchup(){
   const teamB = state.ui.selectedTeamB;
   const recordA = state.data.teamRecords?.[teamA] || { wins: 0, losses: 0, mapWins: 0, mapLosses: 0, recent: [] };
   const recordB = state.data.teamRecords?.[teamB] || { wins: 0, losses: 0, mapWins: 0, mapLosses: 0, recent: [] };
-  const avgIsrA = state.data.computed?.avgIsrByTeam?.[teamA] || 0;
-  const avgIsrB = state.data.computed?.avgIsrByTeam?.[teamB] || 0;
-  const topA = state.data.computed?.topPerformerByTeam?.[teamA] || null;
-  const topB = state.data.computed?.topPerformerByTeam?.[teamB] || null;
-  const leanA = teamLeanScore(teamA);
-  const leanB = teamLeanScore(teamB);
-  const leanPct = leanA + leanB > 0 ? (leanA / (leanA + leanB)) * 100 : 50;
   const h2h = matchupHeadToHead(teamA, teamB);
-  const metricRows = [
-    { label: 'Points', left: fmtNum(state.data.teamPoints?.[teamA] || 0), right: fmtNum(state.data.teamPoints?.[teamB] || 0) },
-    { label: 'Series', left: `${recordA.wins}-${recordA.losses}`, right: `${recordB.wins}-${recordB.losses}` },
-    { label: 'Maps', left: `${recordA.mapWins}-${recordA.mapLosses}`, right: `${recordB.mapWins}-${recordB.mapLosses}` },
-    { label: 'Recent', left: recentPills(recordA.recent), right: recentPills(recordB.recent) },
-    { label: 'Avg ISR', left: fmtNum(avgIsrA, 1), right: fmtNum(avgIsrB, 1) },
-    { label: 'Mode win rate', left: averageModeWinRate(teamA) !== null ? fmtPct(averageModeWinRate(teamA) * 100, 1) : '-', right: averageModeWinRate(teamB) !== null ? fmtPct(averageModeWinRate(teamB) * 100, 1) : '-' }
-  ];
+  const teamRowsA = (state.data.playerAggList || []).filter(row => row.teamId === teamA);
+  const teamRowsB = (state.data.playerAggList || []).filter(row => row.teamId === teamB);
+  const totalKillsA = teamRowsA.reduce((sum, row) => sum + (num(row.kills) ?? 0), 0);
+  const totalKillsB = teamRowsB.reduce((sum, row) => sum + (num(row.kills) ?? 0), 0);
+  const pickFrequency = (teamId, mode) => {
+    const counts = {};
+    (state.data.maps || []).forEach(map => {
+      const match = state.data.matchesById?.[map.matchId];
+      if(match && (match.team1Id === teamId || match.team2Id === teamId) && map.mode === mode){
+        counts[map.mapName] = (counts[map.mapName] || 0) + 1;
+      }
+    });
+    return Object.entries(counts).sort((left, right) => right[1] - left[1]);
+  };
+  const suggestedMaps = ['HP', 'SND', 'OL', 'HP', 'SND'].map((mode, index) => {
+    const combined = {};
+    pickFrequency(teamA, mode).forEach(([mapName, count]) => {
+      combined[mapName] = (combined[mapName] || 0) + count;
+    });
+    pickFrequency(teamB, mode).forEach(([mapName, count]) => {
+      combined[mapName] = (combined[mapName] || 0) + count;
+    });
+    const top = Object.entries(combined).sort((left, right) => right[1] - left[1])[0];
+    return {
+      mapNum: index + 1,
+      mode,
+      mapName: top?.[0] || 'No data',
+      plays: top?.[1] || 0
+    };
+  });
+  const statBar = (leftValue, rightValue, label) => {
+    const total = (leftValue || 0) + (rightValue || 0) || 1;
+    const leftPct = ((leftValue || 0) / total) * 100;
+    const rightPct = ((rightValue || 0) / total) * 100;
+    return `<div class="stat-cmp">
+      <div class="scl" style="color:${teamColor(teamA)}">${fmtNum(leftValue)}</div>
+      <div class="sc-lbl">${label}</div>
+      <div class="scr" style="color:${teamColor(teamB)}">${fmtNum(rightValue)}</div>
+    </div>
+    <div class="h2h-bar">
+      <span style="width:${leftPct}%;background:${teamColor(teamA)}"></span>
+      <span style="width:${rightPct}%;background:${teamColor(teamB)}"></span>
+    </div>`;
+  };
 
   $('#matchup').innerHTML = `
-    ${sectionHeader('Matchup', 'Side-by-side comparison using points, form, ISR, and head-to-head context.', `<div class="controls betting-controls"><select id="matchupTeamA">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamA ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select><select id="matchupTeamB">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamB ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select></div>`)}
-    <div class="matchup-compare">
-      <article class="card matchup-side"><div class="matchup-side-head">${img(teamLogoCandidates(teamA), 'brand-logo', teamName(teamA))}<div><h3>${teamName(teamA)}</h3><p class="muted">${topA ? `${topA.displayName} leads the roster at ${fmtNum(topA.overallISR, 1)} ISR.` : 'No ISR leader yet.'}</p></div></div></article>
-      <article class="card matchup-center">
-        <div class="lean-card">
-          <div class="confidence-head"><h3>Win% lean</h3><span class="muted">${fmtPct(leanPct, 1)} ${teamAbbr(teamA)} / ${fmtPct(100 - leanPct, 1)} ${teamAbbr(teamB)}</span></div>
-          <div class="confidence-meter"><span style="width:${leanPct}%"></span></div>
+    ${sectionHeader('Matchup Builder', 'Head-to-head analysis and map pool context.')}
+    <div class="card" style="margin-bottom:14px">
+      <div class="mu-grid">
+        <div class="team-sel-card">
+          <div class="fg" style="margin-bottom:8px">
+            <label for="matchupTeamA">Team 1</label>
+            <select id="matchupTeamA">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamA ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select>
+          </div>
+          <div style="text-align:center;padding:8px">${img(teamLogoCandidates(teamA), 't-logo-lg', teamName(teamA))}</div>
+          <div style="font-weight:800;text-align:center;color:${teamColor(teamA)}">${teamName(teamA)}</div>
         </div>
-        <div class="metric-grid">
-          ${metricRows.map(row => `<div class="metric-row"><div class="metric-value left">${row.left}</div><div class="metric-label">${row.label}</div><div class="metric-value right">${row.right}</div></div>`).join('')}
+        <div class="vs-div">VS</div>
+        <div class="team-sel-card">
+          <div class="fg" style="margin-bottom:8px">
+            <label for="matchupTeamB">Team 2</label>
+            <select id="matchupTeamB">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamB ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select>
+          </div>
+          <div style="text-align:center;padding:8px">${img(teamLogoCandidates(teamB), 't-logo-lg', teamName(teamB))}</div>
+          <div style="font-weight:800;text-align:center;color:${teamColor(teamB)}">${teamName(teamB)}</div>
         </div>
-      </article>
-      <article class="card matchup-side"><div class="matchup-side-head">${img(teamLogoCandidates(teamB), 'brand-logo', teamName(teamB))}<div><h3>${teamName(teamB)}</h3><p class="muted">${topB ? `${topB.displayName} leads the roster at ${fmtNum(topB.overallISR, 1)} ISR.` : 'No ISR leader yet.'}</p></div></div></article>
+      </div>
+      <div class="matchup-format-pill">Best of 5</div>
     </div>
+
     <div class="grid cols-2">
       <article class="card">
-        <h3>Head-to-head</h3>
-        ${h2h.matches.length ? `<div class="stat-list"><div class="stat-row"><span>Series</span><strong>${teamAbbr(teamA)} ${h2h.seriesA}-${h2h.seriesB} ${teamAbbr(teamB)}</strong></div><div class="stat-row"><span>Maps</span><strong>${teamAbbr(teamA)} ${h2h.mapsA}-${h2h.mapsB} ${teamAbbr(teamB)}</strong></div><div class="stat-row"><span>Last meeting</span><strong>${fmtDate(h2h.latest?.date)} - ${escapeHtml(h2h.latest?.eventId || '')}</strong></div></div>` : '<div class="empty">These teams have not played each other in the current dataset yet.</div>'}
-      </article>
-      <article class="card">
-        <h3>Top roster edge</h3>
-        <div class="stat-list">
-          <div class="stat-row"><span>${teamName(teamA)}</span><strong>${topA ? `${topA.displayName} - ${fmtNum(topA.overallISR, 1)} ISR` : '-'}</strong></div>
-          <div class="stat-row"><span>${teamName(teamB)}</span><strong>${topB ? `${topB.displayName} - ${fmtNum(topB.overallISR, 1)} ISR` : '-'}</strong></div>
-          <div class="stat-row"><span>Lean driver</span><strong>${leanPct >= 50 ? teamName(teamA) : teamName(teamB)}</strong></div>
+        <div class="card-title">Head-to-Head Record</div>
+        ${h2h.matches.length ? `<div class="matchup-score">
+          <div><div class="matchup-score-value" style="color:${teamColor(teamA)}">${h2h.seriesA}</div><div class="small">Series W</div></div>
+          <div class="matchup-score-dash">-</div>
+          <div><div class="matchup-score-value" style="color:${teamColor(teamB)}">${h2h.seriesB}</div><div class="small">Series W</div></div>
         </div>
+        <div class="matchup-mapline">Maps: <span style="color:${teamColor(teamA)}">${h2h.mapsA}</span> - <span style="color:${teamColor(teamB)}">${h2h.mapsB}</span></div>
+        <div class="divider"></div>
+        ${h2h.matches.slice(0, 5).map(match => {
+          const { s1, s2 } = getSeriesScore(match);
+          const leftScore = match.team1Id === teamA ? s1 : s2;
+          const rightScore = match.team1Id === teamA ? s2 : s1;
+          return `<div class="mc-row">
+            <span class="small muted" style="flex:1">${escapeHtml(formatBettingEvent(match.eventId || ''))} | ${fmtDate(match.date)}</span>
+            <span class="${leftScore > rightScore ? 'value-pos' : 'value-neg'}">${leftScore}-${rightScore}</span>
+          </div>`;
+        }).join('')}` : '<div class="empty">These teams have not played each other in the current dataset yet.</div>'}
+      </article>
+
+      <article class="card">
+        <div class="card-title">Season Stats Comparison</div>
+        ${statBar(recordA.mapWins, recordB.mapWins, 'Map Wins')}
+        ${statBar((state.data.maps || []).filter(map => map.mode === 'HP' && map.winner === teamA).length, (state.data.maps || []).filter(map => map.mode === 'HP' && map.winner === teamB).length, 'HP Wins')}
+        ${statBar((state.data.maps || []).filter(map => map.mode === 'SND' && map.winner === teamA).length, (state.data.maps || []).filter(map => map.mode === 'SND' && map.winner === teamB).length, 'SND Wins')}
+        ${statBar((state.data.maps || []).filter(map => map.mode === 'OL' && map.winner === teamA).length, (state.data.maps || []).filter(map => map.mode === 'OL' && map.winner === teamB).length, 'OL Wins')}
+        ${statBar(totalKillsA, totalKillsB, 'Total Kills')}
       </article>
     </div>
+
+    <article class="card">
+      <div class="card-title">Suggested BO5 Map Picks <span class="small">Based on historical play frequency</span></div>
+      ${suggestedMaps.map(entry => `<div class="matchup-pick-row">
+        <span class="small muted">Map ${entry.mapNum}</span>
+        ${modePill(entry.mode)}
+        <strong>${escapeHtml(entry.mapName)}</strong>
+        <span class="small muted">${entry.plays ? `${entry.plays} plays` : 'No data'}</span>
+      </div>`).join('')}
+    </article>
   `;
 
   $('#matchupTeamA')?.addEventListener('change', event => {

@@ -9,12 +9,19 @@ async function fetchJson(url){
 export async function loadAllData(){
   const entries = await Promise.all(Object.entries(APP_CONFIG.dataFiles).map(async ([key,url]) => [key, await fetchJson(url)]));
   const data = Object.fromEntries(entries);
+  data.matchesById = Object.fromEntries((data.matches || []).map(match => [match.id, match]));
+  data.mapsById = Object.fromEntries((data.maps || []).map(map => [map.id, map]));
   // index maps by match
   data.mapsByMatch = {};
   for(const map of data.maps || []){
     (data.mapsByMatch[map.matchId] ||= []).push(map);
   }
   for(const list of Object.values(data.mapsByMatch)){ list.sort((a,b)=>a.mapNum-b.mapNum); }
+
+  data.playerStatsByMap = {};
+  for(const row of data.playerStats || []){
+    (data.playerStatsByMap[row.mapId] ||= []).push(row);
+  }
 
   data.playerById = Object.fromEntries((data.players||[]).map(p => [p.id,p]));
   data.playersByTeam = {};

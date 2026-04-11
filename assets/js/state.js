@@ -6,7 +6,14 @@ export const state = {
     selectedTeamB: 'faze',
     matchFilter: 'all',
     playerSearch: '',
-    playerSort: 'isr'
+    playerSort: 'isr',
+    bettingTeam: 'optic',
+    bettingPlayerId: '',
+    bettingOpponent: 'all',
+    bettingEvent: 'all',
+    bettingMode: 'all',
+    bettingMarket: 'seriesKills',
+    bettingLine: ''
   }
 };
 
