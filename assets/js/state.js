@@ -4,6 +4,8 @@ export const state = {
   ui: {
     selectedTeam: 'optic',
     selectedTeamB: 'faze',
+    teamStatsTab: 'overall',
+    teamShowInactive: false,
     matchFilter: 'all',
     matchEvent: 'all',
     matchSearch: '',

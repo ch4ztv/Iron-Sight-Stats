@@ -2,7 +2,7 @@ import { APP_CONFIG } from './config.js';
 import { state, setData, setSection, setUI } from './state.js';
 import { loadAllData } from './data-loader.js';
 import { fmtDate, fmtNum, fmtPct, modeLabel } from './formatters.js';
-import { teamLogoCandidates, playerImageCandidates, teamStatCandidates, brandingPath } from './asset-paths.js';
+import { teamLogoCandidates, playerImageCandidates, brandingPath } from './asset-paths.js';
 import { computeISR, isrTier, buildIsrPlayerFromTeamStats } from './isr.js';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
@@ -89,6 +89,16 @@ function img(candidates, className, alt = ''){
   return `<img src="${first}" class="${className}" alt="${escapeAttr(alt)}" data-candidates="${encoded}" data-candidate-index="0" onerror="(function(node){try{const list=JSON.parse(node.dataset.candidates||'[]');const index=Number(node.dataset.candidateIndex||0)+1;node.dataset.candidateIndex=String(index);if(index<list.length){node.src=list[index];return;}node.style.display='none';}catch(error){node.style.display='none';}})(this)">`;
 }
 
+function portraitImg(candidates, className, alt = '', initials = ''){
+  const list = Array.isArray(candidates) ? unique(candidates) : unique([candidates]);
+  const hasSource = Boolean(list[0]);
+  const first = list[0] || 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+  const encoded = escapeAttr(JSON.stringify(list));
+  const imgStyle = hasSource ? '' : ' style="display:none"';
+  const fallbackStyle = hasSource ? ' style="display:none"' : '';
+  return `<div class="portrait-wrap"><img src="${first}" class="${className}" alt="${escapeAttr(alt)}" data-candidates="${encoded}" data-candidate-index="0"${imgStyle} onerror="(function(node){try{const list=JSON.parse(node.dataset.candidates||'[]');const index=Number(node.dataset.candidateIndex||0)+1;node.dataset.candidateIndex=String(index);if(index<list.length){node.src=list[index];return;}}catch(error){}node.style.display='none';const fallback=node.nextElementSibling;if(fallback){fallback.style.display='flex';}})(this)"><div class="bp-player-init"${fallbackStyle}>${escapeHtml(initials)}</div></div>`;
+}
+
 function sectionHeader(title, description = '', extra = ''){
   return `<div class="sh"><div><div class="sh-title">${title}</div>${description ? `<div class="sh-sub">${description}</div>` : ''}</div>${extra || ''}</div>`;
 }
@@ -136,6 +146,139 @@ function playerCard(player, options = {}){
       <div class="stat-row"><span>Damage / Map</span><strong>${fmtNum(player.dmgPerMap, 0)}</strong></div>
     </div>
   </article>`;
+}
+
+const TEAM_PAGE_TABS = [
+  { id: 'overall', label: 'Overall' },
+  { id: 'hardpoint', label: 'Hardpoint' },
+  { id: 'snd', label: 'S&D' },
+  { id: 'overload', label: 'Overload' },
+  { id: 'mapRecords', label: 'Maps' },
+  { id: 'picksVetos', label: 'Picks/Vetoes' }
+];
+
+function getTeamPageTab(tabId = state.ui.teamStatsTab){
+  return TEAM_PAGE_TABS.find(tab => tab.id === tabId) || TEAM_PAGE_TABS[0];
+}
+
+function statValue(value, digits = 2){
+  return num(value) === null ? '-' : fmtNum(value, digits);
+}
+
+function statPctValue(value, digits = 0){
+  return num(value) === null ? '-' : fmtPct(Number(value) * 100, digits);
+}
+
+function statIntValue(value){
+  return num(value) === null ? '-' : fmtNum(value);
+}
+
+function pairedRecordValue(win, loss){
+  const hasWin = num(win) !== null;
+  const hasLoss = num(loss) !== null;
+  if(!hasWin && !hasLoss) return '-';
+  return `${fmtNum(hasWin ? win : 0)}-${fmtNum(hasLoss ? loss : 0)}`;
+}
+
+function orderedTeamRoster(teamId, roster, teamStats, showInactive = false){
+  const visibleRoster = showInactive ? [...roster] : roster.filter(player => player.active !== false);
+  const order = new Map((teamStats?.overall?.players || []).map((row, index) => [normalizeName(row.player), index]));
+  return visibleRoster.sort((left, right) =>
+    (order.get(normalizeName(left.displayName || left.name)) ?? 99) - (order.get(normalizeName(right.displayName || right.name)) ?? 99) ||
+    left.displayName.localeCompare(right.displayName)
+  );
+}
+
+function teamTablePanel(title, subtitle, headerCells, rowMarkup, summaryMarkup = ''){
+  return `
+    <article class="card team-data-card">
+      <div class="card-title">
+        <span>${escapeHtml(title)}</span>
+        <span class="team-data-subtle">${escapeHtml(subtitle)}</span>
+      </div>
+      ${summaryMarkup}
+      <div class="table-wrap stack-on-mobile">
+        <table class="responsive-table table">
+          <thead><tr>${headerCells.map(cell => `<th>${cell}</th>`).join('')}</tr></thead>
+          <tbody>${rowMarkup}</tbody>
+        </table>
+      </div>
+    </article>
+  `;
+}
+
+function buildTeamStatsPanel(teamId, teamStats, activeTab){
+  if(activeTab === 'hardpoint'){
+    const rows = (teamStats.hardpoint?.players || []).map(row => `<tr>
+      ${tableCell('Player', escapeHtml(row.player))}
+      ${tableCell('K/D', statValue(row.kd, 2))}
+      ${tableCell('K/10m', statValue(row.k10m, 2))}
+      ${tableCell('Damage/10m', statIntValue(row.dmg10m))}
+      ${tableCell('Obj/10m', statValue(row.obj10m, 2))}
+      ${tableCell('Eng/10m', statValue(row.eng10m, 2))}
+    </tr>`).join('') || '<tr><td colspan="6" class="empty">No hardpoint team stats available yet.</td></tr>';
+    return teamTablePanel('Hardpoint', 'JSON-backed team breakdown', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Obj/10m', 'Eng/10m'], rows);
+  }
+  if(activeTab === 'snd'){
+    const rows = (teamStats.snd?.players || []).map(row => `<tr>
+      ${tableCell('Player', escapeHtml(row.player))}
+      ${tableCell('K/D', statValue(row.kd, 2))}
+      ${tableCell('K/Round', statValue(row.kRound, 2))}
+      ${tableCell('Bloods', statIntValue(row.bloods))}
+      ${tableCell('Plants', statIntValue(row.plants))}
+      ${tableCell('Defuses', statIntValue(row.defuses))}
+      ${tableCell('Snipes', statIntValue(row.snipes))}
+      ${tableCell('Dmg/Round', statValue(row.dmgRound, 2))}
+    </tr>`).join('') || '<tr><td colspan="8" class="empty">No search and destroy stats available yet.</td></tr>';
+    return teamTablePanel('Search and Destroy', 'JSON-backed team breakdown', ['Player', 'K/D', 'K/Round', 'Bloods', 'Plants', 'Defuses', 'Snipes', 'Dmg/Round'], rows);
+  }
+  if(activeTab === 'overload'){
+    const rows = (teamStats.overload?.players || []).map(row => `<tr>
+      ${tableCell('Player', escapeHtml(row.player))}
+      ${tableCell('K/D', statValue(row.kd, 2))}
+      ${tableCell('K/10m', statValue(row.k10m, 2))}
+      ${tableCell('Damage/10m', statIntValue(row.dmg10m))}
+      ${tableCell('Goals/10m', statValue(row.goals10m, 2))}
+      ${tableCell('Eng/10m', statValue(row.eng10m, 2))}
+    </tr>`).join('') || '<tr><td colspan="6" class="empty">No overload stats available yet.</td></tr>';
+    return teamTablePanel('Overload', 'JSON-backed team breakdown', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Goals/10m', 'Eng/10m'], rows);
+  }
+  if(activeTab === 'mapRecords'){
+    const totals = teamStats.mapRecords?.totals || {};
+    const summary = `<div class="team-table-summary">
+      <span class="team-table-pill">HP ${pairedRecordValue(totals.hpW, totals.hpL)}</span>
+      <span class="team-table-pill">S&D ${pairedRecordValue(totals.sndW, totals.sndL)}</span>
+      <span class="team-table-pill">Overload ${pairedRecordValue(totals.ovlW, totals.ovlL)}</span>
+    </div>`;
+    const rows = (teamStats.mapRecords?.maps || []).map(row => `<tr>
+      ${tableCell('Map', `<strong>${escapeHtml(row.map)}</strong>`)}
+      ${tableCell('HP', pairedRecordValue(row.hpW, row.hpL))}
+      ${tableCell('S&D', pairedRecordValue(row.sndW, row.sndL))}
+      ${tableCell('Overload', pairedRecordValue(row.ovlW, row.ovlL))}
+    </tr>`).join('') || '<tr><td colspan="4" class="empty">No map records available yet.</td></tr>';
+    return teamTablePanel('Map Records', 'Wins and losses by map and mode', ['Map', 'HP', 'S&D', 'Overload'], rows, summary);
+  }
+  if(activeTab === 'picksVetos'){
+    const rows = (teamStats.picksVetos?.maps || []).map(row => `<tr>
+      ${tableCell('Map', `<strong>${escapeHtml(row.map)}</strong>`)}
+      ${tableCell('HP Pick', statIntValue(row.hpPick))}
+      ${tableCell('HP Veto', statIntValue(row.hpVeto))}
+      ${tableCell('S&D Pick', statIntValue(row.sndPick))}
+      ${tableCell('S&D Veto', statIntValue(row.sndVeto))}
+      ${tableCell('Ovl Pick', statIntValue(row.ovlPick))}
+      ${tableCell('Ovl Veto', statIntValue(row.ovlVeto))}
+    </tr>`).join('') || '<tr><td colspan="7" class="empty">No picks and vetoes data available yet.</td></tr>';
+    return teamTablePanel('Picks and Vetoes', 'Map pool tendencies from the exported team JSON', ['Map', 'HP Pick', 'HP Veto', 'S&D Pick', 'S&D Veto', 'Ovl Pick', 'Ovl Veto'], rows);
+  }
+  const rows = (teamStats.overall?.players || []).map(row => `<tr>
+    ${tableCell('Player', `<strong>${escapeHtml(row.player)}</strong>`)}
+    ${tableCell('K/D', statValue(row.kd, 2))}
+    ${tableCell('Slayer RTG', statValue(row.slayerRating, 2))}
+    ${tableCell('Respawn K/D', statValue(row.respawnKd, 2))}
+    ${tableCell('NTK%', statPctValue(row.ntkPct))}
+    ${tableCell('BP Rating', statValue(row.bpRating, 2))}
+  </tr>`).join('') || '<tr><td colspan="6" class="empty">No overall team stats available yet.</td></tr>';
+  return teamTablePanel('Overall Stats', 'JSON-backed player rows from the exported team stats package', ['Player', 'K/D', 'Slayer RTG', 'Respawn K/D', 'NTK%', 'BP Rating'], rows);
 }
 
 function getSeriesScore(match){
@@ -1265,93 +1408,103 @@ function renderTeams(){
   const teamId = state.ui.selectedTeam;
   const teamStats = state.data.teamStats?.[teamId] || {};
   const record = state.data.teamRecords?.[teamId] || { wins: 0, losses: 0, mapWins: 0, mapLosses: 0, recent: [] };
-  const roster = state.data.computed?.profilesByTeam?.[teamId] || [];
-  const topPerformer = state.data.computed?.topPerformerByTeam?.[teamId] || null;
-  const averageWinRate = averageModeWinRate(teamId);
-  const overallRows = (teamStats.overall?.players || []).map(row => {
-    const profile = roster.find(player => normalizeName(player.displayName) === normalizeName(row.player)) || null;
-    return {
-      player: row.player,
-      kd: num(row.kd),
-      slayerRating: num(row.slayerRating),
-      respawnKd: num(row.respawnKd),
-      ntkPct: num(row.ntkPct),
-      isr: profile?.overallISR ?? null,
-      tier: isrTier(profile?.overallISR)
-    };
-  });
+  const fullRoster = state.data.computed?.profilesByTeam?.[teamId] || [];
+  const roster = orderedTeamRoster(teamId, fullRoster, teamStats, state.ui.teamShowInactive);
+  const standings = getStandings();
+  const standingRow = standings.find(row => row.teamId === teamId) || null;
+  const standingPos = standingRow ? standings.findIndex(row => row.teamId === teamId) + 1 : null;
+  const activeTab = getTeamPageTab().id;
+  const activeCount = fullRoster.filter(player => player.active !== false).length;
+  const hasStats = TEAM_PAGE_TABS.some(tab => tab.id in teamStats);
+  const parsedDate = teamStats.parsedAt ? new Date(teamStats.parsedAt).toLocaleDateString() : null;
+  const selectorMarkup = `
+    <div class="ts-selector-bar">
+      <div class="ts-selector-left">
+        ${img(teamLogoCandidates(teamId), 'ts-team-logo-sel', teamName(teamId))}
+        <select id="teamSelect" class="ts-team-select">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamId ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select>
+      </div>
+      <div class="ts-selector-right">
+        ${TEAM_IDS.map(id => `<button class="ts-logo-chip ${id === teamId ? 'ts-logo-chip-active' : ''} ${state.data.teamStats?.[id] ? 'ts-logo-chip-parsed' : ''}" type="button" data-team-chip="${id}" title="${escapeAttr(teamName(id))}">
+          ${img(teamLogoCandidates(id), 'ts-chip-logo', teamName(id))}
+        </button>`).join('')}
+      </div>
+    </div>`;
+
+  const rosterMarkup = roster.length
+    ? roster.map(player => {
+        const name = player.displayName || player.name || player.playerId;
+        return `<article class="bp-player-chip ${player.active === false ? 'bp-player-inactive' : ''}">
+          <div class="bp-player-art">
+            <div class="bp-player-backdrop">${img(teamLogoCandidates(teamId), 'bp-player-backdrop-logo', teamName(teamId))}</div>
+            ${portraitImg(playerImageCandidates(teamId, name), 'bp-player-img', name, name.slice(0, 3).toUpperCase())}
+          </div>
+          <div class="bp-player-meta">
+            <div class="bp-player-name">${escapeHtml(name)}</div>
+            ${player.active === false ? '<div class="bp-player-sub">Inactive</div>' : ''}
+          </div>
+        </article>`;
+      }).join('')
+    : '<div class="empty">No roster entries matched the current team filter.</div>';
+
+  const tabsMarkup = TEAM_PAGE_TABS.map(tab => `<button class="bp-mode-tab ${tab.id === activeTab ? 'on' : ''}" type="button" data-team-tab="${tab.id}">${tab.label}</button>`).join('');
 
   $('#teams').innerHTML = `
-    ${sectionHeader('Teams', 'Roster ISR, season summary, and imported stat visuals.', `<div class="controls"><select id="teamSelect">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamId ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select></div>`)}
-    <div class="hero">
-      <article class="card team-hero">
-        ${img(teamLogoCandidates(teamId), 'brand-logo', teamName(teamId))}
-        <div class="team-hero-copy">
-          <h3>${teamName(teamId)}</h3>
-          <div class="muted">Series ${record.wins}-${record.losses} - Maps ${record.mapWins}-${record.mapLosses}</div>
-          <div class="team-hero-pills">
-            <span class="pill">Points ${state.data.teamPoints?.[teamId] || 0}</span>
-            <span class="pill">Recent ${record.recent.join(' ') || '-'}</span>
-            <span class="pill">Parser confidence ${teamStats.confidence || '-'}</span>
+    ${sectionHeader('Teams', 'Local-style team hub powered directly by roster and team JSON data.')}
+    ${selectorMarkup}
+    <section class="bp-team-hero" style="--thc:${teamColor(teamId)}">
+      <div class="bp-hero-inner">
+        ${img(teamLogoCandidates(teamId), 'bp-team-logo', teamName(teamId))}
+        <div class="bp-hero-copy-wrap">
+          <div class="bp-hero-topline">
+            <div class="bp-hero-info">
+              <div class="bp-hero-name" style="color:${teamColor(teamId)}">${teamName(teamId)}</div>
+              <div class="bp-hero-abbr">${teamAbbr(teamId)} - Season ${new Date().getFullYear()}</div>
+            </div>
+            <div class="bp-hero-stats">
+              <div class="bp-stat-chip"><div class="bsc-v">${fmtNum(record.wins)}-${fmtNum(record.losses)}</div><div class="bsc-l">Series</div></div>
+              <div class="bp-stat-chip"><div class="bsc-v">${fmtNum(record.mapWins)}-${fmtNum(record.mapLosses)}</div><div class="bsc-l">Maps</div></div>
+              <div class="bp-stat-chip"><div class="bsc-v">${standingPos ? `#${standingPos}` : '-'}</div><div class="bsc-l">Rank</div></div>
+              <div class="bp-stat-chip"><div class="bsc-v">${fmtNum(standingRow?.pts || state.data.teamPoints?.[teamId] || 0)}</div><div class="bsc-l">CDL Pts</div></div>
+            </div>
+          </div>
+          <div class="bp-hero-meta">
+            <span class="team-table-pill">Active ${fmtNum(activeCount)}</span>
+            <span class="team-table-pill">${hasStats ? 'JSON team stats loaded' : 'No parsed team JSON'}</span>
+            ${teamStats.confidence ? `<span class="team-table-pill">Confidence ${escapeHtml(teamStats.confidence)}</span>` : ''}
+            ${parsedDate ? `<span class="team-table-pill">Updated ${escapeHtml(parsedDate)}</span>` : ''}
           </div>
         </div>
-      </article>
-      <article class="card">
-        <h3>Season stats summary</h3>
-        <div class="stat-list">
-          <div class="stat-row"><span>Total maps</span><strong>${fmtNum((record.mapWins || 0) + (record.mapLosses || 0))}</strong></div>
-          <div class="stat-row"><span>Avg mode win rate</span><strong>${averageWinRate !== null ? fmtPct(averageWinRate * 100, 1) : '-'}</strong></div>
-          <div class="stat-row"><span>Top performer</span><strong>${topPerformer ? `${topPerformer.displayName} (${fmtNum(topPerformer.overallISR, 1)} ISR)` : '-'}</strong></div>
-          <div class="stat-row"><span>Roster ISR average</span><strong>${fmtNum(state.data.computed?.avgIsrByTeam?.[teamId], 1)}</strong></div>
+        <div class="team-roster-tools">
+          <button id="teamToggleInactive" class="match-toggle-btn match-toggle-btn-secondary" type="button">${state.ui.teamShowInactive ? 'Hide Inactive' : 'Show Inactive'}</button>
         </div>
-      </article>
-    </div>
-    <div class="grid cols-2">
-      <article class="card">
-        <h3>Roster</h3>
-        <div class="roster-grid">
-          ${roster.map(player => `<div class="card roster-card">
-            <div class="top">
-              ${img(playerImageCandidates(teamId, player.displayName), 'player-avatar', player.displayName)}
-              <div>
-                <strong>${escapeHtml(player.displayName)}</strong>
-                <div class="muted">${player.active ? 'Active roster' : 'Inactive roster'}</div>
-                ${isrBadge(player.overallISR)}
-              </div>
-            </div>
-          </div>`).join('')}
-        </div>
-      </article>
-      <article class="card">
-        <h3>Overall player metrics</h3>
-        <div class="table-wrap stack-on-mobile">
-          <table class="responsive-table">
-            <thead><tr><th>Player</th><th>K/D</th><th>Slayer</th><th>Respawn K/D</th><th>NTK%</th><th>ISR</th><th>Tier</th></tr></thead>
-            <tbody>
-              ${overallRows.map(row => `<tr>
-                ${tableCell('Player', escapeHtml(row.player))}
-                ${tableCell('K/D', fmtNum(row.kd, 2))}
-                ${tableCell('Slayer', fmtNum(row.slayerRating, 2))}
-                ${tableCell('Respawn K/D', fmtNum(row.respawnKd, 2))}
-                ${tableCell('NTK%', row.ntkPct !== null ? fmtPct(row.ntkPct * 100, 0) : '-')}
-                ${tableCell('ISR', fmtNum(row.isr, 1))}
-                ${tableCell('Tier', `<span class="table-tier ${row.tier.colorClass}">${row.tier.label}</span>`)}
-              </tr>`).join('')}
-            </tbody>
-          </table>
-        </div>
-      </article>
-    </div>
-    <div class="grid cols-3">
-      ${['overall', 'hardpoint', 'search-and-destroy', 'overload', 'map-records', 'picks-vetoes'].map(key => `<article class="card stat-image-card"><h3>${key.replace(/-/g, ' ')}</h3>${img(teamStatCandidates(teamId, key), 'team-stat-image', `${teamName(teamId)} ${key}`)}</article>`).join('')}
-    </div>
+        <div class="bp-roster-strip">${rosterMarkup}</div>
+      </div>
+    </section>
+    <div class="bp-mode-bar">${tabsMarkup}</div>
+    ${buildTeamStatsPanel(teamId, teamStats, activeTab)}
   `;
 
   $('#teamSelect')?.addEventListener('change', event => {
     setUI('selectedTeam', event.target.value);
+    setUI('teamStatsTab', 'overall');
     renderTeams();
     renderBetting();
     renderMatchup();
+  });
+  document.querySelectorAll('[data-team-chip]').forEach(button => button.addEventListener('click', () => {
+    setUI('selectedTeam', button.dataset.teamChip);
+    setUI('teamStatsTab', 'overall');
+    renderTeams();
+    renderBetting();
+    renderMatchup();
+  }));
+  document.querySelectorAll('[data-team-tab]').forEach(button => button.addEventListener('click', () => {
+    setUI('teamStatsTab', button.dataset.teamTab);
+    renderTeams();
+  }));
+  $('#teamToggleInactive')?.addEventListener('click', () => {
+    setUI('teamShowInactive', !state.ui.teamShowInactive);
+    renderTeams();
   });
 }
 
