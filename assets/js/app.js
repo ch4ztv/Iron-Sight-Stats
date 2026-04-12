@@ -207,21 +207,53 @@ function teamTablePanel(title, subtitle, headerCells, rowMarkup, summaryMarkup =
   `;
 }
 
+function teamProfileLookup(teamId){
+  return new Map(
+    (state.data.computed?.profilesByTeam?.[teamId] || [])
+      .map(profile => [normalizeName(profile.displayName || profile.name || profile.playerId), profile])
+  );
+}
+
+function teamTablePlayerName(profile, fallbackName){
+  return profile?.displayName || fallbackName || '-';
+}
+
+function teamTableIsr(profile, mode = null){
+  if(!profile) return '-';
+  const score = mode === 'HP'
+    ? profile.hpISR
+    : mode === 'SND'
+      ? profile.sndISR
+      : mode === 'OL'
+        ? profile.olISR
+        : profile.overallISR;
+  return fmtNum(score, 1);
+}
+
 function buildTeamStatsPanel(teamId, teamStats, activeTab){
+  const profiles = teamProfileLookup(teamId);
+  const findProfile = playerName => profiles.get(normalizeName(playerName)) || null;
+
   if(activeTab === 'hardpoint'){
-    const rows = (teamStats.hardpoint?.players || []).map(row => `<tr>
-      ${tableCell('Player', escapeHtml(row.player))}
+    const rows = (teamStats.hardpoint?.players || []).map(row => {
+      const profile = findProfile(row.player);
+      return `<tr>
+      ${tableCell('Player', escapeHtml(teamTablePlayerName(profile, row.player)))}
       ${tableCell('K/D', statValue(row.kd, 2))}
       ${tableCell('K/10m', statValue(row.k10m, 2))}
       ${tableCell('Damage/10m', statIntValue(row.dmg10m))}
       ${tableCell('Obj/10m', statValue(row.obj10m, 2))}
       ${tableCell('Eng/10m', statValue(row.eng10m, 2))}
-    </tr>`).join('') || '<tr><td colspan="6" class="empty">No hardpoint team stats available yet.</td></tr>';
-    return teamTablePanel('Hardpoint', 'JSON-backed team breakdown', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Obj/10m', 'Eng/10m'], rows);
+      ${tableCell('HP ISR', teamTableIsr(profile, 'HP'))}
+    </tr>`;
+    }).join('') || '<tr><td colspan="7" class="empty">No hardpoint team stats available yet.</td></tr>';
+    return teamTablePanel('Hardpoint', 'JSON-backed team breakdown with live ISR', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Obj/10m', 'Eng/10m', 'HP ISR'], rows);
   }
   if(activeTab === 'snd'){
-    const rows = (teamStats.snd?.players || []).map(row => `<tr>
-      ${tableCell('Player', escapeHtml(row.player))}
+    const rows = (teamStats.snd?.players || []).map(row => {
+      const profile = findProfile(row.player);
+      return `<tr>
+      ${tableCell('Player', escapeHtml(teamTablePlayerName(profile, row.player)))}
       ${tableCell('K/D', statValue(row.kd, 2))}
       ${tableCell('K/Round', statValue(row.kRound, 2))}
       ${tableCell('Bloods', statIntValue(row.bloods))}
@@ -229,19 +261,25 @@ function buildTeamStatsPanel(teamId, teamStats, activeTab){
       ${tableCell('Defuses', statIntValue(row.defuses))}
       ${tableCell('Snipes', statIntValue(row.snipes))}
       ${tableCell('Dmg/Round', statValue(row.dmgRound, 2))}
-    </tr>`).join('') || '<tr><td colspan="8" class="empty">No search and destroy stats available yet.</td></tr>';
-    return teamTablePanel('Search and Destroy', 'JSON-backed team breakdown', ['Player', 'K/D', 'K/Round', 'Bloods', 'Plants', 'Defuses', 'Snipes', 'Dmg/Round'], rows);
+      ${tableCell('S&D ISR', teamTableIsr(profile, 'SND'))}
+    </tr>`;
+    }).join('') || '<tr><td colspan="9" class="empty">No search and destroy stats available yet.</td></tr>';
+    return teamTablePanel('Search and Destroy', 'JSON-backed team breakdown with live ISR', ['Player', 'K/D', 'K/Round', 'Bloods', 'Plants', 'Defuses', 'Snipes', 'Dmg/Round', 'S&D ISR'], rows);
   }
   if(activeTab === 'overload'){
-    const rows = (teamStats.overload?.players || []).map(row => `<tr>
-      ${tableCell('Player', escapeHtml(row.player))}
+    const rows = (teamStats.overload?.players || []).map(row => {
+      const profile = findProfile(row.player);
+      return `<tr>
+      ${tableCell('Player', escapeHtml(teamTablePlayerName(profile, row.player)))}
       ${tableCell('K/D', statValue(row.kd, 2))}
       ${tableCell('K/10m', statValue(row.k10m, 2))}
       ${tableCell('Damage/10m', statIntValue(row.dmg10m))}
       ${tableCell('Goals/10m', statValue(row.goals10m, 2))}
       ${tableCell('Eng/10m', statValue(row.eng10m, 2))}
-    </tr>`).join('') || '<tr><td colspan="6" class="empty">No overload stats available yet.</td></tr>';
-    return teamTablePanel('Overload', 'JSON-backed team breakdown', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Goals/10m', 'Eng/10m'], rows);
+      ${tableCell('OL ISR', teamTableIsr(profile, 'OL'))}
+    </tr>`;
+    }).join('') || '<tr><td colspan="7" class="empty">No overload stats available yet.</td></tr>';
+    return teamTablePanel('Overload', 'JSON-backed team breakdown with live ISR', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Goals/10m', 'Eng/10m', 'OL ISR'], rows);
   }
   if(activeTab === 'mapRecords'){
     const totals = teamStats.mapRecords?.totals || {};
@@ -270,15 +308,18 @@ function buildTeamStatsPanel(teamId, teamStats, activeTab){
     </tr>`).join('') || '<tr><td colspan="7" class="empty">No picks and vetoes data available yet.</td></tr>';
     return teamTablePanel('Picks and Vetoes', 'Map pool tendencies from the exported team JSON', ['Map', 'HP Pick', 'HP Veto', 'S&D Pick', 'S&D Veto', 'Ovl Pick', 'Ovl Veto'], rows);
   }
-  const rows = (teamStats.overall?.players || []).map(row => `<tr>
-    ${tableCell('Player', `<strong>${escapeHtml(row.player)}</strong>`)}
+  const rows = (teamStats.overall?.players || []).map(row => {
+    const profile = findProfile(row.player);
+    return `<tr>
+    ${tableCell('Player', `<strong>${escapeHtml(teamTablePlayerName(profile, row.player))}</strong>`)}
     ${tableCell('K/D', statValue(row.kd, 2))}
     ${tableCell('Slayer RTG', statValue(row.slayerRating, 2))}
     ${tableCell('Respawn K/D', statValue(row.respawnKd, 2))}
     ${tableCell('NTK%', statPctValue(row.ntkPct))}
-    ${tableCell('BP Rating', statValue(row.bpRating, 2))}
-  </tr>`).join('') || '<tr><td colspan="6" class="empty">No overall team stats available yet.</td></tr>';
-  return teamTablePanel('Overall Stats', 'JSON-backed player rows from the exported team stats package', ['Player', 'K/D', 'Slayer RTG', 'Respawn K/D', 'NTK%', 'BP Rating'], rows);
+    ${tableCell('ISR', teamTableIsr(profile))}
+  </tr>`;
+  }).join('') || '<tr><td colspan="6" class="empty">No overall team stats available yet.</td></tr>';
+  return teamTablePanel('Overall Stats', 'JSON-backed player rows with live ISR from the public model', ['Player', 'K/D', 'Slayer RTG', 'Respawn K/D', 'NTK%', 'ISR'], rows);
 }
 
 function getSeriesScore(match){
