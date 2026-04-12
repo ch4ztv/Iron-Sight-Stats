@@ -274,8 +274,8 @@ button,input,select,textarea{font-family:var(--font-display)}
 
 .brand-wrap{display:flex;align-items:center;gap:16px;min-width:0}
 .brand-logo{
-  width:72px;
-  height:72px;
+  width:104px;
+  height:104px;
   padding:0;
   border-radius:0;
   background:none;
