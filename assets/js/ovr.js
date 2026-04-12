@@ -6,6 +6,9 @@ const MATCH_WIN_BONUS = 0.75;
 const ASSIST_WEIGHT = 0.06;
 const CARD_SPREAD_MULTIPLIER = 1.6;
 const FULL_SAMPLE_MATCHES = 12;
+const FORGIVENESS_OFFSET = 2.5;
+const ELITE_ACCELERATION_START = 82;
+const ELITE_ACCELERATION_FACTOR = 0.28;
 
 function num(value) {
   const parsed = Number(value);
@@ -32,6 +35,13 @@ function stretchScore(value) {
   const parsed = num(value);
   if (parsed === null) return null;
   return clamp(SCORE_MIDPOINT + (parsed - SCORE_MIDPOINT) * CARD_SPREAD_MULTIPLIER, SCORE_FLOOR, SCORE_CEILING);
+}
+
+function forgivingScore(value) {
+  const parsed = num(value);
+  if (parsed === null) return null;
+  const eliteBonus = Math.max(0, parsed - ELITE_ACCELERATION_START) * ELITE_ACCELERATION_FACTOR;
+  return clamp(parsed + FORGIVENESS_OFFSET + eliteBonus, SCORE_FLOOR, SCORE_CEILING);
 }
 
 function stabilizeScore(value, sampleSize, fullSample = FULL_SAMPLE_MATCHES) {
@@ -108,6 +118,7 @@ export function ovrTier(score) {
 export function buildSeasonOvrModel(data = {}) {
   const playerMapRows = [];
   const rowsByMode = { HP: [], SND: [], OL: [] };
+  const byMapPlayerKey = {};
 
   for (const map of data.maps || []) {
     const mode = String(map.mode || '').toUpperCase();
@@ -169,11 +180,20 @@ export function buildSeasonOvrModel(data = {}) {
         .sort((left, right) => right - left)
         .slice(0, 2);
       const assistAdjustment = (row.assistScore - SCORE_MIDPOINT) * ASSIST_WEIGHT;
-      row.mapRating = stretchScore(clamp(average(base) + assistAdjustment, SCORE_FLOOR, SCORE_CEILING));
+      row.mapRating = forgivingScore(stretchScore(clamp(average(base) + assistAdjustment, SCORE_FLOOR, SCORE_CEILING)));
+      byMapPlayerKey[`${row.playerId}::${row.mapId}`] = {
+        playerId: row.playerId,
+        teamId: row.teamId,
+        matchId: row.matchId,
+        mapId: row.mapId,
+        mode: row.mode,
+        overall: roundScore(row.mapRating)
+      };
     });
   });
 
   const perMatchByPlayer = new Map();
+  const byMatchPlayerKey = {};
   playerMapRows.forEach(row => {
     const key = `${row.playerId}::${row.matchId}`;
     const entry = perMatchByPlayer.get(key) || {
@@ -206,7 +226,21 @@ export function buildSeasonOvrModel(data = {}) {
       seriesWin = ownScore > oppScore;
     }
 
-    const matchOvr = clamp(average(modeRatings) + (seriesWin ? MATCH_WIN_BONUS : 0), SCORE_FLOOR, SCORE_CEILING);
+    const matchOvr = forgivingScore(clamp(average(modeRatings) + (seriesWin ? MATCH_WIN_BONUS : 0), SCORE_FLOOR, SCORE_CEILING));
+    const matchEntry = {
+      matchId: entry.matchId,
+      teamId: entry.teamId,
+      overall: roundScore(matchOvr),
+      hp: roundScore(hp),
+      snd: roundScore(snd),
+      ol: roundScore(ol),
+      mapCount: entry.mapCount,
+      seriesWin
+    };
+    byMatchPlayerKey[`${entry.playerId}::${entry.matchId}`] = {
+      playerId: entry.playerId,
+      ...matchEntry
+    };
     const player = byPlayerId[entry.playerId] || {
       overall: null,
       hp: null,
@@ -217,16 +251,7 @@ export function buildSeasonOvrModel(data = {}) {
       matches: []
     };
 
-    player.matches.push({
-      matchId: entry.matchId,
-      teamId: entry.teamId,
-      overall: roundScore(matchOvr),
-      hp: roundScore(hp),
-      snd: roundScore(snd),
-      ol: roundScore(ol),
-      mapCount: entry.mapCount,
-      seriesWin
-    });
+    player.matches.push(matchEntry);
     player.mapCount += entry.mapCount;
     byPlayerId[entry.playerId] = player;
   }
@@ -242,5 +267,5 @@ export function buildSeasonOvrModel(data = {}) {
     player.ol = roundScore(stabilizeScore(average(olMatches.map(match => match.ol)), olMatches.length));
   });
 
-  return { byPlayerId };
+  return { byPlayerId, byMatchPlayerKey, byMapPlayerKey };
 }

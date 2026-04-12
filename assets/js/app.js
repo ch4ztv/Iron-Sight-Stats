@@ -121,7 +121,7 @@ function isrBadge(score){
 
 function ovrBadge(score){
   const tier = ovrTier(score);
-  const formattedScore = num(score) === null ? 'OVR unavailable' : `OVR ${fmtNum(score, 1)}`;
+  const formattedScore = num(score) === null ? 'ISR unavailable' : `ISR ${fmtNum(score, 1)}`;
   return `<span class="isr-badge ${tier.colorClass}"><span class="isr-dot"></span>${formattedScore}</span>`;
 }
 
@@ -251,10 +251,10 @@ function buildTeamStatsPanel(teamId, teamStats, activeTab){
       ${tableCell('Damage/10m', statIntValue(row.dmg10m))}
       ${tableCell('Obj/10m', statValue(row.obj10m, 2))}
       ${tableCell('Eng/10m', statValue(row.eng10m, 2))}
-      ${tableCell('HP OVR', teamTableRating(profile, 'HP'))}
+      ${tableCell('HP ISR', teamTableRating(profile, 'HP'))}
     </tr>`;
     }).join('') || '<tr><td colspan="7" class="empty">No hardpoint team stats available yet.</td></tr>';
-    return teamTablePanel('Hardpoint', 'JSON-backed team breakdown with match-averaged OVR', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Obj/10m', 'Eng/10m', 'HP OVR'], rows);
+    return teamTablePanel('Hardpoint', 'JSON-backed team breakdown with match-averaged ISR', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Obj/10m', 'Eng/10m', 'HP ISR'], rows);
   }
   if(activeTab === 'snd'){
     const rows = (teamStats.snd?.players || []).map(row => {
@@ -268,10 +268,10 @@ function buildTeamStatsPanel(teamId, teamStats, activeTab){
       ${tableCell('Defuses', statIntValue(row.defuses))}
       ${tableCell('Snipes', statIntValue(row.snipes))}
       ${tableCell('Dmg/Round', statValue(row.dmgRound, 2))}
-      ${tableCell('S&D OVR', teamTableRating(profile, 'SND'))}
+      ${tableCell('S&D ISR', teamTableRating(profile, 'SND'))}
     </tr>`;
     }).join('') || '<tr><td colspan="9" class="empty">No search and destroy stats available yet.</td></tr>';
-    return teamTablePanel('Search and Destroy', 'JSON-backed team breakdown with match-averaged OVR', ['Player', 'K/D', 'K/Round', 'Bloods', 'Plants', 'Defuses', 'Snipes', 'Dmg/Round', 'S&D OVR'], rows);
+    return teamTablePanel('Search and Destroy', 'JSON-backed team breakdown with match-averaged ISR', ['Player', 'K/D', 'K/Round', 'Bloods', 'Plants', 'Defuses', 'Snipes', 'Dmg/Round', 'S&D ISR'], rows);
   }
   if(activeTab === 'overload'){
     const rows = (teamStats.overload?.players || []).map(row => {
@@ -283,10 +283,10 @@ function buildTeamStatsPanel(teamId, teamStats, activeTab){
       ${tableCell('Damage/10m', statIntValue(row.dmg10m))}
       ${tableCell('Goals/10m', statValue(row.goals10m, 2))}
       ${tableCell('Eng/10m', statValue(row.eng10m, 2))}
-      ${tableCell('OL OVR', teamTableRating(profile, 'OL'))}
+      ${tableCell('OL ISR', teamTableRating(profile, 'OL'))}
     </tr>`;
     }).join('') || '<tr><td colspan="7" class="empty">No overload stats available yet.</td></tr>';
-    return teamTablePanel('Overload', 'JSON-backed team breakdown with match-averaged OVR', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Goals/10m', 'Eng/10m', 'OL OVR'], rows);
+    return teamTablePanel('Overload', 'JSON-backed team breakdown with match-averaged ISR', ['Player', 'K/D', 'K/10m', 'Damage/10m', 'Goals/10m', 'Eng/10m', 'OL ISR'], rows);
   }
   if(activeTab === 'mapRecords'){
     const totals = teamStats.mapRecords?.totals || {};
@@ -323,10 +323,10 @@ function buildTeamStatsPanel(teamId, teamStats, activeTab){
     ${tableCell('Slayer RTG', statValue(row.slayerRating, 2))}
     ${tableCell('Respawn K/D', statValue(row.respawnKd, 2))}
     ${tableCell('NTK%', statPctValue(row.ntkPct))}
-    ${tableCell('OVR', teamTableRating(profile))}
+    ${tableCell('ISR', teamTableRating(profile))}
   </tr>`;
   }).join('') || '<tr><td colspan="6" class="empty">No overall team stats available yet.</td></tr>';
-  return teamTablePanel('Overall Stats', 'JSON-backed player rows with match-averaged season OVR', ['Player', 'K/D', 'Slayer RTG', 'Respawn K/D', 'NTK%', 'OVR'], rows);
+  return teamTablePanel('Overall Stats', 'JSON-backed player rows with match-averaged season ISR', ['Player', 'K/D', 'Slayer RTG', 'Respawn K/D', 'NTK%', 'ISR'], rows);
 }
 
 function getSeriesScore(match){
@@ -477,7 +477,16 @@ function buildComputedModel(data){
     allProfiles.push(...profiles.filter(profile => profile.hasStats));
   });
 
-  return { profilesByTeam, allProfiles, avgIsrByTeam, avgOvrByTeam, topPerformerByTeam, topRatedByTeam };
+  return {
+    profilesByTeam,
+    allProfiles,
+    avgIsrByTeam,
+    avgOvrByTeam,
+    topPerformerByTeam,
+    topRatedByTeam,
+    matchRatingByKey: seasonOvrModel.byMatchPlayerKey || {},
+    mapRatingByKey: seasonOvrModel.byMapPlayerKey || {}
+  };
 }
 
 function recentFormScore(teamId){
@@ -918,28 +927,19 @@ function formatMatchMeta(match){
   return parts.filter(Boolean).join(' | ');
 }
 
-function getBprCoefficients(){
-  return state.data.season?.bprCoefficients || null;
+function getMatchSeriesRating(playerId, matchId){
+  return state.data.computed?.matchRatingByKey?.[`${playerId}::${matchId}`]?.overall ?? null;
 }
 
-function calcBpr(kills, deaths, mode){
-  const coeff = getBprCoefficients()?.[mode];
-  if(!coeff) return null;
-  const impact = Number(kills || 0) * Number(coeff.b1 || 0) - Number(deaths || 0) * Number(coeff.b2 || 0);
-  const sigma = Number(coeff.sigma || 0);
-  if(!sigma) return null;
-  return impact / (3 * sigma) + 1;
+function getMatchMapRating(playerId, mapId){
+  return state.data.computed?.mapRatingByKey?.[`${playerId}::${mapId}`]?.overall ?? null;
 }
 
-function formatBpr(value){
+function formatMatchIsr(value){
   const parsed = num(value);
   if(parsed === null) return '<span class="muted">-</span>';
-  let tone = 'tier-base';
-  if(parsed >= 1.8) tone = 'tier-elite';
-  else if(parsed >= 1.3) tone = 'tier-strong';
-  else if(parsed >= 0.8) tone = 'tier-steady';
-  else if(parsed < 0.5) tone = 'tier-developing';
-  return `<span class="match-bpr ${tone}">${fmtNum(parsed, 2)}</span>`;
+  const tier = ovrTier(parsed);
+  return `<span class="match-isr ${tier.colorClass}">${fmtNum(parsed, 1)}</span>`;
 }
 
 function getMatchTabKey(tab = state.ui.matchStatsTab){
@@ -960,27 +960,20 @@ function buildMatchSeriesRows(match, maps){
         deaths: 0,
         assists: 0,
         damage: 0,
-        maps: 0,
-        bprSum: 0,
-        bprCount: 0
+        maps: 0
       };
       entry.kills += Number(row.kills || 0);
       entry.deaths += Number(row.deaths || 0);
       entry.assists += Number(row.assists || 0);
       entry.damage += Number(row.damage || 0);
       entry.maps += 1;
-      const bpr = calcBpr(row.kills, row.deaths, map.mode);
-      if(bpr !== null){
-        entry.bprSum += bpr;
-        entry.bprCount += 1;
-      }
       totals.set(key, entry);
     });
   });
   return Array.from(totals.values()).map(entry => ({
     ...entry,
     kd: entry.deaths ? entry.kills / entry.deaths : entry.kills,
-    bpr: entry.bprCount ? entry.bprSum / entry.bprCount : null
+    isr: getMatchSeriesRating(entry.playerId, match.id)
   }));
 }
 
@@ -998,7 +991,7 @@ function buildMatchMapRows(map){
       assists: Number(row.assists || 0),
       damage: Number(row.damage || 0),
       kd: deaths ? kills / deaths : kills,
-      bpr: calcBpr(kills, deaths, map.mode)
+      isr: getMatchMapRating(row.playerId, map.id)
     };
   });
 }
@@ -1023,7 +1016,7 @@ function renderMatchStatsTable(teamId, rows, columns = 'series'){
         <td class="num">${fmtNum(row.assists)}</td>
         <td class="num ${row.kd >= 1 ? 'value-pos' : row.kd < 1 ? 'value-neg' : ''}">${fmtNum(row.kd, 2)}</td>
         <td class="num">${fmtNum(row.damage)}</td>
-        <td>${formatBpr(row.bpr)}</td>
+        <td>${formatMatchIsr(row.isr)}</td>
         ${columns === 'series' ? `<td><div class="match-kill-bar"><span class="match-kill-fill" style="width:${barWidth}%;background:${teamColor(teamId)}"></span></div></td>` : ''}
       </tr>`;
     }).join('')}
@@ -1061,7 +1054,7 @@ function buildMatchDetailPanel(match, activeTab = 'series'){
             <div class="table-wrap match-stats-wrap">
               <table class="table">
                 <thead>
-                  <tr><th>Player</th><th>K</th><th>D</th><th>A</th><th>K/D</th><th>Damage</th><th>BPR</th><th></th></tr>
+                  <tr><th>Player</th><th>K</th><th>D</th><th>A</th><th>K/D</th><th>Damage</th><th>ISR</th><th></th></tr>
                 </thead>
                 <tbody>
                   ${renderMatchStatsTable(match.team1Id, team1Series, 'series')}
@@ -1122,7 +1115,7 @@ function buildMatchDetailPanel(match, activeTab = 'series'){
           <div class="table-wrap match-stats-wrap">
             <table class="table">
               <thead>
-                <tr><th>Player</th><th>K</th><th>D</th><th>A</th><th>K/D</th><th>Damage</th><th>BPR</th></tr>
+                <tr><th>Player</th><th>K</th><th>D</th><th>A</th><th>K/D</th><th>Damage</th><th>ISR</th></tr>
               </thead>
               <tbody>
                 ${renderMatchStatsTable(match.team1Id, team1Rows, 'map')}
@@ -1423,9 +1416,9 @@ function renderMatches(){
 
 function renderPlayers(){
   const search = state.ui.playerSearch.trim().toLowerCase();
-  const sort = ['ovr', 'kd', 'kills', 'damage'].includes(state.ui.playerSort)
+  const sort = ['isr', 'kd', 'kills', 'damage'].includes(state.ui.playerSort)
     ? state.ui.playerSort
-    : 'ovr';
+    : 'isr';
   if(sort !== state.ui.playerSort){
     setUI('playerSort', sort);
   }
@@ -1447,14 +1440,14 @@ function renderPlayers(){
   )[0] || null;
 
   $('#players').innerHTML = `
-    ${sectionHeader('Player Stats', 'Match-averaged player card ratings from the public season data package.', `<div class="controls"><input id="playerSearch" placeholder="Search players or teams" value="${escapeAttr(state.ui.playerSearch)}"><select id="playerSort"><option value="ovr" ${sort === 'ovr' ? 'selected' : ''}>Sort by OVR</option><option value="kd" ${sort === 'kd' ? 'selected' : ''}>Sort by K/D</option><option value="kills" ${sort === 'kills' ? 'selected' : ''}>Sort by kills</option><option value="damage" ${sort === 'damage' ? 'selected' : ''}>Sort by damage / map</option></select></div>`)}
+    ${sectionHeader('Player Stats', 'Match-averaged player ISR from the public season data package.', `<div class="controls"><input id="playerSearch" placeholder="Search players or teams" value="${escapeAttr(state.ui.playerSearch)}"><select id="playerSort"><option value="isr" ${sort === 'isr' ? 'selected' : ''}>Sort by ISR</option><option value="kd" ${sort === 'kd' ? 'selected' : ''}>Sort by K/D</option><option value="kills" ${sort === 'kills' ? 'selected' : ''}>Sort by kills</option><option value="damage" ${sort === 'damage' ? 'selected' : ''}>Sort by damage / map</option></select></div>`)}
     ${featurePlayer ? `<article class="card player-feature">
       <div class="player-feature-media">
         ${img(playerImageCandidates(featurePlayer.teamId, featurePlayer.displayName), 'player-avatar feature-avatar', featurePlayer.displayName)}
         ${img(teamLogoCandidates(featurePlayer.teamId), 'feature-team-logo', teamName(featurePlayer.teamId))}
       </div>
       <div class="player-feature-copy">
-        <p class="eyebrow">OVR leader</p>
+        <p class="eyebrow">ISR leader</p>
         <h3>${escapeHtml(featurePlayer.displayName)}</h3>
         <p class="muted">${teamName(featurePlayer.teamId)} - ${fmtNum(featurePlayer.ratingMatchCount)} rated matches</p>
         <div class="player-feature-stats">
@@ -1468,12 +1461,12 @@ function renderPlayers(){
     </article>` : ''}
     ${rows.length ? `<div class="table-wrap stack-on-mobile">
       <table class="responsive-table">
-        <thead><tr><th>Player</th><th>Team</th><th>OVR</th><th>HP</th><th>S&amp;D</th><th>OL</th><th>K/D</th><th>Damage / Map</th><th>Matches</th></tr></thead>
+        <thead><tr><th>Player</th><th>Team</th><th>ISR</th><th>HP</th><th>S&amp;D</th><th>OL</th><th>K/D</th><th>Damage / Map</th><th>Matches</th></tr></thead>
         <tbody>
           ${rows.slice(0, 80).map(player => `<tr>
             ${tableCell('Player', `<span class="player-chip">${img(playerImageCandidates(player.teamId, player.displayName), 'mini-avatar', player.displayName)}<span>${escapeHtml(player.displayName)}</span></span>`)}
             ${tableCell('Team', teamAbbr(player.teamId))}
-            ${tableCell('OVR', `<strong>${fmtNum(player.overallOVR, 1)}</strong>`)}
+            ${tableCell('ISR', `<strong>${fmtNum(player.overallOVR, 1)}</strong>`)}
             ${tableCell('HP', fmtNum(player.hpOVR, 1))}
             ${tableCell('S&D', fmtNum(player.sndOVR, 1))}
             ${tableCell('OL', fmtNum(player.olOVR, 1))}
@@ -1543,7 +1536,7 @@ function renderTeams(){
   const tabsMarkup = TEAM_PAGE_TABS.map(tab => `<button class="bp-mode-tab ${tab.id === activeTab ? 'on' : ''}" type="button" data-team-tab="${tab.id}">${tab.label}</button>`).join('');
 
   $('#teams').innerHTML = `
-    ${sectionHeader('Teams', 'Local-style team hub powered by roster JSON and match-averaged OVR cards.')}
+    ${sectionHeader('Teams', 'Local-style team hub powered by roster JSON and match-averaged ISR cards.')}
     ${selectorMarkup}
     <section class="bp-team-hero" style="--thc:${teamColor(teamId)}">
       <div class="bp-hero-inner">
@@ -1563,8 +1556,8 @@ function renderTeams(){
           </div>
           <div class="bp-hero-meta">
             <span class="team-table-pill">Active ${fmtNum(activeCount)}</span>
-            <span class="team-table-pill">Roster OVR ${fmtNum(avgOvr, 1)}</span>
-            ${topCard ? `<span class="team-table-pill">Top card ${escapeHtml(topCard.displayName)} ${fmtNum(topCard.overallOVR, 1)}</span>` : ''}
+            <span class="team-table-pill">Roster ISR ${fmtNum(avgOvr, 1)}</span>
+            ${topCard ? `<span class="team-table-pill">Top ISR ${escapeHtml(topCard.displayName)} ${fmtNum(topCard.overallOVR, 1)}</span>` : ''}
             <span class="team-table-pill">${hasStats ? 'JSON team stats loaded' : 'No parsed team JSON'}</span>
             ${teamStats.confidence ? `<span class="team-table-pill">Confidence ${escapeHtml(teamStats.confidence)}</span>` : ''}
             ${parsedDate ? `<span class="team-table-pill">Updated ${escapeHtml(parsedDate)}</span>` : ''}
