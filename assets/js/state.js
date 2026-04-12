@@ -12,7 +12,7 @@ export const state = {
     matchExpandedId: null,
     matchStatsTab: 'series',
     playerSearch: '',
-    playerSort: 'isr',
+    playerSort: 'ovr',
     bettingTeam: 'optic',
     bettingPlayerId: '',
     bettingOpponent: 'all',
