@@ -338,11 +338,23 @@ function buildComputedModel(data){
   const avgIsrByTeam = {};
   const topPerformerByTeam = {};
   TEAM_IDS.forEach(teamId => {
-    const names = unique([
-      ...(data.playersByTeam?.[teamId] || []).map(player => player.name),
-      ...extractTeamStatNames(data.teamStats?.[teamId]),
-      ...(data.playerAggList || []).filter(row => row.teamId === teamId).map(row => row.name)
-    ]);
+    const preferredNames = new Map();
+    const rememberName = (name, priority = 0) => {
+      const normalized = normalizeName(name);
+      if(!normalized) return;
+      const existing = preferredNames.get(normalized);
+      if(!existing || priority >= existing.priority){
+        preferredNames.set(normalized, { name, priority });
+      }
+    };
+
+    extractTeamStatNames(data.teamStats?.[teamId]).forEach(name => rememberName(name, 1));
+    (data.playerAggList || [])
+      .filter(row => row.teamId === teamId)
+      .forEach(row => rememberName(row.name, 2));
+    (data.playersByTeam?.[teamId] || []).forEach(player => rememberName(player.name, 3));
+
+    const names = Array.from(preferredNames.values()).map(entry => entry.name);
 
     const profiles = names.map(name => {
       const key = `${teamId}::${normalizeName(name)}`;
