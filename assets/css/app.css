@@ -274,13 +274,15 @@ button,input,select,textarea{font-family:var(--font-display)}
 
 .brand-wrap{display:flex;align-items:center;gap:16px;min-width:0}
 .brand-logo{
-  width:104px;
-  height:104px;
+  width:118px;
+  height:118px;
   padding:0;
   border-radius:0;
   background:none;
   box-shadow:none;
   filter:drop-shadow(0 0 14px rgba(0,255,102,.22));
+  transform:scale(1.12);
+  transform-origin:center;
 }
 .brand-copy{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0}
 .brand-line{line-height:.94;text-transform:uppercase}
