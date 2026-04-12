@@ -29,11 +29,11 @@
 @media (max-width: 980px){
   .site-header{
     grid-template-columns:1fr auto;
-    padding:6px 14px 0;
+    padding:4px 14px 0;
   }
   .brand-wrap{gap:14px}
   .brand-logo{width:98px;height:98px;margin-top:-4px;margin-bottom:-8px}
-  .brand-copy{padding-top:6px}
+  .brand-copy{padding-top:5px}
   .brand-line-main{font-size:2rem}
   .brand-line-sub{gap:10px;font-size:1.28rem}
   .brand-line-sub::before,
@@ -96,10 +96,10 @@
 }
 
 @media (max-width: 700px){
-  .site-header{padding:4px 12px 0}
+  .site-header{padding:2px 12px 0}
   .brand-wrap{gap:10px}
   .brand-logo{width:76px;height:76px;margin-top:-2px;margin-bottom:-6px}
-  .brand-copy{padding-top:4px}
+  .brand-copy{padding-top:3px}
   .brand-line-main{font-size:1.55rem}
   .brand-line-sub{gap:8px;font-size:1.08rem;letter-spacing:.09em}
   .brand-line-sub::before,
