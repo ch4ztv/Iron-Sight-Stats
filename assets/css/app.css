@@ -295,11 +295,28 @@ button,input,select,textarea{font-family:var(--font-display)}
   color:#f5f7fb;
 }
 .brand-line-sub{
-  margin-left:14px;
-  font-size:clamp(1.18rem,2.3vw,2.2rem);
+  display:inline-flex;
+  align-items:center;
+  align-self:center;
+  justify-content:center;
+  gap:14px;
+  font-size:clamp(1.32rem,2.5vw,2.4rem);
   font-weight:900;
   letter-spacing:.11em;
   color:var(--accent);
+  text-align:center;
+  white-space:nowrap;
+}
+.brand-line-sub::before,
+.brand-line-sub::after{
+  content:"";
+  width:52px;
+  height:1px;
+  background:linear-gradient(90deg, rgba(0,232,64,0), rgba(0,232,64,.88));
+  box-shadow:0 0 8px rgba(0,232,64,.22);
+}
+.brand-line-sub::after{
+  background:linear-gradient(90deg, rgba(0,232,64,.88), rgba(0,232,64,0));
 }
 .eyebrow,.brand-subtitle,.site-header h1{display:none}
 .mobile-menu-btn{

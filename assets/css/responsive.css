@@ -35,7 +35,9 @@
   .brand-logo{width:98px;height:98px;margin-top:-4px;margin-bottom:-8px}
   .brand-copy{padding-top:6px}
   .brand-line-main{font-size:2rem}
-  .brand-line-sub{margin-left:10px;font-size:1.16rem}
+  .brand-line-sub{gap:10px;font-size:1.28rem}
+  .brand-line-sub::before,
+  .brand-line-sub::after{width:38px}
   .site-nav{
     position:fixed;
     top:0;
@@ -99,7 +101,9 @@
   .brand-logo{width:76px;height:76px;margin-top:-2px;margin-bottom:-6px}
   .brand-copy{padding-top:4px}
   .brand-line-main{font-size:1.55rem}
-  .brand-line-sub{margin-left:8px;font-size:1rem}
+  .brand-line-sub{gap:8px;font-size:1.08rem;letter-spacing:.09em}
+  .brand-line-sub::before,
+  .brand-line-sub::after{width:24px}
   .site-main{padding:16px 12px 36px}
   .dashboard-kpis,
   .dashboard-panels,
