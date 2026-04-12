@@ -262,8 +262,8 @@ button,input,select,textarea{font-family:var(--font-display)}
   display:grid;
   grid-template-columns:1fr auto;
   align-items:center;
-  gap:4px 18px;
-  padding:4px 16px 0;
+  gap:0 18px;
+  padding:0 16px 0;
   overflow:hidden;
   isolation:isolate;
   background:linear-gradient(180deg, #06110c 0%, #050b09 100%);
@@ -273,21 +273,21 @@ button,input,select,textarea{font-family:var(--font-display)}
 .site-header::before{
   content:"";
   position:absolute;
-  inset:-16% auto -48% -6%;
-  width:420px;
+  inset:-24% auto -72% -11%;
+  width:560px;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(0,232,64,.24) 0%, rgba(0,232,64,.11) 30%, rgba(0,232,64,.04) 48%, rgba(0,232,64,0) 74%);
+  background:radial-gradient(circle, rgba(0,232,64,.26) 0%, rgba(0,232,64,.13) 30%, rgba(0,232,64,.05) 50%, rgba(0,232,64,0) 76%);
   pointer-events:none;
   z-index:0;
 }
 .site-header > *{position:relative;z-index:1}
 
-.brand-wrap{display:flex;align-items:flex-start;gap:16px;min-width:0}
+.brand-wrap{display:flex;align-items:center;gap:18px;min-width:0}
 .brand-logo{
-  width:140px;
-  height:140px;
-  margin-top:-6px;
-  margin-bottom:-10px;
+  width:132px;
+  height:132px;
+  margin-top:-12px;
+  margin-bottom:-22px;
   padding:0;
   border-radius:0;
   background:none;
@@ -296,7 +296,7 @@ button,input,select,textarea{font-family:var(--font-display)}
   object-position:center;
   filter:drop-shadow(0 0 14px rgba(0,255,102,.22));
 }
-.brand-copy{display:flex;flex-direction:column;justify-content:flex-start;gap:0;min-width:0;padding-top:8px}
+.brand-copy{display:flex;flex-direction:column;justify-content:center;gap:0;min-width:0;padding-top:0;margin-top:1px}
 .brand-line{line-height:.92;text-transform:uppercase}
 .brand-line-main{
   font-size:clamp(2.1rem,4.3vw,4.15rem);
@@ -352,12 +352,12 @@ button,input,select,textarea{font-family:var(--font-display)}
   border-bottom:1px solid rgba(0,232,64,.16);
 }
 .site-nav a{
-  padding:8px 12px 7px;
+  padding:6px 12px 5px;
   border:0;
   border-bottom:2px solid transparent;
   border-radius:0;
   color:var(--muted);
-  font-size:11px;
+  font-size:10px;
   font-weight:700;
   letter-spacing:.05em;
   text-transform:uppercase;
