@@ -647,6 +647,7 @@ function buildBettingMapLogs({ teamId, playerId, opponentId, eventId, modeId, ma
         rows.push({
           match,
           map,
+          row,
           ts: map.ts || match.ts || 0,
           eventLabel: formatBettingEvent(match.eventId),
           opponentId: opponent,
@@ -1465,8 +1466,8 @@ function renderBetting(){
           ${tableCell('Mode', modePill(entry.map.mode))}
           ${tableCell('Map', `<strong>${escapeHtml(entry.map.mapName)}</strong>`)}
           ${tableCell(mapStatMeta.label, `<strong>${formatMapStatValue(entry.value, mapStat)}</strong>`)}
-          ${tableCell('K / D / A', `${fmtNum(entry.row.kills)} / ${fmtNum(entry.row.deaths)} / ${fmtNum(entry.row.assists)}`)}
-          ${tableCell('Damage', fmtNum(entry.row.damage))}
+          ${tableCell('K / D / A', `${fmtNum(entry.row?.kills)} / ${fmtNum(entry.row?.deaths)} / ${fmtNum(entry.row?.assists)}`)}
+          ${tableCell('Damage', fmtNum(entry.row?.damage))}
           ${tableCell('Line Result', lineResult)}
         </tr>`;
       }).join('')
