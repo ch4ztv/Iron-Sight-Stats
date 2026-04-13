@@ -1671,13 +1671,13 @@ function sortPlayerRows(rows){
   });
 }
 
-function playerHeaderButton(column, activeSort, direction){
+function legacyPlayerHeaderButton(column, activeSort, direction){
   const isActive = activeSort === column.id;
   const arrow = !isActive ? '' : direction === 'asc' ? ' ▲' : ' ▼';
   return `<button class="player-sort-btn ${isActive ? 'is-active' : ''}" type="button" data-player-sort="${column.id}">${column.label}${arrow}</button>`;
 }
 
-function playerLeaderboardRowMarkup(player, index){
+function legacyPlayerLeaderboardRowMarkup(player, index){
   const rankClass = index === 0 ? 'r1' : index === 1 ? 'r2' : index === 2 ? 'r3' : 'rd';
   return `<tr>
     ${tableCell('#', `<span class="rnk ${rankClass}">${index + 1}</span>`)}
@@ -1701,7 +1701,7 @@ function playerBioMeta(playerId){
   return state.data.playerBios?.[playerId] || {};
 }
 
-function playerModalMarkup(player){
+function legacyPlayerModalMarkup(player){
   if(!player) return '';
   const bio = playerBioMeta(player.playerId);
   const seasonWins = playerSeasonAccomplishments()[player.playerId] || { majorWins: 0, champsWins: 0, ewcWins: 0 };
@@ -1767,7 +1767,7 @@ function playerModalMarkup(player){
   </div>`;
 }
 
-function renderPlayers(){
+function legacyRenderPlayers(){
   const rows = sortPlayerRows(buildPlayerLeaderboardRows());
   const playerCountLabel = `${fmtNum(rows.length)} players • Click headers to sort`;
   const activeSort = PLAYER_TABLE_COLUMNS.some(column => column.id === state.ui.playerSort) ? state.ui.playerSort : 'isr';
