@@ -2006,10 +2006,15 @@ function playerLeaderboardRowMarkup(player, index){
 function playerModalMarkup(player){
   if(!player) return '';
   const bio = playerBioMeta(player.playerId);
-  const seasonWins = playerSeasonAccomplishments()[player.playerId] || { majorWins: 0, champsWins: 0, ewcWins: 0 };
-  const majorWins = num(bio.seasonMajorWins) ?? num(bio.majorWins) ?? seasonWins.majorWins;
-  const champsWins = num(bio.seasonChampsWins) ?? num(bio.champsWins) ?? seasonWins.champsWins;
-  const ewcWins = num(bio.seasonEwcWins) ?? num(bio.ewcWins) ?? seasonWins.ewcWins;
+  const majorWins = num(bio.careerMajorWins) ?? 0;
+  const champsWins = num(bio.careerChampsWins) ?? 0;
+  const ewcWins = num(bio.careerEwcWins) ?? 0;
+  const eventMvpCount = num(bio.majorMVPs) ?? 0;
+  const careerAccolades = Array.isArray(bio.careerAccolades) ? bio.careerAccolades : [];
+  const highlightItems = [
+    bio.rookieOfTheYear ? `Rookie of the Year: ${bio.rookieOfTheYear}` : null,
+    ...careerAccolades
+  ].filter(Boolean);
   const scopeLabel = getPlayerEventOptions().find(option => option.id === state.ui.playerEvent)?.label || 'Season Wide';
   const modeLabelText = formatPlayerModeLabel(state.ui.playerMode);
   const dob = bio.dob ? fmtDate(bio.dob) : 'Not added';
@@ -2043,14 +2048,20 @@ function playerModalMarkup(player){
       </div>
       <div class="player-modal-grid">
         <section class="card player-modal-panel">
-          <div class="card-title"><span>Bio</span><span class="team-data-subtle">Metadata-backed popup card</span></div>
+          <div class="card-title"><span>Bio</span><span class="team-data-subtle">Career bio and accomplishments</span></div>
           <div class="player-modal-meta">
             <div><span>DOB</span><strong>${escapeHtml(dob)}</strong></div>
             <div><span>Age</span><strong>${escapeHtml(age)}</strong></div>
-            <div><span>2026 Major Wins</span><strong>${fmtNum(majorWins)}</strong></div>
-            <div><span>2026 Champs Wins</span><strong>${fmtNum(champsWins)}</strong></div>
-            <div><span>2026 EWC Wins</span><strong>${fmtNum(ewcWins)}</strong></div>
-            <div><span>Player ID</span><strong>${escapeHtml(player.playerId)}</strong></div>
+            <div><span>Career Major Wins</span><strong>${fmtNum(majorWins)}</strong></div>
+            <div><span>Career Champs Wins</span><strong>${fmtNum(champsWins)}</strong></div>
+            <div><span>Career EWC Wins</span><strong>${fmtNum(ewcWins)}</strong></div>
+            <div><span>Career Event MVPs</span><strong>${fmtNum(eventMvpCount)}</strong></div>
+          </div>
+          <div class="player-modal-highlights">
+            <div class="player-modal-highlights-head">Career Highlights</div>
+            ${highlightItems.length
+              ? `<div class="player-modal-highlights-list">${highlightItems.map(item => `<span class="player-modal-highlight-pill">${escapeHtml(item)}</span>`).join('')}</div>`
+              : '<div class="player-modal-highlights-empty">Career highlights are still being researched for this player.</div>'}
           </div>
         </section>
         <section class="card player-modal-panel">
