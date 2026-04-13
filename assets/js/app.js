@@ -2022,8 +2022,10 @@ function playerModalMarkup(player){
       <button class="player-modal-close" type="button" aria-label="Close player details" data-player-close="button">&times;</button>
       <div class="player-modal-top">
         <div class="player-modal-visual">
-          ${portraitImg(playerImageCandidates(player.teamId, player.displayName), 'player-modal-avatar', player.displayName, player.displayName.slice(0, 3).toUpperCase())}
-          ${img(teamLogoCandidates(player.teamId), 'player-modal-team-logo', teamName(player.teamId))}
+          <div class="bp-player-art player-modal-art" style="--thc:${teamColor(player.teamId)}">
+            <div class="bp-player-backdrop">${img(teamLogoCandidates(player.teamId), 'bp-player-backdrop-logo', teamName(player.teamId))}</div>
+            ${portraitImg(playerImageCandidates(player.teamId, player.displayName), 'bp-player-img player-modal-avatar', player.displayName, player.displayName.slice(0, 3).toUpperCase())}
+          </div>
         </div>
         <div class="player-modal-copy">
           <div class="eyebrow">Player Card</div>
