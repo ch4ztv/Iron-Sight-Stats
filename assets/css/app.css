@@ -1454,13 +1454,20 @@ tbody tr:hover td{background:#101813}
 .player-modal-visual{
   display:grid;
   gap:12px;
-  justify-items:start;
+  justify-items:stretch;
+}
+.player-modal-art{
+  width:100%;
+  height:208px;
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:16px;
 }
 .player-modal-avatar{
-  width:180px;
-  height:180px;
-  object-fit:cover;
-  background:#0e1712;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center bottom;
+  background:none;
 }
 .player-modal-team-logo{
   width:56px;
