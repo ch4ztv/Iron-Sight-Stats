@@ -61,14 +61,14 @@
     justify-content:flex-start;
     gap:12px;
     min-height:0;
-    padding:14px 18px;
+    padding:15px 18px;
     font-size:.94rem;
     border-bottom:0;
     border-left:3px solid transparent;
   }
   .site-nav-icon{
-    width:18px;
-    height:18px;
+    width:20px;
+    height:20px;
   }
   .site-nav-label{
     line-height:1.1;
@@ -125,8 +125,8 @@
     font-size:.9rem;
   }
   .site-nav-icon{
-    width:16px;
-    height:16px;
+    width:18px;
+    height:18px;
   }
   .player-overview-grid{grid-template-columns:1fr}
   .player-overview-card{min-height:unset}
