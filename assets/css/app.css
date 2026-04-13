@@ -1481,10 +1481,11 @@ tbody tr:hover td{background:#101813}
   font-size:clamp(1.8rem,3vw,2.5rem);
 }
 .player-modal-fullname{
-  margin:0 0 6px;
+  margin:0 0 8px;
   color:#eef4ee;
-  font-size:1rem;
-  font-weight:700;
+  font-size:1.16rem;
+  font-weight:800;
+  letter-spacing:.01em;
 }
 .player-modal-pillrow{
   display:flex;
@@ -1527,6 +1528,41 @@ tbody tr:hover td{background:#101813}
 .player-modal-meta strong{
   color:#eef4ee;
   font-size:15px;
+}
+.player-modal-highlights{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
+.player-modal-highlights-head{
+  margin-bottom:10px;
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.player-modal-highlights-list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.player-modal-highlight-pill{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 11px;
+  border:1px solid rgba(76,145,105,.38);
+  border-radius:999px;
+  background:#101913;
+  color:#eef4ee;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.35;
+}
+.player-modal-highlights-empty{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.5;
 }
 
 .value-pos{color:var(--success);font-weight:800}
