@@ -1543,7 +1543,7 @@ function scaleSlayerRating(rawScore){
   if(value === null) return null;
   const baseline = 60 + ((value - 60) * 1.85);
   const eliteBonus = Math.max(0, value - 72) * 0.75;
-  return Math.round(clamp(baseline + eliteBonus, 60, 99) * 10) / 10;
+  return Math.round(Math.min(Math.max(baseline + eliteBonus, 60), 99) * 10) / 10;
 }
 
 function buildPlayerLeaderboardRows(){
