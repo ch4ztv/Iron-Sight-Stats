@@ -1156,33 +1156,111 @@ tbody tr:hover td{background:#101813}
 .match-isr.isr-tier-developing,
 .match-isr.tier-developing{color:#ff9e9e;background:rgba(255,158,158,.12);border-color:rgba(255,158,158,.2)}
 
-.player-stats-note{
+.player-overview-grid{
+  display:grid;
+  grid-template-columns:1.2fr repeat(3,minmax(0,1fr));
+  gap:14px;
   margin:0 0 14px;
-  padding:10px 14px;
-  border-radius:8px;
-  background:rgba(0,116,164,.18);
-  border-color:rgba(0,167,224,.22);
+}
+.player-overview-card{
+  position:relative;
+  overflow:hidden;
+  display:grid;
+  gap:10px;
+  min-height:122px;
+  padding:16px 18px;
+  border:1px solid rgba(72,112,84,.34);
+  border-radius:12px;
+  background:linear-gradient(180deg, rgba(10,19,14,.94), rgba(8,14,11,.98));
+}
+.player-overview-card::after{
+  content:"";
+  position:absolute;
+  right:-24px;
+  bottom:-28px;
+  width:120px;
+  height:120px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(0,232,64,.12), transparent 72%);
+  pointer-events:none;
+}
+.player-overview-card-scope{
+  border-color:rgba(0,232,64,.26);
+  background:linear-gradient(135deg, rgba(10,24,16,.98), rgba(8,14,11,.98));
+}
+.player-overview-label{
+  color:#98b5a0;
   font-size:11px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.player-overview-value{
+  font-size:25px;
+  font-weight:900;
+  line-height:1.05;
+  color:#eef4ee;
+}
+.player-overview-identity{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.player-overview-metric{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-height:24px;
+}
+.player-overview-plain{
+  color:#e9f0ea;
+  font-size:22px;
+  font-weight:900;
+  line-height:1;
+}
+.player-overview-sub,
+.player-overview-foot{
+  color:var(--muted);
+  font-size:12px;
   line-height:1.45;
+}
+.player-overview-meta{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  color:#c9d8ce;
+  font-size:12px;
+  font-weight:700;
 }
 .player-filter-grid{
   align-items:center;
-  margin-bottom:12px;
+  margin-bottom:14px;
+  padding:14px;
+  border:1px solid rgba(72,112,84,.28);
+  border-radius:12px;
+  background:linear-gradient(180deg, rgba(11,18,14,.94), rgba(9,15,12,.98));
 }
 .player-filter-grid > *{
-  flex:1 1 180px;
+  flex:1 1 190px;
+}
+.player-filter-grid select,
+.player-filter-grid input{
+  min-height:50px;
+  font-size:13px;
+  border-radius:10px;
 }
 .player-toggle{
   display:inline-flex;
   align-items:center;
   gap:10px;
-  min-height:46px;
+  min-height:50px;
   padding:0 14px;
   border:1px solid var(--line);
-  border-radius:8px;
+  border-radius:10px;
   background:#101813;
   color:var(--muted);
-  font-size:12px;
+  font-size:13px;
   font-weight:800;
   letter-spacing:.05em;
   text-transform:uppercase;
@@ -1230,17 +1308,22 @@ tbody tr:hover td{background:#101813}
 .player-leaderboard-wrap table{min-width:1280px}
 .player-leaderboard-wrap th,
 .player-leaderboard-wrap td{
-  padding:8px 10px;
-  font-size:11px;
+  padding:9px 12px;
+  font-size:12px;
 }
 .player-leaderboard-wrap thead th{white-space:nowrap}
 .player-leaderboard-wrap .mini-logo,
 .player-leaderboard-wrap .mini-avatar{
-  width:16px;
-  height:16px;
+  width:18px;
+  height:18px;
 }
 .player-leaderboard-wrap .player-chip,
 .player-leaderboard-wrap .team-chip{gap:6px}
+.player-leaderboard-wrap .rnk{
+  width:21px;
+  height:21px;
+  font-size:11px;
+}
 .player-th-wrap{
   position:relative;
   display:inline-flex;
@@ -1259,18 +1342,25 @@ tbody tr:hover td{background:#101813}
   cursor:pointer;
 }
 .player-sort-btn.is-active{color:#dffbe7}
+.team-logo-only{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  min-width:24px;
+}
 .player-stat-help{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:16px;
-  height:16px;
+  width:17px;
+  height:17px;
   padding:0;
   border:1px solid rgba(137,255,164,.28);
   border-radius:999px;
   background:#101813;
   color:#97b8a0;
-  font-size:9px;
+  font-size:10px;
   font-weight:900;
   line-height:1;
   cursor:help;
@@ -1303,7 +1393,7 @@ tbody tr:hover td{background:#101813}
   opacity:1;
   transform:translateY(-2px);
 }
-.player-rating-text{font-weight:900}
+.player-rating-text{font-size:12.5px;font-weight:900}
 .player-rating-text.rating-tone-90{color:#f5d35b}
 .player-rating-text.rating-tone-80{color:#78e08f}
 .player-rating-text.rating-tone-70{color:#ffd166}
