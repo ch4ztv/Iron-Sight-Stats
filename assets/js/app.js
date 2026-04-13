@@ -1423,19 +1423,20 @@ const PLAYER_MODE_OPTIONS = [
 ];
 
 const PLAYER_TABLE_COLUMNS = [
-  { id: 'player', label: 'Player', type: 'text' },
-  { id: 'team', label: 'Team', type: 'text' },
-  { id: 'maps', label: 'Maps', type: 'number' },
-  { id: 'kills', label: 'Kills', type: 'number' },
-  { id: 'deaths', label: 'Deaths', type: 'number' },
-  { id: 'kd', label: 'K/D', type: 'number' },
-  { id: 'kPerMap', label: 'K/Map', type: 'number' },
-  { id: 'hpKd', label: 'HP K/D', type: 'number' },
-  { id: 'sndKd', label: 'S&D K/D', type: 'number' },
-  { id: 'olKd', label: 'OL K/D', type: 'number' },
-  { id: 'respawnKd', label: 'Respawn K/D', type: 'number' },
-  { id: 'isr', label: 'ISR', type: 'number' },
-  { id: 'slayerRating', label: 'Slayer Rating', type: 'number' }
+  { id: 'player', label: 'Player', type: 'text', info: 'Open the player card popup for bio, accomplishments, and current scope stats.' },
+  { id: 'team', label: 'Team', type: 'text', info: 'Current roster team for the selected scope.' },
+  { id: 'maps', label: 'Maps', type: 'number', info: 'Maps played inside the current Event, Team, Mode, and Active filters.' },
+  { id: 'kills', label: 'Kills', type: 'number', info: 'Total kills inside the current scope.' },
+  { id: 'deaths', label: 'Deaths', type: 'number', info: 'Total deaths inside the current scope.' },
+  { id: 'kd', label: 'K/D', type: 'number', info: 'Kills divided by deaths inside the current scope.' },
+  { id: 'kPerMap', label: 'K/Map', type: 'number', info: 'Average kills per map inside the current scope.' },
+  { id: 'kr', label: 'K/R', type: 'number', info: 'Respawn kills per respawn map. Uses Hardpoint and Overload maps only.' },
+  { id: 'respawnKd', label: 'Respawn K/D', type: 'number', info: 'Combined Hardpoint and Overload kills divided by combined Hardpoint and Overload deaths.' },
+  { id: 'isr', label: 'ISR', type: 'number', info: 'Average match rating inside the current scope. Mode filters use the matching mode-specific rating.' },
+  { id: 'slayerRating', label: 'Slayer Rating', type: 'number', info: 'HP K/Map + (S&D K/Map x 3) + OL K/Map. Only shows when all 3 modes exist in the current scope.' },
+  { id: 'hpKd', label: 'HP K/D', type: 'number', info: 'Hardpoint kills divided by Hardpoint deaths in the current scope.' },
+  { id: 'sndKd', label: 'S&D K/D', type: 'number', info: 'Search and Destroy kills divided by Search and Destroy deaths in the current scope.' },
+  { id: 'olKd', label: 'OL K/D', type: 'number', info: 'Overload kills divided by Overload deaths in the current scope.' }
 ];
 
 function playerSortDefault(sortKey){
@@ -1601,6 +1602,8 @@ function buildPlayerLeaderboardRows(){
     const hpKpm = hpBucket.maps ? hpBucket.kills / hpBucket.maps : null;
     const sndKpm = sndBucket.maps ? sndBucket.kills / sndBucket.maps : null;
     const olKpm = olBucket.maps ? olBucket.kills / olBucket.maps : null;
+    const respawnMaps = hpBucket.maps + olBucket.maps;
+    const respawnKills = hpBucket.kills + olBucket.kills;
     const ratingValues = Array.from(entry.matchIds)
       .map(matchId => playerScopeRating(state.data.computed?.matchRatingByKey?.[`${entry.playerId}::${matchId}`], modeId))
       .filter(value => value !== null);
@@ -1609,6 +1612,7 @@ function buildPlayerLeaderboardRows(){
       ...entry,
       kd: entry.deaths ? entry.kills / entry.deaths : entry.kills,
       kPerMap: entry.maps ? entry.kills / entry.maps : null,
+      kr: respawnMaps ? respawnKills / respawnMaps : null,
       hpKd: hpBucket.deaths ? hpBucket.kills / hpBucket.deaths : hpBucket.kills || null,
       sndKd: sndBucket.deaths ? sndBucket.kills / sndBucket.deaths : sndBucket.kills || null,
       olKd: olBucket.deaths ? olBucket.kills / olBucket.deaths : olBucket.kills || null,
@@ -1773,6 +1777,195 @@ function renderPlayers(){
   $('#players').innerHTML = `
     ${sectionHeader('Player Stats', playerCountLabel)}
     <div class="notice player-stats-note">ISR = average match rating inside the selected scope. Slayer Rating = HP K/Map + (S&amp;D K/Map × 3) + OL K/Map, and only appears when all 3 modes exist in the current scope.</div>
+    <div class="controls player-filter-grid">
+      <select id="playerEventFilter">${getPlayerEventOptions().map(option => `<option value="${option.id}" ${option.id === state.ui.playerEvent ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+      <select id="playerTeamFilter">${[{ id: 'all', label: 'All Teams' }, ...TEAM_IDS.map(teamId => ({ id: teamId, label: teamName(teamId) }))].map(option => `<option value="${option.id}" ${option.id === state.ui.playerTeamFilter ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+      <select id="playerModeFilter">${PLAYER_MODE_OPTIONS.map(option => `<option value="${option.id}" ${option.id === state.ui.playerMode ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+      <input id="playerSearch" placeholder="Search players or teams" value="${escapeAttr(state.ui.playerSearch)}">
+      <label class="player-toggle">
+        <input id="playerInactiveToggle" type="checkbox" ${state.ui.playerShowInactive ? 'checked' : ''}>
+        <span>Show Inactive</span>
+      </label>
+    </div>
+    ${rows.length ? `<div class="table-wrap stack-on-mobile player-leaderboard-wrap">
+      <table class="responsive-table table">
+        <thead>
+          <tr>
+            <th>#</th>
+            ${PLAYER_TABLE_COLUMNS.map(column => `<th>${playerHeaderButton(column, activeSort, activeDir)}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${rows.map((player, index) => playerLeaderboardRowMarkup(player, index)).join('')}
+        </tbody>
+      </table>
+    </div>` : `<div class="empty">No players matched the current Player Stats filters.</div>`}
+    ${playerModalMarkup(modalPlayer)}
+  `;
+
+  $('#playerEventFilter')?.addEventListener('change', event => {
+    setUI('playerEvent', event.target.value);
+    setUI('playerModalId', null);
+    renderPlayers();
+  });
+  $('#playerTeamFilter')?.addEventListener('change', event => {
+    setUI('playerTeamFilter', event.target.value);
+    setUI('playerModalId', null);
+    renderPlayers();
+  });
+  $('#playerModeFilter')?.addEventListener('change', event => {
+    setUI('playerMode', event.target.value);
+    setUI('playerModalId', null);
+    renderPlayers();
+  });
+  $('#playerSearch')?.addEventListener('input', event => {
+    setUI('playerSearch', event.target.value);
+    renderPlayers();
+  });
+  $('#playerInactiveToggle')?.addEventListener('change', event => {
+    setUI('playerShowInactive', event.target.checked);
+    setUI('playerModalId', null);
+    renderPlayers();
+  });
+  document.querySelectorAll('[data-player-sort]').forEach(button => button.addEventListener('click', () => {
+    const nextSort = button.dataset.playerSort;
+    if(nextSort === state.ui.playerSort){
+      setUI('playerSortDir', state.ui.playerSortDir === 'asc' ? 'desc' : 'asc');
+    }else{
+      setUI('playerSort', nextSort);
+      setUI('playerSortDir', playerSortDefault(nextSort));
+    }
+    renderPlayers();
+  }));
+  document.querySelectorAll('[data-player-open]').forEach(button => button.addEventListener('click', () => {
+    setUI('playerModalId', button.dataset.playerOpen || null);
+    renderPlayers();
+  }));
+  document.querySelectorAll('[data-player-close]').forEach(button => button.addEventListener('click', event => {
+    if(event.target !== event.currentTarget && button.dataset.playerClose === 'backdrop') return;
+    setUI('playerModalId', null);
+    renderPlayers();
+  }));
+}
+
+function playerHeaderButton(column, activeSort, direction){
+  const isActive = activeSort === column.id;
+  const arrow = !isActive ? '' : direction === 'asc' ? ' &#9650;' : ' &#9660;';
+  const infoMarkup = column.info
+    ? `<span class="player-stat-help" tabindex="0" aria-label="${escapeAttr(column.label)} info">?<span class="player-stat-tooltip">${escapeHtml(column.info)}</span></span>`
+    : '';
+  return `<div class="player-th-wrap">
+    <button class="player-sort-btn ${isActive ? 'is-active' : ''}" type="button" data-player-sort="${column.id}">${column.label}${arrow}</button>
+    ${infoMarkup}
+  </div>`;
+}
+
+function playerCellMarkup(player, columnId){
+  if(columnId === 'player'){
+    return `<button class="player-open-btn" type="button" data-player-open="${escapeAttr(player.playerId)}"><span class="player-chip">${img(playerImageCandidates(player.teamId, player.displayName), 'mini-avatar', player.displayName)}<span>${escapeHtml(player.displayName)}</span></span></button>`;
+  }
+  if(columnId === 'team'){
+    return `<span class="team-chip">${img(teamLogoCandidates(player.teamId), 'mini-logo', teamName(player.teamId))}<span>${teamAbbr(player.teamId)}</span></span>`;
+  }
+  if(columnId === 'isr'){
+    return `<span class="match-isr ${ovrTier(player.isr).colorClass}">${fmtNum(player.isr, 1)}</span>`;
+  }
+  if(columnId === 'maps' || columnId === 'kills' || columnId === 'deaths'){
+    return fmtNum(player[columnId]);
+  }
+  if(columnId === 'kPerMap' || columnId === 'kr' || columnId === 'slayerRating'){
+    return fmtNum(player[columnId], 1);
+  }
+  return fmtNum(player[columnId], 2);
+}
+
+function playerLeaderboardRowMarkup(player, index){
+  const rankClass = index === 0 ? 'r1' : index === 1 ? 'r2' : index === 2 ? 'r3' : 'rd';
+  return `<tr>
+    ${tableCell('#', `<span class="rnk ${rankClass}">${index + 1}</span>`)}
+    ${PLAYER_TABLE_COLUMNS.map(column => tableCell(column.label, playerCellMarkup(player, column.id))).join('')}
+  </tr>`;
+}
+
+function playerModalMarkup(player){
+  if(!player) return '';
+  const bio = playerBioMeta(player.playerId);
+  const seasonWins = playerSeasonAccomplishments()[player.playerId] || { majorWins: 0, champsWins: 0, ewcWins: 0 };
+  const majorWins = num(bio.seasonMajorWins) ?? num(bio.majorWins) ?? seasonWins.majorWins;
+  const champsWins = num(bio.seasonChampsWins) ?? num(bio.champsWins) ?? seasonWins.champsWins;
+  const ewcWins = num(bio.seasonEwcWins) ?? num(bio.ewcWins) ?? seasonWins.ewcWins;
+  const scopeLabel = getPlayerEventOptions().find(option => option.id === state.ui.playerEvent)?.label || 'Season Wide';
+  const modeLabelText = formatPlayerModeLabel(state.ui.playerMode);
+  const dob = bio.dob ? fmtDate(bio.dob) : 'Not added';
+  const age = bio.dob ? playerAgeLabel(bio.dob) : '-';
+  const role = bio.role || 'Role not added';
+  const fullName = bio.fullName || player.displayName;
+
+  return `<div class="player-modal-backdrop" data-player-close="backdrop">
+    <article class="player-modal-card">
+      <button class="player-modal-close" type="button" aria-label="Close player details" data-player-close="button">&times;</button>
+      <div class="player-modal-top">
+        <div class="player-modal-visual">
+          ${portraitImg(playerImageCandidates(player.teamId, player.displayName), 'player-modal-avatar', player.displayName, player.displayName.slice(0, 3).toUpperCase())}
+          ${img(teamLogoCandidates(player.teamId), 'player-modal-team-logo', teamName(player.teamId))}
+        </div>
+        <div class="player-modal-copy">
+          <div class="eyebrow">Player Card</div>
+          <h3>${escapeHtml(player.displayName)}</h3>
+          <p class="player-modal-fullname">${escapeHtml(fullName)}</p>
+          <p class="muted">${teamName(player.teamId)} | ${escapeHtml(role)} | ${player.active === false ? 'Inactive roster spot' : 'Active roster'} | ${scopeLabel} | ${modeLabelText}</p>
+          <div class="player-modal-pillrow">
+            ${ovrBadge(player.isr)}
+            <span class="pill">${escapeHtml(role)}</span>
+            <span class="pill">Slayer ${fmtNum(player.slayerRating, 1)}</span>
+            <span class="pill">Maps ${fmtNum(player.maps)}</span>
+            <span class="pill">K/D ${fmtNum(player.kd, 2)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="player-modal-grid">
+        <section class="card player-modal-panel">
+          <div class="card-title"><span>Bio</span><span class="team-data-subtle">Metadata-backed popup card</span></div>
+          <div class="player-modal-meta">
+            <div><span>DOB</span><strong>${escapeHtml(dob)}</strong></div>
+            <div><span>Age</span><strong>${escapeHtml(age)}</strong></div>
+            <div><span>2026 Major Wins</span><strong>${fmtNum(majorWins)}</strong></div>
+            <div><span>2026 Champs Wins</span><strong>${fmtNum(champsWins)}</strong></div>
+            <div><span>2026 EWC Wins</span><strong>${fmtNum(ewcWins)}</strong></div>
+            <div><span>Player ID</span><strong>${escapeHtml(player.playerId)}</strong></div>
+          </div>
+        </section>
+        <section class="card player-modal-panel">
+          <div class="card-title"><span>Scope Stats</span><span class="team-data-subtle">Current table filters applied</span></div>
+          <div class="player-modal-meta">
+            <div><span>Kills</span><strong>${fmtNum(player.kills)}</strong></div>
+            <div><span>Deaths</span><strong>${fmtNum(player.deaths)}</strong></div>
+            <div><span>K/Map</span><strong>${fmtNum(player.kPerMap, 1)}</strong></div>
+            <div><span>K/R</span><strong>${fmtNum(player.kr, 1)}</strong></div>
+            <div><span>ISR</span><strong>${fmtNum(player.isr, 1)}</strong></div>
+            <div><span>Slayer Rating</span><strong>${fmtNum(player.slayerRating, 1)}</strong></div>
+            <div><span>HP K/D</span><strong>${fmtNum(player.hpKd, 2)}</strong></div>
+            <div><span>S&D K/D</span><strong>${fmtNum(player.sndKd, 2)}</strong></div>
+            <div><span>OL K/D</span><strong>${fmtNum(player.olKd, 2)}</strong></div>
+            <div><span>Respawn K/D</span><strong>${fmtNum(player.respawnKd, 2)}</strong></div>
+            <div><span>Matches</span><strong>${fmtNum(player.scopeMatchCount)}</strong></div>
+          </div>
+        </section>
+      </div>
+    </article>
+  </div>`;
+}
+
+function renderPlayers(){
+  const rows = sortPlayerRows(buildPlayerLeaderboardRows());
+  const playerCountLabel = `${fmtNum(rows.length)} players | Click headers to sort`;
+  const activeSort = PLAYER_TABLE_COLUMNS.some(column => column.id === state.ui.playerSort) ? state.ui.playerSort : 'isr';
+  const activeDir = ['asc', 'desc'].includes(state.ui.playerSortDir) ? state.ui.playerSortDir : playerSortDefault(activeSort);
+  const modalPlayer = rows.find(player => player.playerId === state.ui.playerModalId) || null;
+
+  $('#players').innerHTML = `
+    ${sectionHeader('Player Stats', playerCountLabel)}
+    <div class="notice player-stats-note">ISR = average match rating inside the selected scope. Slayer Rating = HP K/Map + (S&amp;D K/Map x 3) + OL K/Map, and only appears when all 3 modes exist in the current scope.</div>
     <div class="controls player-filter-grid">
       <select id="playerEventFilter">${getPlayerEventOptions().map(option => `<option value="${option.id}" ${option.id === state.ui.playerEvent ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
       <select id="playerTeamFilter">${[{ id: 'all', label: 'All Teams' }, ...TEAM_IDS.map(teamId => ({ id: teamId, label: teamName(teamId) }))].map(option => `<option value="${option.id}" ${option.id === state.ui.playerTeamFilter ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
