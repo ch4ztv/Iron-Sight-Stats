@@ -1,0 +1,1627 @@
+{
+  "optic_dashy": {
+    "tag": "Dashy",
+    "fullName": "Brandon Otell",
+    "role": "Main AR",
+    "dob": "1999-04-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "optic_huke": {
+    "tag": "Huke",
+    "fullName": "Cuyler Garland",
+    "role": "SMG",
+    "dob": "1999-10-21",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "optic_mercules": {
+    "tag": "MercuLes",
+    "fullName": "Mason Ramsey",
+    "role": "Flex",
+    "dob": "2003-07-14",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "optic_shotzzy": {
+    "tag": "Shotzzy",
+    "fullName": "Anthony Cuevas-Castro",
+    "role": "SMG",
+    "dob": "2001-07-04",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "pgm_envoy": {
+    "tag": "Envoy",
+    "fullName": "Dylan Hannon",
+    "role": "SMG",
+    "dob": "2000-01-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "pgm_ghosty": {
+    "tag": "Ghosty",
+    "fullName": "Daniel Rothe",
+    "role": "Flex",
+    "dob": "2002-04-24",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "pgm_neptune": {
+    "tag": "Neptune",
+    "fullName": "Travis McCloud",
+    "role": "SMG",
+    "dob": "2002-04-09",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "pgm_sib": {
+    "tag": "Sib",
+    "fullName": "Daunte Gray",
+    "role": "Flex",
+    "dob": "2002-02-03",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "faze_04": {
+    "tag": "04",
+    "fullName": "Jovan Rodriguez",
+    "role": "SMG",
+    "dob": "2004-08-02",
+    "status": "starter",
+    "active": true,
+    "teamId": "faze",
+    "teamName": "FaZe Vegas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "faze_abuzah": {
+    "tag": "Abuzah",
+    "fullName": "Jordan Fran\u00e7ois",
+    "role": "Main AR",
+    "dob": "2000-07-13",
+    "status": "starter",
+    "active": true,
+    "teamId": "faze",
+    "teamName": "FaZe Vegas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "faze_drazah": {
+    "tag": "Drazah",
+    "fullName": "Zachary Jordan",
+    "role": "Flex",
+    "dob": "2001-05-09",
+    "status": "starter",
+    "active": true,
+    "teamId": "faze",
+    "teamName": "FaZe Vegas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "faze_simp": {
+    "tag": "Simp",
+    "fullName": "Chris Lehr",
+    "role": "SMG",
+    "dob": "2001-02-06",
+    "status": "starter",
+    "active": true,
+    "teamId": "faze",
+    "teamName": "FaZe Vegas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "toronto_cleanx": {
+    "tag": "CleanX",
+    "fullName": "Tobias Juul J\u00f8nsson",
+    "role": "SMG",
+    "dob": "2000-08-11",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "toronto_insight": {
+    "tag": "Insight",
+    "fullName": "Jamie Craven",
+    "role": "Main AR",
+    "dob": "1999-10-31",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "toronto_joedeceives": {
+    "tag": "JoeDeceives",
+    "fullName": "Joseph Romero",
+    "role": "Flex",
+    "dob": "2004-09-23",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "toronto_kips": {
+    "tag": "Kips",
+    "fullName": "Nicholas Lyons",
+    "role": "SMG",
+    "dob": "2006-02-17",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "toronto_reeal": {
+    "tag": "ReeaL",
+    "fullName": "Jos\u00e9 Fern\u00e1ndez",
+    "role": "SMG",
+    "dob": "2003-12-11",
+    "status": "inactive",
+    "active": false,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "g2_estreal": {
+    "tag": "Estreal",
+    "fullName": "Justice McMillan",
+    "role": "SMG",
+    "dob": "2002-12-17",
+    "status": "starter",
+    "active": true,
+    "teamId": "g2",
+    "teamName": "G2 Minnesota",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "g2_kremp": {
+    "tag": "Kremp",
+    "fullName": "Kyle Haworth",
+    "role": "SMG",
+    "dob": "2002-11-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "g2",
+    "teamName": "G2 Minnesota",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "g2_mamba": {
+    "tag": "Mamba",
+    "fullName": "Paul Solano",
+    "role": "Flex",
+    "dob": "2002-03-13",
+    "status": "starter",
+    "active": true,
+    "teamId": "g2",
+    "teamName": "G2 Minnesota",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "g2_skyz": {
+    "tag": "Skyz",
+    "fullName": "Cesar Bueno",
+    "role": "Main AR",
+    "dob": "1999-07-08",
+    "status": "starter",
+    "active": true,
+    "teamId": "g2",
+    "teamName": "G2 Minnesota",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "lat_abezy": {
+    "tag": "aBeZy",
+    "fullName": "Tyler Pharris",
+    "role": "SMG",
+    "dob": "1999-11-03",
+    "status": "starter",
+    "active": true,
+    "teamId": "lat",
+    "teamName": "Los Angeles Thieves",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "lat_hydra": {
+    "tag": "HyDra",
+    "fullName": "Paco Rusiewiez",
+    "role": "SMG",
+    "dob": "2002-02-11",
+    "status": "starter",
+    "active": true,
+    "teamId": "lat",
+    "teamName": "Los Angeles Thieves",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "lat_kenny": {
+    "tag": "Kenny",
+    "fullName": "Kenneth Williams",
+    "role": "Flex",
+    "dob": "1999-09-02",
+    "status": "inactive",
+    "active": false,
+    "teamId": "lat",
+    "teamName": "Los Angeles Thieves",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": "Last played for LAT on 2026-02-05; Nium joined in February 2026.",
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "lat_nium": {
+    "tag": "Nium",
+    "fullName": "Jeremiah Harrison",
+    "role": "Flex",
+    "dob": "2002-07-23",
+    "status": "starter",
+    "active": true,
+    "teamId": "lat",
+    "teamName": "Los Angeles Thieves",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "lat_scrap": {
+    "tag": "Scrap",
+    "fullName": "Thomas Ernst",
+    "role": "Main AR",
+    "dob": "2002-07-01",
+    "status": "starter",
+    "active": true,
+    "teamId": "lat",
+    "teamName": "Los Angeles Thieves",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "falcons_cellium": {
+    "tag": "Cellium",
+    "fullName": "McArthur Jovel",
+    "role": "Main AR",
+    "dob": "2000-12-24",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "falcons_exnid": {
+    "tag": "Exnid",
+    "fullName": "Saud Al-Ati",
+    "role": "Flex",
+    "dob": "2002-10-28",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "falcons_kismet": {
+    "tag": "KiSMET",
+    "fullName": "Matthew Tinsley",
+    "role": "SMG",
+    "dob": "1999-11-11",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "falcons_pred": {
+    "tag": "Pred",
+    "fullName": "Amer Zulbeari",
+    "role": "SMG",
+    "dob": "2001-08-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "miami_mettalz": {
+    "tag": "Mettalz",
+    "fullName": "Adri\u00e1n Serrano",
+    "role": "Main AR",
+    "dob": "2000-09-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "miami",
+    "teamName": "Miami Heretics",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "miami_renkor": {
+    "tag": "RenKor",
+    "fullName": "David Isern",
+    "role": "SMG",
+    "dob": "2002-07-29",
+    "status": "starter",
+    "active": true,
+    "teamId": "miami",
+    "teamName": "Miami Heretics",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "miami_super": {
+    "tag": "SupeR",
+    "fullName": "Diego Escudero",
+    "role": "Flex",
+    "dob": "2001-01-30",
+    "status": "starter",
+    "active": true,
+    "teamId": "miami",
+    "teamName": "Miami Heretics",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "miami_traixx": {
+    "tag": "Traixx",
+    "fullName": "Nicol\u00e1s M\u00f3naco",
+    "role": "SMG",
+    "dob": "2003-12-11",
+    "status": "starter",
+    "active": true,
+    "teamId": "miami",
+    "teamName": "Miami Heretics",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "ravens_craze": {
+    "tag": "Craze",
+    "fullName": "Jaskaran Malhi",
+    "role": "SMG",
+    "dob": "2004-03-16",
+    "status": "starter",
+    "active": true,
+    "teamId": "ravens",
+    "teamName": "Carolina Royal Ravens",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "https://cod-esports.fandom.com/wiki/Craze"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_public_player_page",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "ravens_exceed": {
+    "tag": "Exceed",
+    "fullName": "Kaden Stockdale",
+    "role": "SMG",
+    "dob": "2001-06-11",
+    "status": "starter",
+    "active": true,
+    "teamId": "ravens",
+    "teamName": "Carolina Royal Ravens",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "ravens_lurqxx": {
+    "tag": "Lurqxx",
+    "fullName": "Logan Brown",
+    "role": "Flex",
+    "dob": "2006-02-05",
+    "status": "starter",
+    "active": true,
+    "teamId": "ravens",
+    "teamName": "Carolina Royal Ravens",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "ravens_nero": {
+    "tag": "Nero",
+    "fullName": "Dylan Koch",
+    "role": "SMG",
+    "dob": "2002-05-30",
+    "status": "starter",
+    "active": true,
+    "teamId": "ravens",
+    "teamName": "Carolina Royal Ravens",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "ravens_slasher": {
+    "tag": "SlasheR",
+    "fullName": "Austin Liddicoat",
+    "role": "Main AR",
+    "dob": "1994-09-02",
+    "status": "inactive",
+    "active": false,
+    "teamId": "ravens",
+    "teamName": "Carolina Royal Ravens",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "boston_cammy": {
+    "tag": "Cammy",
+    "fullName": "Cameron McKilligan",
+    "role": "Flex",
+    "dob": "1999-10-10",
+    "status": "inactive",
+    "active": false,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "boston_nastie": {
+    "tag": "Nastie",
+    "fullName": "Byron Plumridge",
+    "role": "Main AR",
+    "dob": "1999-07-03",
+    "status": "starter",
+    "active": true,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "boston_purj": {
+    "tag": "Purj",
+    "fullName": "Evan Perez",
+    "role": "Flex",
+    "dob": "2003-03-03",
+    "status": "starter",
+    "active": true,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "boston_snoopy": {
+    "tag": "Snoopy",
+    "fullName": "Eric P\u00e9rez",
+    "role": "SMG",
+    "dob": "2004-09-25",
+    "status": "starter",
+    "active": true,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "boston_spart": {
+    "tag": "Spart",
+    "fullName": "Kristopher Cervantez",
+    "role": "Flex",
+    "dob": "2001-05-24",
+    "status": "starter",
+    "active": true,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "vancouver_abe": {
+    "tag": "Abe",
+    "fullName": "Ronald Abraham",
+    "role": "SMG",
+    "dob": "2005-06-22",
+    "status": "inactive",
+    "active": false,
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "vancouver_capsidal": {
+    "tag": "Capsidal",
+    "fullName": "Kenyen Sutton",
+    "role": "SMG",
+    "dob": "2002-08-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "vancouver_gwinn": {
+    "tag": "Gwinn",
+    "fullName": "Isaiah Gwinn",
+    "role": "SMG",
+    "dob": "2002-05-02",
+    "status": "starter",
+    "active": true,
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "vancouver_lqgend": {
+    "tag": "Lqgend",
+    "fullName": "Sabri Kaci",
+    "role": "Flex",
+    "dob": "2003-10-11",
+    "status": "inactive",
+    "active": false,
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "vancouver_lunarz": {
+    "tag": "Lunarz",
+    "fullName": "Noah Whillock",
+    "role": "Flex",
+    "dob": "2003-08-22",
+    "status": "starter",
+    "active": true,
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "vancouver_tjhaly": {
+    "tag": "TJHaLy",
+    "fullName": "Thomas Haly",
+    "role": "Main AR",
+    "dob": "1999-07-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_afro": {
+    "tag": "Afro",
+    "fullName": "Marcus Reid",
+    "role": "SMG",
+    "dob": "2001-07-19",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_beans": {
+    "tag": "Beans",
+    "fullName": "Ben McMellon",
+    "role": "Main AR",
+    "dob": "2000-05-16",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_encourage": {
+    "tag": "Encourage",
+    "fullName": "Jordan Byrd",
+    "role": "SMG",
+    "dob": "2006-06-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_hide": {
+    "tag": "Hide",
+    "fullName": "Jacob Bustillos",
+    "role": "SMG",
+    "dob": "2007-06-05",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_mack": {
+    "tag": "Mack",
+    "fullName": "Makenzie Kelley",
+    "role": "Flex",
+    "dob": "2001-11-21",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_nejra": {
+    "tag": "Nejra",
+    "fullName": "Jonathan Pabo'n",
+    "role": "Flex",
+    "dob": "2002-08-05",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_okis": {
+    "tag": "Okis",
+    "fullName": "Arnel Avdagi\u0107",
+    "role": "Flex",
+    "dob": "2003-08-04",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  },
+  "c9_vivid": {
+    "tag": "Vivid",
+    "fullName": "Reece Drost",
+    "role": "SMG",
+    "dob": "1999-12-24",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": null,
+    "careerChampsWins": null,
+    "majorMVPs": null,
+    "rookieOfTheYear": null,
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data"
+    }
+  }
+}
