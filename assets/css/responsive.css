@@ -67,8 +67,12 @@
     border-left:3px solid transparent;
   }
   .site-nav-icon{
-    width:22px;
-    height:22px;
+    width:24px;
+    height:24px;
+  }
+  .site-nav a[href="#betting"] .site-nav-icon{
+    width:26px;
+    height:26px;
   }
   .site-nav-label{
     line-height:1.1;
@@ -125,8 +129,12 @@
     font-size:.9rem;
   }
   .site-nav-icon{
-    width:20px;
-    height:20px;
+    width:22px;
+    height:22px;
+  }
+  .site-nav a[href="#betting"] .site-nav-icon{
+    width:24px;
+    height:24px;
   }
   .player-overview-grid{grid-template-columns:1fr}
   .player-overview-card{min-height:unset}
