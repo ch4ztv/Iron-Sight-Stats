@@ -68,6 +68,9 @@
     border-bottom-color:transparent;
     background:#101813;
   }
+  .player-modal-top,
+  .player-modal-grid{grid-template-columns:1fr}
+  .player-modal-avatar{width:156px;height:156px}
   .mobile-menu-btn{display:inline-flex}
   .dashboard-kpis,
   .dashboard-panels,
@@ -105,6 +108,11 @@
   .brand-line-sub::before,
   .brand-line-sub::after{width:24px}
   .site-main{padding:14px 12px 32px}
+  .player-toggle{width:100%;justify-content:flex-start}
+  .player-modal-backdrop{padding:56px 12px 16px}
+  .player-modal-card{padding:16px}
+  .player-modal-avatar{width:136px;height:136px}
+  .player-modal-meta{grid-template-columns:1fr}
   .dashboard-kpis,
   .dashboard-panels,
   .bet-form-grid,
