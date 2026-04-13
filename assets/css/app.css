@@ -236,7 +236,7 @@ tr:hover td{background:rgba(255,255,255,.02)}
   --shadow:none;
   --radius:10px;
   --radius-sm:6px;
-  --max:1120px;
+  --max:min(1560px, calc(100vw - 56px));
   --font-display:"Segoe UI","SF Pro Display",system-ui,sans-serif;
   --font-mono:"Cascadia Code","Fira Code","Consolas",monospace;
 }
