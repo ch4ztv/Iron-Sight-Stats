@@ -374,14 +374,14 @@ button,input,select,textarea{font-family:var(--font-display)}
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:26px;
-  height:26px;
+  width:29px;
+  height:29px;
   color:rgba(0,232,64,.56);
   transition:color .18s ease, filter .18s ease, transform .18s ease;
 }
 .site-nav a[href="#betting"] .site-nav-icon{
-  width:29px;
-  height:29px;
+  width:32px;
+  height:32px;
 }
 .site-nav-icon svg{
   width:100%;
