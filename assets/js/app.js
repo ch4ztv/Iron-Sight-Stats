@@ -1878,7 +1878,7 @@ function playerCellMarkup(player, columnId){
     return `<button class="player-open-btn" type="button" data-player-open="${escapeAttr(player.playerId)}"><span class="player-chip">${img(playerImageCandidates(player.teamId, player.displayName), 'mini-avatar', player.displayName)}<span>${escapeHtml(player.displayName)}</span></span></button>`;
   }
   if(columnId === 'team'){
-    return `<span class="team-chip">${img(teamLogoCandidates(player.teamId), 'mini-logo', teamName(player.teamId))}<span>${teamAbbr(player.teamId)}</span></span>`;
+    return `<span class="team-logo-only" title="${escapeAttr(teamName(player.teamId))}">${img(teamLogoCandidates(player.teamId), 'mini-logo', teamName(player.teamId))}</span>`;
   }
   if(columnId === 'isr'){
     return playerRatingValue(player.isr, 1);
@@ -1963,6 +1963,38 @@ function bindPlayerStatTooltips(){
   }
 }
 
+function topPlayerByMetric(rows, metric){
+  return [...rows]
+    .filter(row => num(row[metric]) !== null)
+    .sort((left, right) => {
+      const diff = num(right[metric]) - num(left[metric]);
+      return diff || left.displayName.localeCompare(right.displayName);
+    })[0] || null;
+}
+
+function playerOverviewLeaderCard(title, player, metric, digits = 1, useRatingTone = false){
+  if(!player){
+    return `<article class="player-overview-card">
+      <div class="player-overview-label">${escapeHtml(title)}</div>
+      <div class="player-overview-empty">Unavailable in current scope.</div>
+    </article>`;
+  }
+
+  const valueMarkup = useRatingTone
+    ? playerRatingValue(player[metric], digits)
+    : `<span class="player-overview-plain">${fmtNum(player[metric], digits)}</span>`;
+
+  return `<article class="player-overview-card">
+    <div class="player-overview-label">${escapeHtml(title)}</div>
+    <div class="player-overview-identity">
+      <span class="player-chip">${img(playerImageCandidates(player.teamId, player.displayName), 'mini-avatar', player.displayName)}<span>${escapeHtml(player.displayName)}</span></span>
+      <span class="team-logo-only" title="${escapeAttr(teamName(player.teamId))}">${img(teamLogoCandidates(player.teamId), 'mini-logo', teamName(player.teamId))}</span>
+    </div>
+    <div class="player-overview-metric">${valueMarkup}</div>
+    <div class="player-overview-sub">${teamName(player.teamId)}</div>
+  </article>`;
+}
+
 function playerLeaderboardRowMarkup(player, index){
   const rankClass = index === 0 ? 'r1' : index === 1 ? 'r2' : index === 2 ? 'r3' : 'rd';
   return `<tr>
@@ -2041,15 +2073,37 @@ function playerModalMarkup(player){
 }
 
 function renderPlayers(){
-  const rows = sortPlayerRows(buildPlayerLeaderboardRows());
+  const sourceRows = buildPlayerLeaderboardRows();
+  const rows = sortPlayerRows(sourceRows);
   const playerCountLabel = `${fmtNum(rows.length)} players | Click headers to sort`;
   const activeSort = PLAYER_TABLE_COLUMNS.some(column => column.id === state.ui.playerSort) ? state.ui.playerSort : 'isr';
   const activeDir = ['asc', 'desc'].includes(state.ui.playerSortDir) ? state.ui.playerSortDir : playerSortDefault(activeSort);
   const modalPlayer = rows.find(player => player.playerId === state.ui.playerModalId) || null;
+  const scopeLabel = getPlayerEventOptions().find(option => option.id === state.ui.playerEvent)?.label || 'Season Wide';
+  const teamScopeLabel = state.ui.playerTeamFilter === 'all' ? 'All Teams' : teamName(state.ui.playerTeamFilter);
+  const modeScopeLabel = formatPlayerModeLabel(state.ui.playerMode);
+  const totalMaps = rows.reduce((sum, row) => sum + row.maps, 0);
+  const topIsr = topPlayerByMetric(sourceRows, 'isr');
+  const topSlayer = topPlayerByMetric(sourceRows, 'slayerRating');
+  const topKr = topPlayerByMetric(sourceRows, 'kr');
 
   $('#players').innerHTML = `
     ${sectionHeader('Player Stats', playerCountLabel)}
-    <div class="notice player-stats-note">ISR = average match rating inside the selected scope. Slayer Rating = HP K/Map + (S&amp;D K/Map x 3) + OL K/Map, and only appears when all 3 modes exist in the current scope.</div>
+    <div class="player-overview-grid">
+      <article class="player-overview-card player-overview-card-scope">
+        <div class="player-overview-label">Current Scope</div>
+        <div class="player-overview-value">${escapeHtml(scopeLabel)}</div>
+        <div class="player-overview-sub">${escapeHtml(teamScopeLabel)} | ${escapeHtml(modeScopeLabel)}</div>
+        <div class="player-overview-meta">
+          <span>${fmtNum(rows.length)} players in view</span>
+          <span>${fmtNum(totalMaps)} maps in view</span>
+        </div>
+        <div class="player-overview-foot">ISR = average match rating. Slayer Rating = HP K/Map + (S&amp;D K/Map x 3) + OL K/Map.</div>
+      </article>
+      ${playerOverviewLeaderCard('Top ISR', topIsr, 'isr', 1, true)}
+      ${playerOverviewLeaderCard('Top Slayer Rating', topSlayer, 'slayerRating', 1, true)}
+      ${playerOverviewLeaderCard('Best K/R', topKr, 'kr', 1, false)}
+    </div>
     <div class="controls player-filter-grid">
       <select id="playerEventFilter">${getPlayerEventOptions().map(option => `<option value="${option.id}" ${option.id === state.ui.playerEvent ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
       <select id="playerTeamFilter">${[{ id: 'all', label: 'All Teams' }, ...TEAM_IDS.map(teamId => ({ id: teamId, label: teamName(teamId) }))].map(option => `<option value="${option.id}" ${option.id === state.ui.playerTeamFilter ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
