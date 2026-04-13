@@ -1433,7 +1433,7 @@ const PLAYER_TABLE_COLUMNS = [
   { id: 'kr', label: 'K/R', type: 'number', info: 'Respawn kills per respawn map. Uses Hardpoint and Overload maps only.' },
   { id: 'respawnKd', label: 'Respawn K/D', type: 'number', info: 'Combined Hardpoint and Overload kills divided by combined Hardpoint and Overload deaths.' },
   { id: 'isr', label: 'ISR', type: 'number', info: 'Average match rating inside the current scope. Mode filters use the matching mode-specific rating.' },
-  { id: 'slayerRating', label: 'Slayer Rating', type: 'number', info: 'HP K/Map + (S&D K/Map x 3) + OL K/Map. Only shows when all 3 modes exist in the current scope.' },
+  { id: 'slayerRating', label: 'Slayer Rating', type: 'number', info: 'Card-scaled slaying score built from HP K/Map + (S&D K/Map x 3) + OL K/Map. Only shows when all 3 modes exist in the current scope.' },
   { id: 'hpKd', label: 'HP K/D', type: 'number', info: 'Hardpoint kills divided by Hardpoint deaths in the current scope.' },
   { id: 'sndKd', label: 'S&D K/D', type: 'number', info: 'Search and Destroy kills divided by Search and Destroy deaths in the current scope.' },
   { id: 'olKd', label: 'OL K/D', type: 'number', info: 'Overload kills divided by Overload deaths in the current scope.' }
@@ -1532,6 +1532,20 @@ function playerSeasonAccomplishments(){
   return byPlayerId;
 }
 
+function rawSlayerRating(hpKpm, sndKpm, olKpm){
+  return [hpKpm, sndKpm, olKpm].every(value => value !== null)
+    ? hpKpm + (sndKpm * 3) + olKpm
+    : null;
+}
+
+function scaleSlayerRating(rawScore){
+  const value = num(rawScore);
+  if(value === null) return null;
+  const baseline = 60 + ((value - 60) * 1.85);
+  const eliteBonus = Math.max(0, value - 72) * 0.75;
+  return Math.round(clamp(baseline + eliteBonus, 60, 99) * 10) / 10;
+}
+
 function buildPlayerLeaderboardRows(){
   const search = state.ui.playerSearch.trim().toLowerCase();
   const eventId = getPlayerEventOptions().some(option => option.id === state.ui.playerEvent)
@@ -1602,6 +1616,7 @@ function buildPlayerLeaderboardRows(){
     const hpKpm = hpBucket.maps ? hpBucket.kills / hpBucket.maps : null;
     const sndKpm = sndBucket.maps ? sndBucket.kills / sndBucket.maps : null;
     const olKpm = olBucket.maps ? olBucket.kills / olBucket.maps : null;
+    const rawSlayer = rawSlayerRating(hpKpm, sndKpm, olKpm);
     const respawnMaps = hpBucket.maps + olBucket.maps;
     const respawnKills = hpBucket.kills + olBucket.kills;
     const ratingValues = Array.from(entry.matchIds)
@@ -1622,9 +1637,8 @@ function buildPlayerLeaderboardRows(){
       dmgPerMap: entry.maps ? entry.damage / entry.maps : null,
       isr: average(ratingValues),
       scopeMatchCount: entry.matchIds.size,
-      slayerRating: [hpKpm, sndKpm, olKpm].every(value => value !== null)
-        ? hpKpm + (sndKpm * 3) + olKpm
-        : null,
+      slayerRatingRaw: rawSlayer,
+      slayerRating: scaleSlayerRating(rawSlayer),
       searchKey
     };
   });
@@ -1789,7 +1803,7 @@ function legacyRenderPlayers(){
 
   $('#players').innerHTML = `
     ${sectionHeader('Player Stats', playerCountLabel)}
-    <div class="notice player-stats-note">ISR = average match rating inside the selected scope. Slayer Rating = HP K/Map + (S&amp;D K/Map × 3) + OL K/Map, and only appears when all 3 modes exist in the current scope.</div>
+    <div class="notice player-stats-note">ISR = average match rating inside the selected scope. Slayer Rating uses HP K/Map + (S&amp;D K/Map × 3) + OL K/Map, then remaps it to a 60-99 public card scale.</div>
     <div class="controls player-filter-grid">
       <select id="playerEventFilter">${getPlayerEventOptions().map(option => `<option value="${option.id}" ${option.id === state.ui.playerEvent ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
       <select id="playerTeamFilter">${[{ id: 'all', label: 'All Teams' }, ...TEAM_IDS.map(teamId => ({ id: teamId, label: teamName(teamId) }))].map(option => `<option value="${option.id}" ${option.id === state.ui.playerTeamFilter ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
@@ -2111,7 +2125,7 @@ function renderPlayers(){
           <span>${fmtNum(rows.length)} players in view</span>
           <span>${fmtNum(totalMaps)} maps in view</span>
         </div>
-        <div class="player-overview-foot">ISR = average match rating. Slayer Rating = HP K/Map + (S&amp;D K/Map x 3) + OL K/Map.</div>
+        <div class="player-overview-foot">ISR = average match rating. Slayer Rating uses HP K/Map + (S&amp;D K/Map x 3) + OL K/Map, then scales it to a public 60-99 card ladder.</div>
       </article>
       ${playerOverviewLeaderCard('Top ISR', topIsr, 'isr', 1, true)}
       ${playerOverviewLeaderCard('Top Slayer Rating', topSlayer, 'slayerRating', 1, true)}
