@@ -1414,79 +1414,434 @@ function renderMatches(){
   }));
 }
 
-function renderPlayers(){
-  const search = state.ui.playerSearch.trim().toLowerCase();
-  const sort = ['isr', 'kd', 'kills', 'damage'].includes(state.ui.playerSort)
-    ? state.ui.playerSort
-    : 'isr';
-  if(sort !== state.ui.playerSort){
-    setUI('playerSort', sort);
-  }
-  let rows = [...(state.data.computed?.allProfiles || [])];
-  if(search){
-    rows = rows.filter(player => player.displayName.toLowerCase().includes(search) || teamName(player.teamId).toLowerCase().includes(search));
-  }
-  rows.sort((a, b) => {
-    if(sort === 'kd') return (num(b.kd) ?? -1) - (num(a.kd) ?? -1);
-    if(sort === 'kills') return (num(b.kills) ?? -1) - (num(a.kills) ?? -1);
-    if(sort === 'damage') return (num(b.dmgPerMap) ?? -1) - (num(a.dmgPerMap) ?? -1);
-    return (num(b.overallOVR) ?? -1) - (num(a.overallOVR) ?? -1) ||
-      (num(b.overallISR) ?? -1) - (num(a.overallISR) ?? -1);
+const PLAYER_MODE_OPTIONS = [
+  { id: 'all', label: 'All Modes' },
+  { id: 'HP', label: 'Hardpoint' },
+  { id: 'SND', label: 'Search & Destroy' },
+  { id: 'OL', label: 'Overload' },
+  { id: 'RESP', label: 'Respawn' }
+];
+
+const PLAYER_TABLE_COLUMNS = [
+  { id: 'player', label: 'Player', type: 'text' },
+  { id: 'team', label: 'Team', type: 'text' },
+  { id: 'maps', label: 'Maps', type: 'number' },
+  { id: 'kills', label: 'Kills', type: 'number' },
+  { id: 'deaths', label: 'Deaths', type: 'number' },
+  { id: 'kd', label: 'K/D', type: 'number' },
+  { id: 'kPerMap', label: 'K/Map', type: 'number' },
+  { id: 'hpKd', label: 'HP K/D', type: 'number' },
+  { id: 'sndKd', label: 'S&D K/D', type: 'number' },
+  { id: 'olKd', label: 'OL K/D', type: 'number' },
+  { id: 'respawnKd', label: 'Respawn K/D', type: 'number' },
+  { id: 'isr', label: 'ISR', type: 'number' },
+  { id: 'slayerRating', label: 'Slayer Rating', type: 'number' }
+];
+
+function playerSortDefault(sortKey){
+  return ['player', 'team'].includes(sortKey) ? 'asc' : 'desc';
+}
+
+function getPlayerEventOptions(){
+  const eventIds = unique((state.data.matches || []).map(match => match.eventId));
+  eventIds.sort((left, right) => {
+    const leftIndex = BETTING_EVENT_ORDER.indexOf(left);
+    const rightIndex = BETTING_EVENT_ORDER.indexOf(right);
+    if(leftIndex === -1 && rightIndex === -1) return left.localeCompare(right);
+    if(leftIndex === -1) return 1;
+    if(rightIndex === -1) return -1;
+    return leftIndex - rightIndex;
+  });
+  return [{ id: 'all', label: 'Season Wide' }, ...eventIds.map(eventId => ({ id: eventId, label: formatBettingEvent(eventId) }))];
+}
+
+function matchesPlayerModeFilter(selectedMode, mapMode){
+  if(selectedMode === 'all') return true;
+  if(selectedMode === 'RESP') return mapMode === 'HP' || mapMode === 'OL';
+  return mapMode === selectedMode;
+}
+
+function playerScopeRating(matchEntry, modeId){
+  if(!matchEntry) return null;
+  if(modeId === 'HP') return num(matchEntry.hp);
+  if(modeId === 'SND') return num(matchEntry.snd);
+  if(modeId === 'OL') return num(matchEntry.ol);
+  if(modeId === 'RESP') return average([matchEntry.hp, matchEntry.ol]);
+  return num(matchEntry.overall);
+}
+
+function formatPlayerModeLabel(modeId){
+  return modeId === 'RESP' ? 'Respawn' : modeId === 'all' ? 'All Modes' : modeLabel(modeId);
+}
+
+function playerAgeLabel(dob){
+  if(!dob) return '-';
+  const birthDate = new Date(`${dob}T12:00:00`);
+  if(Number.isNaN(birthDate.getTime())) return '-';
+  const now = new Date();
+  let age = now.getFullYear() - birthDate.getFullYear();
+  const hasBirthdayPassed = now.getMonth() > birthDate.getMonth() || (
+    now.getMonth() === birthDate.getMonth() &&
+    now.getDate() >= birthDate.getDate()
+  );
+  if(!hasBirthdayPassed) age -= 1;
+  return age >= 0 ? String(age) : '-';
+}
+
+function playerSeasonAccomplishments(){
+  const byPlayerId = {};
+  const matchesByEvent = {};
+  (state.data.matches || []).forEach(match => {
+    if(!match.eventId) return;
+    (matchesByEvent[match.eventId] ||= []).push(match);
   });
 
-  const featurePlayer = [...rows].sort((a, b) =>
-    (num(b.overallOVR) ?? -1) - (num(a.overallOVR) ?? -1) ||
-    (num(b.overallISR) ?? -1) - (num(a.overallISR) ?? -1)
-  )[0] || null;
+  Object.entries(matchesByEvent).forEach(([eventId, matches]) => {
+    const finalMatch = [...matches]
+      .filter(isCompletedMatch)
+      .sort((left, right) => {
+        const leftStamp = new Date(`${left.date || '1970-01-01'} ${left.time || '12:00 AM'}`).getTime();
+        const rightStamp = new Date(`${right.date || '1970-01-01'} ${right.time || '12:00 AM'}`).getTime();
+        return leftStamp - rightStamp || Number(left.id || 0) - Number(right.id || 0);
+      })
+      .pop();
+    if(!finalMatch) return;
+    const { s1, s2 } = getSeriesScore(finalMatch);
+    const winningTeam = s1 > s2 ? finalMatch.team1Id : s2 > s1 ? finalMatch.team2Id : null;
+    if(!winningTeam) return;
 
-  $('#players').innerHTML = `
-    ${sectionHeader('Player Stats', 'Match-averaged player ISR from the public season data package.', `<div class="controls"><input id="playerSearch" placeholder="Search players or teams" value="${escapeAttr(state.ui.playerSearch)}"><select id="playerSort"><option value="isr" ${sort === 'isr' ? 'selected' : ''}>Sort by ISR</option><option value="kd" ${sort === 'kd' ? 'selected' : ''}>Sort by K/D</option><option value="kills" ${sort === 'kills' ? 'selected' : ''}>Sort by kills</option><option value="damage" ${sort === 'damage' ? 'selected' : ''}>Sort by damage / map</option></select></div>`)}
-    ${featurePlayer ? `<article class="card player-feature">
-      <div class="player-feature-media">
-        ${img(playerImageCandidates(featurePlayer.teamId, featurePlayer.displayName), 'player-avatar feature-avatar', featurePlayer.displayName)}
-        ${img(teamLogoCandidates(featurePlayer.teamId), 'feature-team-logo', teamName(featurePlayer.teamId))}
-      </div>
-      <div class="player-feature-copy">
-        <p class="eyebrow">ISR leader</p>
-        <h3>${escapeHtml(featurePlayer.displayName)}</h3>
-        <p class="muted">${teamName(featurePlayer.teamId)} - ${fmtNum(featurePlayer.ratingMatchCount)} rated matches</p>
-        <div class="player-feature-stats">
-          ${ovrBadge(featurePlayer.overallOVR)}
-          <span class="pill">HP ${fmtNum(featurePlayer.hpOVR, 1)}</span>
-          <span class="pill">S&D ${fmtNum(featurePlayer.sndOVR, 1)}</span>
-          <span class="pill">OL ${fmtNum(featurePlayer.olOVR, 1)}</span>
-          <span class="pill">K/D ${fmtNum(featurePlayer.kd, 2)}</span>
+    const statRows = matches.flatMap(match =>
+      (state.data.mapsByMatch?.[match.id] || []).flatMap(map => state.data.playerStatsByMap?.[map.id] || [])
+    );
+    const winningPlayerIds = unique(statRows.filter(row => row.teamId === winningTeam).map(row => row.playerId));
+    const bucketKey = eventId === 'CHAMPS'
+      ? 'champsWins'
+      : eventId === 'EWC'
+        ? 'ewcWins'
+        : eventId.endsWith('T')
+          ? 'majorWins'
+          : null;
+    if(!bucketKey) return;
+    winningPlayerIds.forEach(playerId => {
+      const entry = byPlayerId[playerId] ||= { majorWins: 0, champsWins: 0, ewcWins: 0 };
+      entry[bucketKey] += 1;
+    });
+  });
+
+  return byPlayerId;
+}
+
+function buildPlayerLeaderboardRows(){
+  const search = state.ui.playerSearch.trim().toLowerCase();
+  const eventId = getPlayerEventOptions().some(option => option.id === state.ui.playerEvent)
+    ? state.ui.playerEvent
+    : 'all';
+  if(eventId !== state.ui.playerEvent) setUI('playerEvent', eventId);
+
+  const teamFilter = TEAM_IDS.includes(state.ui.playerTeamFilter) ? state.ui.playerTeamFilter : 'all';
+  if(teamFilter !== state.ui.playerTeamFilter) setUI('playerTeamFilter', teamFilter);
+
+  const modeId = PLAYER_MODE_OPTIONS.some(option => option.id === state.ui.playerMode) ? state.ui.playerMode : 'all';
+  if(modeId !== state.ui.playerMode) setUI('playerMode', modeId);
+
+  const rowsByPlayer = new Map();
+  for(const row of state.data.playerStats || []){
+    const map = state.data.mapsById?.[row.mapId];
+    const match = state.data.matchesById?.[map?.matchId];
+    const playerMeta = state.data.playerById?.[row.playerId] || {};
+    const playerTeamId = row.teamId || playerMeta.teamId || '';
+    const playerName = playerMeta.name || row.playerId;
+    const active = playerMeta.active ?? true;
+    const mapMode = String(map?.mode || '').toUpperCase();
+
+    if(!map || !match) continue;
+    if(eventId !== 'all' && match.eventId !== eventId) continue;
+    if(teamFilter !== 'all' && playerTeamId !== teamFilter) continue;
+    if(!state.ui.playerShowInactive && active === false) continue;
+    if(!matchesPlayerModeFilter(modeId, mapMode)) continue;
+
+    const entry = rowsByPlayer.get(row.playerId) || {
+      playerId: row.playerId,
+      displayName: playerName,
+      teamId: playerTeamId,
+      active,
+      maps: 0,
+      kills: 0,
+      deaths: 0,
+      damage: 0,
+      assists: 0,
+      byMode: {
+        HP: { maps: 0, kills: 0, deaths: 0 },
+        SND: { maps: 0, kills: 0, deaths: 0 },
+        OL: { maps: 0, kills: 0, deaths: 0 }
+      },
+      matchIds: new Set()
+    };
+
+    entry.maps += 1;
+    entry.kills += Number(row.kills || 0);
+    entry.deaths += Number(row.deaths || 0);
+    entry.damage += Number(row.damage || 0);
+    entry.assists += Number(row.assists || 0);
+    entry.matchIds.add(map.matchId);
+
+    if(entry.byMode[mapMode]){
+      entry.byMode[mapMode].maps += 1;
+      entry.byMode[mapMode].kills += Number(row.kills || 0);
+      entry.byMode[mapMode].deaths += Number(row.deaths || 0);
+    }
+
+    rowsByPlayer.set(row.playerId, entry);
+  }
+
+  let rows = Array.from(rowsByPlayer.values()).map(entry => {
+    const hpBucket = entry.byMode.HP;
+    const sndBucket = entry.byMode.SND;
+    const olBucket = entry.byMode.OL;
+    const hpKpm = hpBucket.maps ? hpBucket.kills / hpBucket.maps : null;
+    const sndKpm = sndBucket.maps ? sndBucket.kills / sndBucket.maps : null;
+    const olKpm = olBucket.maps ? olBucket.kills / olBucket.maps : null;
+    const ratingValues = Array.from(entry.matchIds)
+      .map(matchId => playerScopeRating(state.data.computed?.matchRatingByKey?.[`${entry.playerId}::${matchId}`], modeId))
+      .filter(value => value !== null);
+    const searchKey = `${entry.displayName} ${teamName(entry.teamId)} ${teamAbbr(entry.teamId)}`.toLowerCase();
+    return {
+      ...entry,
+      kd: entry.deaths ? entry.kills / entry.deaths : entry.kills,
+      kPerMap: entry.maps ? entry.kills / entry.maps : null,
+      hpKd: hpBucket.deaths ? hpBucket.kills / hpBucket.deaths : hpBucket.kills || null,
+      sndKd: sndBucket.deaths ? sndBucket.kills / sndBucket.deaths : sndBucket.kills || null,
+      olKd: olBucket.deaths ? olBucket.kills / olBucket.deaths : olBucket.kills || null,
+      respawnKd: (hpBucket.deaths + olBucket.deaths)
+        ? (hpBucket.kills + olBucket.kills) / (hpBucket.deaths + olBucket.deaths)
+        : (hpBucket.kills + olBucket.kills) || null,
+      dmgPerMap: entry.maps ? entry.damage / entry.maps : null,
+      isr: average(ratingValues),
+      scopeMatchCount: entry.matchIds.size,
+      slayerRating: [hpKpm, sndKpm, olKpm].every(value => value !== null)
+        ? hpKpm + (sndKpm * 3) + olKpm
+        : null,
+      searchKey
+    };
+  });
+
+  if(search){
+    rows = rows.filter(row => row.searchKey.includes(search));
+  }
+
+  return rows;
+}
+
+function playerSortValue(row, sortKey){
+  if(sortKey === 'player') return row.displayName;
+  if(sortKey === 'team') return teamName(row.teamId);
+  return num(row[sortKey]);
+}
+
+function sortPlayerRows(rows){
+  const validSort = PLAYER_TABLE_COLUMNS.some(column => column.id === state.ui.playerSort)
+    ? state.ui.playerSort
+    : 'isr';
+  if(validSort !== state.ui.playerSort) setUI('playerSort', validSort);
+  const direction = ['asc', 'desc'].includes(state.ui.playerSortDir) ? state.ui.playerSortDir : playerSortDefault(validSort);
+  if(direction !== state.ui.playerSortDir) setUI('playerSortDir', direction);
+  const column = PLAYER_TABLE_COLUMNS.find(item => item.id === validSort) || PLAYER_TABLE_COLUMNS[0];
+
+  return [...rows].sort((left, right) => {
+    const leftValue = playerSortValue(left, validSort);
+    const rightValue = playerSortValue(right, validSort);
+
+    if(column.type === 'text'){
+      return direction === 'asc'
+        ? String(leftValue || '').localeCompare(String(rightValue || ''))
+        : String(rightValue || '').localeCompare(String(leftValue || ''));
+    }
+
+    if(leftValue === null && rightValue === null) return left.displayName.localeCompare(right.displayName);
+    if(leftValue === null) return 1;
+    if(rightValue === null) return -1;
+    if(leftValue === rightValue){
+      return left.displayName.localeCompare(right.displayName);
+    }
+    return direction === 'asc' ? leftValue - rightValue : rightValue - leftValue;
+  });
+}
+
+function playerHeaderButton(column, activeSort, direction){
+  const isActive = activeSort === column.id;
+  const arrow = !isActive ? '' : direction === 'asc' ? ' ▲' : ' ▼';
+  return `<button class="player-sort-btn ${isActive ? 'is-active' : ''}" type="button" data-player-sort="${column.id}">${column.label}${arrow}</button>`;
+}
+
+function playerLeaderboardRowMarkup(player, index){
+  const rankClass = index === 0 ? 'r1' : index === 1 ? 'r2' : index === 2 ? 'r3' : 'rd';
+  return `<tr>
+    ${tableCell('#', `<span class="rnk ${rankClass}">${index + 1}</span>`)}
+    ${tableCell('Player', `<button class="player-open-btn" type="button" data-player-open="${escapeAttr(player.playerId)}"><span class="player-chip">${img(playerImageCandidates(player.teamId, player.displayName), 'mini-avatar', player.displayName)}<span>${escapeHtml(player.displayName)}</span></span></button>`)}
+    ${tableCell('Team', `<span class="team-chip">${img(teamLogoCandidates(player.teamId), 'mini-logo', teamName(player.teamId))}<span>${teamAbbr(player.teamId)}</span></span>`)}
+    ${tableCell('Maps', fmtNum(player.maps))}
+    ${tableCell('Kills', fmtNum(player.kills))}
+    ${tableCell('Deaths', fmtNum(player.deaths))}
+    ${tableCell('K/D', fmtNum(player.kd, 2))}
+    ${tableCell('K/Map', fmtNum(player.kPerMap, 1))}
+    ${tableCell('HP K/D', fmtNum(player.hpKd, 2))}
+    ${tableCell('S&D K/D', fmtNum(player.sndKd, 2))}
+    ${tableCell('OL K/D', fmtNum(player.olKd, 2))}
+    ${tableCell('Respawn K/D', fmtNum(player.respawnKd, 2))}
+    ${tableCell('ISR', `<span class="match-isr ${ovrTier(player.isr).colorClass}">${fmtNum(player.isr, 1)}</span>`)}
+    ${tableCell('Slayer Rating', fmtNum(player.slayerRating, 1))}
+  </tr>`;
+}
+
+function playerBioMeta(playerId){
+  return state.data.playerBios?.[playerId] || {};
+}
+
+function playerModalMarkup(player){
+  if(!player) return '';
+  const bio = playerBioMeta(player.playerId);
+  const seasonWins = playerSeasonAccomplishments()[player.playerId] || { majorWins: 0, champsWins: 0, ewcWins: 0 };
+  const majorWins = num(bio.seasonMajorWins) ?? num(bio.majorWins) ?? seasonWins.majorWins;
+  const champsWins = num(bio.seasonChampsWins) ?? num(bio.champsWins) ?? seasonWins.champsWins;
+  const ewcWins = num(bio.seasonEwcWins) ?? num(bio.ewcWins) ?? seasonWins.ewcWins;
+  const scopeLabel = getPlayerEventOptions().find(option => option.id === state.ui.playerEvent)?.label || 'Season Wide';
+  const modeLabelText = formatPlayerModeLabel(state.ui.playerMode);
+  const dob = bio.dob ? fmtDate(bio.dob) : 'Not added';
+  const age = bio.dob ? playerAgeLabel(bio.dob) : '-';
+  const role = bio.role || 'Role not added';
+  const fullName = bio.fullName || player.displayName;
+
+  return `<div class="player-modal-backdrop" data-player-close="backdrop">
+    <article class="player-modal-card">
+      <button class="player-modal-close" type="button" aria-label="Close player details" data-player-close="button">×</button>
+      <div class="player-modal-top">
+        <div class="player-modal-visual">
+          ${portraitImg(playerImageCandidates(player.teamId, player.displayName), 'player-modal-avatar', player.displayName, player.displayName.slice(0, 3).toUpperCase())}
+          ${img(teamLogoCandidates(player.teamId), 'player-modal-team-logo', teamName(player.teamId))}
+        </div>
+        <div class="player-modal-copy">
+          <div class="eyebrow">Player Card</div>
+          <h3>${escapeHtml(player.displayName)}</h3>
+          <p class="player-modal-fullname">${escapeHtml(fullName)}</p>
+          <p class="muted">${teamName(player.teamId)} • ${escapeHtml(role)} • ${player.active === false ? 'Inactive roster spot' : 'Active roster'} • ${scopeLabel} • ${modeLabelText}</p>
+          <div class="player-modal-pillrow">
+            ${ovrBadge(player.isr)}
+            <span class="pill">${escapeHtml(role)}</span>
+            <span class="pill">Slayer ${fmtNum(player.slayerRating, 1)}</span>
+            <span class="pill">Maps ${fmtNum(player.maps)}</span>
+            <span class="pill">K/D ${fmtNum(player.kd, 2)}</span>
+          </div>
         </div>
       </div>
-    </article>` : ''}
-    ${rows.length ? `<div class="table-wrap stack-on-mobile">
-      <table class="responsive-table">
-        <thead><tr><th>Player</th><th>Team</th><th>ISR</th><th>HP</th><th>S&amp;D</th><th>OL</th><th>K/D</th><th>Damage / Map</th><th>Matches</th></tr></thead>
+      <div class="player-modal-grid">
+        <section class="card player-modal-panel">
+          <div class="card-title"><span>Bio</span><span class="team-data-subtle">Metadata-backed popup card</span></div>
+          <div class="player-modal-meta">
+            <div><span>DOB</span><strong>${escapeHtml(dob)}</strong></div>
+            <div><span>Age</span><strong>${escapeHtml(age)}</strong></div>
+            <div><span>2026 Major Wins</span><strong>${fmtNum(majorWins)}</strong></div>
+            <div><span>2026 Champs Wins</span><strong>${fmtNum(champsWins)}</strong></div>
+            <div><span>2026 EWC Wins</span><strong>${fmtNum(ewcWins)}</strong></div>
+            <div><span>Player ID</span><strong>${escapeHtml(player.playerId)}</strong></div>
+          </div>
+        </section>
+        <section class="card player-modal-panel">
+          <div class="card-title"><span>Scope Stats</span><span class="team-data-subtle">Current table filters applied</span></div>
+          <div class="player-modal-meta">
+            <div><span>Kills</span><strong>${fmtNum(player.kills)}</strong></div>
+            <div><span>Deaths</span><strong>${fmtNum(player.deaths)}</strong></div>
+            <div><span>K/Map</span><strong>${fmtNum(player.kPerMap, 1)}</strong></div>
+            <div><span>HP K/D</span><strong>${fmtNum(player.hpKd, 2)}</strong></div>
+            <div><span>S&D K/D</span><strong>${fmtNum(player.sndKd, 2)}</strong></div>
+            <div><span>OL K/D</span><strong>${fmtNum(player.olKd, 2)}</strong></div>
+            <div><span>Respawn K/D</span><strong>${fmtNum(player.respawnKd, 2)}</strong></div>
+            <div><span>Matches</span><strong>${fmtNum(player.scopeMatchCount)}</strong></div>
+          </div>
+        </section>
+      </div>
+    </article>
+  </div>`;
+}
+
+function renderPlayers(){
+  const rows = sortPlayerRows(buildPlayerLeaderboardRows());
+  const playerCountLabel = `${fmtNum(rows.length)} players • Click headers to sort`;
+  const activeSort = PLAYER_TABLE_COLUMNS.some(column => column.id === state.ui.playerSort) ? state.ui.playerSort : 'isr';
+  const activeDir = ['asc', 'desc'].includes(state.ui.playerSortDir) ? state.ui.playerSortDir : playerSortDefault(activeSort);
+  const modalPlayer = rows.find(player => player.playerId === state.ui.playerModalId) || null;
+
+  $('#players').innerHTML = `
+    ${sectionHeader('Player Stats', playerCountLabel)}
+    <div class="notice player-stats-note">ISR = average match rating inside the selected scope. Slayer Rating = HP K/Map + (S&amp;D K/Map × 3) + OL K/Map, and only appears when all 3 modes exist in the current scope.</div>
+    <div class="controls player-filter-grid">
+      <select id="playerEventFilter">${getPlayerEventOptions().map(option => `<option value="${option.id}" ${option.id === state.ui.playerEvent ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+      <select id="playerTeamFilter">${[{ id: 'all', label: 'All Teams' }, ...TEAM_IDS.map(teamId => ({ id: teamId, label: teamName(teamId) }))].map(option => `<option value="${option.id}" ${option.id === state.ui.playerTeamFilter ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+      <select id="playerModeFilter">${PLAYER_MODE_OPTIONS.map(option => `<option value="${option.id}" ${option.id === state.ui.playerMode ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+      <input id="playerSearch" placeholder="Search players or teams" value="${escapeAttr(state.ui.playerSearch)}">
+      <label class="player-toggle">
+        <input id="playerInactiveToggle" type="checkbox" ${state.ui.playerShowInactive ? 'checked' : ''}>
+        <span>Show Inactive</span>
+      </label>
+    </div>
+    ${rows.length ? `<div class="table-wrap stack-on-mobile player-leaderboard-wrap">
+      <table class="responsive-table table">
+        <thead>
+          <tr>
+            <th>#</th>
+            ${PLAYER_TABLE_COLUMNS.map(column => `<th>${playerHeaderButton(column, activeSort, activeDir)}</th>`).join('')}
+          </tr>
+        </thead>
         <tbody>
-          ${rows.slice(0, 80).map(player => `<tr>
-            ${tableCell('Player', `<span class="player-chip">${img(playerImageCandidates(player.teamId, player.displayName), 'mini-avatar', player.displayName)}<span>${escapeHtml(player.displayName)}</span></span>`)}
-            ${tableCell('Team', teamAbbr(player.teamId))}
-            ${tableCell('ISR', `<strong>${fmtNum(player.overallOVR, 1)}</strong>`)}
-            ${tableCell('HP', fmtNum(player.hpOVR, 1))}
-            ${tableCell('S&D', fmtNum(player.sndOVR, 1))}
-            ${tableCell('OL', fmtNum(player.olOVR, 1))}
-            ${tableCell('K/D', fmtNum(player.kd, 2))}
-            ${tableCell('Damage / Map', fmtNum(player.dmgPerMap, 0))}
-            ${tableCell('Matches', fmtNum(player.ratingMatchCount))}
-          </tr>`).join('')}
+          ${rows.map((player, index) => playerLeaderboardRowMarkup(player, index)).join('')}
         </tbody>
       </table>
-    </div>` : `<div class="empty">No players matched "${escapeHtml(state.ui.playerSearch)}".</div>`}
+    </div>` : `<div class="empty">No players matched the current Player Stats filters.</div>`}
+    ${playerModalMarkup(modalPlayer)}
   `;
 
+  $('#playerEventFilter')?.addEventListener('change', event => {
+    setUI('playerEvent', event.target.value);
+    setUI('playerModalId', null);
+    renderPlayers();
+  });
+  $('#playerTeamFilter')?.addEventListener('change', event => {
+    setUI('playerTeamFilter', event.target.value);
+    setUI('playerModalId', null);
+    renderPlayers();
+  });
+  $('#playerModeFilter')?.addEventListener('change', event => {
+    setUI('playerMode', event.target.value);
+    setUI('playerModalId', null);
+    renderPlayers();
+  });
   $('#playerSearch')?.addEventListener('input', event => {
     setUI('playerSearch', event.target.value);
     renderPlayers();
   });
-  $('#playerSort')?.addEventListener('change', event => {
-    setUI('playerSort', event.target.value);
+  $('#playerInactiveToggle')?.addEventListener('change', event => {
+    setUI('playerShowInactive', event.target.checked);
+    setUI('playerModalId', null);
     renderPlayers();
   });
+  document.querySelectorAll('[data-player-sort]').forEach(button => button.addEventListener('click', () => {
+    const nextSort = button.dataset.playerSort;
+    if(nextSort === state.ui.playerSort){
+      setUI('playerSortDir', state.ui.playerSortDir === 'asc' ? 'desc' : 'asc');
+    }else{
+      setUI('playerSort', nextSort);
+      setUI('playerSortDir', playerSortDefault(nextSort));
+    }
+    renderPlayers();
+  }));
+  document.querySelectorAll('[data-player-open]').forEach(button => button.addEventListener('click', () => {
+    setUI('playerModalId', button.dataset.playerOpen || null);
+    renderPlayers();
+  }));
+  document.querySelectorAll('[data-player-close]').forEach(button => button.addEventListener('click', event => {
+    if(event.target !== event.currentTarget && button.dataset.playerClose === 'backdrop') return;
+    setUI('playerModalId', null);
+    renderPlayers();
+  }));
 }
 
 function renderTeams(){
@@ -2074,6 +2429,12 @@ function attachGlobalEvents(){
   $('#siteNavBackdrop')?.addEventListener('click', () => setNavOpen(false));
   document.querySelectorAll('.site-nav a').forEach(link => link.addEventListener('click', () => setNavOpen(false)));
   window.addEventListener('hashchange', applyRoute);
+  window.addEventListener('keydown', event => {
+    if(event.key === 'Escape' && state.ui.playerModalId){
+      setUI('playerModalId', null);
+      renderPlayers();
+    }
+  });
   window.addEventListener('resize', () => {
     if(window.innerWidth > 980){
       setNavOpen(false);

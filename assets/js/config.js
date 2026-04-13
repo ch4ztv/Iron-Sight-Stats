@@ -7,6 +7,7 @@ export const APP_CONFIG = {
     matches: './data/matches.json',
     maps: './data/maps.json',
     players: './data/players.json',
+    playerBios: './data/player-bios.json',
     playerStats: './data/player-stats.json',
     points: './data/points.json',
     teams: './data/teams.json',
