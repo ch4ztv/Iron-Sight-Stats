@@ -1671,6 +1671,19 @@ function sortPlayerRows(rows){
   });
 }
 
+function playerRatingToneClass(score){
+  const value = num(score);
+  if(value === null) return 'rating-tone-unrated';
+  if(value >= 90) return 'rating-tone-90';
+  if(value >= 80) return 'rating-tone-80';
+  if(value >= 70) return 'rating-tone-70';
+  return 'rating-tone-sub70';
+}
+
+function playerRatingValue(score, digits = 1){
+  return `<span class="player-rating-text ${playerRatingToneClass(score)}">${fmtNum(score, digits)}</span>`;
+}
+
 function legacyPlayerHeaderButton(column, activeSort, direction){
   const isActive = activeSort === column.id;
   const arrow = !isActive ? '' : direction === 'asc' ? ' ▲' : ' ▼';
@@ -1852,7 +1865,7 @@ function playerHeaderButton(column, activeSort, direction){
   const isActive = activeSort === column.id;
   const arrow = !isActive ? '' : direction === 'asc' ? ' &#9650;' : ' &#9660;';
   const infoMarkup = column.info
-    ? `<span class="player-stat-help" tabindex="0" aria-label="${escapeAttr(column.label)} info">?<span class="player-stat-tooltip">${escapeHtml(column.info)}</span></span>`
+    ? `<button class="player-stat-help" type="button" data-player-stat-info="${escapeAttr(column.info)}" aria-label="${escapeAttr(column.label)} info">?</button>`
     : '';
   return `<div class="player-th-wrap">
     <button class="player-sort-btn ${isActive ? 'is-active' : ''}" type="button" data-player-sort="${column.id}">${column.label}${arrow}</button>
@@ -1868,15 +1881,86 @@ function playerCellMarkup(player, columnId){
     return `<span class="team-chip">${img(teamLogoCandidates(player.teamId), 'mini-logo', teamName(player.teamId))}<span>${teamAbbr(player.teamId)}</span></span>`;
   }
   if(columnId === 'isr'){
-    return `<span class="match-isr ${ovrTier(player.isr).colorClass}">${fmtNum(player.isr, 1)}</span>`;
+    return playerRatingValue(player.isr, 1);
   }
   if(columnId === 'maps' || columnId === 'kills' || columnId === 'deaths'){
     return fmtNum(player[columnId]);
   }
-  if(columnId === 'kPerMap' || columnId === 'kr' || columnId === 'slayerRating'){
+  if(columnId === 'slayerRating'){
+    return playerRatingValue(player[columnId], 1);
+  }
+  if(columnId === 'kPerMap' || columnId === 'kr'){
     return fmtNum(player[columnId], 1);
   }
   return fmtNum(player[columnId], 2);
+}
+
+function ensurePlayerStatTooltip(){
+  let tooltip = document.getElementById('playerStatTooltip');
+  if(!tooltip){
+    tooltip = document.createElement('div');
+    tooltip.id = 'playerStatTooltip';
+    tooltip.className = 'player-stat-tooltip-layer';
+    document.body.appendChild(tooltip);
+  }
+  return tooltip;
+}
+
+function placePlayerStatTooltip(anchor, tooltip){
+  const rect = anchor.getBoundingClientRect();
+  const margin = 12;
+  tooltip.style.left = '0px';
+  tooltip.style.top = '0px';
+  tooltip.classList.add('is-visible');
+  const tipRect = tooltip.getBoundingClientRect();
+  let left = rect.left + (rect.width / 2) - (tipRect.width / 2);
+  left = Math.max(margin, Math.min(left, window.innerWidth - tipRect.width - margin));
+  let top = rect.top - tipRect.height - 10;
+  if(top < margin){
+    top = rect.bottom + 10;
+  }
+  tooltip.style.left = `${Math.round(left)}px`;
+  tooltip.style.top = `${Math.round(top)}px`;
+}
+
+function bindPlayerStatTooltips(){
+  const tooltip = ensurePlayerStatTooltip();
+  const hideTooltip = () => {
+    tooltip.classList.remove('is-visible');
+    tooltip.textContent = '';
+  };
+  const showTooltip = target => {
+    const text = target.dataset.playerStatInfo || '';
+    if(!text) return;
+    tooltip.textContent = text;
+    placePlayerStatTooltip(target, tooltip);
+  };
+
+  document.querySelectorAll('[data-player-stat-info]').forEach(button => {
+    button.addEventListener('mouseenter', () => showTooltip(button));
+    button.addEventListener('focus', () => showTooltip(button));
+    button.addEventListener('click', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      if(tooltip.classList.contains('is-visible') && tooltip.textContent === (button.dataset.playerStatInfo || '')){
+        hideTooltip();
+      }else{
+        showTooltip(button);
+      }
+    });
+    button.addEventListener('mouseleave', hideTooltip);
+    button.addEventListener('blur', hideTooltip);
+  });
+
+  if(!tooltip.dataset.bound){
+    window.addEventListener('scroll', hideTooltip, { passive: true });
+    window.addEventListener('resize', hideTooltip, { passive: true });
+    document.addEventListener('click', event => {
+      if(event.target.closest('[data-player-stat-info]')) return;
+      hideTooltip();
+    });
+    tooltip.dataset.bound = 'true';
+  }
 }
 
 function playerLeaderboardRowMarkup(player, index){
@@ -1942,8 +2026,8 @@ function playerModalMarkup(player){
             <div><span>Deaths</span><strong>${fmtNum(player.deaths)}</strong></div>
             <div><span>K/Map</span><strong>${fmtNum(player.kPerMap, 1)}</strong></div>
             <div><span>K/R</span><strong>${fmtNum(player.kr, 1)}</strong></div>
-            <div><span>ISR</span><strong>${fmtNum(player.isr, 1)}</strong></div>
-            <div><span>Slayer Rating</span><strong>${fmtNum(player.slayerRating, 1)}</strong></div>
+            <div><span>ISR</span><strong>${playerRatingValue(player.isr, 1)}</strong></div>
+            <div><span>Slayer Rating</span><strong>${playerRatingValue(player.slayerRating, 1)}</strong></div>
             <div><span>HP K/D</span><strong>${fmtNum(player.hpKd, 2)}</strong></div>
             <div><span>S&D K/D</span><strong>${fmtNum(player.sndKd, 2)}</strong></div>
             <div><span>OL K/D</span><strong>${fmtNum(player.olKd, 2)}</strong></div>
@@ -2035,6 +2119,7 @@ function renderPlayers(){
     setUI('playerModalId', null);
     renderPlayers();
   }));
+  bindPlayerStatTooltips();
 }
 
 function renderTeams(){
