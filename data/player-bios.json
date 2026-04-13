@@ -11,20 +11,31 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 6,
+    "careerChampsWins": 2,
+    "careerEwcWins": 1,
+    "majorMVPs": 3,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2018 CWL Las Vegas Open MVP",
+      "2022 CDL Major 1 MVP",
+      "2025 Esports World Cup Grand Finals MVP",
+      "2020 CDL Player to Watch",
+      "2025 Breaking Point Clutch Player of the Year",
+      "2024 Breaking Point OBJ Player of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "optic_huke": {
@@ -39,20 +50,26 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 7,
+    "careerChampsWins": 2,
+    "careerEwcWins": 1,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 Breaking Point Comeback Player of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "optic_mercules": {
@@ -67,20 +84,27 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 2,
+    "careerChampsWins": 1,
+    "careerEwcWins": 1,
+    "majorMVPs": 1,
+    "rookieOfTheYear": "2025 Breaking Point Rookie of the Year",
+    "careerAccolades": [
+      "2025 CDL Championship MVP",
+      "2025 Breaking Point Play of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "optic_shotzzy": {
@@ -95,20 +119,30 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 9,
+    "careerChampsWins": 3,
+    "careerEwcWins": 1,
+    "majorMVPs": 1,
+    "rookieOfTheYear": "2020 Esports Awards Console Rookie of the Year",
+    "careerAccolades": [
+      "2020 CDL Season MVP",
+      "2025 Esports World Cup MVP",
+      "2020 CDL Breakout Player of the Year",
+      "First multi-FPS world champion in Halo and Call of Duty",
+      "2024 CDL Championship MVP"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "pgm_envoy": {
@@ -123,20 +157,28 @@
     "seasonMajorWins": 1,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 10,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 1,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 CDL Minor 2 MVP",
+      "2020 CDL Clutch of the Year",
+      "2020 CDL Search and Destroy Clutch Player of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "pgm_ghosty": {
@@ -151,20 +193,26 @@
     "seasonMajorWins": 1,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 3,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 Breaking Point OBJ Player of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "pgm_neptune": {
@@ -179,20 +227,24 @@
     "seasonMajorWins": 1,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 1,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "pgm_sib": {
@@ -207,20 +259,24 @@
     "seasonMajorWins": 1,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 3,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "faze_04": {
@@ -235,25 +291,29 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 1,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "faze_abuzah": {
     "tag": "Abuzah",
-    "fullName": "Jordan Fran\u00e7ois",
+    "fullName": "Jordan François",
     "role": "Main AR",
     "dob": "2000-07-13",
     "status": "starter",
@@ -263,20 +323,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 1,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": "2024 Breaking Point Rookie of the Year",
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "faze_drazah": {
@@ -291,20 +355,26 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 8,
+    "careerChampsWins": 1,
+    "careerEwcWins": 1,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 CDL Second Team"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "faze_simp": {
@@ -319,25 +389,37 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 14,
+    "careerChampsWins": 2,
+    "careerEwcWins": 1,
+    "majorMVPs": 5,
+    "rookieOfTheYear": "2019 Esports Awards Console Rookie of the Year",
+    "careerAccolades": [
+      "2019 Call of Duty Championship MVP",
+      "2020 CDL Respawn Player of the Year",
+      "2021 CDL Season MVP",
+      "2024 CDL Season MVP",
+      "2025 CDL Major 1 MVP",
+      "2024 Breaking Point SMG Player of the Year",
+      "2024 Breaking Point Season MVP"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "toronto_cleanx": {
     "tag": "CleanX",
-    "fullName": "Tobias Juul J\u00f8nsson",
+    "fullName": "Tobias Juul Jønsson",
     "role": "SMG",
     "dob": "2000-08-11",
     "status": "starter",
@@ -347,20 +429,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 5,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "toronto_insight": {
@@ -375,20 +461,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 4,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "toronto_joedeceives": {
@@ -403,20 +493,26 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 CDL Second Team"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "toronto_kips": {
@@ -431,25 +527,29 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "toronto_reeal": {
     "tag": "ReeaL",
-    "fullName": "Jos\u00e9 Fern\u00e1ndez",
+    "fullName": "José Fernández",
     "role": "SMG",
     "dob": "2003-12-11",
     "status": "inactive",
@@ -459,20 +559,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "g2_estreal": {
@@ -487,20 +591,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "g2_kremp": {
@@ -515,20 +623,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "g2_mamba": {
@@ -543,20 +655,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "g2_skyz": {
@@ -571,20 +687,26 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 7,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2024 Breaking Point Clutch Player of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "lat_abezy": {
@@ -599,20 +721,27 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 13,
+    "careerChampsWins": 2,
+    "careerEwcWins": 1,
+    "majorMVPs": 2,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2021 CDL Championship MVP",
+      "2025 CDL Minor 1 MVP"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "lat_hydra": {
@@ -627,20 +756,29 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 7,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 3,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2022 CDL Pro-Am Classic MVP",
+      "2023 CDL Major 5 MVP",
+      "2023 CDL Season MVP",
+      "2024 CDL Major 4 MVP"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "lat_kenny": {
@@ -655,20 +793,28 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 10,
+    "careerChampsWins": 2,
+    "careerEwcWins": 0,
+    "majorMVPs": 3,
+    "rookieOfTheYear": "2018 Esports Awards Console Rookie of the Year",
+    "careerAccolades": [
+      "2018 CWL Pro League Stage 2 Playoffs MVP",
+      "2022 CDL Championship MVP",
+      "2022 CDL Major 4 MVP"
+    ],
     "note": "Last played for LAT on 2026-02-05; Nium joined in February 2026.",
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "lat_nium": {
@@ -683,20 +829,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "lat_scrap": {
@@ -711,20 +861,32 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 4,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 3,
+    "rookieOfTheYear": "2023 CDL Rookie of the Year",
+    "careerAccolades": [
+      "2023 CDL Major 3 MVP",
+      "2025 CDL Major 3 MVP",
+      "2025 CDL Major 4 MVP",
+      "2025 CDL Season MVP",
+      "2025 Breaking Point AR Player of the Year",
+      "2025 Breaking Point HP Player of the Year",
+      "2025 Breaking Point CTL Player of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "falcons_cellium": {
@@ -739,20 +901,28 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 11,
+    "careerChampsWins": 1,
+    "careerEwcWins": 1,
+    "majorMVPs": 2,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2022 CDL Season MVP",
+      "2024 Esports World Cup MVP",
+      "2025 CDL Major 2 MVP"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "falcons_exnid": {
@@ -767,20 +937,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "falcons_kismet": {
@@ -795,20 +969,27 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 5,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 2,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2023 CDL Major 1 MVP",
+      "2023 CDL Championship MVP"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "falcons_pred": {
@@ -823,25 +1004,31 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 3,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 1,
+    "rookieOfTheYear": "2022 CDL Rookie of the Year",
+    "careerAccolades": [
+      "2022 CDL Major 3 MVP"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "miami_mettalz": {
     "tag": "Mettalz",
-    "fullName": "Adri\u00e1n Serrano",
+    "fullName": "Adrián Serrano",
     "role": "Main AR",
     "dob": "2000-09-19",
     "status": "starter",
@@ -851,20 +1038,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "miami_renkor": {
@@ -879,20 +1070,27 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
-    "rookieOfTheYear": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": "2025 CDL Rookie of the Year",
+    "careerAccolades": [
+      "2025 CDL All-Star Second Team",
+      "Highest K/D in a Champs debut in CDL history"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "miami_super": {
@@ -907,25 +1105,31 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 Breaking Point Search and Destroy Player of the Year"
+    ],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "miami_traixx": {
     "tag": "Traixx",
-    "fullName": "Nicol\u00e1s M\u00f3naco",
+    "fullName": "Nicolás Mónaco",
     "role": "SMG",
     "dob": "2003-12-11",
     "status": "starter",
@@ -935,20 +1139,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "ravens_craze": {
@@ -963,21 +1171,25 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
       "cdl_2026_players_registry_seed.json",
-      "https://cod-esports.fandom.com/wiki/Craze"
+      "https://cod-esports.fandom.com/wiki/Craze",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_public_player_page",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "ravens_exceed": {
@@ -992,20 +1204,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "ravens_lurqxx": {
@@ -1020,20 +1236,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "ravens_nero": {
@@ -1048,20 +1268,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "ravens_slasher": {
@@ -1076,20 +1300,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 9,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "boston_cammy": {
@@ -1104,20 +1332,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 3,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "boston_nastie": {
@@ -1132,20 +1364,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "boston_purj": {
@@ -1160,25 +1396,29 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "boston_snoopy": {
     "tag": "Snoopy",
-    "fullName": "Eric P\u00e9rez",
+    "fullName": "Eric Pérez",
     "role": "SMG",
     "dob": "2004-09-25",
     "status": "starter",
@@ -1188,20 +1428,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "boston_spart": {
@@ -1216,20 +1460,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 1,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "vancouver_abe": {
@@ -1244,20 +1492,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "vancouver_capsidal": {
@@ -1272,20 +1524,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "vancouver_gwinn": {
@@ -1300,20 +1556,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "vancouver_lqgend": {
@@ -1328,20 +1588,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "vancouver_lunarz": {
@@ -1356,20 +1620,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "vancouver_tjhaly": {
@@ -1384,20 +1652,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 5,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_afro": {
@@ -1412,20 +1684,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_beans": {
@@ -1440,20 +1716,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_encourage": {
@@ -1468,20 +1748,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_hide": {
@@ -1496,20 +1780,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_mack": {
@@ -1524,20 +1812,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 2,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_nejra": {
@@ -1552,25 +1844,29 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_okis": {
     "tag": "Okis",
-    "fullName": "Arnel Avdagi\u0107",
+    "fullName": "Arnel Avdagić",
     "role": "Flex",
     "dob": "2003-08-04",
     "status": "starter",
@@ -1580,20 +1876,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   },
   "c9_vivid": {
@@ -1608,20 +1908,24 @@
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": null,
-    "careerChampsWins": null,
-    "majorMVPs": null,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
     "rookieOfTheYear": null,
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
-      "cdl_2026_players_registry_seed.json"
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data"
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
     }
   }
 }
