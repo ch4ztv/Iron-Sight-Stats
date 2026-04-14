@@ -24,6 +24,7 @@
   .player-grid,.roster-grid{grid-template-columns:1fr}
   .weight-grid{grid-template-columns:1fr}
   .embed-wrap iframe{height:680px}
+  .bracket-embed-wrap iframe{height:720px}
 }
 
 @media (max-width: 980px){
@@ -92,6 +93,17 @@
   .bet-form-grid,
   .bet-kpis,
   .mu-grid{grid-template-columns:1fr 1fr}
+  .bracket-toolbar,
+  .bracket-preview-head{align-items:flex-start}
+  .bracket-toolbar-actions{justify-items:start}
+  .bracket-popout{
+    left:12px !important;
+    top:12px !important;
+    width:calc(100vw - 24px);
+    height:calc(100vh - 24px);
+  }
+  .bracket-popout-bar{padding:10px 12px}
+  .bracket-popout-controls{justify-content:flex-start}
   .bet-form-grid-secondary{grid-template-columns:1fr 1fr}
   .bp-roster-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
   .bp-mode-bar{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -168,6 +180,11 @@
   .bet-games,
   .bet-form-grid-secondary,
   .mu-grid{grid-template-columns:1fr}
+  .bracket-switcher,
+  .bracket-popout-controls{width:100%}
+  .bracket-popout-copy,
+  .bracket-toolbar-actions{width:100%}
+  .bracket-popout-bar{align-items:flex-start;flex-direction:column}
   .ts-selector-bar,
   .ts-selector-left,
   .ts-selector-right{align-items:flex-start}
