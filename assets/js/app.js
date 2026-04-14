@@ -1072,6 +1072,10 @@ function sortMatchesDescending(left, right){
     String(right.time || '').localeCompare(String(left.time || ''));
 }
 
+function getMatchStatus(match){
+  return isCompletedMatch(match) ? 'completed' : 'upcoming';
+}
+
 function formatMatchDayLabel(dayKey){
   if(dayKey === 'undated') return 'Undated Matches';
   const date = new Date(`${dayKey}T12:00:00`);
@@ -1454,6 +1458,9 @@ function renderStandings(){
 
 function renderMatches(){
   const teamFilter = TEAM_IDS.includes(state.ui.matchFilter) ? state.ui.matchFilter : 'all';
+  const statusFilter = ['all', 'completed', 'upcoming'].includes(state.ui.matchStatus)
+    ? state.ui.matchStatus
+    : 'all';
   const eventFilter = buildMatchEventOptions().some(option => option.id === state.ui.matchEvent)
     ? state.ui.matchEvent
     : 'all';
@@ -1485,6 +1492,13 @@ function renderMatches(){
     });
   }
 
+  const completedCount = matches.filter(match => getMatchStatus(match) === 'completed').length;
+  const upcomingCount = matches.length - completedCount;
+
+  if(statusFilter !== 'all'){
+    matches = matches.filter(match => getMatchStatus(match) === statusFilter);
+  }
+
   const groups = new Map();
   matches.forEach(match => {
     const key = match.date || 'undated';
@@ -1501,9 +1515,14 @@ function renderMatches(){
   $('#matches').innerHTML = `
     ${sectionHeader(
       'Match Results',
-      `${fmtNum(matches.length)} matches. Public drilldown now includes series stats and per-map player lines.`,
+      `${fmtNum(matches.length)} matches in view | ${fmtNum(completedCount)} completed | ${fmtNum(upcomingCount)} upcoming`,
       `<div class="controls match-filter-bar">
         <select id="matchTeamFilter">${teamOptions.map(teamId => `<option value="${teamId}" ${teamId === teamFilter ? 'selected' : ''}>${teamId === 'all' ? 'All Teams' : teamName(teamId)}</option>`).join('')}</select>
+        <select id="matchStatusFilter">
+          <option value="all" ${statusFilter === 'all' ? 'selected' : ''}>All Matches</option>
+          <option value="upcoming" ${statusFilter === 'upcoming' ? 'selected' : ''}>Upcoming</option>
+          <option value="completed" ${statusFilter === 'completed' ? 'selected' : ''}>Completed</option>
+        </select>
         <select id="matchEventFilter">${buildMatchEventOptions().map(option => `<option value="${option.id}" ${option.id === eventFilter ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
         <input id="matchSearchInput" type="text" placeholder="Search team, event, or map..." value="${escapeAttr(state.ui.matchSearch)}">
       </div>`
@@ -1514,7 +1533,9 @@ function renderMatches(){
         <div class="match-day-list">
           ${groups.get(dayKey).map(match => {
             const { s1, s2, maps } = getSeriesScore(match);
-            const isOpen = expandedId === match.id;
+            const matchStatus = getMatchStatus(match);
+            const isCompleted = matchStatus === 'completed';
+            const isOpen = isCompleted && expandedId === match.id;
             const toggleLabel = isOpen ? 'Hide Stats' : 'View Stats';
             const mapStrip = maps.length
               ? `<div class="match-row-mapchips">${maps.map(map => {
@@ -1536,7 +1557,9 @@ function renderMatches(){
                 </div>
                 <div class="match-row-actions">
                   <div class="match-row-event">${escapeHtml(formatBettingEvent(match.eventId))}</div>
-                  <button class="match-toggle-btn" type="button" data-match-toggle="${match.id}">${toggleLabel}</button>
+                  ${isCompleted
+                    ? `<button class="match-toggle-btn" type="button" data-match-toggle="${match.id}">${toggleLabel}</button>`
+                    : '<span class="bet-mini-pill">Scheduled</span>'}
                 </div>
               </div>
               ${isOpen ? buildMatchDetailPanel(match, activeTab) : ''}
@@ -1551,12 +1574,19 @@ function renderMatches(){
     setUI('matchFilter', event.target.value);
     renderMatches();
   });
+  $('#matchStatusFilter')?.addEventListener('change', event => {
+    setUI('matchStatus', event.target.value);
+    setUI('matchExpandedId', null);
+    renderMatches();
+  });
   $('#matchEventFilter')?.addEventListener('change', event => {
     setUI('matchEvent', event.target.value);
+    setUI('matchExpandedId', null);
     renderMatches();
   });
   $('#matchSearchInput')?.addEventListener('input', event => {
     setUI('matchSearch', event.target.value);
+    setUI('matchExpandedId', null);
     renderMatches();
   });
   document.querySelectorAll('[data-match-toggle]').forEach(button => button.addEventListener('click', () => {

@@ -13,6 +13,7 @@ export const state = {
     teamStatsTab: 'overall',
     teamShowInactive: false,
     matchFilter: 'all',
+    matchStatus: 'all',
     matchEvent: 'all',
     matchSearch: '',
     matchExpandedId: null,
