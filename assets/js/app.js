@@ -2725,6 +2725,21 @@ function getBracketPage(bracketId = state.ui.selectedBracket){
   return BRACKET_PAGES.find(page => page.id === bracketId) || BRACKET_PAGES[0];
 }
 
+function getBracketViewerSize(){
+  return {
+    width: state.ui.bracketViewerMaximized ? window.innerWidth : Math.min(window.innerWidth - 96, 1120),
+    height: state.ui.bracketViewerMaximized ? window.innerHeight : Math.min(window.innerHeight - 48, 820)
+  };
+}
+
+function getCenteredBracketViewerPosition(){
+  const { width, height } = getBracketViewerSize();
+  return clampBracketViewerPosition(
+    Math.round((window.innerWidth - width) / 2),
+    Math.round((window.innerHeight - height) / 2)
+  );
+}
+
 function renderBrackets(){
   const bracketPage = getBracketPage();
   const viewerStyle = state.ui.bracketViewerMaximized
@@ -2780,6 +2795,11 @@ function renderBrackets(){
     renderBrackets();
   }));
   document.querySelectorAll('[data-bracket-open-viewer]').forEach(button => button.addEventListener('click', () => {
+    if(!state.ui.bracketViewerOpen){
+      const centered = getCenteredBracketViewerPosition();
+      setUI('bracketViewerX', centered.x);
+      setUI('bracketViewerY', centered.y);
+    }
     setUI('bracketViewerOpen', true);
     renderBrackets();
   }));
@@ -2796,8 +2816,7 @@ function renderBrackets(){
 }
 
 function clampBracketViewerPosition(x, y){
-  const width = state.ui.bracketViewerMaximized ? window.innerWidth : Math.min(window.innerWidth - 16, 1240);
-  const height = state.ui.bracketViewerMaximized ? window.innerHeight : Math.min(window.innerHeight - 16, 860);
+  const { width, height } = getBracketViewerSize();
   const maxX = Math.max(12, window.innerWidth - width - 12);
   const maxY = Math.max(12, window.innerHeight - height - 12);
   return {
