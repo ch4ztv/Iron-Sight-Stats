@@ -95,15 +95,8 @@
   .mu-grid{grid-template-columns:1fr 1fr}
   .bracket-toolbar,
   .bracket-preview-head{align-items:flex-start}
-  .bracket-toolbar-actions{justify-items:start}
-  .bracket-popout{
-    left:12px !important;
-    top:12px !important;
-    width:calc(100vw - 24px);
-    height:calc(100vh - 24px);
-  }
-  .bracket-popout-bar{padding:10px 12px}
-  .bracket-popout-controls{justify-content:flex-start}
+  .bracket-preview-card.is-fullscreen{inset:12px}
+  .bracket-preview-card.is-fullscreen .bracket-embed-wrap{height:calc(100vh - 158px)}
   .bet-form-grid-secondary{grid-template-columns:1fr 1fr}
   .bp-roster-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
   .bp-mode-bar{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -180,11 +173,9 @@
   .bet-games,
   .bet-form-grid-secondary,
   .mu-grid{grid-template-columns:1fr}
-  .bracket-switcher,
-  .bracket-popout-controls{width:100%}
-  .bracket-popout-copy,
-  .bracket-toolbar-actions{width:100%}
-  .bracket-popout-bar{align-items:flex-start;flex-direction:column}
+  .bracket-switcher{width:100%}
+  .bracket-preview-card.is-fullscreen{inset:8px;padding:14px}
+  .bracket-preview-card.is-fullscreen .bracket-embed-wrap{height:calc(100vh - 150px)}
   .ts-selector-bar,
   .ts-selector-left,
   .ts-selector-right{align-items:flex-start}
