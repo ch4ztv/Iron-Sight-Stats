@@ -28,9 +28,11 @@ export const state = {
     bettingOpponent: 'all',
     bettingEvent: 'all',
     bettingMode: 'all',
-    bettingMarket: 'seriesKills',
+    bettingMarket: 'maps123Kills',
+    bettingMarketSync: '',
     bettingLine: '',
     bettingMapName: 'all',
+    bettingMapSlot: 'all',
     bettingMapStat: 'kills'
   }
 };

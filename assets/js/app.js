@@ -520,44 +520,44 @@ function teamLeanScore(teamId){
 
 const BETTING_MARKETS = [
   {
-    id: 'seriesKills',
-    label: 'Series Kills',
-    shortLabel: 'Kills',
-    sampleDigits: 0,
-    displayDigits: 1,
-    description: 'Total kills across the selected series filters.'
-  },
-  {
-    id: 'seriesDamage',
-    label: 'Series Damage',
-    shortLabel: 'Damage',
-    sampleDigits: 0,
-    displayDigits: 0,
-    description: 'Total damage across the selected series filters.'
-  },
-  {
-    id: 'seriesAssists',
-    label: 'Series Assists',
-    shortLabel: 'Assists',
-    sampleDigits: 0,
-    displayDigits: 1,
-    description: 'Total assists across the selected series filters.'
-  },
-  {
-    id: 'seriesKillsAssists',
-    label: 'Kills + Assists',
-    shortLabel: 'K+A',
-    sampleDigits: 0,
-    displayDigits: 1,
-    description: 'Kills plus assists across the selected series filters.'
+    id: 'maps123Kills',
+    label: 'Maps 1-3 Kills',
+    shortLabel: 'MAPS 1-3 Kills',
+    valueType: 'count',
+    mapSlot: '1-3',
+    description: 'Kills across maps 1 through 3 of each series.'
   },
   {
     id: 'seriesKD',
     label: 'Series K/D',
-    shortLabel: 'K/D',
-    sampleDigits: 2,
-    displayDigits: 2,
-    description: 'Kills divided by deaths across the selected series filters.'
+    shortLabel: 'Series K/D',
+    valueType: 'kd',
+    mapSlot: 'all',
+    description: 'Kills divided by deaths across the full series.'
+  },
+  {
+    id: 'map1Kills',
+    label: 'Map 1 Kills',
+    shortLabel: 'MAP 1 Kills',
+    valueType: 'count',
+    mapSlot: '1',
+    description: 'Kills on map 1 of each series.'
+  },
+  {
+    id: 'map2Kills',
+    label: 'Map 2 Kills',
+    shortLabel: 'MAP 2 Kills',
+    valueType: 'count',
+    mapSlot: '2',
+    description: 'Kills on map 2 of each series.'
+  },
+  {
+    id: 'map3Kills',
+    label: 'Map 3 Kills',
+    shortLabel: 'MAP 3 Kills',
+    valueType: 'count',
+    mapSlot: '3',
+    description: 'Kills on map 3 of each series.'
   }
 ];
 
@@ -586,6 +586,16 @@ const BETTING_MAP_STATS = [
   { id: 'assists', label: 'Assists', digits: 0 }
 ];
 
+const BETTING_MAP_SLOT_OPTIONS = [
+  { id: 'all', label: 'All Maps' },
+  { id: '1-3', label: 'Maps 1-3' },
+  { id: '1', label: 'Map 1' },
+  { id: '2', label: 'Map 2' },
+  { id: '3', label: 'Map 3' },
+  { id: '4', label: 'Map 4' },
+  { id: '5', label: 'Map 5' }
+];
+
 function getBettingMarket(marketId = state.ui.bettingMarket){
   return BETTING_MARKETS.find(market => market.id === marketId) || BETTING_MARKETS[0];
 }
@@ -606,14 +616,82 @@ function parseBettingLine(){
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function formatBettingCountValue(value){
+  const parsed = num(value);
+  if(parsed === null) return '-';
+  return Number.isInteger(parsed) ? fmtNum(parsed, 0) : fmtNum(parsed, 1);
+}
+
 function formatPropValue(value, marketId, kind = 'sample'){
   const market = getBettingMarket(marketId);
-  const digits = kind === 'sample' ? market.sampleDigits : market.displayDigits;
-  return fmtNum(value, digits);
+  if(market.valueType === 'kd'){
+    return fmtNum(value, 2);
+  }
+  return formatBettingCountValue(value);
 }
 
 function formatBettingDate(match){
   return `${fmtDate(match.date)}${match.time ? ` | ${escapeHtml(match.time)}` : ''}`;
+}
+
+function getBettingMapSlotOption(slotId = state.ui.bettingMapSlot){
+  return BETTING_MAP_SLOT_OPTIONS.find(option => option.id === slotId) || BETTING_MAP_SLOT_OPTIONS[0];
+}
+
+function mapMatchesBettingSlot(map, slotId){
+  if(slotId === 'all') return true;
+  const mapNum = Number(map?.mapNum || 0);
+  if(slotId === '1-3'){
+    return mapNum >= 1 && mapNum <= 3;
+  }
+  return String(mapNum) === String(slotId);
+}
+
+function getBettingLabSyncConfig(marketId){
+  if(marketId === 'seriesKD'){
+    return {
+      bettingMode: 'all',
+      bettingMapName: 'all',
+      bettingMapSlot: 'all',
+      bettingMapStat: 'kd'
+    };
+  }
+  if(marketId === 'map1Kills'){
+    return {
+      bettingMode: 'all',
+      bettingMapName: 'all',
+      bettingMapSlot: '1',
+      bettingMapStat: 'kills'
+    };
+  }
+  if(marketId === 'map2Kills'){
+    return {
+      bettingMode: 'all',
+      bettingMapName: 'all',
+      bettingMapSlot: '2',
+      bettingMapStat: 'kills'
+    };
+  }
+  if(marketId === 'map3Kills'){
+    return {
+      bettingMode: 'all',
+      bettingMapName: 'all',
+      bettingMapSlot: '3',
+      bettingMapStat: 'kills'
+    };
+  }
+  return {
+    bettingMode: 'all',
+    bettingMapName: 'all',
+    bettingMapSlot: '1-3',
+    bettingMapStat: 'kills'
+  };
+}
+
+function syncBettingLabToMarket(marketId){
+  const next = getBettingLabSyncConfig(marketId);
+  Object.entries(next).forEach(([key, value]) => setUI(key, value));
+  setUI('bettingMarketSync', marketId);
 }
 
 function getBettingRoster(teamId){
@@ -656,7 +734,7 @@ function buildBettingEventOptions(teamId, opponentId = 'all'){
   return [{ id: 'all', label: 'Full Season' }, ...eventIds.map(eventId => ({ id: eventId, label: formatBettingEvent(eventId) }))];
 }
 
-function buildBettingMapNameOptions({ teamId, playerId, opponentId = 'all', eventId = 'all', modeId = 'all' }){
+function buildBettingMapNameOptions({ teamId, playerId, opponentId = 'all', eventId = 'all', modeId = 'all', mapSlot = 'all' }){
   if(!teamId || !playerId){
     return [{ id: 'all', label: 'All Maps' }];
   }
@@ -666,6 +744,7 @@ function buildBettingMapNameOptions({ teamId, playerId, opponentId = 'all', even
     .filter(match => eventId === 'all' || match.eventId === eventId)
     .flatMap(match => (state.data.mapsByMatch?.[match.id] || [])
       .filter(map => modeId === 'all' || map.mode === modeId)
+      .filter(map => mapMatchesBettingSlot(map, mapSlot))
       .filter(map => (state.data.playerStatsByMap?.[map.id] || []).some(row => row.playerId === playerId))
       .map(map => map.mapName)
     ));
@@ -717,6 +796,13 @@ function ensureBettingSelections(){
     setUI('bettingMode', modeId);
   }
 
+  const mapSlot = BETTING_MAP_SLOT_OPTIONS.some(option => option.id === state.ui.bettingMapSlot)
+    ? state.ui.bettingMapSlot
+    : 'all';
+  if(state.ui.bettingMapSlot !== mapSlot){
+    setUI('bettingMapSlot', mapSlot);
+  }
+
   const mapStat = BETTING_MAP_STATS.some(option => option.id === state.ui.bettingMapStat)
     ? state.ui.bettingMapStat
     : BETTING_MAP_STATS[0].id;
@@ -724,17 +810,28 @@ function ensureBettingSelections(){
     setUI('bettingMapStat', mapStat);
   }
 
-  const mapOptions = buildBettingMapNameOptions({ teamId, playerId, opponentId, eventId, modeId });
+  const market = getBettingMarket(state.ui.bettingMarket);
+  if(state.ui.bettingMarket !== market.id){
+    setUI('bettingMarket', market.id);
+  }
+
+  if(state.ui.bettingMarketSync !== market.id){
+    syncBettingLabToMarket(market.id);
+  }
+
+  const syncedMapSlot = BETTING_MAP_SLOT_OPTIONS.some(option => option.id === state.ui.bettingMapSlot)
+    ? state.ui.bettingMapSlot
+    : 'all';
+  const syncedMapStat = BETTING_MAP_STATS.some(option => option.id === state.ui.bettingMapStat)
+    ? state.ui.bettingMapStat
+    : BETTING_MAP_STATS[0].id;
+
+  const mapOptions = buildBettingMapNameOptions({ teamId, playerId, opponentId, eventId, modeId, mapSlot: syncedMapSlot });
   const mapName = mapOptions.some(option => option.id === state.ui.bettingMapName)
     ? state.ui.bettingMapName
     : 'all';
   if(state.ui.bettingMapName !== mapName){
     setUI('bettingMapName', mapName);
-  }
-
-  const market = getBettingMarket(state.ui.bettingMarket);
-  if(state.ui.bettingMarket !== market.id){
-    setUI('bettingMarket', market.id);
   }
 
   const line = normalizeBettingLine(state.ui.bettingLine);
@@ -751,11 +848,12 @@ function ensureBettingSelections(){
     eventId,
     eventOptions,
     modeId,
+    mapSlot: syncedMapSlot,
     market,
     line,
     mapName,
     mapOptions,
-    mapStat
+    mapStat: syncedMapStat
   };
 }
 
@@ -768,20 +866,34 @@ function aggregatePropRows(rows){
   }), { kills: 0, deaths: 0, assists: 0, damage: 0 });
 }
 
-function propValueFromTotals(totals, marketId){
-  if(marketId === 'seriesDamage') return totals.damage;
-  if(marketId === 'seriesAssists') return totals.assists;
-  if(marketId === 'seriesKillsAssists') return totals.kills + totals.assists;
-  if(marketId === 'seriesKD') return totals.deaths ? totals.kills / totals.deaths : totals.kills;
-  return totals.kills;
+function selectBettingMarketRows(rows, marketId){
+  const sortedRows = [...rows].sort((left, right) => Number(left.map.mapNum || 0) - Number(right.map.mapNum || 0));
+  if(marketId === 'maps123Kills'){
+    const firstThree = sortedRows.filter(entry => Number(entry.map.mapNum || 0) <= 3);
+    return firstThree.length ? firstThree : null;
+  }
+  if(marketId === 'seriesKD'){
+    return sortedRows.length ? sortedRows : null;
+  }
+  const targetMap = marketId === 'map1Kills' ? 1 : marketId === 'map2Kills' ? 2 : 3;
+  return sortedRows.find(entry => Number(entry.map.mapNum || 0) === targetMap) ? sortedRows.filter(entry => Number(entry.map.mapNum || 0) === targetMap) : null;
 }
 
-function buildBettingSampleLabel(marketId, modeId){
-  const market = getBettingMarket(marketId);
-  return modeId === 'all' ? market.label : `${market.shortLabel} | ${modeLabel(modeId)}`;
+function propValueFromRows(rows, marketId){
+  const totals = aggregatePropRows(rows);
+  if(marketId === 'seriesKD'){
+    return {
+      value: totals.deaths ? totals.kills / totals.deaths : totals.kills,
+      totals
+    };
+  }
+  return {
+    value: totals.kills,
+    totals
+  };
 }
 
-function buildBettingSamples({ teamId, playerId, opponentId, eventId, modeId, marketId, lineValue }){
+function buildBettingSamples({ teamId, playerId, opponentId, eventId, marketId, lineValue }){
   if(!teamId || !playerId) return [];
   const matches = (state.data.matches || [])
     .filter(match => match.team1Id === teamId || match.team2Id === teamId)
@@ -791,7 +903,6 @@ function buildBettingSamples({ teamId, playerId, opponentId, eventId, modeId, ma
 
   return matches.map(match => {
     const rows = (state.data.mapsByMatch?.[match.id] || [])
-      .filter(map => modeId === 'all' || map.mode === modeId)
       .map(map => {
         const row = (state.data.playerStatsByMap?.[map.id] || []).find(playerStat => playerStat.playerId === playerId);
         return row ? { map, row } : null;
@@ -799,9 +910,9 @@ function buildBettingSamples({ teamId, playerId, opponentId, eventId, modeId, ma
       .filter(Boolean);
 
     if(!rows.length) return null;
-
-    const totals = aggregatePropRows(rows);
-    const value = propValueFromTotals(totals, marketId);
+    const marketRows = selectBettingMarketRows(rows, marketId);
+    if(!marketRows?.length) return null;
+    const { value, totals } = propValueFromRows(marketRows, marketId);
     const opponent = match.team1Id === teamId ? match.team2Id : match.team1Id;
     return {
       match,
@@ -810,25 +921,13 @@ function buildBettingSamples({ teamId, playerId, opponentId, eventId, modeId, ma
       opponentId: opponent,
       opponentName: teamName(opponent),
       value,
-      label: buildBettingSampleLabel(marketId, modeId),
-      mapsUsed: rows.map(entry => entry.map),
+      label: getBettingMarket(marketId).label,
+      mapsUsed: marketRows.map(entry => entry.map),
       hit: lineValue === null ? null : value > lineValue,
       totals,
       displayDate: formatBettingDate(match)
     };
   }).filter(Boolean);
-}
-
-function buildBettingProjection(samples, marketId){
-  if(!samples.length) return null;
-  const values = samples.map(sample => sample.value);
-  const recentAverage = average(values.slice(0, 5));
-  const seasonAverage = average(values);
-  const medianValue = median(values);
-  if(recentAverage === null || seasonAverage === null || medianValue === null) return null;
-  const projection = recentAverage * 0.55 + seasonAverage * 0.3 + medianValue * 0.15;
-  const digits = getBettingMarket(marketId).displayDigits;
-  return Number(projection.toFixed(digits));
 }
 
 function getBettingMapStat(statId = state.ui.bettingMapStat){
@@ -860,7 +959,7 @@ function formatMapLineValue(value, statId){
   return Number.isInteger(parsed) ? fmtNum(parsed, 0) : fmtNum(parsed, 1);
 }
 
-function buildBettingMapLogs({ teamId, playerId, opponentId, eventId, modeId, mapName, statId, lineValue }){
+function buildBettingMapLogs({ teamId, playerId, opponentId, eventId, modeId, mapSlot, mapName, statId, lineValue }){
   if(!teamId || !playerId) return [];
   const matches = (state.data.matches || [])
     .filter(match => match.team1Id === teamId || match.team2Id === teamId)
@@ -873,6 +972,7 @@ function buildBettingMapLogs({ teamId, playerId, opponentId, eventId, modeId, ma
     const opponent = match.team1Id === teamId ? match.team2Id : match.team1Id;
     (state.data.mapsByMatch?.[match.id] || [])
       .filter(map => modeId === 'all' || map.mode === modeId)
+      .filter(map => mapMatchesBettingSlot(map, mapSlot))
       .filter(map => mapName === 'all' || map.mapName === mapName)
       .forEach(map => {
         const row = (state.data.playerStatsByMap?.[map.id] || []).find(playerStat => playerStat.playerId === playerId);
@@ -2313,21 +2413,17 @@ function renderTeams(){
 }
 
 function renderBetting(){
-  const { teamId, playerId, roster, opponentId, opponentOptions, eventId, eventOptions, modeId, market, line, mapName, mapOptions, mapStat } = ensureBettingSelections();
+  const { teamId, playerId, roster, opponentId, opponentOptions, eventId, eventOptions, modeId, mapSlot, market, line, mapName, mapOptions, mapStat } = ensureBettingSelections();
   const player = getBettingPlayer(playerId);
   const profile = getBettingProfile(playerId);
   const lineValue = parseBettingLine();
-  const samples = buildBettingSamples({ teamId, playerId, opponentId, eventId, modeId: 'all', marketId: market.id, lineValue });
+  const samples = buildBettingSamples({ teamId, playerId, opponentId, eventId, marketId: market.id, lineValue });
   const values = samples.map(sample => sample.value);
   const seasonAverage = average(values);
-  const recentAverage = average(values.slice(0, 5));
   const medianValue = median(values);
   const bestValue = values.length ? Math.max(...values) : null;
-  const projection = buildBettingProjection(samples, market.id);
   const hits = samples.filter(sample => sample.hit === true).length;
-  const hitRate = lineValue !== null && samples.length ? (hits / samples.length) * 100 : null;
-  const edge = lineValue !== null && projection !== null ? projection - lineValue : null;
-  const mapLogs = buildBettingMapLogs({ teamId, playerId, opponentId, eventId, modeId, mapName, statId: mapStat, lineValue });
+  const mapLogs = buildBettingMapLogs({ teamId, playerId, opponentId, eventId, modeId, mapSlot, mapName, statId: mapStat, lineValue });
   const mapValues = mapLogs.map(entry => entry.value);
   const mapAverage = average(mapValues);
   const mapMedian = median(mapValues);
@@ -2335,6 +2431,7 @@ function renderBetting(){
   const mapHits = mapLogs.filter(entry => entry.hit === true).length;
   const mapHitRate = lineValue !== null && mapLogs.length ? (mapHits / mapLogs.length) * 100 : null;
   const mapStatMeta = getBettingMapStat(mapStat);
+  const mapSlotMeta = getBettingMapSlotOption(mapSlot);
   const playerName = player?.displayName || player?.name || profile?.displayName || 'Select a player';
   const selectedRosterEntry = roster.find(entry => entry.playerId === playerId) || player || null;
   const portraitName = selectedRosterEntry?.displayName || selectedRosterEntry?.name || playerName;
@@ -2351,15 +2448,8 @@ function renderBetting(){
     { label: 'Average', value: seasonAverage === null ? '-' : formatPropValue(seasonAverage, market.id, 'display') },
     { label: 'Median', value: medianValue === null ? '-' : formatPropValue(medianValue, market.id, 'display') },
     { label: 'Best', value: bestValue === null ? '-' : formatPropValue(bestValue, market.id, 'display') },
-    { label: 'Line Hit Rate', value: hitRate === null ? '-' : `${hits}/${samples.length}` }
+    { label: 'Line Hit Rate', value: lineValue === null ? '-' : `${hits}/${samples.length}` }
   ].map(item => `<div class="bet-kpi"><div class="v ${item.tone || ''}">${item.value}</div><div class="l">${item.label}</div></div>`).join('');
-
-  const insightMarkup = [
-    { label: 'Projection', value: projection === null ? '-' : formatPropValue(projection, market.id, 'display') },
-    { label: 'Recent 5 Avg', value: recentAverage === null ? '-' : formatPropValue(recentAverage, market.id, 'display') },
-    { label: 'Edge', value: edge === null ? '-' : `${edge >= 0 ? '+' : ''}${formatPropValue(edge, market.id, 'display')}`, tone: edge === null ? '' : edge >= 0 ? 'value-pos' : 'value-neg' },
-    { label: 'Over Rate', value: hitRate === null ? '-' : `${fmtNum(hitRate, 0)}%` }
-  ].map(item => `<div class="bet-insight"><div class="bet-insight-label">${item.label}</div><div class="bet-insight-value ${item.tone || ''}">${item.value}</div></div>`).join('');
 
   const lastFiveMarkup = samples.length
     ? `<div class="bet-games">${samples.slice(0, 5).map(sample => {
@@ -2433,7 +2523,7 @@ function renderBetting(){
 
   $('#betting').innerHTML = `
     ${sectionHeader('Betting Lab', 'PrizePicks-style player prop tracker built from your exported public data package.')}
-    <div class="info-box"><strong>Player prop line engine:</strong> enter a line, compare it to real series history, then use the map and mode lab below to tighten the read before lock.</div>
+    <div class="info-box"><strong>PrizePicks markets found in your project:</strong> Maps 1-3 Kills, Series K/D, Map 1 Kills, Map 2 Kills, and Map 3 Kills. Use the tracker below for recent form, then use the map + mode lab to drill all the way into a specific map pool.</div>
     <div class="card bet-card">
       <div class="bet-form-grid">
         <div class="fg">
@@ -2479,22 +2569,21 @@ function renderBetting(){
       <div class="bet-flex">
         <div>
           <div class="card-title">PrizePicks Market Tracker</div>
-          <div class="bet-subtle">Quick read on the selected player prop market, recent form, and the entered line.</div>
+          <div class="bet-subtle">Quick read on the exact betting menu styles from your reference image.</div>
         </div>
-        <div class="bet-subtle">${lineValue === null ? 'Recent samples use the latest 5 matching series performances.' : `Line ${formatPropValue(lineValue, market.id, 'display')} | ${edge === null ? 'No lean yet' : edge >= 0 ? 'Lean over' : 'Lean under'}`}</div>
+        <div class="bet-subtle">Recent samples use the latest 5 matching performances.</div>
       </div>
       <div class="bet-market-row">
         ${BETTING_MARKETS.map(entry => `<button class="bet-chip ${entry.id === market.id ? 'on' : ''}" type="button" data-prop-market="${entry.id}">${entry.shortLabel}</button>`).join('')}
       </div>
       <div class="bet-kpis">${summaryMarkup}</div>
-      <div class="bet-insight-row">${insightMarkup}</div>
       <div class="bet-filter-line">
         <span class="bet-mini-pill">${escapeHtml(filterSummary)}</span>
         <span class="bet-mini-pill">${market.label}</span>
         ${lineValue !== null ? `<span class="bet-mini-pill">Line ${formatPropValue(lineValue, market.id, 'display')}</span>` : ''}
       </div>
       ${lastFiveMarkup}
-      <div class="bet-table-note">${lineValue === null ? 'Projection blends the full-sample average, median, and recent form. Add a line to grade overs against the prop number.' : `Hit rate uses over logic against ${formatPropValue(lineValue, market.id, 'display')}. Projection blends the full-sample average, median, and last 5 for a quick lean.`}</div>
+      <div class="bet-table-note">${lineValue === null ? 'Line hit rate uses over logic against the number you enter above, just like a prop check.' : `Line hit rate uses over logic against ${formatPropValue(lineValue, market.id, 'display')}, just like a prop check.`}</div>
     </div>
 
     <div class="bet-panel">
@@ -2503,12 +2592,16 @@ function renderBetting(){
           <div class="card-title">Map + Mode Lab</div>
           <div class="bet-subtle">Drill all the way into individual map logs for the selected player and line.</div>
         </div>
-        <div class="bet-subtle">${modeFilterLabel} | ${mapFilterLabel} | ${mapStatMeta.label}</div>
+        <div class="bet-subtle">${modeFilterLabel} | ${mapSlotMeta.label} | ${mapFilterLabel} | ${mapStatMeta.label}</div>
       </div>
       <div class="bet-form-grid bet-form-grid-secondary">
         <div class="fg">
           <label for="bettingModeSelect">Mode</label>
           <select id="bettingModeSelect">${BETTING_MODE_OPTIONS.map(option => `<option value="${option.id}" ${option.id === modeId ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
+        </div>
+        <div class="fg">
+          <label for="bettingMapSlotSelect">Map Slot</label>
+          <select id="bettingMapSlotSelect">${BETTING_MAP_SLOT_OPTIONS.map(option => `<option value="${option.id}" ${option.id === mapSlot ? 'selected' : ''}>${option.label}</option>`).join('')}</select>
         </div>
         <div class="fg">
           <label for="bettingMapSelect">Map</label>
@@ -2576,6 +2669,11 @@ function renderBetting(){
     setUI('bettingMapName', 'all');
     renderBetting();
   });
+  $('#bettingMapSlotSelect')?.addEventListener('change', event => {
+    setUI('bettingMapSlot', event.target.value);
+    setUI('bettingMapName', 'all');
+    renderBetting();
+  });
   $('#bettingMapSelect')?.addEventListener('change', event => {
     setUI('bettingMapName', event.target.value);
     renderBetting();
@@ -2586,12 +2684,15 @@ function renderBetting(){
   });
   $('#bettingMapReset')?.addEventListener('click', () => {
     setUI('bettingMode', 'all');
+    setUI('bettingMapSlot', 'all');
     setUI('bettingMapName', 'all');
     setUI('bettingMapStat', 'kills');
     renderBetting();
   });
   document.querySelectorAll('[data-prop-market]').forEach(button => button.addEventListener('click', () => {
-    setUI('bettingMarket', button.dataset.propMarket);
+    const nextMarket = button.dataset.propMarket;
+    setUI('bettingMarket', nextMarket);
+    setUI('bettingMarketSync', '');
     renderBetting();
   }));
   $('#bettingLineInput')?.addEventListener('input', event => {
