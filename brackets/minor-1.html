@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iron Sight - Minor 1 Bracket</title>
+<style>
+:root {
+  --bg:#060b07; --s1:#0c1210; --s2:#121a12;
+  --border:#1e3022; --border2:#2a4832;
+  --accent:#00e840;
+  --text:#dde0f0; --text2:#8890b8; --text3:#4a5080;
+  --path:#ff3232; --path-glow:rgba(255,50,50,.5);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Segoe UI',system-ui,sans-serif;
+  font-size:12px
+}
+#viewport{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  position:relative;
+  cursor:grab;
+  background-image:radial-gradient(circle, #1a2f1a 1px, transparent 1px);
+  background-size:28px 28px;
+}
+#viewport.dragging{cursor:grabbing}
+#canvas{
+  position:absolute;
+  top:0;
+  left:0;
+  width:1180px;
+  height:680px;
+  will-change:transform;
+}
+#bracket{
+  position:absolute;
+  top:20px;
+  left:20px;
+  width:1140px;
+  height:640px;
+  user-select:none;
+}
+svg.layer{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:visible;
+}
+#zoom-controls{
+  position:absolute;
+  bottom:14px;
+  left:14px;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  z-index:100;
+}
+.zb{
+  width:28px;
+  height:28px;
+  background:var(--s1);
+  border:1px solid var(--border2);
+  border-radius:4px;
+  color:var(--text2);
+  font-size:16px;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  user-select:none;
+  transition:background .12s,color .12s;
+}
+.zb:hover{background:var(--border2);color:var(--text)}
+.zb-wide{width:40px;font-size:10px;font-weight:800;letter-spacing:.08em}
+#minimap{
+  position:absolute;
+  bottom:14px;
+  right:14px;
+  width:160px;
+  height:92px;
+  background:rgba(6,11,7,.85);
+  border:1px solid var(--border2);
+  border-radius:5px;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:100;
+}
+#mm-bracket{position:absolute;transform-origin:top left}
+#mm-viewport{
+  position:absolute;
+  border:1px solid var(--accent);
+  background:rgba(0,232,64,.07);
+  border-radius:2px;
+  pointer-events:none;
+}
+#hint{
+  position:absolute;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(12,18,16,.9);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  padding:5px 16px;
+  font-size:11px;
+  color:var(--text2);
+  pointer-events:none;
+  z-index:100;
+  white-space:nowrap;
+  opacity:1;
+  transition:opacity .4s;
+}
+#hint.fade{opacity:0}
+.round-label{
+  position:absolute;
+  font-size:11px;
+  font-weight:800;
+  color:var(--text);
+  white-space:nowrap;
+}
+.mc{
+  position:absolute;
+  width:200px;
+  background:var(--s1);
+  border:1px solid var(--border);
+  border-radius:6px;
+  overflow:hidden;
+  z-index:10;
+  transition:border-color .2s;
+}
+.mc.on{border-color:rgba(255,50,50,.35)}
+.tr{
+  display:flex;
+  align-items:center;
+  padding:0 10px;
+  height:30px;
+  gap:6px;
+  transition:background .12s;
+}
+.tr:first-child{border-bottom:1px solid var(--border)}
+.tn{
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:11px;
+  color:var(--text);
+  transition:color .12s;
+  cursor:pointer;
+}
+.ts{
+  font-size:12px;
+  font-weight:700;
+  min-width:14px;
+  text-align:right;
+  transition:color .12s;
+}
+.tr.future .tn,.tr.future .ts{color:var(--text2)}
+.tr.hi{
+  background:rgba(255,50,50,.16)!important;
+  border-left:3px solid var(--path);
+}
+.tr.hi .tn,.tr.hi .ts{color:var(--text)}
+.tr:hover:not(.hi){background:var(--s2)}
+.sl{stroke:var(--border2);stroke-width:1.5;fill:none;stroke-linecap:round}
+@keyframes dash{to{stroke-dashoffset:0}}
+.animated-path{
+  stroke:var(--path);
+  stroke-width:2.5;
+  fill:none;
+  stroke-dasharray:9 5;
+  stroke-dashoffset:280;
+  animation:dash 1.1s linear infinite;
+  filter:drop-shadow(0 0 5px var(--path-glow));
+}
+</style>
+</head>
+<body>
+<div id="viewport">
+  <div id="canvas">
+    <div id="bracket">
+      <svg class="layer" id="svg-static"></svg>
+      <svg class="layer" id="svg-path" style="z-index:20"></svg>
+    </div>
+  </div>
+
+  <div id="zoom-controls">
+    <button class="zb" id="zin" title="Zoom in">+</button>
+    <button class="zb" id="zout" title="Zoom out">-</button>
+    <button class="zb" id="zrst" title="Reset" style="font-size:11px">R</button>
+    <button class="zb zb-wide" id="zfull" title="Expand bracket">FS</button>
+  </div>
+
+  <div id="minimap">
+    <div id="mm-bracket"></div>
+    <div id="mm-viewport"></div>
+  </div>
+
+  <div id="hint">Drag to pan - Scroll to zoom - Hover a team to trace its path</div>
+</div>
+
+<script>
+const W = 200;
+const H = 62;
+const R1 = 16;
+const R2 = 46;
+const RX = x => x + W;
+
+const M = {
+  r1_1: { x:20,  y:100, t1:'Toronto KOI',             s1:null, t2:'Carolina Royal Ravens', s2:null, label:'Round 1' },
+  r1_2: { x:20,  y:220, t1:'G2 Minnesota',            s1:null, t2:'Cloud9 New York',        s2:null, label:'' },
+  r1_3: { x:20,  y:340, t1:'Miami Heretics',          s1:null, t2:'Boston Breach',          s2:null, label:'' },
+  r1_4: { x:20,  y:460, t1:'Riyadh Falcons',          s1:null, t2:'Vancouver Surge',        s2:null, label:'' },
+
+  r2_1: { x:300, y:70,  t1:'OpTic Texas',             s1:null, t2:'TOR / CAR Winner',       s2:null, label:'Round 2' },
+  r2_2: { x:300, y:210, t1:'Los Angeles Thieves',     s1:null, t2:'MIN / C9NY Winner',      s2:null, label:'' },
+  r2_3: { x:300, y:350, t1:'Paris Gentle Mates',      s1:null, t2:'MIA / BOS Winner',       s2:null, label:'' },
+  r2_4: { x:300, y:490, t1:'FaZe Vegas',              s1:null, t2:'RYD / VAN Winner',       s2:null, label:'' },
+
+  sf_1: { x:600, y:160, t1:'Team 1 TBD',              s1:null, t2:'Team 2 TBD',             s2:null, label:'Semifinals' },
+  sf_2: { x:600, y:380, t1:'Team 1 TBD',              s1:null, t2:'Team 2 TBD',             s2:null, label:'' },
+
+  f_1:  { x:900, y:270, t1:'Team 1 TBD',              s1:null, t2:'Team 2 TBD',             s2:null, label:'Finals' }
+};
+
+const STATIC_LINES = [
+  [RX(20),  100 + R1, 300,  70 + R2, 260],
+  [RX(20),  220 + R1, 300, 210 + R2, 260],
+  [RX(20),  340 + R1, 300, 350 + R2, 260],
+  [RX(20),  460 + R1, 300, 490 + R2, 260],
+  [RX(300),  70 + H/2, 600, 160 + R1, 550],
+  [RX(300), 210 + H/2, 600, 160 + R2, 550],
+  [RX(300), 350 + H/2, 600, 380 + R1, 550],
+  [RX(300), 490 + H/2, 600, 380 + R2, 550],
+  [RX(600), 160 + H/2, 900, 270 + R1, 850],
+  [RX(600), 380 + H/2, 900, 270 + R2, 850]
+];
+
+const TEAM_PATHS = {
+  'Toronto KOI': [
+    ['r1_1', 1, 'r2_1', 2, 260],
+    ['r2_1', 2, 'sf_1', 1, 550],
+    ['sf_1', 1, 'f_1', 1, 850]
+  ],
+  'Carolina Royal Ravens': [
+    ['r1_1', 2, 'r2_1', 2, 260],
+    ['r2_1', 2, 'sf_1', 1, 550],
+    ['sf_1', 1, 'f_1', 1, 850]
+  ],
+  'OpTic Texas': [
+    ['r2_1', 1, 'sf_1', 1, 550],
+    ['sf_1', 1, 'f_1', 1, 850]
+  ],
+  'G2 Minnesota': [
+    ['r1_2', 1, 'r2_2', 2, 260],
+    ['r2_2', 2, 'sf_1', 2, 550],
+    ['sf_1', 2, 'f_1', 1, 850]
+  ],
+  'Cloud9 New York': [
+    ['r1_2', 2, 'r2_2', 2, 260],
+    ['r2_2', 2, 'sf_1', 2, 550],
+    ['sf_1', 2, 'f_1', 1, 850]
+  ],
+  'Los Angeles Thieves': [
+    ['r2_2', 1, 'sf_1', 2, 550],
+    ['sf_1', 2, 'f_1', 1, 850]
+  ],
+  'Miami Heretics': [
+    ['r1_3', 1, 'r2_3', 2, 260],
+    ['r2_3', 2, 'sf_2', 1, 550],
+    ['sf_2', 1, 'f_1', 2, 850]
+  ],
+  'Boston Breach': [
+    ['r1_3', 2, 'r2_3', 2, 260],
+    ['r2_3', 2, 'sf_2', 1, 550],
+    ['sf_2', 1, 'f_1', 2, 850]
+  ],
+  'Paris Gentle Mates': [
+    ['r2_3', 1, 'sf_2', 1, 550],
+    ['sf_2', 1, 'f_1', 2, 850]
+  ],
+  'Riyadh Falcons': [
+    ['r1_4', 1, 'r2_4', 2, 260],
+    ['r2_4', 2, 'sf_2', 2, 550],
+    ['sf_2', 2, 'f_1', 2, 850]
+  ],
+  'Vancouver Surge': [
+    ['r1_4', 2, 'r2_4', 2, 260],
+    ['r2_4', 2, 'sf_2', 2, 550],
+    ['sf_2', 2, 'f_1', 2, 850]
+  ],
+  'FaZe Vegas': [
+    ['r2_4', 1, 'sf_2', 2, 550],
+    ['sf_2', 2, 'f_1', 2, 850]
+  ]
+};
+
+function elbow(x1, y1, x2, y2, mid){
+  if (mid === null) return `M${x1},${y1} H${x2}`;
+  return `M${x1},${y1} H${mid} V${y2} H${x2}`;
+}
+
+function scoreText(value){
+  return Number.isFinite(Number(value)) ? String(value) : '?';
+}
+
+function rowClass(match, slot){
+  const name = slot === 1 ? match.t1 : match.t2;
+  if (/TBD|Winner/i.test(name)) return 'tr future';
+  return 'tr';
+}
+
+const svgStatic = document.getElementById('svg-static');
+svgStatic.innerHTML = STATIC_LINES.map(([x1, y1, x2, y2, mid]) => `<path class="sl" d="${elbow(x1, y1, x2, y2, mid)}"/>`).join('');
+
+const bracket = document.getElementById('bracket');
+const svgPath = document.getElementById('svg-path');
+
+Object.entries(M).forEach(([id, match]) => {
+  if (match.label) {
+    const label = document.createElement('div');
+    label.className = 'round-label';
+    label.textContent = match.label;
+    label.style.left = `${match.x}px`;
+    label.style.top = `${match.y - 18}px`;
+    bracket.appendChild(label);
+  }
+
+  const card = document.createElement('div');
+  card.className = 'mc';
+  card.id = `mc-${id}`;
+  card.style.left = `${match.x}px`;
+  card.style.top = `${match.y}px`;
+
+  [1, 2].forEach(slot => {
+    const name = slot === 1 ? match.t1 : match.t2;
+    const score = slot === 1 ? match.s1 : match.s2;
+    const row = document.createElement('div');
+    row.className = rowClass(match, slot);
+    row.dataset.team = name;
+    row.innerHTML = `<span class="tn">${name}</span><span class="ts">${scoreText(score)}</span>`;
+    if (!/TBD|Winner/i.test(name)) {
+      row.querySelector('.tn').addEventListener('mouseenter', () => highlightTeam(name));
+      row.querySelector('.tn').addEventListener('mouseleave', clearTeam);
+    }
+    card.appendChild(row);
+  });
+
+  bracket.appendChild(card);
+});
+
+let activeTeam = null;
+function highlightTeam(team){
+  if (activeTeam === team) return;
+  activeTeam = team;
+  document.querySelectorAll('.tr').forEach(row => row.classList.toggle('hi', row.dataset.team === team));
+  document.querySelectorAll('.mc').forEach(card => {
+    card.classList.toggle('on', [...card.querySelectorAll('.tr')].some(row => row.dataset.team === team));
+  });
+  svgPath.innerHTML = (TEAM_PATHS[team] || []).map(([fromId, fromSlot, toId, toSlot, mid]) => {
+    const fromMatch = M[fromId];
+    const toMatch = M[toId];
+    const fromY = fromMatch.y + (fromSlot === 1 ? R1 : R2);
+    const toY = toMatch.y + (toSlot === 1 ? R1 : R2);
+    return `<path class="animated-path" d="${elbow(RX(fromMatch.x), fromY, toMatch.x, toY, mid)}"/>`;
+  }).join('');
+}
+
+function clearTeam(){
+  activeTeam = null;
+  document.querySelectorAll('.tr').forEach(row => row.classList.remove('hi'));
+  document.querySelectorAll('.mc').forEach(card => card.classList.remove('on'));
+  svgPath.innerHTML = '';
+}
+
+const viewport = document.getElementById('viewport');
+const canvas = document.getElementById('canvas');
+const CANVAS_W = 1180;
+const CANVAS_H = 680;
+const ZOOM_MIN = 0.35;
+const ZOOM_MAX = 1.6;
+const ZOOM_STEP = 0.12;
+
+let scale = 1;
+let tx = 0;
+let ty = 0;
+let dragging = false;
+let startX = 0;
+let startY = 0;
+let startTx = 0;
+let startTy = 0;
+
+function clamp(value, min, max){
+  return Math.max(min, Math.min(max, value));
+}
+
+function applyTransform(animate){
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+  const minTx = Math.min(0, vw - CANVAS_W * scale);
+  const minTy = Math.min(0, vh - CANVAS_H * scale);
+  tx = clamp(tx, minTx, 0);
+  ty = clamp(ty, minTy, 0);
+  canvas.style.transition = animate ? 'transform .2s ease' : 'none';
+  canvas.style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
+  canvas.style.transformOrigin = '0 0';
+  updateMinimap();
+}
+
+function resetView(){
+  scale = 1;
+  const vw = viewport.clientWidth;
+  tx = clamp(Math.round((vw - CANVAS_W) / 2), Math.min(0, vw - CANVAS_W), 0);
+  ty = 0;
+  applyTransform(true);
+}
+
+viewport.addEventListener('mousedown', event => {
+  if (event.target.classList.contains('tn')) return;
+  dragging = true;
+  startX = event.clientX;
+  startY = event.clientY;
+  startTx = tx;
+  startTy = ty;
+  viewport.classList.add('dragging');
+  event.preventDefault();
+});
+window.addEventListener('mousemove', event => {
+  if (!dragging) return;
+  tx = startTx + (event.clientX - startX);
+  ty = startTy + (event.clientY - startY);
+  applyTransform(false);
+});
+window.addEventListener('mouseup', () => {
+  dragging = false;
+  viewport.classList.remove('dragging');
+});
+
+let touchStart = null;
+viewport.addEventListener('touchstart', event => {
+  if (event.touches.length === 1) {
+    touchStart = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY,
+      tx,
+      ty
+    };
+  }
+}, { passive: true });
+viewport.addEventListener('touchmove', event => {
+  if (!touchStart || event.touches.length !== 1) return;
+  tx = touchStart.tx + (event.touches[0].clientX - touchStart.x);
+  ty = touchStart.ty + (event.touches[0].clientY - touchStart.y);
+  applyTransform(false);
+  event.preventDefault();
+}, { passive: false });
+viewport.addEventListener('touchend', () => { touchStart = null; });
+
+viewport.addEventListener('wheel', event => {
+  event.preventDefault();
+  const rect = viewport.getBoundingClientRect();
+  const mx = event.clientX - rect.left;
+  const my = event.clientY - rect.top;
+  const delta = event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
+  const nextScale = clamp(scale + delta, ZOOM_MIN, ZOOM_MAX);
+  const ratio = nextScale / scale;
+  tx = mx - (mx - tx) * ratio;
+  ty = my - (my - ty) * ratio;
+  scale = nextScale;
+  applyTransform(false);
+}, { passive: false });
+
+function zoomCenter(delta){
+  const nextScale = clamp(scale + delta, ZOOM_MIN, ZOOM_MAX);
+  const ratio = nextScale / scale;
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+  tx = (vw / 2) - (vw / 2 - tx) * ratio;
+  ty = (vh / 2) - (vh / 2 - ty) * ratio;
+  scale = nextScale;
+  applyTransform(true);
+}
+
+document.getElementById('zin').addEventListener('click', () => zoomCenter(ZOOM_STEP));
+document.getElementById('zout').addEventListener('click', () => zoomCenter(-ZOOM_STEP));
+document.getElementById('zrst').addEventListener('click', resetView);
+
+const fullscreenButton = document.getElementById('zfull');
+function updateFullscreenButton(fullscreen){
+  const active = !!fullscreen;
+  fullscreenButton.textContent = active ? 'RST' : 'FS';
+  fullscreenButton.title = active ? 'Restore bracket' : 'Expand bracket';
+}
+
+fullscreenButton.addEventListener('click', () => {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type:'toggle-bracket-fullscreen' }, '*');
+    return;
+  }
+  if (document.fullscreenElement) {
+    document.exitFullscreen && document.exitFullscreen();
+    return;
+  }
+  document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+});
+
+window.addEventListener('message', event => {
+  if (event.origin !== window.location.origin && event.origin !== 'null') return;
+  if (event.data && event.data.type === 'bracket-fullscreen-state') {
+    updateFullscreenButton(event.data.fullscreen);
+  }
+});
+
+document.addEventListener('fullscreenchange', () => {
+  if (window.parent === window) {
+    updateFullscreenButton(Boolean(document.fullscreenElement));
+  }
+});
+updateFullscreenButton(false);
+
+const mm = document.getElementById('minimap');
+const mmBracket = document.getElementById('mm-bracket');
+const mmViewport = document.getElementById('mm-viewport');
+const MM_W = 160;
+const MM_H = 92;
+const mmScaleX = MM_W / CANVAS_W;
+const mmScaleY = MM_H / CANVAS_H;
+
+function buildMinimap(){
+  const clone = bracket.cloneNode(true);
+  clone.querySelectorAll('.tn').forEach(node => node.replaceWith(node.cloneNode(true)));
+  clone.querySelectorAll('#svg-path,#hint').forEach(node => node.remove());
+  mmBracket.appendChild(clone);
+  mmBracket.style.transform = `scale(${mmScaleX},${mmScaleY})`;
+  mmBracket.style.transformOrigin = 'top left';
+  mmBracket.style.width = `${CANVAS_W}px`;
+  mmBracket.style.height = `${CANVAS_H}px`;
+}
+
+function updateMinimap(){
+  const vw = viewport.clientWidth;
+  const vh = viewport.clientHeight;
+  const left = -tx / scale;
+  const top = -ty / scale;
+  const right = left + vw / scale;
+  const bottom = top + vh / scale;
+  const l = clamp(left, 0, CANVAS_W) * mmScaleX;
+  const t = clamp(top, 0, CANVAS_H) * mmScaleY;
+  const w = clamp(right, 0, CANVAS_W) * mmScaleX - l;
+  const h = clamp(bottom, 0, CANVAS_H) * mmScaleY - t;
+  mmViewport.style.left = `${l}px`;
+  mmViewport.style.top = `${t}px`;
+  mmViewport.style.width = `${w}px`;
+  mmViewport.style.height = `${h}px`;
+}
+
+buildMinimap();
+resetView();
+
+const hint = document.getElementById('hint');
+setTimeout(() => hint.classList.add('fade'), 4500);
+setTimeout(() => hint.remove(), 5000);
+</script>
+</body>
+</html>
