@@ -2716,12 +2716,126 @@ function renderBetting(){
   });
 }
 
+const BRACKET_PAGES = [
+  { id: 'major-1', label: 'Major 1', title: 'Open Major 1 Interactive Bracket', src: './brackets/major-1.html' },
+  { id: 'major-2', label: 'Major 2', title: 'Open Major 2 Interactive Bracket', src: './brackets/major-2.html' }
+];
+
+function getBracketPage(bracketId = state.ui.selectedBracket){
+  return BRACKET_PAGES.find(page => page.id === bracketId) || BRACKET_PAGES[0];
+}
+
 function renderBrackets(){
+  const bracketPage = getBracketPage();
+  const viewerStyle = state.ui.bracketViewerMaximized
+    ? ''
+    : `left:${Math.round(Number(state.ui.bracketViewerX) || 0)}px;top:${Math.round(Number(state.ui.bracketViewerY) || 0)}px;`;
+
   $('#brackets').innerHTML = `
     ${sectionHeader('Brackets', 'Major event bracket pages and the bracket-data summary.')}
-    <div class="controls"><a class="pill" href="./brackets/major-1.html" target="_blank" rel="noopener">Open Major 1</a><a class="pill" href="./brackets/major-2.html" target="_blank" rel="noopener">Open Major 2</a></div>
-    <div class="embed-wrap"><iframe src="./brackets/major-2.html" title="Major 2 bracket"></iframe></div>
+    <div class="bracket-shell">
+      <div class="bracket-toolbar">
+        <div class="bracket-switcher">
+          ${BRACKET_PAGES.map(page => `<button class="bracket-switch-btn ${page.id === bracketPage.id ? 'on' : ''}" type="button" data-bracket-page="${page.id}">${page.label}</button>`).join('')}
+        </div>
+        <div class="bracket-toolbar-actions">
+          <div class="small muted">Swap brackets in place, then pop the viewer out for a larger hover-path and pan session.</div>
+          <button class="match-toggle-btn match-toggle-btn-secondary" type="button" data-bracket-open-viewer>${state.ui.bracketViewerOpen ? 'Refresh Pop Out' : 'Pop Out Viewer'}</button>
+        </div>
+      </div>
+      <article class="card bracket-preview-card">
+        <div class="bracket-preview-head">
+          <div>
+            <div class="card-title">${escapeHtml(bracketPage.title)}</div>
+            <div class="bet-subtle">Drag to pan, scroll to zoom, and hover a team to trace its tournament path.</div>
+          </div>
+          <button class="match-toggle-btn match-toggle-btn-secondary" type="button" data-bracket-open-viewer>Expand Viewer</button>
+        </div>
+        <div class="embed-wrap bracket-embed-wrap">
+          <iframe src="${bracketPage.src}" title="${escapeAttr(bracketPage.title)}" loading="lazy"></iframe>
+        </div>
+      </article>
+      ${state.ui.bracketViewerOpen ? `
+        <div class="bracket-popout ${state.ui.bracketViewerMaximized ? 'is-maximized' : ''}" style="${viewerStyle}" data-bracket-popout>
+          <div class="bracket-popout-bar" data-bracket-drag-handle>
+            <div class="bracket-popout-copy">
+              <strong>${escapeHtml(bracketPage.title)}</strong>
+              <span>Drag this bar to move the viewer</span>
+            </div>
+            <div class="bracket-popout-controls">
+              ${BRACKET_PAGES.map(page => `<button class="bracket-popout-tab ${page.id === bracketPage.id ? 'on' : ''}" type="button" data-bracket-page="${page.id}">${page.label}</button>`).join('')}
+              <button class="match-toggle-btn match-toggle-btn-secondary" type="button" data-bracket-toggle-max>${state.ui.bracketViewerMaximized ? 'Restore' : 'Full Screen'}</button>
+              <button class="player-modal-close bracket-popout-close" type="button" aria-label="Close bracket viewer" data-bracket-close>&times;</button>
+            </div>
+          </div>
+          <div class="bracket-popout-body">
+            <iframe src="${bracketPage.src}" title="${escapeAttr(`${bracketPage.title} pop out viewer`)}" loading="lazy"></iframe>
+          </div>
+        </div>` : ''}
+    </div>
   `;
+
+  document.querySelectorAll('[data-bracket-page]').forEach(button => button.addEventListener('click', () => {
+    setUI('selectedBracket', button.dataset.bracketPage || BRACKET_PAGES[0].id);
+    renderBrackets();
+  }));
+  document.querySelectorAll('[data-bracket-open-viewer]').forEach(button => button.addEventListener('click', () => {
+    setUI('bracketViewerOpen', true);
+    renderBrackets();
+  }));
+  document.querySelector('[data-bracket-close]')?.addEventListener('click', () => {
+    setUI('bracketViewerOpen', false);
+    setUI('bracketViewerMaximized', false);
+    renderBrackets();
+  });
+  document.querySelector('[data-bracket-toggle-max]')?.addEventListener('click', () => {
+    setUI('bracketViewerMaximized', !state.ui.bracketViewerMaximized);
+    renderBrackets();
+  });
+  attachBracketViewerDrag();
+}
+
+function clampBracketViewerPosition(x, y){
+  const width = state.ui.bracketViewerMaximized ? window.innerWidth : Math.min(window.innerWidth - 16, 1240);
+  const height = state.ui.bracketViewerMaximized ? window.innerHeight : Math.min(window.innerHeight - 16, 860);
+  const maxX = Math.max(12, window.innerWidth - width - 12);
+  const maxY = Math.max(12, window.innerHeight - height - 12);
+  return {
+    x: Math.min(Math.max(12, x), maxX),
+    y: Math.min(Math.max(12, y), maxY)
+  };
+}
+
+function attachBracketViewerDrag(){
+  const popout = document.querySelector('[data-bracket-popout]');
+  const handle = document.querySelector('[data-bracket-drag-handle]');
+  if(!popout || !handle || state.ui.bracketViewerMaximized) return;
+
+  handle.addEventListener('pointerdown', event => {
+    if(event.target.closest('button')) return;
+    const rect = popout.getBoundingClientRect();
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const originX = rect.left;
+    const originY = rect.top;
+
+    const onMove = moveEvent => {
+      const next = clampBracketViewerPosition(originX + (moveEvent.clientX - startX), originY + (moveEvent.clientY - startY));
+      popout.style.left = `${next.x}px`;
+      popout.style.top = `${next.y}px`;
+    };
+
+    const onUp = upEvent => {
+      const next = clampBracketViewerPosition(originX + (upEvent.clientX - startX), originY + (upEvent.clientY - startY));
+      setUI('bracketViewerX', next.x);
+      setUI('bracketViewerY', next.y);
+      window.removeEventListener('pointermove', onMove);
+      window.removeEventListener('pointerup', onUp);
+    };
+
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  });
 }
 
 function matchupFormatLabel(format){
@@ -3204,12 +3318,25 @@ function attachGlobalEvents(){
   document.querySelectorAll('.site-nav a').forEach(link => link.addEventListener('click', () => setNavOpen(false)));
   window.addEventListener('hashchange', applyRoute);
   window.addEventListener('keydown', event => {
+    if(event.key === 'Escape' && state.ui.bracketViewerOpen){
+      setUI('bracketViewerOpen', false);
+      setUI('bracketViewerMaximized', false);
+      renderBrackets();
+      return;
+    }
     if(event.key === 'Escape' && state.ui.playerModalId){
       setUI('playerModalId', null);
       renderPlayers();
     }
   });
   window.addEventListener('resize', () => {
+    if(state.ui.bracketViewerOpen && !state.ui.bracketViewerMaximized){
+      const next = clampBracketViewerPosition(state.ui.bracketViewerX, state.ui.bracketViewerY);
+      setUI('bracketViewerX', next.x);
+      setUI('bracketViewerY', next.y);
+      renderBrackets();
+      return;
+    }
     if(window.innerWidth > 980){
       setNavOpen(false);
     }
