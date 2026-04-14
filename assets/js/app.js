@@ -5,6 +5,7 @@ import { fmtDate, fmtNum, fmtPct, modeLabel } from './formatters.js';
 import { teamLogoCandidates, playerImageCandidates, brandingPath } from './asset-paths.js';
 import { computeISR, isrTier, buildIsrPlayerFromTeamStats } from './isr.js';
 import { buildSeasonOvrModel, ovrTier } from './ovr.js';
+import { buildMatchupModel } from './matchup-model.js';
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const TEAM_IDS = Object.keys(APP_CONFIG.teamMeta);
@@ -2618,133 +2619,442 @@ function renderBrackets(){
   `;
 }
 
-function renderMatchup(){
-  const teamA = state.ui.selectedTeam;
-  const teamB = state.ui.selectedTeamB;
-  const recordA = state.data.teamRecords?.[teamA] || { wins: 0, losses: 0, mapWins: 0, mapLosses: 0, recent: [] };
-  const recordB = state.data.teamRecords?.[teamB] || { wins: 0, losses: 0, mapWins: 0, mapLosses: 0, recent: [] };
-  const h2h = matchupHeadToHead(teamA, teamB);
-  const teamRowsA = (state.data.playerAggList || []).filter(row => row.teamId === teamA);
-  const teamRowsB = (state.data.playerAggList || []).filter(row => row.teamId === teamB);
-  const totalKillsA = teamRowsA.reduce((sum, row) => sum + (num(row.kills) ?? 0), 0);
-  const totalKillsB = teamRowsB.reduce((sum, row) => sum + (num(row.kills) ?? 0), 0);
-  const pickFrequency = (teamId, mode) => {
-    const counts = {};
-    (state.data.maps || []).forEach(map => {
-      const match = state.data.matchesById?.[map.matchId];
-      if(match && (match.team1Id === teamId || match.team2Id === teamId) && map.mode === mode){
-        counts[map.mapName] = (counts[map.mapName] || 0) + 1;
-      }
-    });
-    return Object.entries(counts).sort((left, right) => right[1] - left[1]);
-  };
-  const suggestedMaps = ['HP', 'SND', 'OL', 'HP', 'SND'].map((mode, index) => {
-    const combined = {};
-    pickFrequency(teamA, mode).forEach(([mapName, count]) => {
-      combined[mapName] = (combined[mapName] || 0) + count;
-    });
-    pickFrequency(teamB, mode).forEach(([mapName, count]) => {
-      combined[mapName] = (combined[mapName] || 0) + count;
-    });
-    const top = Object.entries(combined).sort((left, right) => right[1] - left[1])[0];
-    return {
-      mapNum: index + 1,
-      mode,
-      mapName: top?.[0] || 'No data',
-      plays: top?.[1] || 0
-    };
+function matchupFormatLabel(format){
+  return format === 'BO7' ? 'Best of 7' : 'Best of 5';
+}
+
+function matchupPct(value, digits = 1){
+  return fmtPct((num(value) ?? 0) * 100, digits);
+}
+
+function matchupRecordText(record){
+  return `${fmtNum(record?.wins || 0)}-${fmtNum(record?.losses || 0)}`;
+}
+
+function matchupMapDiff(record){
+  return (num(record?.mapWins) ?? 0) - (num(record?.mapLosses) ?? 0);
+}
+
+function matchupModeRecord(teamId, mode){
+  const relevant = (state.data.maps || []).filter(map => {
+    if(String(map.mode || '').toUpperCase() !== mode) return false;
+    const match = state.data.matchesById?.[map.matchId];
+    return Boolean(match) && (match.team1Id === teamId || match.team2Id === teamId);
   });
-  const statBar = (leftValue, rightValue, label) => {
-    const total = (leftValue || 0) + (rightValue || 0) || 1;
-    const leftPct = ((leftValue || 0) / total) * 100;
-    const rightPct = ((rightValue || 0) / total) * 100;
-    return `<div class="stat-cmp">
-      <div class="scl" style="color:${teamColor(teamA)}">${fmtNum(leftValue)}</div>
-      <div class="sc-lbl">${label}</div>
-      <div class="scr" style="color:${teamColor(teamB)}">${fmtNum(rightValue)}</div>
+  const wins = relevant.filter(map => map.winner === teamId).length;
+  const losses = relevant.filter(map => map.winner && map.winner !== teamId).length;
+  return {
+    wins,
+    losses,
+    pct: wins + losses ? wins / (wins + losses) : 0.5
+  };
+}
+
+function matchupPill(label, value){
+  return `<span class="team-table-pill">${escapeHtml(label)} ${value}</span>`;
+}
+
+function matchupMetricBar(leftValue, rightValue, label, leftText, rightText, teamA, teamB){
+  const safeLeft = Math.max(0, num(leftValue) ?? 0);
+  const safeRight = Math.max(0, num(rightValue) ?? 0);
+  const total = safeLeft + safeRight || 1;
+  const leftPct = (safeLeft / total) * 100;
+  const rightPct = (safeRight / total) * 100;
+  return `<div class="matchup-compare-row">
+    <div class="matchup-compare-head">
+      <strong style="color:${teamColor(teamA)}">${leftText}</strong>
+      <span>${escapeHtml(label)}</span>
+      <strong style="color:${teamColor(teamB)}">${rightText}</strong>
     </div>
-    <div class="h2h-bar">
+    <div class="h2h-bar matchup-compare-bar">
       <span style="width:${leftPct}%;background:${teamColor(teamA)}"></span>
       <span style="width:${rightPct}%;background:${teamColor(teamB)}"></span>
-    </div>`;
-  };
+    </div>
+  </div>`;
+}
 
-  $('#matchup').innerHTML = `
-    ${sectionHeader('Matchup Builder', 'Head-to-head analysis and map pool context.')}
-    <div class="card" style="margin-bottom:14px">
-      <div class="mu-grid">
-        <div class="team-sel-card">
-          <div class="fg" style="margin-bottom:8px">
+function matchupRosterStrip(teamId, roster = []){
+  if(!roster.length){
+    return '<div class="empty">No active roster portraits are available for this team yet.</div>';
+  }
+  return `<div class="matchup-roster-strip">
+    ${roster.map(player => {
+      const name = player.displayName || player.name || player.playerId;
+      return `<article class="matchup-roster-card">
+        <div class="bp-player-art matchup-roster-art" style="--thc:${teamColor(teamId)}">
+          <div class="bp-player-backdrop">${img(teamLogoCandidates(teamId), 'bp-player-backdrop-logo', teamName(teamId))}</div>
+          ${portraitImg(playerImageCandidates(teamId, name), 'bp-player-img matchup-roster-img', name, name.slice(0, 3).toUpperCase())}
+        </div>
+        <div class="matchup-roster-meta">
+          <div class="matchup-roster-name">${escapeHtml(name)}</div>
+          <div class="matchup-roster-sub">${fmtNum(player.overallOVR ?? player.overallISR, 1)} rating</div>
+        </div>
+      </article>`;
+    }).join('')}
+  </div>`;
+}
+
+function matchupTeamHeroCard(teamId, hero, selectId, selectedFormat){
+  const record = hero.record || { wins: 0, losses: 0, mapWins: 0, mapLosses: 0, recent: [] };
+  return `<article class="card matchup-team-hero" style="--thc:${teamColor(teamId)}">
+    <div class="matchup-team-select">
+      <label for="${selectId}">${selectId === 'matchupTeamA' ? 'Team 1' : 'Team 2'}</label>
+      <select id="${selectId}">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamId ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select>
+    </div>
+    <div class="matchup-team-identity">
+      ${img(teamLogoCandidates(teamId), 'matchup-team-logo', teamName(teamId))}
+      <div class="matchup-team-copy">
+        <div class="matchup-team-name" style="color:${teamColor(teamId)}">${teamName(teamId)}</div>
+        <div class="matchup-team-sub">${matchupFormatLabel(selectedFormat)} lens | ${matchupRecordText(record)} series</div>
+      </div>
+    </div>
+    <div class="matchup-team-pills">
+      ${matchupPill('Map Diff', fmtNum(matchupMapDiff(record), 0))}
+      ${matchupPill('Roster Rating', fmtNum(hero.avgRosterRating, 1))}
+      ${hero.topPlayer ? matchupPill('Top Player', `${escapeHtml(hero.topPlayer.displayName)} ${fmtNum(hero.topPlayer.projectedIsr || hero.topPlayer.overallOVR || hero.topPlayer.overallISR, 1)}`) : ''}
+    </div>
+    <div class="matchup-team-recent">
+      <span class="small muted">Recent form</span>
+      ${recentPills(record.recent || [])}
+    </div>
+    ${matchupRosterStrip(teamId, hero.roster)}
+  </article>`;
+}
+
+function matchupLeaderRow(label, player, metric, digits = 1, kind = 'rating'){
+  if(!player){
+    return `<div class="matchup-leader-row"><span>${escapeHtml(label)}</span><strong>-</strong></div>`;
+  }
+  const valueMarkup = kind === 'rating'
+    ? playerRatingValue(player[metric], digits)
+    : `<strong>${fmtNum(player[metric], digits)}</strong>`;
+  return `<div class="matchup-leader-row">
+    <span>${escapeHtml(label)}</span>
+    <div class="matchup-leader-value">
+      <strong>${escapeHtml(player.displayName)}</strong>
+      ${valueMarkup}
+    </div>
+  </div>`;
+}
+
+function matchupBulletList(items = [], fallback = 'Model notes are still being tuned for this matchup.'){
+  if(!items.length){
+    return `<div class="small muted">${escapeHtml(fallback)}</div>`;
+  }
+  return `<ul class="matchup-bullet-list">${items.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+}
+
+function renderMatchup(){
+  const teamA = TEAM_IDS.includes(state.ui.matchupTeamA) ? state.ui.matchupTeamA : 'optic';
+  const teamB = TEAM_IDS.includes(state.ui.matchupTeamB) ? state.ui.matchupTeamB : 'faze';
+  const format = ['BO5', 'BO7'].includes(state.ui.matchupFormat) ? state.ui.matchupFormat : 'BO5';
+  const model = buildMatchupModel(state.data, teamA, teamB, format);
+
+  if(!model){
+    $('#matchup').innerHTML = `
+      ${sectionHeader('Matchup Builder', 'Monte Carlo team odds, player edges, and map-pool context.')}
+      <div class="card matchup-empty-card">
+        <div class="controls matchup-empty-controls">
+          <div class="fg">
             <label for="matchupTeamA">Team 1</label>
             <select id="matchupTeamA">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamA ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select>
           </div>
-          <div style="text-align:center;padding:8px">${img(teamLogoCandidates(teamA), 't-logo-lg', teamName(teamA))}</div>
-          <div style="font-weight:800;text-align:center;color:${teamColor(teamA)}">${teamName(teamA)}</div>
-        </div>
-        <div class="vs-div">VS</div>
-        <div class="team-sel-card">
-          <div class="fg" style="margin-bottom:8px">
+          <div class="fg">
             <label for="matchupTeamB">Team 2</label>
             <select id="matchupTeamB">${TEAM_IDS.map(id => `<option value="${id}" ${id === teamB ? 'selected' : ''}>${teamName(id)}</option>`).join('')}</select>
           </div>
-          <div style="text-align:center;padding:8px">${img(teamLogoCandidates(teamB), 't-logo-lg', teamName(teamB))}</div>
-          <div style="font-weight:800;text-align:center;color:${teamColor(teamB)}">${teamName(teamB)}</div>
+        </div>
+        <div class="empty">Pick two different teams to build the matchup simulation.</div>
+      </div>
+    `;
+    $('#matchupTeamA')?.addEventListener('change', event => {
+      setUI('matchupTeamA', event.target.value);
+      renderMatchup();
+    });
+    $('#matchupTeamB')?.addEventListener('change', event => {
+      setUI('matchupTeamB', event.target.value);
+      renderMatchup();
+    });
+    return;
+  }
+
+  const favoriteId = model.summary.favoriteId;
+  const underdogId = model.summary.underdogId;
+  const favoritePct = favoriteId === teamA ? model.simulation.winPctA : model.simulation.winPctB;
+  const modeRecordA = {
+    HP: matchupModeRecord(teamA, 'HP'),
+    SND: matchupModeRecord(teamA, 'SND'),
+    OL: matchupModeRecord(teamA, 'OL')
+  };
+  const modeRecordB = {
+    HP: matchupModeRecord(teamB, 'HP'),
+    SND: matchupModeRecord(teamB, 'SND'),
+    OL: matchupModeRecord(teamB, 'OL')
+  };
+  const mapWinPctA = (() => {
+    const record = model.hero.teamA.record;
+    return (record.mapWins + record.mapLosses) ? record.mapWins / (record.mapWins + record.mapLosses) : 0.5;
+  })();
+  const mapWinPctB = (() => {
+    const record = model.hero.teamB.record;
+    return (record.mapWins + record.mapLosses) ? record.mapWins / (record.mapWins + record.mapLosses) : 0.5;
+  })();
+
+  $('#matchup').innerHTML = `
+    ${sectionHeader('Matchup Builder', 'Monte Carlo team odds first, then player edges, map pool context, and upset paths.')}
+    <section class="card matchup-hero-shell">
+      <div class="matchup-controls-row">
+        <div class="matchup-controls-note">Deterministic ${fmtNum(model.simulation.runs)}-run sim using roster ratings, mode strength, map history, and recent form.</div>
+        <div class="matchup-format-switch" role="tablist" aria-label="Series format">
+          ${['BO5', 'BO7'].map(value => `<button class="matchup-format-btn ${value === format ? 'on' : ''}" type="button" data-matchup-format="${value}">${value}</button>`).join('')}
         </div>
       </div>
-      <div class="matchup-format-pill">Best of 5</div>
-    </div>
-
-    <div class="grid cols-2">
-      <article class="card">
-        <div class="card-title">Head-to-Head Record</div>
-        ${h2h.matches.length ? `<div class="matchup-score">
-          <div><div class="matchup-score-value" style="color:${teamColor(teamA)}">${h2h.seriesA}</div><div class="small">Series W</div></div>
-          <div class="matchup-score-dash">-</div>
-          <div><div class="matchup-score-value" style="color:${teamColor(teamB)}">${h2h.seriesB}</div><div class="small">Series W</div></div>
+      <div class="matchup-hero-grid">
+        ${matchupTeamHeroCard(teamA, model.hero.teamA, 'matchupTeamA', format)}
+        <div class="matchup-vs-card card">
+          <div class="matchup-vs-mark">VS</div>
+          <div class="matchup-vs-sub">${matchupFormatLabel(format)}</div>
+          <div class="matchup-vs-favorite">${teamName(favoriteId)} edge</div>
+          <div class="matchup-vs-confidence matchup-confidence-${model.summary.confidence.tone}">${model.summary.confidence.label}</div>
         </div>
-        <div class="matchup-mapline">Maps: <span style="color:${teamColor(teamA)}">${h2h.mapsA}</span> - <span style="color:${teamColor(teamB)}">${h2h.mapsB}</span></div>
-        <div class="divider"></div>
-        ${h2h.matches.slice(0, 5).map(match => {
-          const { s1, s2 } = getSeriesScore(match);
-          const leftScore = match.team1Id === teamA ? s1 : s2;
-          const rightScore = match.team1Id === teamA ? s2 : s1;
-          return `<div class="mc-row">
-            <span class="small muted" style="flex:1">${escapeHtml(formatBettingEvent(match.eventId || ''))} | ${fmtDate(match.date)}</span>
-            <span class="${leftScore > rightScore ? 'value-pos' : 'value-neg'}">${leftScore}-${rightScore}</span>
-          </div>`;
-        }).join('')}` : '<div class="empty">These teams have not played each other in the current dataset yet.</div>'}
+        ${matchupTeamHeroCard(teamB, model.hero.teamB, 'matchupTeamB', format)}
+      </div>
+    </section>
+
+    <div class="matchup-feature-grid">
+      <article class="card matchup-sim-card" style="--favorite:${teamColor(favoriteId)}">
+        <div class="card-title"><span>Monte Carlo Outlook</span><span class="team-data-subtle">${fmtNum(model.simulation.runs)} deterministic runs</span></div>
+        <div class="matchup-odds-board">
+          <div class="matchup-odds-side">
+            <div class="matchup-odds-team">${teamName(teamA)}</div>
+            <div class="matchup-odds-value" style="color:${teamColor(teamA)}">${matchupPct(model.simulation.winPctA)}</div>
+          </div>
+          <div class="matchup-odds-center">
+            <div class="matchup-odds-label">Series Win Odds</div>
+            <div class="matchup-confidence-track"><span style="width:${favoritePct * 100}%;background:${teamColor(favoriteId)}"></span></div>
+            <div class="matchup-odds-favorite">${teamName(favoriteId)} favored | ${model.summary.confidence.label}</div>
+          </div>
+          <div class="matchup-odds-side right">
+            <div class="matchup-odds-team">${teamName(teamB)}</div>
+            <div class="matchup-odds-value" style="color:${teamColor(teamB)}">${matchupPct(model.simulation.winPctB)}</div>
+          </div>
+        </div>
+        <div class="matchup-scoreline-grid">
+          ${model.simulation.scorelines.map(scoreline => `<div class="matchup-scoreline-chip ${scoreline.winnerId === teamA ? 'left' : 'right'}">
+            <span class="matchup-scoreline-label">${scoreline.label}</span>
+            <strong>${matchupPct(scoreline.pct)}</strong>
+          </div>`).join('')}
+        </div>
+        <div class="matchup-driver-head">Why the model leans this way</div>
+        ${matchupBulletList(model.summary.drivers.map(driver => `${driver.label}: ${driver.detail}`), 'More matchup signal appears once these teams add more shared maps to the public dataset.')}
       </article>
 
-      <article class="card">
-        <div class="card-title">Season Stats Comparison</div>
-        ${statBar(recordA.mapWins, recordB.mapWins, 'Map Wins')}
-        ${statBar((state.data.maps || []).filter(map => map.mode === 'HP' && map.winner === teamA).length, (state.data.maps || []).filter(map => map.mode === 'HP' && map.winner === teamB).length, 'HP Wins')}
-        ${statBar((state.data.maps || []).filter(map => map.mode === 'SND' && map.winner === teamA).length, (state.data.maps || []).filter(map => map.mode === 'SND' && map.winner === teamB).length, 'SND Wins')}
-        ${statBar((state.data.maps || []).filter(map => map.mode === 'OL' && map.winner === teamA).length, (state.data.maps || []).filter(map => map.mode === 'OL' && map.winner === teamB).length, 'OL Wins')}
-        ${statBar(totalKillsA, totalKillsB, 'Total Kills')}
+      <article class="card matchup-ladder-card">
+        <div class="card-title"><span>Predicted Map Ladder</span><span class="team-data-subtle">Most likely path, not official veto ownership</span></div>
+        <div class="matchup-ladder">
+          ${model.simulation.path.map(slot => `<div class="matchup-ladder-row">
+            <div class="matchup-ladder-slot">Map ${slot.slot}</div>
+            <div class="matchup-ladder-mode">${modePill(slot.mode)}</div>
+            <div class="matchup-ladder-map">
+              <strong>${escapeHtml(slot.mapName)}</strong>
+              <span>${matchupPct(slot.appearancePct)} seen in this slot | ${matchupPct(slot.playPct)} played at all</span>
+            </div>
+            <div class="matchup-ladder-proj">
+              <span style="color:${teamColor(slot.projectedWinnerId)}">${teamName(slot.projectedWinnerId)}</span>
+              <strong>${matchupPct(slot.probability)}</strong>
+            </div>
+          </div>`).join('')}
+        </div>
       </article>
     </div>
 
-    <article class="card">
-      <div class="card-title">Suggested BO5 Map Picks <span class="small">Based on historical play frequency</span></div>
-      ${suggestedMaps.map(entry => `<div class="matchup-pick-row">
-        <span class="small muted">Map ${entry.mapNum}</span>
-        ${modePill(entry.mode)}
-        <strong>${escapeHtml(entry.mapName)}</strong>
-        <span class="small muted">${entry.plays ? `${entry.plays} plays` : 'No data'}</span>
-      </div>`).join('')}
+    <div class="matchup-secondary-grid">
+      <article class="card">
+        <div class="card-title"><span>Season Edge Comparison</span><span class="team-data-subtle">Cleaner team-level context for the sim</span></div>
+        ${matchupMetricBar(
+          ((model.hero.teamA.record.wins + model.hero.teamA.record.losses) ? model.hero.teamA.record.wins / (model.hero.teamA.record.wins + model.hero.teamA.record.losses) : 0.5) * 100,
+          ((model.hero.teamB.record.wins + model.hero.teamB.record.losses) ? model.hero.teamB.record.wins / (model.hero.teamB.record.wins + model.hero.teamB.record.losses) : 0.5) * 100,
+          'Series Win %',
+          matchupPct((model.hero.teamA.record.wins + model.hero.teamA.record.losses) ? model.hero.teamA.record.wins / (model.hero.teamA.record.wins + model.hero.teamA.record.losses) : 0.5),
+          matchupPct((model.hero.teamB.record.wins + model.hero.teamB.record.losses) ? model.hero.teamB.record.wins / (model.hero.teamB.record.wins + model.hero.teamB.record.losses) : 0.5),
+          teamA,
+          teamB
+        )}
+        ${matchupMetricBar(mapWinPctA * 100, mapWinPctB * 100, 'Map Win %', matchupPct(mapWinPctA), matchupPct(mapWinPctB), teamA, teamB)}
+        ${matchupMetricBar(modeRecordA.HP.pct * 100, modeRecordB.HP.pct * 100, 'Hardpoint Win %', matchupPct(modeRecordA.HP.pct), matchupPct(modeRecordB.HP.pct), teamA, teamB)}
+        ${matchupMetricBar(modeRecordA.SND.pct * 100, modeRecordB.SND.pct * 100, 'S&D Win %', matchupPct(modeRecordA.SND.pct), matchupPct(modeRecordB.SND.pct), teamA, teamB)}
+        ${matchupMetricBar(modeRecordA.OL.pct * 100, modeRecordB.OL.pct * 100, 'Overload Win %', matchupPct(modeRecordA.OL.pct), matchupPct(modeRecordB.OL.pct), teamA, teamB)}
+        ${matchupMetricBar(model.hero.teamA.avgRosterRating, model.hero.teamB.avgRosterRating, 'Roster Rating', fmtNum(model.hero.teamA.avgRosterRating, 1), fmtNum(model.hero.teamB.avgRosterRating, 1), teamA, teamB)}
+        ${matchupMetricBar(model.hero.teamA.avgSlayer, model.hero.teamB.avgSlayer, 'Slayer Avg', fmtNum(model.hero.teamA.avgSlayer, 1), fmtNum(model.hero.teamB.avgSlayer, 1), teamA, teamB)}
+      </article>
+
+      <article class="card">
+        <div class="card-title"><span>Head-to-Head Timeline</span><span class="team-data-subtle">${model.headToHead.matches.length ? 'Current exported dataset only' : 'No shared matches yet'}</span></div>
+        ${model.headToHead.matches.length ? `
+          <div class="matchup-score">
+            <div><div class="matchup-score-value" style="color:${teamColor(teamA)}">${model.headToHead.seriesA}</div><div class="small">Series W</div></div>
+            <div class="matchup-score-dash">-</div>
+            <div><div class="matchup-score-value" style="color:${teamColor(teamB)}">${model.headToHead.seriesB}</div><div class="small">Series W</div></div>
+          </div>
+          <div class="matchup-mapline">Maps: <span style="color:${teamColor(teamA)}">${model.headToHead.mapsA}</span> - <span style="color:${teamColor(teamB)}">${model.headToHead.mapsB}</span></div>
+          <div class="matchup-timeline">
+            ${model.headToHead.matches.slice(0, 6).map(match => {
+              const { s1, s2 } = getSeriesScore(match);
+              const leftScore = match.team1Id === teamA ? s1 : s2;
+              const rightScore = match.team1Id === teamA ? s2 : s1;
+              const winner = leftScore > rightScore ? teamA : rightScore > leftScore ? teamB : null;
+              return `<div class="result-item matchup-timeline-item">
+                <div class="result-main">
+                  <div class="result-line">
+                    <strong>${escapeHtml(formatBettingEvent(match.eventId || ''))}</strong>
+                    <span class="${winner === teamA ? 'value-pos' : winner === teamB ? 'value-neg' : 'muted'}">${fmtNum(leftScore)}-${fmtNum(rightScore)}</span>
+                  </div>
+                  <div class="small muted">${fmtDate(match.date)}${match.time ? ` | ${escapeHtml(match.time)}` : ''}</div>
+                </div>
+                <div class="leader-metrics">
+                  <strong>${winner ? teamName(winner) : 'Split'}</strong>
+                </div>
+              </div>`;
+            }).join('')}
+          </div>` : '<div class="empty">These teams have not played each other in the current public dataset yet, so the sim leans more on season and map-pool context.</div>'}
+      </article>
+    </div>
+
+    <div class="matchup-player-grid">
+      <article class="card matchup-duel-card">
+        <div class="card-title"><span>Star Duel</span><span class="team-data-subtle">Projected impact players inside the selected format</span></div>
+        <div class="matchup-duel-grid">
+          ${model.playerEdges.starDuel.teamA ? `<div class="matchup-duel-side">
+            <div class="bp-player-art matchup-duel-art" style="--thc:${teamColor(teamA)}">
+              <div class="bp-player-backdrop">${img(teamLogoCandidates(teamA), 'bp-player-backdrop-logo', teamName(teamA))}</div>
+              ${portraitImg(playerImageCandidates(teamA, model.playerEdges.starDuel.teamA.displayName), 'bp-player-img matchup-duel-img', model.playerEdges.starDuel.teamA.displayName, model.playerEdges.starDuel.teamA.displayName.slice(0, 3).toUpperCase())}
+            </div>
+            <div class="matchup-duel-copy">
+              <div class="matchup-duel-name">${escapeHtml(model.playerEdges.starDuel.teamA.displayName)}</div>
+              <div class="matchup-duel-team" style="color:${teamColor(teamA)}">${teamName(teamA)}</div>
+              <div class="matchup-duel-metrics">
+                <span>${playerRatingValue(model.playerEdges.starDuel.teamA.projectedIsr, 1)}</span>
+                <span>${playerRatingValue(model.playerEdges.starDuel.teamA.slayerRating, 1)}</span>
+              </div>
+            </div>
+          </div>` : '<div class="empty">No player edge available.</div>'}
+          <div class="matchup-duel-vs">VS</div>
+          ${model.playerEdges.starDuel.teamB ? `<div class="matchup-duel-side">
+            <div class="bp-player-art matchup-duel-art" style="--thc:${teamColor(teamB)}">
+              <div class="bp-player-backdrop">${img(teamLogoCandidates(teamB), 'bp-player-backdrop-logo', teamName(teamB))}</div>
+              ${portraitImg(playerImageCandidates(teamB, model.playerEdges.starDuel.teamB.displayName), 'bp-player-img matchup-duel-img', model.playerEdges.starDuel.teamB.displayName, model.playerEdges.starDuel.teamB.displayName.slice(0, 3).toUpperCase())}
+            </div>
+            <div class="matchup-duel-copy">
+              <div class="matchup-duel-name">${escapeHtml(model.playerEdges.starDuel.teamB.displayName)}</div>
+              <div class="matchup-duel-team" style="color:${teamColor(teamB)}">${teamName(teamB)}</div>
+              <div class="matchup-duel-metrics">
+                <span>${playerRatingValue(model.playerEdges.starDuel.teamB.projectedIsr, 1)}</span>
+                <span>${playerRatingValue(model.playerEdges.starDuel.teamB.slayerRating, 1)}</span>
+              </div>
+            </div>
+          </div>` : '<div class="empty">No player edge available.</div>'}
+        </div>
+      </article>
+
+      <article class="card matchup-leaders-card">
+        <div class="card-title"><span>Projected Team Leaders</span><span class="team-data-subtle">Highest ISR, slaying, S&D, and respawn edges</span></div>
+        <div class="matchup-leaders-grid">
+          <section class="matchup-leader-panel">
+            <div class="matchup-leader-head" style="color:${teamColor(teamA)}">${teamName(teamA)}</div>
+            ${matchupLeaderRow('Top ISR', model.playerEdges.teamA.topIsr, 'projectedIsr')}
+            ${matchupLeaderRow('Top Slayer', model.playerEdges.teamA.topSlayer, 'slayerRating')}
+            ${matchupLeaderRow('Best S&D Edge', model.playerEdges.teamA.bestSnd, 'sndEdge', 2, 'number')}
+            ${matchupLeaderRow('Best Respawn Edge', model.playerEdges.teamA.bestRespawn, 'respawnEdge', 2, 'number')}
+            ${matchupLeaderRow('Swing Player', model.playerEdges.teamA.swing, 'swingScore', 1, 'number')}
+          </section>
+          <section class="matchup-leader-panel">
+            <div class="matchup-leader-head" style="color:${teamColor(teamB)}">${teamName(teamB)}</div>
+            ${matchupLeaderRow('Top ISR', model.playerEdges.teamB.topIsr, 'projectedIsr')}
+            ${matchupLeaderRow('Top Slayer', model.playerEdges.teamB.topSlayer, 'slayerRating')}
+            ${matchupLeaderRow('Best S&D Edge', model.playerEdges.teamB.bestSnd, 'sndEdge', 2, 'number')}
+            ${matchupLeaderRow('Best Respawn Edge', model.playerEdges.teamB.bestRespawn, 'respawnEdge', 2, 'number')}
+            ${matchupLeaderRow('Swing Player', model.playerEdges.teamB.swing, 'swingScore', 1, 'number')}
+          </section>
+        </div>
+      </article>
+    </div>
+
+    <article class="card matchup-player-board-card">
+      <div class="card-title"><span>Key Player Matchups</span><span class="team-data-subtle">Projected side-by-side roster impact</span></div>
+      <div class="matchup-player-board">
+        ${model.playerEdges.comparisonRows.map(row => `<div class="matchup-player-row">
+          <div class="matchup-player-side left">
+            ${row.left ? `<div class="matchup-player-chip">
+              ${img(playerImageCandidates(teamA, row.left.displayName), 'mini-avatar', row.left.displayName)}
+              <div><strong>${escapeHtml(row.left.displayName)}</strong><span>${playerRatingValue(row.left.projectedIsr, 1)}</span></div>
+            </div>` : '<span class="small muted">No row</span>'}
+          </div>
+          <div class="matchup-player-edge ${row.edgeTeamId === teamA ? 'left' : 'right'}">${fmtNum(row.edge, 1)} edge</div>
+          <div class="matchup-player-side right">
+            ${row.right ? `<div class="matchup-player-chip right">
+              <div><strong>${escapeHtml(row.right.displayName)}</strong><span>${playerRatingValue(row.right.projectedIsr, 1)}</span></div>
+              ${img(playerImageCandidates(teamB, row.right.displayName), 'mini-avatar', row.right.displayName)}
+            </div>` : '<span class="small muted">No row</span>'}
+          </div>
+        </div>`).join('')}
+      </div>
+    </article>
+
+    <div class="matchup-insight-grid">
+      <article class="card matchup-insight-card">
+        <div class="card-title"><span>${teamName(teamA)} Key To Win</span><span class="team-data-subtle">How this side closes the series</span></div>
+        ${matchupBulletList(model.keys.teamA, `${teamName(teamA)} needs a balanced slaying night and at least one S&D win to keep the sim honest.`)}
+      </article>
+      <article class="card matchup-insight-card">
+        <div class="card-title"><span>${teamName(underdogId)} Upset Path</span><span class="team-data-subtle">What has to break right for the dog</span></div>
+        ${matchupBulletList(model.keys.underdog, `${teamName(underdogId)} likely needs to steal the swing S&D and outperform the current map path.`)}
+      </article>
+      <article class="card matchup-insight-card">
+        <div class="card-title"><span>${teamName(teamB)} Key To Win</span><span class="team-data-subtle">How the other side flips the script</span></div>
+        ${matchupBulletList(model.keys.teamB, `${teamName(teamB)} needs to cash in on its cleanest map edges and keep the star duel close.`)}
+      </article>
+    </div>
+
+    <article class="card matchup-map-pool-card">
+      <div class="card-title"><span>Map Pool Edge</span><span class="team-data-subtle">All available mode/map probabilities used by the sim</span></div>
+      <div class="table-wrap stack-on-mobile">
+        <table class="responsive-table table">
+          <thead>
+            <tr><th>Mode</th><th>Map</th><th>Likely</th><th>${teamAbbr(teamA)}</th><th>${teamAbbr(teamB)}</th><th>Model Edge</th></tr>
+          </thead>
+          <tbody>
+            ${model.mapPool.rows.map(row => `<tr>
+              ${tableCell('Mode', modePill(row.mode))}
+              ${tableCell('Map', `<strong>${escapeHtml(row.mapName)}</strong>`)}
+              ${tableCell('Likely', matchupPct(row.likelyPct))}
+              ${tableCell(teamAbbr(teamA), `${matchupPct(row.teamAMapRate)} <span class="small muted">(${fmtNum(row.teamAMapPlays)} plays)</span>`)}
+              ${tableCell(teamAbbr(teamB), `${matchupPct(row.teamBMapRate)} <span class="small muted">(${fmtNum(row.teamBMapPlays)} plays)</span>`)}
+              ${tableCell('Model Edge', `<span style="color:${teamColor(row.edgeTeamId)}">${teamName(row.edgeTeamId)}</span> <strong>${matchupPct(row.edgePct)}</strong>`)}
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
     </article>
   `;
 
+  document.querySelectorAll('[data-matchup-format]').forEach(button => button.addEventListener('click', () => {
+    setUI('matchupFormat', button.dataset.matchupFormat || 'BO5');
+    renderMatchup();
+  }));
   $('#matchupTeamA')?.addEventListener('change', event => {
-    setUI('selectedTeam', event.target.value);
-    renderTeams();
-    renderBetting();
+    setUI('matchupTeamA', event.target.value);
+    if(event.target.value === state.ui.matchupTeamB){
+      const next = TEAM_IDS.find(id => id !== event.target.value) || event.target.value;
+      setUI('matchupTeamB', next);
+    }
     renderMatchup();
   });
   $('#matchupTeamB')?.addEventListener('change', event => {
-    setUI('selectedTeamB', event.target.value);
-    renderBetting();
+    setUI('matchupTeamB', event.target.value);
+    if(event.target.value === state.ui.matchupTeamA){
+      const next = TEAM_IDS.find(id => id !== event.target.value) || event.target.value;
+      setUI('matchupTeamA', next);
+    }
     renderMatchup();
   });
 }
