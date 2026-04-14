@@ -64,6 +64,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(
   cursor:pointer;display:flex;align-items:center;justify-content:center;
   user-select:none;transition:background .12s,color .12s}
 .zb:hover{background:var(--border2);color:var(--text)}
+.zb-wide{width:40px;font-size:10px;font-weight:800;letter-spacing:.08em}
 
 #hint{
   position:absolute; top:12px; left:50%; transform:translateX(-50%);
@@ -135,6 +136,7 @@ svg.layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:n
     <button class="zb" id="zin"  title="Zoom in">+</button>
     <button class="zb" id="zout" title="Zoom out">−</button>
     <button class="zb" id="zrst" title="Reset" style="font-size:11px">⌖</button>
+    <button class="zb zb-wide" id="zfull" title="Expand bracket">FS</button>
   </div>
 
   <div id="minimap">
@@ -441,6 +443,35 @@ function zoomAt(delta){
 document.getElementById('zin') .addEventListener('click',()=>zoomAt( ZOOM_STEP));
 document.getElementById('zout').addEventListener('click',()=>zoomAt(-ZOOM_STEP));
 document.getElementById('zrst').addEventListener('click',resetView);
+const fullscreenButton=document.getElementById('zfull');
+function updateFullscreenButton(fullscreen){
+  const active=!!fullscreen;
+  fullscreenButton.textContent=active?'RST':'FS';
+  fullscreenButton.title=active?'Restore bracket':'Expand bracket';
+}
+fullscreenButton.addEventListener('click',()=>{
+  if(window.parent && window.parent !== window){
+    window.parent.postMessage({ type:'toggle-bracket-fullscreen' }, '*');
+    return;
+  }
+  if(document.fullscreenElement){
+    document.exitFullscreen?.();
+    return;
+  }
+  document.documentElement.requestFullscreen?.();
+});
+window.addEventListener('message', event => {
+  if(event.origin !== window.location.origin && event.origin !== 'null') return;
+  if(event.data?.type === 'bracket-fullscreen-state'){
+    updateFullscreenButton(event.data.fullscreen);
+  }
+});
+document.addEventListener('fullscreenchange', () => {
+  if(window.parent === window){
+    updateFullscreenButton(Boolean(document.fullscreenElement));
+  }
+});
+updateFullscreenButton(false);
 
 /* ═══════════════════════════════════════════════════════════════════
    MINI-MAP
