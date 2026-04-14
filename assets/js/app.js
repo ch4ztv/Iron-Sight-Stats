@@ -2725,26 +2725,32 @@ function getBracketPage(bracketId = state.ui.selectedBracket){
   return BRACKET_PAGES.find(page => page.id === bracketId) || BRACKET_PAGES[0];
 }
 
-function getBracketViewerSize(){
-  return {
-    width: state.ui.bracketViewerMaximized ? window.innerWidth : Math.min(window.innerWidth - 96, 1120),
-    height: state.ui.bracketViewerMaximized ? window.innerHeight : Math.min(window.innerHeight - 48, 820)
-  };
+function getBracketIframe(){
+  return document.querySelector('[data-bracket-iframe]');
 }
 
-function getCenteredBracketViewerPosition(){
-  const { width, height } = getBracketViewerSize();
-  return clampBracketViewerPosition(
-    Math.round((window.innerWidth - width) / 2),
-    Math.round((window.innerHeight - height) / 2)
-  );
+function sendBracketFullscreenState(frame = getBracketIframe()){
+  if(!frame?.contentWindow) return;
+  frame.contentWindow.postMessage({
+    type: 'bracket-fullscreen-state',
+    fullscreen: state.currentSection === 'brackets' && !!state.ui.bracketFullscreen
+  }, '*');
+}
+
+function syncBracketFullscreenUI(){
+  const isActive = state.currentSection === 'brackets' && !!state.ui.bracketFullscreen;
+  document.body.classList.toggle('bracket-fullscreen-lock', isActive);
+  document.querySelector('[data-bracket-preview-card]')?.classList.toggle('is-fullscreen', isActive);
+  sendBracketFullscreenState();
+}
+
+function setBracketFullscreen(next){
+  setUI('bracketFullscreen', !!next);
+  syncBracketFullscreenUI();
 }
 
 function renderBrackets(){
   const bracketPage = getBracketPage();
-  const viewerStyle = state.ui.bracketViewerMaximized
-    ? ''
-    : `left:${Math.round(Number(state.ui.bracketViewerX) || 0)}px;top:${Math.round(Number(state.ui.bracketViewerY) || 0)}px;`;
 
   $('#brackets').innerHTML = `
     ${sectionHeader('Brackets', 'Major event bracket pages and the bracket-data summary.')}
@@ -2753,40 +2759,19 @@ function renderBrackets(){
         <div class="bracket-switcher">
           ${BRACKET_PAGES.map(page => `<button class="bracket-switch-btn ${page.id === bracketPage.id ? 'on' : ''}" type="button" data-bracket-page="${page.id}">${page.label}</button>`).join('')}
         </div>
-        <div class="bracket-toolbar-actions">
-          <div class="small muted">Swap brackets in place, then pop the viewer out for a larger hover-path and pan session.</div>
-          <button class="match-toggle-btn match-toggle-btn-secondary" type="button" data-bracket-open-viewer>${state.ui.bracketViewerOpen ? 'Refresh Pop Out' : 'Pop Out Viewer'}</button>
-        </div>
+        <div class="small muted">Swap brackets in place, then use the in-bracket fullscreen control for a bigger hover-path and pan session.</div>
       </div>
-      <article class="card bracket-preview-card">
+      <article class="card bracket-preview-card ${state.ui.bracketFullscreen ? 'is-fullscreen' : ''}" data-bracket-preview-card>
         <div class="bracket-preview-head">
           <div>
             <div class="card-title">${escapeHtml(bracketPage.title)}</div>
             <div class="bet-subtle">Drag to pan, scroll to zoom, and hover a team to trace its tournament path.</div>
           </div>
-          <button class="match-toggle-btn match-toggle-btn-secondary" type="button" data-bracket-open-viewer>Expand Viewer</button>
         </div>
         <div class="embed-wrap bracket-embed-wrap">
-          <iframe src="${bracketPage.src}" title="${escapeAttr(bracketPage.title)}" loading="lazy"></iframe>
+          <iframe src="${bracketPage.src}" title="${escapeAttr(bracketPage.title)}" loading="lazy" data-bracket-iframe></iframe>
         </div>
       </article>
-      ${state.ui.bracketViewerOpen ? `
-        <div class="bracket-popout ${state.ui.bracketViewerMaximized ? 'is-maximized' : ''}" style="${viewerStyle}" data-bracket-popout>
-          <div class="bracket-popout-bar" data-bracket-drag-handle>
-            <div class="bracket-popout-copy">
-              <strong>${escapeHtml(bracketPage.title)}</strong>
-              <span>Drag this bar to move the viewer</span>
-            </div>
-            <div class="bracket-popout-controls">
-              ${BRACKET_PAGES.map(page => `<button class="bracket-popout-tab ${page.id === bracketPage.id ? 'on' : ''}" type="button" data-bracket-page="${page.id}">${page.label}</button>`).join('')}
-              <button class="match-toggle-btn match-toggle-btn-secondary" type="button" data-bracket-toggle-max>${state.ui.bracketViewerMaximized ? 'Restore' : 'Full Screen'}</button>
-              <button class="player-modal-close bracket-popout-close" type="button" aria-label="Close bracket viewer" data-bracket-close>&times;</button>
-            </div>
-          </div>
-          <div class="bracket-popout-body">
-            <iframe src="${bracketPage.src}" title="${escapeAttr(`${bracketPage.title} pop out viewer`)}" loading="lazy"></iframe>
-          </div>
-        </div>` : ''}
     </div>
   `;
 
@@ -2794,67 +2779,9 @@ function renderBrackets(){
     setUI('selectedBracket', button.dataset.bracketPage || BRACKET_PAGES[0].id);
     renderBrackets();
   }));
-  document.querySelectorAll('[data-bracket-open-viewer]').forEach(button => button.addEventListener('click', () => {
-    if(!state.ui.bracketViewerOpen){
-      const centered = getCenteredBracketViewerPosition();
-      setUI('bracketViewerX', centered.x);
-      setUI('bracketViewerY', centered.y);
-    }
-    setUI('bracketViewerOpen', true);
-    renderBrackets();
-  }));
-  document.querySelector('[data-bracket-close]')?.addEventListener('click', () => {
-    setUI('bracketViewerOpen', false);
-    setUI('bracketViewerMaximized', false);
-    renderBrackets();
-  });
-  document.querySelector('[data-bracket-toggle-max]')?.addEventListener('click', () => {
-    setUI('bracketViewerMaximized', !state.ui.bracketViewerMaximized);
-    renderBrackets();
-  });
-  attachBracketViewerDrag();
-}
-
-function clampBracketViewerPosition(x, y){
-  const { width, height } = getBracketViewerSize();
-  const maxX = Math.max(12, window.innerWidth - width - 12);
-  const maxY = Math.max(12, window.innerHeight - height - 12);
-  return {
-    x: Math.min(Math.max(12, x), maxX),
-    y: Math.min(Math.max(12, y), maxY)
-  };
-}
-
-function attachBracketViewerDrag(){
-  const popout = document.querySelector('[data-bracket-popout]');
-  const handle = document.querySelector('[data-bracket-drag-handle]');
-  if(!popout || !handle || state.ui.bracketViewerMaximized) return;
-
-  handle.addEventListener('pointerdown', event => {
-    if(event.target.closest('button')) return;
-    const rect = popout.getBoundingClientRect();
-    const startX = event.clientX;
-    const startY = event.clientY;
-    const originX = rect.left;
-    const originY = rect.top;
-
-    const onMove = moveEvent => {
-      const next = clampBracketViewerPosition(originX + (moveEvent.clientX - startX), originY + (moveEvent.clientY - startY));
-      popout.style.left = `${next.x}px`;
-      popout.style.top = `${next.y}px`;
-    };
-
-    const onUp = upEvent => {
-      const next = clampBracketViewerPosition(originX + (upEvent.clientX - startX), originY + (upEvent.clientY - startY));
-      setUI('bracketViewerX', next.x);
-      setUI('bracketViewerY', next.y);
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onUp);
-    };
-
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
-  });
+  const frame = getBracketIframe();
+  frame?.addEventListener('load', () => sendBracketFullscreenState(frame));
+  syncBracketFullscreenUI();
 }
 
 function matchupFormatLabel(format){
@@ -3323,10 +3250,14 @@ function setNavOpen(isOpen){
 function applyRoute(){
   const hash = (location.hash || `#${APP_CONFIG.defaultSection}`).replace('#', '');
   const section = APP_CONFIG.sections.includes(hash) ? hash : APP_CONFIG.defaultSection;
+  if(section !== 'brackets' && state.ui.bracketFullscreen){
+    setUI('bracketFullscreen', false);
+  }
   setSection(section);
   document.querySelectorAll('.page-section').forEach(node => node.classList.toggle('active', node.id === section));
   document.querySelectorAll('.site-nav a').forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${section}`));
   setNavOpen(false);
+  syncBracketFullscreenUI();
 }
 
 function attachGlobalEvents(){
@@ -3337,10 +3268,8 @@ function attachGlobalEvents(){
   document.querySelectorAll('.site-nav a').forEach(link => link.addEventListener('click', () => setNavOpen(false)));
   window.addEventListener('hashchange', applyRoute);
   window.addEventListener('keydown', event => {
-    if(event.key === 'Escape' && state.ui.bracketViewerOpen){
-      setUI('bracketViewerOpen', false);
-      setUI('bracketViewerMaximized', false);
-      renderBrackets();
+    if(event.key === 'Escape' && state.ui.bracketFullscreen){
+      setBracketFullscreen(false);
       return;
     }
     if(event.key === 'Escape' && state.ui.playerModalId){
@@ -3348,17 +3277,19 @@ function attachGlobalEvents(){
       renderPlayers();
     }
   });
-  window.addEventListener('resize', () => {
-    if(state.ui.bracketViewerOpen && !state.ui.bracketViewerMaximized){
-      const next = clampBracketViewerPosition(state.ui.bracketViewerX, state.ui.bracketViewerY);
-      setUI('bracketViewerX', next.x);
-      setUI('bracketViewerY', next.y);
-      renderBrackets();
-      return;
+  window.addEventListener('message', event => {
+    const frame = getBracketIframe();
+    if(!frame?.contentWindow || event.source !== frame.contentWindow) return;
+    if(event.origin !== window.location.origin && event.origin !== 'null') return;
+    if(event.data?.type === 'toggle-bracket-fullscreen'){
+      setBracketFullscreen(!state.ui.bracketFullscreen);
     }
+  });
+  window.addEventListener('resize', () => {
     if(window.innerWidth > 980){
       setNavOpen(false);
     }
+    syncBracketFullscreenUI();
   });
 }
 
