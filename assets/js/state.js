@@ -4,6 +4,10 @@ export const state = {
   ui: {
     selectedTeam: 'optic',
     selectedTeamB: 'faze',
+    matchupTeamA: 'optic',
+    matchupTeamB: 'faze',
+    matchupFormat: 'BO5',
+    matchupFocus: 'odds',
     teamStatsTab: 'overall',
     teamShowInactive: false,
     matchFilter: 'all',
