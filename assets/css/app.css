@@ -2005,5 +2005,501 @@ tbody tr:hover td{background:#101813}
 }
 .matchup-pick-row strong{flex:1}
 
+.matchup-hero-shell{
+  margin-bottom:14px;
+  padding:16px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(0,232,64,.09), transparent 32%),
+    radial-gradient(circle at 82% 0%, rgba(0,232,64,.08), transparent 28%),
+    linear-gradient(180deg, rgba(8,18,13,.98), rgba(6,12,10,.98));
+  border:1px solid rgba(32,93,66,.78);
+}
+.matchup-controls-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:14px;
+  flex-wrap:wrap;
+}
+.matchup-controls-note{
+  color:#9ab9ab;
+  font-size:12px;
+  line-height:1.55;
+}
+.matchup-format-switch{
+  display:inline-flex;
+  gap:8px;
+  padding:4px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#0d1712;
+}
+.matchup-format-btn{
+  min-width:62px;
+  padding:9px 14px;
+  border-radius:999px;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  cursor:pointer;
+}
+.matchup-format-btn.on{
+  background:rgba(0,232,64,.10);
+  border-color:rgba(0,232,64,.35);
+  color:var(--accent);
+}
+.matchup-hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);
+  gap:14px;
+  align-items:stretch;
+}
+.matchup-team-hero{
+  display:grid;
+  gap:12px;
+  padding:14px;
+  background:linear-gradient(180deg, rgba(11,22,16,.92), rgba(7,13,10,.98));
+  border:1px solid rgba(32,93,66,.72);
+}
+.matchup-team-select{
+  display:grid;
+  gap:6px;
+}
+.matchup-team-identity{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.matchup-team-logo{
+  width:58px;
+  height:58px;
+  object-fit:contain;
+}
+.matchup-team-copy{
+  min-width:0;
+}
+.matchup-team-name{
+  font-size:24px;
+  font-weight:900;
+  line-height:1;
+}
+.matchup-team-sub{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:12px;
+}
+.matchup-team-pills{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.matchup-team-recent{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.matchup-roster-strip{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+}
+.matchup-roster-card{
+  border:1px solid rgba(32,93,66,.72);
+  border-radius:14px;
+  overflow:hidden;
+  background:rgba(6,12,10,.92);
+}
+.matchup-roster-art{
+  height:140px;
+}
+.matchup-roster-meta{
+  padding:9px 10px 10px;
+  background:rgba(0,0,0,.14);
+}
+.matchup-roster-name{
+  color:var(--text);
+  font-size:12px;
+  font-weight:800;
+}
+.matchup-roster-sub{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+.matchup-vs-card{
+  display:grid;
+  place-items:center;
+  gap:8px;
+  padding:14px 10px;
+  background:linear-gradient(180deg, rgba(11,22,16,.92), rgba(7,13,10,.98));
+  border:1px solid rgba(32,93,66,.72);
+}
+.matchup-vs-mark{
+  color:var(--accent);
+  font-size:44px;
+  font-weight:900;
+  line-height:1;
+}
+.matchup-vs-sub{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.matchup-vs-favorite{
+  text-align:center;
+  color:var(--text);
+  font-size:15px;
+  font-weight:800;
+}
+.matchup-vs-confidence{
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:#101813;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.matchup-confidence-high{color:#facc15;border-color:rgba(250,204,21,.28)}
+.matchup-confidence-mid{color:#86efac;border-color:rgba(34,197,94,.28)}
+.matchup-confidence-low{color:#93c5fd;border-color:rgba(96,165,250,.28)}
+.matchup-confidence-flat{color:var(--muted)}
+
+.matchup-feature-grid{
+  display:grid;
+  grid-template-columns:1.2fr .9fr;
+  gap:14px;
+  margin-bottom:14px;
+}
+.matchup-secondary-grid,
+.matchup-player-grid,
+.matchup-insight-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:14px;
+}
+.matchup-insight-grid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.matchup-sim-card,
+.matchup-ladder-card,
+.matchup-player-board-card,
+.matchup-map-pool-card{
+  background:linear-gradient(180deg, rgba(9,20,15,.96), rgba(6,13,10,.99));
+  border:1px solid rgba(32,93,66,.72);
+}
+.matchup-odds-board{
+  display:grid;
+  grid-template-columns:1fr 1.12fr 1fr;
+  gap:12px;
+  align-items:center;
+  margin-top:4px;
+}
+.matchup-odds-side{
+  display:grid;
+  gap:6px;
+}
+.matchup-odds-side.right{text-align:right}
+.matchup-odds-team{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.matchup-odds-value{
+  font-size:46px;
+  font-weight:900;
+  line-height:1;
+}
+.matchup-odds-center{
+  display:grid;
+  gap:8px;
+  text-align:center;
+}
+.matchup-odds-label{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.matchup-confidence-track{
+  height:10px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#0a1510;
+}
+.matchup-confidence-track span{
+  display:block;
+  height:100%;
+  border-radius:inherit;
+}
+.matchup-odds-favorite{
+  color:#dce5dd;
+  font-size:13px;
+  font-weight:700;
+}
+.matchup-scoreline-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:14px 0;
+}
+.matchup-scoreline-chip{
+  display:grid;
+  gap:5px;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid rgba(32,93,66,.72);
+  background:#0d1712;
+}
+.matchup-scoreline-chip.left{box-shadow:inset 0 0 0 1px rgba(0,232,64,.06)}
+.matchup-scoreline-chip.right{box-shadow:inset 0 0 0 1px rgba(255,0,255,.05)}
+.matchup-scoreline-label{
+  color:var(--muted);
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.matchup-scoreline-chip strong{
+  color:var(--text);
+  font-family:var(--font-mono);
+  font-size:20px;
+}
+.matchup-driver-head{
+  margin-bottom:8px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+}
+.matchup-bullet-list{
+  margin:0;
+  padding-left:18px;
+  display:grid;
+  gap:8px;
+  color:#dbe5dd;
+}
+.matchup-ladder{
+  display:grid;
+  gap:10px;
+}
+.matchup-ladder-row{
+  display:grid;
+  grid-template-columns:76px 90px 1fr 124px;
+  gap:10px;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+}
+.matchup-ladder-row:last-child{border-bottom:none}
+.matchup-ladder-slot{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.matchup-ladder-map{
+  display:grid;
+  gap:4px;
+}
+.matchup-ladder-map strong{font-size:15px}
+.matchup-ladder-map span{
+  color:var(--muted);
+  font-size:11px;
+}
+.matchup-ladder-proj{
+  display:grid;
+  justify-items:end;
+  gap:4px;
+  text-align:right;
+}
+.matchup-ladder-proj strong{
+  color:var(--text);
+  font-family:var(--font-mono);
+  font-size:17px;
+}
+
+.matchup-compare-row{
+  margin-bottom:12px;
+}
+.matchup-compare-row:last-child{margin-bottom:0}
+.matchup-compare-head{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:10px;
+  align-items:center;
+  margin-bottom:6px;
+}
+.matchup-compare-head span{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-align:center;
+  text-transform:uppercase;
+}
+.matchup-compare-head strong{
+  font-size:14px;
+}
+.matchup-compare-head strong:last-child{text-align:right}
+.matchup-compare-bar{margin-bottom:0}
+.matchup-timeline{
+  margin-top:12px;
+  display:grid;
+  gap:0;
+}
+
+.matchup-duel-grid{
+  display:grid;
+  grid-template-columns:1fr 64px 1fr;
+  gap:14px;
+  align-items:center;
+}
+.matchup-duel-side{
+  display:grid;
+  gap:12px;
+  justify-items:center;
+  text-align:center;
+}
+.matchup-duel-art{
+  width:100%;
+  max-width:250px;
+  height:200px;
+  border-radius:18px;
+  overflow:hidden;
+}
+.matchup-duel-copy{
+  display:grid;
+  gap:4px;
+}
+.matchup-duel-name{
+  font-size:24px;
+  font-weight:900;
+  line-height:1;
+}
+.matchup-duel-team{
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.matchup-duel-metrics{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.matchup-duel-vs{
+  color:var(--accent);
+  font-size:28px;
+  font-weight:900;
+  text-align:center;
+}
+.matchup-leaders-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.matchup-leader-panel{
+  border:1px solid rgba(32,93,66,.68);
+  border-radius:16px;
+  padding:14px;
+  background:#0d1712;
+}
+.matchup-leader-head{
+  margin-bottom:12px;
+  font-size:14px;
+  font-weight:900;
+}
+.matchup-leader-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  padding:8px 0;
+  border-bottom:1px solid var(--line);
+}
+.matchup-leader-row:last-child{border-bottom:none;padding-bottom:0}
+.matchup-leader-row > span{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.matchup-leader-value{
+  display:grid;
+  justify-items:end;
+  gap:3px;
+  text-align:right;
+}
+.matchup-player-board{
+  display:grid;
+  gap:10px;
+}
+.matchup-player-row{
+  display:grid;
+  grid-template-columns:1fr 110px 1fr;
+  gap:12px;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+}
+.matchup-player-row:last-child{border-bottom:none}
+.matchup-player-side{
+  min-width:0;
+}
+.matchup-player-chip{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.matchup-player-chip.right{justify-content:flex-end}
+.matchup-player-chip > div{
+  display:grid;
+  gap:3px;
+}
+.matchup-player-chip.right > div{text-align:right}
+.matchup-player-edge{
+  text-align:center;
+  font-family:var(--font-mono);
+  font-size:15px;
+  font-weight:900;
+  color:var(--muted);
+}
+.matchup-player-edge.left{color:var(--accent)}
+.matchup-player-edge.right{color:#f973ff}
+
+.matchup-insight-card{
+  min-height:100%;
+  background:linear-gradient(180deg, rgba(9,20,15,.96), rgba(6,13,10,.99));
+  border:1px solid rgba(32,93,66,.72);
+}
+.matchup-empty-card{
+  padding:16px;
+}
+.matchup-empty-controls{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:14px;
+}
+
 .embed-wrap{border-radius:var(--radius);border:1px solid var(--line);background:#050806}
 .embed-wrap iframe{height:820px;background:#fff}

@@ -111,6 +111,25 @@
   }
   .match-score-team,
   .match-score-team.right{justify-content:space-between}
+  .matchup-controls-row{align-items:flex-start}
+  .matchup-hero-grid,
+  .matchup-feature-grid,
+  .matchup-secondary-grid,
+  .matchup-player-grid,
+  .matchup-insight-grid,
+  .matchup-duel-grid,
+  .matchup-leaders-grid{grid-template-columns:1fr}
+  .matchup-vs-card{min-height:unset}
+  .matchup-odds-board{grid-template-columns:1fr}
+  .matchup-scoreline-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .matchup-roster-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .matchup-ladder-row,
+  .matchup-player-row{grid-template-columns:1fr}
+  .matchup-player-side,
+  .matchup-player-side.right{text-align:left}
+  .matchup-player-chip.right{justify-content:flex-start}
+  .matchup-player-chip.right > div{text-align:left}
+  .matchup-player-edge{text-align:left}
 }
 
 @media (max-width: 700px){
@@ -168,6 +187,16 @@
   .bet-hero{flex-direction:column}
   .bet-hero-right{justify-content:flex-start}
   .team-sel-card{padding:12px}
+  .matchup-format-switch{width:100%;justify-content:space-between}
+  .matchup-format-btn{flex:1}
+  .matchup-roster-strip,
+  .matchup-scoreline-grid{grid-template-columns:1fr}
+  .matchup-team-name{font-size:20px}
+  .matchup-odds-value{font-size:38px}
+  .matchup-ladder-row{gap:6px}
+  .matchup-player-chip{align-items:flex-start}
+  .matchup-player-chip > div{min-width:0}
+  .matchup-empty-controls{grid-template-columns:1fr}
   .match-row-line{
     align-items:flex-start;
     flex-direction:column;
