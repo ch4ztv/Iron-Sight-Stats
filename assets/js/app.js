@@ -37,6 +37,14 @@ function teamColor(teamId){
   return TEAM_ACCENTS[teamId] || '#1cff6a';
 }
 
+function eventOrderValue(eventId){
+  return APP_CONFIG.eventMeta?.[eventId]?.order ?? 999;
+}
+
+function compareEventIds(left, right){
+  return eventOrderValue(left) - eventOrderValue(right) || String(left).localeCompare(String(right));
+}
+
 function normalizeName(value = ''){
   return String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
@@ -77,6 +85,38 @@ function median(values){
 
 function unique(values){
   return Array.from(new Set(values.filter(Boolean)));
+}
+
+function rawPlayerMeta(playerId){
+  return state.data.playerById?.[playerId] || null;
+}
+
+function personIdForPlayer(playerId){
+  return rawPlayerMeta(playerId)?.personId || playerId;
+}
+
+function currentStintForPerson(personId){
+  return state.data.currentPlayerByPersonId?.[personId] || null;
+}
+
+function currentStintForPlayer(playerId){
+  return currentStintForPerson(personIdForPlayer(playerId)) || rawPlayerMeta(playerId);
+}
+
+function playerBioMeta(playerOrId){
+  const playerId = typeof playerOrId === 'object' ? playerOrId?.playerId : playerOrId;
+  const personId = typeof playerOrId === 'object'
+    ? (playerOrId?.personId || personIdForPlayer(playerOrId?.playerId))
+    : personIdForPlayer(playerId);
+  const currentPlayer = currentStintForPerson(personId) || rawPlayerMeta(playerId) || null;
+  return state.data.playerBiosByPersonId?.[personId]
+    || (currentPlayer ? state.data.playerBios?.[currentPlayer.id] : null)
+    || state.data.playerBios?.[playerId]
+    || {};
+}
+
+function isEligibleCurrentRosterProfile(profile){
+  return Boolean(profile) && profile.active !== false && !profile.placeholder && profile.status !== 'substitute';
 }
 
 function teamLogoPath(teamId){
@@ -380,70 +420,77 @@ function extractTeamStatNames(team){
 }
 
 function buildComputedModel(data){
-  const aggregateByKey = new Map((data.playerAggList || []).map(row => [`${row.teamId}::${normalizeName(row.name)}`, row]));
-  const metaByKey = new Map((data.players || []).map(row => [`${row.teamId}::${normalizeName(row.name)}`, row]));
+  const aggregateByPerson = new Map((data.playerAggListByPerson || []).map(row => [row.personId, row]));
   const seasonOvrModel = buildSeasonOvrModel(data);
   const profilesByTeam = {};
+  const profileByPlayerId = {};
+  const currentProfileByPersonId = {};
   const allProfiles = [];
   const avgIsrByTeam = {};
   const avgOvrByTeam = {};
   const topPerformerByTeam = {};
   const topRatedByTeam = {};
+
   TEAM_IDS.forEach(teamId => {
-    const preferredNames = new Map();
-    const rememberName = (name, priority = 0) => {
+    const rosterEntries = [...(data.playersByTeam?.[teamId] || [])];
+    const knownEntries = new Set(rosterEntries.map(player => normalizeName(player.name)));
+    extractTeamStatNames(data.teamStats?.[teamId]).forEach(name => {
       const normalized = normalizeName(name);
-      if(!normalized) return;
-      const existing = preferredNames.get(normalized);
-      if(!existing || priority >= existing.priority){
-        preferredNames.set(normalized, { name, priority });
-      }
-    };
+      if(!normalized || knownEntries.has(normalized)) return;
+      rosterEntries.push({
+        id: `${teamId}_${normalized}`,
+        name,
+        teamId,
+        active: false,
+        status: 'inactive',
+        personId: normalized,
+        synthetic: true
+      });
+      knownEntries.add(normalized);
+    });
 
-    extractTeamStatNames(data.teamStats?.[teamId]).forEach(name => rememberName(name, 1));
-    (data.playerAggList || [])
-      .filter(row => row.teamId === teamId)
-      .forEach(row => rememberName(row.name, 2));
-    (data.playersByTeam?.[teamId] || []).forEach(player => rememberName(player.name, 3));
-
-    const names = Array.from(preferredNames.values()).map(entry => entry.name);
-
-    const profiles = names.map(name => {
-      const key = `${teamId}::${normalizeName(name)}`;
-      const aggregate = aggregateByKey.get(key) || {};
-      const meta = metaByKey.get(key) || {};
-      const base = buildIsrPlayerFromTeamStats(data.teamStats, teamId, name, data.playerAggList);
+    const profiles = rosterEntries.map(meta => {
+      const personId = meta.personId || String(meta.id || '').split('_', 2).slice(1).join('_') || meta.id;
+      const currentStint = data.currentPlayerByPersonId?.[personId] || meta;
+      const bio = data.playerBiosByPersonId?.[personId] || data.playerBios?.[currentStint.id] || {};
+      const aggregate = aggregateByPerson.get(personId) || {};
+      const base = buildIsrPlayerFromTeamStats(data.teamStats, teamId, meta.name, data.playerAggList);
       const maps = num(aggregate.maps) ?? base.sample ?? 0;
       const damage = num(aggregate.damage) ?? 0;
-      const playerId = meta.id || aggregate.playerId || `${teamId}_${normalizeName(name)}`;
+      const playerId = meta.id || currentStint.id || aggregate.playerId || `${teamId}_${normalizeName(meta.name)}`;
       const ovrCard = seasonOvrModel.byPlayerId?.[playerId] || null;
       const profile = {
         ...base,
-        displayName: meta.name || base.name || name,
+        displayName: meta.name || bio.tag || base.name || currentStint.name || meta.id,
         playerId,
-        active: meta.active ?? true,
+        personId,
+        active: meta.active ?? currentStint.active ?? true,
+        status: meta.status || currentStint.status || (meta.active === false ? 'inactive' : 'active'),
+        placeholder: meta.placeholder === true || bio.placeholder === true,
         kills: num(aggregate.kills) ?? 0,
         deaths: num(aggregate.deaths) ?? 0,
         damage,
         maps,
         sample: maps || base.sample,
         dmgPerMap: maps ? damage / maps : 0,
-        kd: base.kd ?? num(aggregate.kd),
+        kd: num(base.kd) ?? num(aggregate.kd),
+        currentTeamId: currentStint.teamId || meta.teamId || teamId,
         teamId
       };
 
-      profile.overallOVR = ovrCard?.overall ?? null;
-      profile.hpOVR = ovrCard?.hp ?? null;
-      profile.sndOVR = ovrCard?.snd ?? null;
-      profile.olOVR = ovrCard?.ol ?? null;
-      profile.ratingMatchCount = ovrCard?.matchCount ?? 0;
-      profile.ratingMapCount = ovrCard?.mapCount ?? 0;
-      profile.ratingMatches = ovrCard?.matches || [];
+      const personCard = seasonOvrModel.byPersonId?.[personId] || seasonOvrModel.byPlayerId?.[playerId] || ovrCard;
+      profile.overallOVR = personCard?.overall ?? null;
+      profile.hpOVR = personCard?.hp ?? null;
+      profile.sndOVR = personCard?.snd ?? null;
+      profile.olOVR = personCard?.ol ?? null;
+      profile.ratingMatchCount = personCard?.matchCount ?? 0;
+      profile.ratingMapCount = personCard?.mapCount ?? 0;
+      profile.ratingMatches = personCard?.matches || [];
       profile.ovrTier = ovrTier(profile.overallOVR);
-      profile.overallISR = computeISR(profile, null, data.isr);
-      profile.hpISR = computeISR(profile, 'HP', data.isr);
-      profile.sndISR = computeISR(profile, 'SND', data.isr);
-      profile.olISR = computeISR(profile, 'OL', data.isr);
+      profile.overallISR = computeISR(profile, null, data.isr) ?? num(profile.overallOVR);
+      profile.hpISR = computeISR(profile, 'HP', data.isr) ?? num(profile.hpOVR);
+      profile.sndISR = computeISR(profile, 'SND', data.isr) ?? num(profile.sndOVR);
+      profile.olISR = computeISR(profile, 'OL', data.isr) ?? num(profile.olOVR);
       profile.tier = isrTier(profile.overallISR);
       profile.hasStats = [
         profile.overallOVR,
@@ -458,35 +505,52 @@ function buildComputedModel(data){
 
     profiles.sort((a, b) =>
       Number(Boolean(b.active)) - Number(Boolean(a.active)) ||
+      Number(Boolean(a.placeholder)) - Number(Boolean(b.placeholder)) ||
       (num(b.overallOVR) ?? -1) - (num(a.overallOVR) ?? -1) ||
       (num(b.overallISR) ?? -1) - (num(a.overallISR) ?? -1) ||
       a.displayName.localeCompare(b.displayName)
     );
 
     profilesByTeam[teamId] = profiles;
-    const ratedProfiles = profiles.filter(profile => profile.overallISR !== null);
-    const activeRatedProfiles = ratedProfiles.filter(profile => profile.active);
+    profiles.forEach(profile => {
+      profileByPlayerId[profile.playerId] = profile;
+    });
+
+    const ratedProfiles = profiles.filter(profile => profile.overallISR !== null && !profile.placeholder);
+    const activeRatedProfiles = ratedProfiles.filter(profile => isEligibleCurrentRosterProfile(profile));
     const pool = activeRatedProfiles.length ? activeRatedProfiles : ratedProfiles;
     avgIsrByTeam[teamId] = average(pool.map(profile => profile.overallISR));
     topPerformerByTeam[teamId] = pool[0] || null;
 
-    const ovrProfiles = profiles.filter(profile => profile.overallOVR !== null);
-    const activeOvrProfiles = ovrProfiles.filter(profile => profile.active);
+    const ovrProfiles = profiles.filter(profile => profile.overallOVR !== null && !profile.placeholder);
+    const activeOvrProfiles = ovrProfiles.filter(profile => isEligibleCurrentRosterProfile(profile));
     const ovrPool = activeOvrProfiles.length ? activeOvrProfiles : ovrProfiles;
     avgOvrByTeam[teamId] = average(ovrPool.map(profile => profile.overallOVR));
     topRatedByTeam[teamId] = ovrPool[0] || null;
-    allProfiles.push(...profiles.filter(profile => profile.hasStats));
   });
+
+  Object.entries(data.currentPlayerByPersonId || {}).forEach(([personId, player]) => {
+    const profile = profileByPlayerId[player?.id];
+    if(profile && profile.hasStats && !profile.placeholder){
+      currentProfileByPersonId[personId] = profile;
+    }
+  });
+  allProfiles.push(...Object.values(currentProfileByPersonId));
 
   return {
     profilesByTeam,
     allProfiles,
+    profileByPlayerId,
+    currentProfileByPersonId,
+    profilesByPersonId: currentProfileByPersonId,
     avgIsrByTeam,
     avgOvrByTeam,
     topPerformerByTeam,
     topRatedByTeam,
     matchRatingByKey: seasonOvrModel.byMatchPlayerKey || {},
-    mapRatingByKey: seasonOvrModel.byMapPlayerKey || {}
+    mapRatingByKey: seasonOvrModel.byMapPlayerKey || {},
+    matchRatingByPersonKey: seasonOvrModel.byMatchPersonKey || {},
+    mapRatingByPersonKey: seasonOvrModel.byMapPersonKey || {}
   };
 }
 
@@ -561,15 +625,12 @@ const BETTING_MARKETS = [
   }
 ];
 
-const BETTING_EVENT_ORDER = ['M1Q', 'M1T', 'M2Q', 'M2T', 'CHAMPS', 'EWC'];
-const BETTING_EVENT_LABELS = {
-  M1Q: 'Major 1 Qualifiers',
-  M1T: 'Major 1 Tournament',
-  M2Q: 'Major 2 Qualifiers',
-  M2T: 'Major 2 Tournament',
-  CHAMPS: 'Championship Weekend',
-  EWC: 'Esports World Cup'
-};
+const BETTING_EVENT_ORDER = Object.entries(APP_CONFIG.eventMeta || {})
+  .sort((left, right) => (left[1]?.order ?? 999) - (right[1]?.order ?? 999))
+  .map(([eventId]) => eventId);
+const BETTING_EVENT_LABELS = Object.fromEntries(
+  Object.entries(APP_CONFIG.eventMeta || {}).map(([eventId, meta]) => [eventId, meta.label])
+);
 
 const BETTING_MODE_OPTIONS = [
   { id: 'all', label: 'All Modes' },
@@ -696,8 +757,13 @@ function syncBettingLabToMarket(marketId){
 
 function getBettingRoster(teamId){
   const roster = state.data.computed?.profilesByTeam?.[teamId] || [];
-  if(roster.length) return roster;
-  return (state.data.playersByTeam?.[teamId] || []).map(player => ({
+  const eligibleRoster = roster.filter(isEligibleCurrentRosterProfile);
+  if(eligibleRoster.length) return eligibleRoster;
+  const fallbackRoster = roster.filter(profile => !profile.placeholder && profile.status !== 'substitute');
+  if(fallbackRoster.length) return fallbackRoster;
+  return (state.data.playersByTeam?.[teamId] || [])
+    .filter(player => !player.placeholder && player.status !== 'substitute' && player.active !== false)
+    .map(player => ({
     playerId: player.id,
     displayName: player.name,
     teamId,
@@ -713,23 +779,22 @@ function getBettingPlayer(playerId){
 }
 
 function getBettingProfile(playerId){
-  return state.data.computed?.allProfiles?.find(profile => profile.playerId === playerId) || null;
+  const currentProfile = state.data.computed?.profileByPlayerId?.[playerId];
+  if(currentProfile) return currentProfile;
+  const personId = personIdForPlayer(playerId);
+  return state.data.computed?.currentProfileByPersonId?.[personId]
+    || state.data.computed?.allProfiles?.find(profile => profile.personId === personId)
+    || null;
 }
 
 function buildBettingEventOptions(teamId, opponentId = 'all'){
   const eventIds = unique((state.data.matches || [])
+    .filter(isCompletedMatch)
     .filter(match => (match.team1Id === teamId || match.team2Id === teamId))
     .filter(match => opponentId === 'all' || match.team1Id === opponentId || match.team2Id === opponentId)
     .map(match => match.eventId));
 
-  eventIds.sort((left, right) => {
-    const leftIndex = BETTING_EVENT_ORDER.indexOf(left);
-    const rightIndex = BETTING_EVENT_ORDER.indexOf(right);
-    if(leftIndex !== -1 || rightIndex !== -1){
-      return (leftIndex === -1 ? BETTING_EVENT_ORDER.length : leftIndex) - (rightIndex === -1 ? BETTING_EVENT_ORDER.length : rightIndex);
-    }
-    return String(left).localeCompare(String(right));
-  });
+  eventIds.sort(compareEventIds);
 
   return [{ id: 'all', label: 'Full Season' }, ...eventIds.map(eventId => ({ id: eventId, label: formatBettingEvent(eventId) }))];
 }
@@ -997,14 +1062,7 @@ function buildBettingMapLogs({ teamId, playerId, opponentId, eventId, modeId, ma
 
 function buildMatchEventOptions(){
   const eventIds = unique((state.data.matches || []).map(match => match.eventId));
-  eventIds.sort((left, right) => {
-    const leftIndex = BETTING_EVENT_ORDER.indexOf(left);
-    const rightIndex = BETTING_EVENT_ORDER.indexOf(right);
-    if(leftIndex !== -1 || rightIndex !== -1){
-      return (leftIndex === -1 ? BETTING_EVENT_ORDER.length : leftIndex) - (rightIndex === -1 ? BETTING_EVENT_ORDER.length : rightIndex);
-    }
-    return String(left).localeCompare(String(right));
-  });
+  eventIds.sort(compareEventIds);
   return [{ id: 'all', label: 'All Events' }, ...eventIds.map(eventId => ({ id: eventId, label: formatBettingEvent(eventId) }))];
 }
 
@@ -1287,6 +1345,7 @@ function renderDashboardSkeleton(){
 
 function renderDashboard(){
   const { data } = state;
+  const completedMatches = (data.matches || []).filter(isCompletedMatch);
   const recentMatches = [...(data.matches || [])]
     .filter(isCompletedMatch)
     .sort((a, b) => (b.ts || 0) - (a.ts || 0))
@@ -1307,7 +1366,7 @@ function renderDashboard(){
       </div>`).join('')}
     </div>
     <div class="dashboard-kpis">
-      ${kpiCard('Matches Logged', fmtNum((data.matches || []).length))}
+      ${kpiCard('Matches Logged', fmtNum(completedMatches.length))}
       ${kpiCard('Maps Played', fmtNum((data.maps || []).length))}
       ${kpiCard('CDL Points Awarded', fmtNum(seasonPoints))}
       ${kpiCard('Player-Map Stats', fmtNum((data.playerStats || []).length))}
@@ -1545,15 +1604,8 @@ function playerSortDefault(sortKey){
 }
 
 function getPlayerEventOptions(){
-  const eventIds = unique((state.data.matches || []).map(match => match.eventId));
-  eventIds.sort((left, right) => {
-    const leftIndex = BETTING_EVENT_ORDER.indexOf(left);
-    const rightIndex = BETTING_EVENT_ORDER.indexOf(right);
-    if(leftIndex === -1 && rightIndex === -1) return left.localeCompare(right);
-    if(leftIndex === -1) return 1;
-    if(rightIndex === -1) return -1;
-    return leftIndex - rightIndex;
-  });
+  const eventIds = unique((state.data.matches || []).filter(isCompletedMatch).map(match => match.eventId));
+  eventIds.sort(compareEventIds);
   return [{ id: 'all', label: 'Season Wide' }, ...eventIds.map(eventId => ({ id: eventId, label: formatBettingEvent(eventId) }))];
 }
 
@@ -1591,7 +1643,7 @@ function playerAgeLabel(dob){
 }
 
 function playerSeasonAccomplishments(){
-  const byPlayerId = {};
+  const byPersonId = {};
   const matchesByEvent = {};
   (state.data.matches || []).forEach(match => {
     if(!match.eventId) return;
@@ -1625,12 +1677,13 @@ function playerSeasonAccomplishments(){
           : null;
     if(!bucketKey) return;
     winningPlayerIds.forEach(playerId => {
-      const entry = byPlayerId[playerId] ||= { majorWins: 0, champsWins: 0, ewcWins: 0 };
+      const personId = state.data.personByPlayerId?.[playerId] || playerId;
+      const entry = byPersonId[personId] ||= { majorWins: 0, champsWins: 0, ewcWins: 0 };
       entry[bucketKey] += 1;
     });
   });
 
-  return byPlayerId;
+  return byPersonId;
 }
 
 function rawSlayerRating(hpKpm, sndKpm, olKpm){
@@ -1660,27 +1713,34 @@ function buildPlayerLeaderboardRows(){
   const modeId = PLAYER_MODE_OPTIONS.some(option => option.id === state.ui.playerMode) ? state.ui.playerMode : 'all';
   if(modeId !== state.ui.playerMode) setUI('playerMode', modeId);
 
-  const rowsByPlayer = new Map();
+  const rowsByPerson = new Map();
   for(const row of state.data.playerStats || []){
     const map = state.data.mapsById?.[row.mapId];
     const match = state.data.matchesById?.[map?.matchId];
     const playerMeta = state.data.playerById?.[row.playerId] || {};
-    const playerTeamId = row.teamId || playerMeta.teamId || '';
-    const playerName = playerMeta.name || row.playerId;
-    const active = playerMeta.active ?? true;
+    const personId = state.data.personByPlayerId?.[row.playerId] || row.playerId;
+    const currentPlayer = currentStintForPerson(personId) || playerMeta;
+    const playerTeamId = currentPlayer.teamId || playerMeta.teamId || row.teamId || '';
+    const playerName = currentPlayer.name || playerMeta.name || row.playerId;
+    const active = currentPlayer.active ?? playerMeta.active ?? true;
+    const status = currentPlayer.status || playerMeta.status || (active ? 'active' : 'inactive');
+    const placeholder = currentPlayer.placeholder === true || playerMeta.placeholder === true;
     const mapMode = String(map?.mode || '').toUpperCase();
 
     if(!map || !match) continue;
     if(eventId !== 'all' && match.eventId !== eventId) continue;
     if(teamFilter !== 'all' && playerTeamId !== teamFilter) continue;
-    if(!state.ui.playerShowInactive && active === false) continue;
+    if(placeholder) continue;
+    if(!state.ui.playerShowInactive && (active === false || status === 'substitute')) continue;
     if(!matchesPlayerModeFilter(modeId, mapMode)) continue;
 
-    const entry = rowsByPlayer.get(row.playerId) || {
-      playerId: row.playerId,
+    const entry = rowsByPerson.get(personId) || {
+      personId,
+      playerId: currentPlayer.id || row.playerId,
       displayName: playerName,
       teamId: playerTeamId,
       active,
+      status,
       maps: 0,
       kills: 0,
       deaths: 0,
@@ -1691,7 +1751,8 @@ function buildPlayerLeaderboardRows(){
         SND: { maps: 0, kills: 0, deaths: 0 },
         OL: { maps: 0, kills: 0, deaths: 0 }
       },
-      matchIds: new Set()
+      matchIds: new Set(),
+      rawPlayerIds: new Set()
     };
 
     entry.maps += 1;
@@ -1700,6 +1761,7 @@ function buildPlayerLeaderboardRows(){
     entry.damage += Number(row.damage || 0);
     entry.assists += Number(row.assists || 0);
     entry.matchIds.add(map.matchId);
+    entry.rawPlayerIds.add(row.playerId);
 
     if(entry.byMode[mapMode]){
       entry.byMode[mapMode].maps += 1;
@@ -1707,10 +1769,10 @@ function buildPlayerLeaderboardRows(){
       entry.byMode[mapMode].deaths += Number(row.deaths || 0);
     }
 
-    rowsByPlayer.set(row.playerId, entry);
+    rowsByPerson.set(personId, entry);
   }
 
-  let rows = Array.from(rowsByPlayer.values()).map(entry => {
+  let rows = Array.from(rowsByPerson.values()).map(entry => {
     const hpBucket = entry.byMode.HP;
     const sndBucket = entry.byMode.SND;
     const olBucket = entry.byMode.OL;
@@ -1721,7 +1783,7 @@ function buildPlayerLeaderboardRows(){
     const respawnMaps = hpBucket.maps + olBucket.maps;
     const respawnKills = hpBucket.kills + olBucket.kills;
     const ratingValues = Array.from(entry.matchIds)
-      .map(matchId => playerScopeRating(state.data.computed?.matchRatingByKey?.[`${entry.playerId}::${matchId}`], modeId))
+      .map(matchId => playerScopeRating(state.data.computed?.matchRatingByPersonKey?.[`${entry.personId}::${matchId}`], modeId))
       .filter(value => value !== null);
     const searchKey = `${entry.displayName} ${teamName(entry.teamId)} ${teamAbbr(entry.teamId)}`.toLowerCase();
     return {
@@ -1825,14 +1887,14 @@ function legacyPlayerLeaderboardRowMarkup(player, index){
   </tr>`;
 }
 
-function playerBioMeta(playerId){
+function legacyPlayerBioMeta(playerId){
   return state.data.playerBios?.[playerId] || {};
 }
 
 function legacyPlayerModalMarkup(player){
   if(!player) return '';
-  const bio = playerBioMeta(player.playerId);
-  const seasonWins = playerSeasonAccomplishments()[player.playerId] || { majorWins: 0, champsWins: 0, ewcWins: 0 };
+  const bio = legacyPlayerBioMeta(player.playerId);
+  const seasonWins = playerSeasonAccomplishments()[player.personId || personIdForPlayer(player.playerId)] || { majorWins: 0, champsWins: 0, ewcWins: 0 };
   const majorWins = num(bio.seasonMajorWins) ?? num(bio.majorWins) ?? seasonWins.majorWins;
   const champsWins = num(bio.seasonChampsWins) ?? num(bio.champsWins) ?? seasonWins.champsWins;
   const ewcWins = num(bio.seasonEwcWins) ?? num(bio.ewcWins) ?? seasonWins.ewcWins;
@@ -2120,7 +2182,7 @@ function playerLeaderboardRowMarkup(player, index){
 
 function playerModalMarkup(player){
   if(!player) return '';
-  const bio = playerBioMeta(player.playerId);
+  const bio = playerBioMeta(player);
   const majorWins = num(bio.careerMajorWins) ?? 0;
   const champsWins = num(bio.careerChampsWins) ?? 0;
   const ewcWins = num(bio.careerEwcWins) ?? 0;
@@ -2718,7 +2780,8 @@ function renderBetting(){
 
 const BRACKET_PAGES = [
   { id: 'major-1', label: 'Major 1', title: 'Open Major 1 Interactive Bracket', src: './brackets/major-1.html' },
-  { id: 'major-2', label: 'Major 2', title: 'Open Major 2 Interactive Bracket', src: './brackets/major-2.html' }
+  { id: 'major-2', label: 'Major 2', title: 'Open Major 2 Interactive Bracket', src: './brackets/major-2.html' },
+  { id: 'minor-1', label: 'Minor 1', title: 'Open Minor 1 Interactive Bracket', src: './brackets/minor-1.html' }
 ];
 
 function getBracketPage(bracketId = state.ui.selectedBracket){
@@ -2753,7 +2816,7 @@ function renderBrackets(){
   const bracketPage = getBracketPage();
 
   $('#brackets').innerHTML = `
-    ${sectionHeader('Brackets', 'Major event bracket pages and the bracket-data summary.')}
+    ${sectionHeader('Brackets', 'Interactive major and minor event brackets embedded directly in the page.')}
     <div class="bracket-shell">
       <div class="bracket-toolbar">
         <div class="bracket-switcher">

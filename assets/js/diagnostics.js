@@ -14,8 +14,10 @@
     './data/team-stats.json',
     './data/bracket-data.json',
     './data/isr-config.json',
+    './data/rulesets.json',
     './brackets/major-1.html',
-    './brackets/major-2.html'
+    './brackets/major-2.html',
+    './brackets/minor-1.html'
   ];
 
   async function runDiagnostics() {

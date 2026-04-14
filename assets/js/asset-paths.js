@@ -197,6 +197,18 @@ function manifestPlayerCandidates(teamId, playerName) {
       }
     }
   }
+  if (results.length) {
+    return unique(results);
+  }
+
+  for (const [team, files] of Object.entries(PLAYER_IMAGE_MANIFEST)) {
+    for (const file of files) {
+      const basename = file.replace(/\.[^.]+$/, '');
+      if (playerKeys.has(compactKey(basename))) {
+        results.push(`./assets/img/players/${team}/${file}`);
+      }
+    }
+  }
   return unique(results);
 }
 

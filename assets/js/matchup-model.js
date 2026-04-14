@@ -84,6 +84,10 @@ function emptyStatBucket() {
   };
 }
 
+function getRulesetById(data = {}, rulesetId) {
+  return (data.rulesets?.rulesets || []).find(ruleset => ruleset.id === rulesetId) || null;
+}
+
 function getDerivedData(data = {}) {
   if (DERIVED_CACHE.has(data)) {
     return DERIVED_CACHE.get(data);
@@ -197,18 +201,22 @@ function getDerivedData(data = {}) {
   Object.values(pairMatches).forEach(list => list.sort((left, right) => Number(right.ts || 0) - Number(left.ts || 0)));
   Object.values(teamSeriesHistory).forEach(list => list.sort((left, right) => right.ts - left.ts));
 
+  const currentRuleset = getRulesetById(data, data.rulesets?.defaultCurrentId);
+  const activeMapNames = currentRuleset?.modes || {};
+
   const derived = {
     mapNamesByMode: {
-      HP: Array.from(mapNamesByMode.HP).sort(),
-      SND: Array.from(mapNamesByMode.SND).sort(),
-      OL: Array.from(mapNamesByMode.OL).sort()
+      HP: (activeMapNames.HP?.length ? [...activeMapNames.HP] : Array.from(mapNamesByMode.HP)).sort(),
+      SND: (activeMapNames.SND?.length ? [...activeMapNames.SND] : Array.from(mapNamesByMode.SND)).sort(),
+      OL: (activeMapNames.OL?.length ? [...activeMapNames.OL] : Array.from(mapNamesByMode.OL)).sort()
     },
     seasonMapFrequency,
     teamModeStats,
     teamModeMapStats,
     teamSeriesHistory,
     pairMatches,
-    teamStatLookup
+    teamStatLookup,
+    currentRuleset
   };
 
   DERIVED_CACHE.set(data, derived);
@@ -217,7 +225,7 @@ function getDerivedData(data = {}) {
 
 function getRosterProfiles(data, teamId, limit = 4) {
   const all = data.computed?.profilesByTeam?.[teamId] || [];
-  const active = all.filter(profile => profile.active !== false);
+  const active = all.filter(profile => profile.active !== false && !profile.placeholder && profile.status !== 'substitute');
   const source = active.length ? active : all;
   return [...source]
     .sort((left, right) =>

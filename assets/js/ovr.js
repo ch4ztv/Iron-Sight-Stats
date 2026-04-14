@@ -119,6 +119,9 @@ export function buildSeasonOvrModel(data = {}) {
   const playerMapRows = [];
   const rowsByMode = { HP: [], SND: [], OL: [] };
   const byMapPlayerKey = {};
+  const personByPlayerId = Object.fromEntries(
+    Object.entries(data.playerById || {}).map(([playerId, player]) => [playerId, player?.personId || playerId])
+  );
 
   for (const map of data.maps || []) {
     const mode = String(map.mode || '').toUpperCase();
@@ -267,5 +270,76 @@ export function buildSeasonOvrModel(data = {}) {
     player.ol = roundScore(stabilizeScore(average(olMatches.map(match => match.ol)), olMatches.length));
   });
 
-  return { byPlayerId, byMatchPlayerKey, byMapPlayerKey };
+  const byMapPersonKey = {};
+  Object.entries(byMapPlayerKey).forEach(([key, entry]) => {
+    const personId = personByPlayerId[entry.playerId] || entry.playerId;
+    byMapPersonKey[`${personId}::${entry.mapId}`] = {
+      personId,
+      playerId: entry.playerId,
+      teamId: entry.teamId,
+      matchId: entry.matchId,
+      mapId: entry.mapId,
+      mode: entry.mode,
+      overall: entry.overall
+    };
+  });
+
+  const personMatchGroups = new Map();
+  Object.values(byMatchPlayerKey).forEach(entry => {
+    const personId = personByPlayerId[entry.playerId] || entry.playerId;
+    const key = `${personId}::${entry.matchId}`;
+    const group = personMatchGroups.get(key) || {
+      personId,
+      matchId: entry.matchId,
+      entries: []
+    };
+    group.entries.push(entry);
+    personMatchGroups.set(key, group);
+  });
+
+  const byMatchPersonKey = {};
+  const byPersonId = {};
+  for (const group of personMatchGroups.values()) {
+    const entry = {
+      personId: group.personId,
+      teamId: group.entries[0]?.teamId || '',
+      overall: roundScore(average(group.entries.map(item => item.overall))),
+      hp: roundScore(average(group.entries.map(item => item.hp))),
+      snd: roundScore(average(group.entries.map(item => item.snd))),
+      ol: roundScore(average(group.entries.map(item => item.ol))),
+      mapCount: group.entries.reduce((sum, item) => sum + Number(item.mapCount || 0), 0),
+      seriesWin: group.entries.some(item => item.seriesWin)
+    };
+    byMatchPersonKey[`${group.personId}::${group.matchId}`] = {
+      personId: group.personId,
+      matchId: group.matchId,
+      ...entry
+    };
+
+    const person = byPersonId[group.personId] || {
+      overall: null,
+      hp: null,
+      snd: null,
+      ol: null,
+      matchCount: 0,
+      mapCount: 0,
+      matches: []
+    };
+    person.matches.push({ matchId: group.matchId, ...entry });
+    person.mapCount += entry.mapCount;
+    byPersonId[group.personId] = person;
+  }
+
+  Object.values(byPersonId).forEach(player => {
+    player.matchCount = player.matches.length;
+    const hpMatches = player.matches.filter(match => match.hp !== null);
+    const sndMatches = player.matches.filter(match => match.snd !== null);
+    const olMatches = player.matches.filter(match => match.ol !== null);
+    player.overall = roundScore(stabilizeScore(average(player.matches.map(match => match.overall)), player.matchCount));
+    player.hp = roundScore(stabilizeScore(average(hpMatches.map(match => match.hp)), hpMatches.length));
+    player.snd = roundScore(stabilizeScore(average(sndMatches.map(match => match.snd)), sndMatches.length));
+    player.ol = roundScore(stabilizeScore(average(olMatches.map(match => match.ol)), olMatches.length));
+  });
+
+  return { byPlayerId, byMatchPlayerKey, byMapPlayerKey, byPersonId, byMatchPersonKey, byMapPersonKey };
 }

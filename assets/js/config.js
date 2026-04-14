@@ -13,7 +13,22 @@ export const APP_CONFIG = {
     teams: './data/teams.json',
     teamStats: './data/team-stats.json',
     bracketData: './data/bracket-data.json',
+    rulesets: './data/rulesets.json',
     isr: './data/isr-config.json'
+  },
+  eventMeta: {
+    M1Q: { label: 'Major 1 Qualifiers', order: 10 },
+    M1T: { label: 'Major 1 Tournament', order: 20 },
+    M2Q: { label: 'Major 2 Qualifiers', order: 30 },
+    M2T: { label: 'Major 2 Tournament', order: 40 },
+    M3Q: { label: 'Major 3 Qualifiers', order: 50 },
+    MI1: { label: 'Minor 1', order: 55 },
+    M3T: { label: 'Major 3 Tournament', order: 60 },
+    M4Q: { label: 'Major 4 Qualifiers', order: 70 },
+    MI2: { label: 'Minor 2', order: 75 },
+    M4T: { label: 'Major 4 Tournament', order: 80 },
+    CHAMPS: { label: 'Championship Weekend', order: 90 },
+    EWC: { label: 'Esports World Cup', order: 100 }
   },
   teamMeta: {
     boston: {name:'Boston Breach',abbr:'BOS'},
