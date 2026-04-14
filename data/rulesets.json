@@ -1,0 +1,63 @@
+{
+  "defaultHistoricalId": "legacy-2026-pre-m3",
+  "defaultCurrentId": "m3q-2026",
+  "rulesets": [
+    {
+      "id": "legacy-2026-pre-m3",
+      "label": "2026 Pre-M3 Pool",
+      "startEventId": "M1Q",
+      "endEventId": "M2T",
+      "modes": {
+        "HP": [
+          "Blackheart",
+          "Colossus",
+          "Den",
+          "Exposure",
+          "Scar"
+        ],
+        "SND": [
+          "Colossus",
+          "Den",
+          "Exposure",
+          "Raid",
+          "Scar"
+        ],
+        "OL": [
+          "Den",
+          "Exposure",
+          "Scar"
+        ]
+      },
+      "notes": "Historical fallback ruleset. Existing pre-M3 maps remain source-of-truth via maps.json."
+    },
+    {
+      "id": "m3q-2026",
+      "label": "Major 3 Qualifiers Pool",
+      "startEventId": "M3Q",
+      "modes": {
+        "HP": [
+          "Colossus",
+          "Den",
+          "Cliff Town",
+          "Sake",
+          "Scar",
+          "Gridlock"
+        ],
+        "SND": [
+          "Den",
+          "Fringe",
+          "Gridlock",
+          "Plaza",
+          "Raid",
+          "Scar"
+        ],
+        "OL": [
+          "Den",
+          "Exposure",
+          "Scar"
+        ]
+      },
+      "notes": "Applied to future-facing M3Q schedule and projected map-pool experiences."
+    }
+  ]
+}
