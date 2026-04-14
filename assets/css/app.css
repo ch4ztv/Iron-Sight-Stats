@@ -262,8 +262,8 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .bracket-popout{
   position:fixed;
   z-index:110;
-  width:min(1240px, calc(100vw - 24px));
-  height:min(860px, calc(100vh - 24px));
+  width:min(1120px, calc(100vw - 96px));
+  height:min(820px, calc(100vh - 48px));
   border:1px solid rgba(56,112,80,.9);
   border-radius:18px;
   background:rgba(6,11,7,.98);
