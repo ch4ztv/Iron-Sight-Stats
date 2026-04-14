@@ -2337,6 +2337,7 @@ function renderBetting(){
   const mapStatMeta = getBettingMapStat(mapStat);
   const playerName = player?.displayName || player?.name || profile?.displayName || 'Select a player';
   const selectedRosterEntry = roster.find(entry => entry.playerId === playerId) || player || null;
+  const portraitName = selectedRosterEntry?.displayName || selectedRosterEntry?.name || playerName;
   const selectedSplitLabel = eventId === 'all' ? 'Full Season' : formatBettingEvent(eventId);
   const modeFilterLabel = modeId === 'all' ? 'All Modes' : modeLabel(modeId);
   const mapFilterLabel = mapName === 'all' ? 'All Maps' : mapName;
@@ -2458,8 +2459,11 @@ function renderBetting(){
       </div>
       ${selectedRosterEntry ? `<div class="bet-hero">
         <div class="bet-hero-id">
-          ${img(teamLogoCandidates(teamId), 't-logo-lg', teamName(teamId))}
-          <div>
+          <div class="bp-player-art bet-hero-art" style="--thc:${teamColor(teamId)}">
+            <div class="bp-player-backdrop">${img(teamLogoCandidates(teamId), 'bp-player-backdrop-logo', teamName(teamId))}</div>
+            ${portraitImg(playerImageCandidates(teamId, portraitName), 'bp-player-img bet-hero-player-img', portraitName, (portraitName || 'PLR').slice(0, 3).toUpperCase())}
+          </div>
+          <div class="bet-hero-copy">
             <div class="bet-hero-name" style="color:${teamColor(teamId)}">${escapeHtml(playerName)}</div>
             <div class="bet-hero-sub">${escapeHtml(teamName(teamId))} | ${escapeHtml(selectedSplitLabel)} | ${fmtNum(samples.length)} series logs</div>
           </div>
