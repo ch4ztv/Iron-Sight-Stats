@@ -92,7 +92,6 @@
   .bet-form-grid,
   .bet-kpis,
   .mu-grid{grid-template-columns:1fr 1fr}
-  .bet-insight-row,
   .bet-form-grid-secondary{grid-template-columns:1fr 1fr}
   .bp-roster-strip{grid-template-columns:repeat(2,minmax(0,1fr))}
   .bp-mode-bar{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -167,7 +166,6 @@
   .bet-form-grid,
   .bet-kpis,
   .bet-games,
-  .bet-insight-row,
   .bet-form-grid-secondary,
   .mu-grid{grid-template-columns:1fr}
   .ts-selector-bar,

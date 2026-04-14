@@ -1806,33 +1806,6 @@ tbody tr:hover td{background:#101813}
   grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
   gap:10px;
 }
-.bet-insight-row{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:10px;
-  margin:10px 0 12px;
-}
-.bet-insight{
-  display:grid;
-  gap:4px;
-  padding:11px 12px;
-  border-radius:var(--radius-sm);
-  border:1px solid rgba(32,93,66,.7);
-  background:#0d1712;
-}
-.bet-insight-label{
-  color:#8bb0a0;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-}
-.bet-insight-value{
-  color:#eef2f9;
-  font-family:var(--font-mono);
-  font-size:18px;
-  font-weight:900;
-}
 .bet-kpi{
   padding:14px;
   min-height:84px;
@@ -1919,7 +1892,7 @@ tbody tr:hover td{background:#101813}
   line-height:1.4;
 }
 .bet-form-grid-secondary{
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(5,minmax(0,1fr));
   margin:12px 0 14px;
 }
 .bet-reset-wrap{
