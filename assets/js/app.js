@@ -1379,8 +1379,8 @@ function renderDashboard(){
     <div class="dashboard-panels">
       <article class="card">
         <div class="card-title">CDL Standings <span class="small">Top 5</span></div>
-        <div class="table-wrap">
-          <table>
+        <div class="table-wrap stack-on-mobile dashboard-standings-wrap">
+          <table class="responsive-table">
             <thead><tr><th>#</th><th>Team</th><th>CDL Pts</th><th>Series</th><th>Maps</th></tr></thead>
             <tbody>
               ${standings.map((row, index) => `<tr>
