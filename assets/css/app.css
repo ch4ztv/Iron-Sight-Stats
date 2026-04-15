@@ -282,15 +282,6 @@ tr:hover td{background:rgba(255,255,255,.02)}
 .skeleton-block{height:150px}
 @keyframes shimmer{100%{transform:translateX(100%)}}
 
-@media (max-width: 980px){
-  .hero,.grid.cols-2,.grid.cols-3,.matchup-compare,.player-feature{grid-template-columns:1fr}
-  .mobile-menu-btn{display:inline-flex}
-  .site-nav{position:fixed;top:0;left:0;bottom:0;z-index:30;width:min(80vw,300px);padding:90px 0 22px;background:#0b1725;border-right:1px solid var(--line);flex-direction:column;align-items:stretch;gap:2px;transform:translateX(-100%);transition:transform .25s ease}
-  .site-nav.open{transform:translateX(0)}
-  .site-nav a{padding:16px 20px;border-radius:0;border-left:3px solid transparent;font-size:1rem}
-  .site-nav a:hover,.site-nav a.active{background:rgba(106,167,255,.10);border-left-color:var(--accent)}
-}
-
 /* Legacy public build theme overrides */
 
 :root{
@@ -334,13 +325,13 @@ button,input,select,textarea{font-family:var(--font-display)}
 .site-header{
   position:sticky;
   top:0;
-  z-index:40;
+  z-index:70;
   display:grid;
   grid-template-columns:1fr auto;
   align-items:center;
   gap:0 18px;
   padding:0 16px 0;
-  overflow:hidden;
+  overflow:visible;
   isolation:isolate;
   background:linear-gradient(180deg, #06110c 0%, #050b09 100%);
   border-bottom:1px solid rgba(0,232,64,.22);
