@@ -29,11 +29,27 @@
         type="button"
         aria-controls="siteNav"
         aria-expanded="false"
+        aria-label="Open navigation menu"
       >
-        Menu
+        <span class="mobile-menu-btn-lines" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        <span class="mobile-menu-btn-label">Menu</span>
       </button>
 
       <nav id="siteNav" class="site-nav" aria-label="Primary">
+        <div class="site-nav-mobile-head">
+          <div class="site-nav-mobile-brand">
+            <img class="site-nav-mobile-logo" src="./assets/img/branding/logo.png" alt="Iron Sight Stats logo">
+            <div class="site-nav-mobile-copy">
+              <div class="site-nav-mobile-title">Iron Sight</div>
+              <div class="site-nav-mobile-sub">Stats</div>
+            </div>
+          </div>
+          <button id="mobileNavCloseBtn" class="site-nav-close" type="button" aria-label="Close navigation menu">×</button>
+        </div>
         <a href="#dashboard" class="site-nav-link">
           <span class="site-nav-icon" aria-hidden="true">
             <img class="site-nav-icon-image" src="./assets/img/ui/nav-icons/dashboard.png" alt="">
