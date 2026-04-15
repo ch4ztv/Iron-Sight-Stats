@@ -258,17 +258,6 @@
     border-radius:0;
     background:none;
   }
-  .dashboard-standings-wrap.stack-on-mobile .responsive-table tbody{padding:0}
-  .dashboard-standings-wrap.stack-on-mobile .responsive-table tr{
-    padding:12px;
-    border-radius:18px;
-    background:#0f1711;
-    border-color:rgba(0,232,64,.08);
-  }
-  .dashboard-standings-wrap.stack-on-mobile .responsive-table td{
-    padding-left:100px;
-    min-height:34px;
-  }
   .dashboard-panels .card{padding:16px}
   .leader-row,
   .result-item{
@@ -353,15 +342,89 @@
     font-size:18px;
   }
   .team-roster-tools{margin-left:0}
+  .stack-on-mobile{
+    overflow:visible;
+    border:0;
+    border-radius:0;
+    background:none;
+  }
   .stack-on-mobile .responsive-table,
   .stack-on-mobile .responsive-table tbody,
   .stack-on-mobile .responsive-table tr,
   .stack-on-mobile .responsive-table td{display:block;width:100%}
+  .stack-on-mobile .responsive-table{
+    min-width:0;
+    background:none;
+  }
   .stack-on-mobile .responsive-table thead{display:none}
-  .stack-on-mobile .responsive-table tbody{display:grid;gap:12px;padding:12px}
-  .stack-on-mobile .responsive-table tr{border:1px solid rgba(255,255,255,.08);border-radius:18px;background:rgba(255,255,255,.03);padding:10px}
-  .stack-on-mobile .responsive-table td{border:0;padding:8px 8px 8px 110px;position:relative;min-height:38px}
-  .stack-on-mobile .responsive-table td::before{content:attr(data-label);position:absolute;left:8px;top:8px;font-size:.76rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .stack-on-mobile .responsive-table tbody{display:grid;gap:12px;padding:0}
+  .stack-on-mobile .responsive-table tr{
+    display:grid;
+    gap:10px;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    background:rgba(255,255,255,.03);
+    padding:12px;
+  }
+  .stack-on-mobile .responsive-table td{
+    display:grid;
+    grid-template-columns:minmax(74px, 88px) minmax(0, 1fr);
+    gap:10px;
+    align-items:start;
+    border:0;
+    padding:0;
+    min-height:0;
+  }
+  .stack-on-mobile .responsive-table td::before{
+    content:attr(data-label);
+    position:static;
+    font-size:.68rem;
+    line-height:1.35;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .stack-on-mobile .responsive-table td > *{min-width:0}
+  .stack-on-mobile .responsive-table td .team-chip,
+  .stack-on-mobile .responsive-table td .player-chip{
+    flex-wrap:wrap;
+    align-items:flex-start;
+  }
+  .stack-on-mobile .responsive-table td .recent-pill-row{justify-content:flex-start}
+  .dashboard-standings-wrap.stack-on-mobile .responsive-table td[data-label="Team"],
+  .dashboard-standings-wrap.stack-on-mobile .responsive-table td[data-label="Recent"],
+  #standings .stack-on-mobile .responsive-table td[data-label="Team"],
+  #standings .stack-on-mobile .responsive-table td[data-label="Recent"],
+  .player-leaderboard-wrap.stack-on-mobile .responsive-table td[data-label="Player"],
+  .player-leaderboard-wrap.stack-on-mobile .responsive-table td[data-label="Team"],
+  .team-data-card .stack-on-mobile .responsive-table td[data-label="Player"]{
+    grid-template-columns:1fr;
+    gap:6px;
+  }
+  .player-leaderboard-wrap.stack-on-mobile .responsive-table tr,
+  .team-data-card .stack-on-mobile .responsive-table tr{
+    background:#0f1711;
+    border-color:rgba(0,232,64,.08);
+  }
+  .player-leaderboard-wrap{
+    overflow:visible;
+    border:0;
+    border-radius:0;
+  }
+  .player-leaderboard-wrap table{min-width:0}
+  .player-leaderboard-wrap th,
+  .player-leaderboard-wrap td{font-size:13px}
+  .player-open-btn{
+    width:100%;
+    justify-content:flex-start;
+    text-align:left;
+  }
+  .team-data-card .table-wrap{
+    overflow:visible;
+    border:0;
+    border-radius:0;
+    background:none;
+  }
   .table-wrap table{min-width:0}
   .stat-list.compact{grid-template-columns:repeat(2,minmax(0,1fr))}
   .team-hero,.player-card .top,.roster-card .top,.match-head{align-items:flex-start}
