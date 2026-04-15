@@ -398,12 +398,33 @@ button,input,select,textarea{font-family:var(--font-display)}
 .eyebrow,.brand-subtitle,.site-header h1{display:none}
 .mobile-menu-btn{
   display:none;
+  align-items:center;
+  gap:10px;
   padding:10px 14px;
   border-radius:999px;
   border:1px solid var(--line);
   background:var(--panel-strong);
   color:var(--text);
   min-height:38px;
+}
+.mobile-menu-btn-lines{
+  display:inline-grid;
+  gap:4px;
+}
+.mobile-menu-btn-lines span{
+  display:block;
+  width:16px;
+  height:2px;
+  border-radius:999px;
+  background:currentColor;
+}
+.mobile-menu-btn-label{
+  display:inline-flex;
+  align-items:center;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
 }
 
 .site-nav{
@@ -472,6 +493,12 @@ button,input,select,textarea{font-family:var(--font-display)}
 .site-nav-label{
   display:inline-flex;
   align-items:center;
+}
+.site-nav-mobile-head{
+  display:none;
+}
+.site-nav-close{
+  display:none;
 }
 .site-nav a:hover,.site-nav a.active{
   color:var(--accent);

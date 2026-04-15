@@ -18,17 +18,20 @@
     position:fixed;
     top:0;
     left:0;
+    right:0;
     bottom:0;
     z-index:60;
-    width:min(86vw,336px);
+    width:100vw;
+    max-width:none;
     margin:0;
-    padding:82px 0 18px;
-    background:#0b120e;
-    border-right:1px solid var(--line);
+    padding:18px 16px 26px;
+    background:linear-gradient(180deg, rgba(7,13,10,.985) 0%, rgba(8,14,11,.995) 100%);
+    border-right:0;
     border-top:0;
     flex-direction:column;
     align-items:stretch;
-    gap:2px;
+    justify-content:flex-start;
+    gap:8px;
     overflow-y:auto;
     -webkit-overflow-scrolling:touch;
     opacity:0;
@@ -36,7 +39,7 @@
     pointer-events:none;
     transform:translateX(-100%);
     transition:transform .25s ease, opacity .18s ease, visibility .18s ease;
-    box-shadow:22px 0 48px rgba(0,0,0,.42);
+    box-shadow:none;
   }
   .site-nav.open{
     opacity:1;
@@ -44,32 +47,96 @@
     pointer-events:auto;
     transform:translateX(0);
   }
+  .site-nav-mobile-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:16px;
+    padding:2px 0 18px;
+    margin-bottom:8px;
+  }
+  .site-nav-mobile-brand{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:0;
+  }
+  .site-nav-mobile-logo{
+    width:54px;
+    height:54px;
+    object-fit:contain;
+    filter:drop-shadow(0 0 10px rgba(0,232,64,.18));
+  }
+  .site-nav-mobile-copy{
+    min-width:0;
+    display:grid;
+    gap:2px;
+  }
+  .site-nav-mobile-title{
+    color:#f3f8f3;
+    font-size:1.32rem;
+    font-weight:800;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+  }
+  .site-nav-mobile-sub{
+    color:var(--accent);
+    font-size:.96rem;
+    font-weight:800;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+  }
+  .site-nav-close{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:42px;
+    height:42px;
+    flex:0 0 auto;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.04);
+    color:#d5ddd5;
+    font-size:28px;
+    line-height:1;
+  }
   .site-nav a{
     justify-content:flex-start;
-    gap:12px;
-    min-height:0;
-    padding:15px 18px;
-    font-size:.94rem;
-    border-bottom:0;
-    border-left:3px solid transparent;
+    gap:14px;
+    min-height:62px;
+    padding:16px 18px;
+    font-size:1rem;
+    border:1px solid transparent;
+    border-left:1px solid transparent;
+    border-bottom:1px solid transparent;
+    border-radius:18px;
+    background:rgba(255,255,255,.02);
   }
   .site-nav-icon{
-    width:24px;
-    height:24px;
-  }
-  .site-nav a[href="#betting"] .site-nav-icon{
     width:26px;
     height:26px;
   }
+  .site-nav a[href="#betting"] .site-nav-icon{
+    width:30px;
+    height:30px;
+  }
   .site-nav-label{
     line-height:1.1;
+    font-size:1rem;
+    letter-spacing:.04em;
   }
   .site-nav a:hover,.site-nav a.active{
-    border-left-color:var(--accent);
-    border-bottom-color:transparent;
-    background:#101813;
+    border-color:rgba(0,232,64,.16);
+    border-left-color:rgba(0,232,64,.16);
+    border-bottom-color:rgba(0,232,64,.16);
+    background:linear-gradient(180deg, rgba(9,28,16,.96) 0%, rgba(10,22,15,.96) 100%);
+    box-shadow:inset 0 0 0 1px rgba(0,232,64,.08);
   }
-  .site-nav-backdrop{z-index:55}
+  .site-nav-backdrop{
+    z-index:55;
+    background:rgba(0,0,0,.66);
+    backdrop-filter:blur(4px);
+  }
   .player-modal-top,
   .player-modal-grid{grid-template-columns:1fr}
   .player-modal-art{height:188px}
@@ -142,18 +209,41 @@
   .controls input,
   .controls select,
   .betting-controls select{width:100%;min-width:0}
+  .mobile-menu-btn{
+    padding:9px 12px;
+    min-height:36px;
+  }
+  .mobile-menu-btn-label{
+    font-size:11px;
+  }
   .site-nav a{
-    gap:10px;
-    padding:13px 16px;
-    font-size:.9rem;
+    gap:12px;
+    min-height:58px;
+    padding:15px 16px;
+    font-size:.96rem;
   }
   .site-nav-icon{
-    width:22px;
-    height:22px;
-  }
-  .site-nav a[href="#betting"] .site-nav-icon{
     width:24px;
     height:24px;
+  }
+  .site-nav a[href="#betting"] .site-nav-icon{
+    width:28px;
+    height:28px;
+  }
+  .site-nav-mobile-head{
+    padding:2px 0 14px;
+    margin-bottom:6px;
+  }
+  .site-nav-mobile-logo{
+    width:48px;
+    height:48px;
+  }
+  .site-nav-mobile-title{font-size:1.18rem}
+  .site-nav-mobile-sub{font-size:.88rem}
+  .site-nav-close{
+    width:40px;
+    height:40px;
+    font-size:26px;
   }
   .season-strip{
     flex-wrap:nowrap;
