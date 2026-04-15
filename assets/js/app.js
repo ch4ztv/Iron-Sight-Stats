@@ -3332,11 +3332,15 @@ function setNavOpen(isOpen){
   const nav = $('#siteNav');
   const backdrop = $('#siteNavBackdrop');
   const button = $('#mobileMenuBtn');
+  const closeButton = $('#mobileNavCloseBtn');
   nav?.classList.toggle('open', isOpen);
   backdrop?.toggleAttribute('hidden', !isOpen);
   document.body.classList.toggle('nav-open', isOpen);
   if(button){
     button.setAttribute('aria-expanded', String(isOpen));
+  }
+  if(closeButton){
+    closeButton.tabIndex = isOpen ? 0 : -1;
   }
 }
 
@@ -3357,6 +3361,7 @@ function attachGlobalEvents(){
   if(globalEventsAttached) return;
   globalEventsAttached = true;
   $('#mobileMenuBtn')?.addEventListener('click', () => setNavOpen(!$('#siteNav')?.classList.contains('open')));
+  $('#mobileNavCloseBtn')?.addEventListener('click', () => setNavOpen(false));
   $('#siteNavBackdrop')?.addEventListener('click', () => setNavOpen(false));
   document.querySelectorAll('.site-nav a').forEach(link => link.addEventListener('click', () => setNavOpen(false)));
   window.addEventListener('hashchange', applyRoute);
