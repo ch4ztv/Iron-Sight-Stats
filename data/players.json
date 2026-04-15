@@ -1,408 +1,628 @@
 [
   {
+    "id": "boston_afro",
+    "name": "Afro",
+    "teamId": "boston",
+    "active": true,
+    "ts": 1774142273218,
+    "personId": "afro",
+    "status": "active",
+    "startEventId": "M3Q"
+  },
+  {
     "id": "boston_cammy",
     "name": "Cammy",
     "teamId": "boston",
     "active": false,
-    "ts": 1774142273216
+    "ts": 1774142273216,
+    "personId": "cammy",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "boston_nastie",
     "name": "Nastie",
     "teamId": "boston",
     "active": true,
-    "ts": 1774142273216
+    "ts": 1774142273216,
+    "personId": "nastie",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "boston_purj",
     "name": "Purj",
     "teamId": "boston",
     "active": true,
-    "ts": 1774142273217
+    "ts": 1774142273217,
+    "personId": "purj",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "boston_snoopy",
     "name": "Snoopy",
     "teamId": "boston",
-    "active": true,
-    "ts": 1774142273217
+    "active": false,
+    "ts": 1774142273217,
+    "personId": "snoopy",
+    "status": "inactive",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   {
     "id": "boston_spart",
     "name": "Spart",
     "teamId": "boston",
     "active": true,
-    "ts": 1774142273217
+    "ts": 1774142273217,
+    "personId": "spart",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "c9_afro",
     "name": "Afro",
     "teamId": "c9",
     "active": false,
-    "ts": 1774142273218
+    "ts": 1774142273218,
+    "personId": "afro",
+    "status": "inactive",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   {
     "id": "c9_beans",
     "name": "Beans",
     "teamId": "c9",
     "active": false,
-    "ts": 1774142273218
+    "ts": 1774142273218,
+    "personId": "beans",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "c9_encourage",
     "name": "Encourage",
     "teamId": "c9",
     "active": true,
-    "ts": 1774142273218
+    "ts": 1774142273218,
+    "personId": "encourage",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "c9_hide",
     "name": "Hide",
     "teamId": "c9",
     "active": true,
-    "ts": 1774142273218
+    "ts": 1774142273218,
+    "personId": "hide",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "c9_mack",
     "name": "Mack",
     "teamId": "c9",
     "active": false,
-    "ts": 1774142273219
+    "ts": 1774142273219,
+    "personId": "mack",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "c9_nejra",
     "name": "Nejra",
     "teamId": "c9",
     "active": true,
-    "ts": 1774142273219
+    "ts": 1774142273219,
+    "personId": "nejra",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "c9_okis",
     "name": "Okis",
     "teamId": "c9",
     "active": true,
-    "ts": 1774142273219
+    "ts": 1774142273219,
+    "personId": "okis",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "c9_vivid",
     "name": "Vivid",
     "teamId": "c9",
     "active": false,
-    "ts": 1774142273219
+    "ts": 1774142273219,
+    "personId": "vivid",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "falcons_cellium",
     "name": "Cellium",
     "teamId": "falcons",
     "active": true,
-    "ts": 1774142273213
+    "ts": 1774142273213,
+    "personId": "cellium",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "falcons_exnid",
     "name": "Exnid",
     "teamId": "falcons",
     "active": true,
-    "ts": 1774142273213
+    "ts": 1774142273213,
+    "personId": "exnid",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "falcons_kismet",
     "name": "KiSMET",
     "teamId": "falcons",
     "active": true,
-    "ts": 1774142273213
+    "ts": 1774142273213,
+    "personId": "kismet",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "falcons_pred",
     "name": "Pred",
     "teamId": "falcons",
     "active": true,
-    "ts": 1774142273214
+    "ts": 1774142273214,
+    "personId": "pred",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "faze_04",
     "name": "04",
     "teamId": "faze",
     "active": true,
-    "ts": 1774142273209
+    "ts": 1774142273209,
+    "personId": "04",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "faze_abuzah",
     "name": "Abuzah",
     "teamId": "faze",
     "active": true,
-    "ts": 1774142273209
+    "ts": 1774142273209,
+    "personId": "abuzah",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "faze_drazah",
     "name": "Drazah",
     "teamId": "faze",
     "active": true,
-    "ts": 1774142273209
+    "ts": 1774142273209,
+    "personId": "drazah",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "faze_simp",
     "name": "Simp",
     "teamId": "faze",
     "active": true,
-    "ts": 1774142273209
+    "ts": 1774142273209,
+    "personId": "simp",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "g2_estreal",
     "name": "Estreal",
     "teamId": "g2",
     "active": true,
-    "ts": 1774142273211
+    "ts": 1774142273211,
+    "personId": "estreal",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "g2_kremp",
     "name": "Kremp",
     "teamId": "g2",
     "active": true,
-    "ts": 1774142273211
+    "ts": 1774142273211,
+    "personId": "kremp",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "g2_mamba",
     "name": "Mamba",
     "teamId": "g2",
     "active": true,
-    "ts": 1774142273211
+    "ts": 1774142273211,
+    "personId": "mamba",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "g2_skyz",
     "name": "Skyz",
     "teamId": "g2",
     "active": true,
-    "ts": 1774142273212
+    "ts": 1774142273212,
+    "personId": "skyz",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "lat_abezy",
     "name": "aBeZy",
     "teamId": "lat",
     "active": true,
-    "ts": 1774142273212
+    "ts": 1774142273212,
+    "personId": "abezy",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "lat_hydra",
     "name": "HyDra",
     "teamId": "lat",
     "active": true,
-    "ts": 1774142273212
+    "ts": 1774142273212,
+    "personId": "hydra",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "lat_kenny",
     "name": "Kenny",
     "teamId": "lat",
     "active": false,
-    "ts": 1774142273212
+    "ts": 1774142273212,
+    "personId": "kenny",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "lat_nium",
     "name": "Nium",
     "teamId": "lat",
     "active": true,
-    "ts": 1774142273212
+    "ts": 1774142273212,
+    "personId": "nium",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "lat_scrap",
     "name": "Scrap",
     "teamId": "lat",
     "active": true,
-    "ts": 1774142273213
+    "ts": 1774142273213,
+    "personId": "scrap",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "miami_mettalz",
     "name": "MettalZ",
     "teamId": "miami",
     "active": true,
-    "ts": 1774142273214
+    "ts": 1774142273214,
+    "personId": "mettalz",
+    "status": "active",
+    "startEventId": "M1Q"
+  },
+  {
+    "id": "miami_reeal",
+    "name": "ReeaL",
+    "teamId": "miami",
+    "active": false,
+    "ts": 1774142273210,
+    "personId": "reeal",
+    "status": "substitute",
+    "startEventId": "M3Q"
   },
   {
     "id": "miami_renkor",
     "name": "RenKoR",
     "teamId": "miami",
     "active": true,
-    "ts": 1774142273214
+    "ts": 1774142273214,
+    "personId": "renkor",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "miami_super",
     "name": "SupeR",
     "teamId": "miami",
     "active": true,
-    "ts": 1774142273214
+    "ts": 1774142273214,
+    "personId": "super",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "miami_traixx",
     "name": "Traixx",
     "teamId": "miami",
     "active": true,
-    "ts": 1774142273214
+    "ts": 1774142273214,
+    "personId": "traixx",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "optic_dashy",
     "name": "Dashy",
     "teamId": "optic",
     "active": true,
-    "ts": 1774142273207
+    "ts": 1774142273207,
+    "personId": "dashy",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "optic_huke",
     "name": "Huke",
     "teamId": "optic",
     "active": true,
-    "ts": 1774142273207
+    "ts": 1774142273207,
+    "personId": "huke",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "optic_mercules",
     "name": "MercuLes",
     "teamId": "optic",
     "active": true,
-    "ts": 1774142273208
+    "ts": 1774142273208,
+    "personId": "mercules",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "optic_shotzzy",
     "name": "Shotzzy",
     "teamId": "optic",
     "active": true,
-    "ts": 1774142273208
+    "ts": 1774142273208,
+    "personId": "shotzzy",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "pgm_envoy",
     "name": "Envoy",
     "teamId": "pgm",
     "active": true,
-    "ts": 1774142273208
+    "ts": 1774142273208,
+    "personId": "envoy",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "pgm_ghosty",
     "name": "Ghosty",
     "teamId": "pgm",
     "active": true,
-    "ts": 1774142273208
+    "ts": 1774142273208,
+    "personId": "ghosty",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "pgm_neptune",
     "name": "Neptune",
     "teamId": "pgm",
     "active": true,
-    "ts": 1774142273209
+    "ts": 1774142273209,
+    "personId": "neptune",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "pgm_sib",
     "name": "Sib",
     "teamId": "pgm",
     "active": true,
-    "ts": 1774142273209
+    "ts": 1774142273209,
+    "personId": "sib",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "ravens_craze",
     "name": "Craze",
     "teamId": "ravens",
     "active": true,
-    "ts": 1774142273215
+    "ts": 1774142273215,
+    "personId": "craze",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "ravens_exceed",
     "name": "Exceed",
     "teamId": "ravens",
     "active": true,
-    "ts": 1774142273215
+    "ts": 1774142273215,
+    "personId": "exceed",
+    "status": "active",
+    "startEventId": "M1Q"
+  },
+  {
+    "id": "ravens_fire",
+    "name": "Fire",
+    "teamId": "ravens",
+    "active": true,
+    "ts": 1776146400000,
+    "personId": "fire",
+    "status": "active",
+    "startEventId": "M3Q"
   },
   {
     "id": "ravens_lurqxx",
     "name": "Lurqxx",
     "teamId": "ravens",
     "active": true,
-    "ts": 1774142273215
+    "ts": 1774142273215,
+    "personId": "lurqxx",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "ravens_nero",
     "name": "Nero",
     "teamId": "ravens",
-    "active": true,
-    "ts": 1774142273215
+    "active": false,
+    "ts": 1774142273215,
+    "personId": "nero",
+    "status": "inactive",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   {
     "id": "ravens_slasher",
     "name": "SlasheR",
     "teamId": "ravens",
     "active": false,
-    "ts": 1774142273215
+    "ts": 1774142273215,
+    "personId": "slasher",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "toronto_cleanx",
     "name": "CleanX",
     "teamId": "toronto",
     "active": true,
-    "ts": 1774142273209
+    "ts": 1774142273209,
+    "personId": "cleanx",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "toronto_insight",
     "name": "Insight",
     "teamId": "toronto",
     "active": true,
-    "ts": 1774142273210
+    "ts": 1774142273210,
+    "personId": "insight",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "toronto_joedeceives",
     "name": "JoeDeceives",
     "teamId": "toronto",
     "active": true,
-    "ts": 1774142273210
+    "ts": 1774142273210,
+    "personId": "joedeceives",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "toronto_kips",
     "name": "Kips",
     "teamId": "toronto",
     "active": true,
-    "ts": 1774142273210
+    "ts": 1774142273210,
+    "personId": "kips",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "toronto_reeal",
     "name": "ReeaL",
     "teamId": "toronto",
     "active": false,
-    "ts": 1774142273210
+    "ts": 1774142273210,
+    "personId": "reeal",
+    "status": "inactive",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   {
     "id": "vancouver_abe",
     "name": "Abe",
     "teamId": "vancouver",
     "active": false,
-    "ts": 1774142273217
+    "ts": 1774142273217,
+    "personId": "abe",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "vancouver_capsidal",
     "name": "Capsidal",
     "teamId": "vancouver",
-    "active": true,
-    "ts": 1774142273217
+    "active": false,
+    "ts": 1774142273217,
+    "personId": "capsidal",
+    "status": "inactive",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   {
     "id": "vancouver_gwinn",
     "name": "Gwinn",
     "teamId": "vancouver",
     "active": true,
-    "ts": 1774142273217
+    "ts": 1774142273217,
+    "personId": "gwinn",
+    "status": "active",
+    "startEventId": "M1Q"
   },
   {
     "id": "vancouver_lqgend",
     "name": "Lqgend",
     "teamId": "vancouver",
     "active": false,
-    "ts": 1774142273217
+    "ts": 1774142273217,
+    "personId": "lqgend",
+    "status": "inactive",
+    "startEventId": "M1Q"
   },
   {
     "id": "vancouver_lunarz",
     "name": "Lunarz",
     "teamId": "vancouver",
     "active": true,
-    "ts": 1774142273218
+    "ts": 1774142273218,
+    "personId": "lunarz",
+    "status": "active",
+    "startEventId": "M1Q"
+  },
+  {
+    "id": "vancouver_tbd",
+    "name": "TBD",
+    "teamId": "vancouver",
+    "active": true,
+    "ts": 1776146400001,
+    "personId": "tbd_vancouver",
+    "status": "placeholder",
+    "startEventId": "M3Q",
+    "placeholder": true
   },
   {
     "id": "vancouver_tjhaly",
     "name": "TJHaLy",
     "teamId": "vancouver",
     "active": true,
-    "ts": 1774142273218
+    "ts": 1774142273218,
+    "personId": "tjhaly",
+    "status": "active",
+    "startEventId": "M1Q"
   }
 ]

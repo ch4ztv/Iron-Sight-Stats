@@ -1,196 +1,49 @@
 {
-  "optic_dashy": {
-    "tag": "Dashy",
-    "fullName": "Brandon Otell",
-    "role": "Main AR",
-    "dob": "1999-04-19",
-    "status": "starter",
-    "active": true,
-    "teamId": "optic",
-    "teamName": "OpTic Texas",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 6,
-    "careerChampsWins": 2,
-    "careerEwcWins": 1,
-    "majorMVPs": 3,
-    "rookieOfTheYear": null,
-    "careerAccolades": [
-      "2018 CWL Las Vegas Open MVP",
-      "2022 CDL Major 1 MVP",
-      "2025 Esports World Cup Grand Finals MVP",
-      "2020 CDL Player to Watch",
-      "2025 Breaking Point Clutch Player of the Year",
-      "2024 Breaking Point OBJ Player of the Year"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "optic_huke": {
-    "tag": "Huke",
-    "fullName": "Cuyler Garland",
+  "boston_afro": {
+    "tag": "Afro",
+    "fullName": "Marcus Reid",
     "role": "SMG",
-    "dob": "1999-10-21",
+    "dob": "2001-07-19",
     "status": "starter",
     "active": true,
-    "teamId": "optic",
-    "teamName": "OpTic Texas",
+    "teamId": "boston",
+    "teamName": "Boston Breach",
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": 7,
-    "careerChampsWins": 2,
-    "careerEwcWins": 1,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
     "majorMVPs": 0,
     "rookieOfTheYear": null,
-    "careerAccolades": [
-      "2025 Breaking Point Comeback Player of the Year"
-    ],
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
       "latest(1).json",
       "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)",
+      "Plan.txt M3 update (2026-04-14)"
     ],
     "metadataConfidence": {
       "nameDob": "verified_from_seed_research",
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "afro",
+    "startEventId": "M3Q"
   },
-  "optic_mercules": {
-    "tag": "MercuLes",
-    "fullName": "Mason Ramsey",
+  "boston_cammy": {
+    "tag": "Cammy",
+    "fullName": "Cameron McKilligan",
     "role": "Flex",
-    "dob": "2003-07-14",
-    "status": "starter",
-    "active": true,
-    "teamId": "optic",
-    "teamName": "OpTic Texas",
+    "dob": "1999-10-10",
+    "status": "inactive",
+    "active": false,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
     "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 2,
-    "careerChampsWins": 1,
-    "careerEwcWins": 1,
-    "majorMVPs": 1,
-    "rookieOfTheYear": "2025 Breaking Point Rookie of the Year",
-    "careerAccolades": [
-      "2025 CDL Championship MVP",
-      "2025 Breaking Point Play of the Year"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "optic_shotzzy": {
-    "tag": "Shotzzy",
-    "fullName": "Anthony Cuevas-Castro",
-    "role": "SMG",
-    "dob": "2001-07-04",
-    "status": "starter",
-    "active": true,
-    "teamId": "optic",
-    "teamName": "OpTic Texas",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 9,
-    "careerChampsWins": 3,
-    "careerEwcWins": 1,
-    "majorMVPs": 1,
-    "rookieOfTheYear": "2020 Esports Awards Console Rookie of the Year",
-    "careerAccolades": [
-      "2020 CDL Season MVP",
-      "2025 Esports World Cup MVP",
-      "2020 CDL Breakout Player of the Year",
-      "First multi-FPS world champion in Halo and Call of Duty",
-      "2024 CDL Championship MVP"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "pgm_envoy": {
-    "tag": "Envoy",
-    "fullName": "Dylan Hannon",
-    "role": "SMG",
-    "dob": "2000-01-19",
-    "status": "starter",
-    "active": true,
-    "teamId": "pgm",
-    "teamName": "Paris Gentle Mates",
-    "seasonMajorWins": 1,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 10,
-    "careerChampsWins": 1,
-    "careerEwcWins": 0,
-    "majorMVPs": 1,
-    "rookieOfTheYear": null,
-    "careerAccolades": [
-      "2025 CDL Minor 2 MVP",
-      "2020 CDL Clutch of the Year",
-      "2020 CDL Search and Destroy Clutch Player of the Year"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "pgm_ghosty": {
-    "tag": "Ghosty",
-    "fullName": "Daniel Rothe",
-    "role": "Flex",
-    "dob": "2002-04-24",
-    "status": "starter",
-    "active": true,
-    "teamId": "pgm",
-    "teamName": "Paris Gentle Mates",
-    "seasonMajorWins": 1,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
     "careerMajorWins": 3,
@@ -198,9 +51,7 @@
     "careerEwcWins": 0,
     "majorMVPs": 0,
     "rookieOfTheYear": null,
-    "careerAccolades": [
-      "2025 Breaking Point OBJ Player of the Year"
-    ],
+    "careerAccolades": [],
     "note": null,
     "source": [
       "Rosters.txt",
@@ -213,18 +64,123 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "cammy",
+    "startEventId": "M1Q"
   },
-  "pgm_neptune": {
-    "tag": "Neptune",
-    "fullName": "Travis McCloud",
-    "role": "SMG",
-    "dob": "2002-04-09",
+  "boston_nastie": {
+    "tag": "Nastie",
+    "fullName": "Byron Plumridge",
+    "role": "Main AR",
+    "dob": "1999-07-03",
     "status": "starter",
     "active": true,
-    "teamId": "pgm",
-    "teamName": "Paris Gentle Mates",
-    "seasonMajorWins": 1,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "nastie",
+    "startEventId": "M1Q"
+  },
+  "boston_purj": {
+    "tag": "Purj",
+    "fullName": "Evan Perez",
+    "role": "Flex",
+    "dob": "2003-03-03",
+    "status": "starter",
+    "active": true,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "purj",
+    "startEventId": "M1Q"
+  },
+  "boston_snoopy": {
+    "tag": "Snoopy",
+    "fullName": "Eric Pérez",
+    "role": "SMG",
+    "dob": "2004-09-25",
+    "status": "inactive",
+    "active": false,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "snoopy",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
+  },
+  "boston_spart": {
+    "tag": "Spart",
+    "fullName": "Kristopher Cervantez",
+    "role": "Flex",
+    "dob": "2001-05-24",
+    "status": "starter",
+    "active": true,
+    "teamId": "boston",
+    "teamName": "Boston Breach",
+    "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
     "careerMajorWins": 1,
@@ -245,21 +201,23 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "spart",
+    "startEventId": "M1Q"
   },
-  "pgm_sib": {
-    "tag": "Sib",
-    "fullName": "Daunte Gray",
-    "role": "Flex",
-    "dob": "2002-02-03",
-    "status": "starter",
-    "active": true,
-    "teamId": "pgm",
-    "teamName": "Paris Gentle Mates",
-    "seasonMajorWins": 1,
+  "c9_afro": {
+    "tag": "Afro",
+    "fullName": "Marcus Reid",
+    "role": "SMG",
+    "dob": "2001-07-19",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
-    "careerMajorWins": 3,
+    "careerMajorWins": 0,
     "careerChampsWins": 0,
     "careerEwcWins": 0,
     "majorMVPs": 0,
@@ -277,7 +235,393 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "afro",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
+  },
+  "c9_beans": {
+    "tag": "Beans",
+    "fullName": "Ben McMellon",
+    "role": "Main AR",
+    "dob": "2000-05-16",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "beans",
+    "startEventId": "M1Q"
+  },
+  "c9_encourage": {
+    "tag": "Encourage",
+    "fullName": "Jordan Byrd",
+    "role": "SMG",
+    "dob": "2006-06-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "encourage",
+    "startEventId": "M1Q"
+  },
+  "c9_hide": {
+    "tag": "Hide",
+    "fullName": "Jacob Bustillos",
+    "role": "SMG",
+    "dob": "2007-06-05",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "hide",
+    "startEventId": "M1Q"
+  },
+  "c9_mack": {
+    "tag": "Mack",
+    "fullName": "Makenzie Kelley",
+    "role": "Flex",
+    "dob": "2001-11-21",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 2,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "mack",
+    "startEventId": "M1Q"
+  },
+  "c9_nejra": {
+    "tag": "Nejra",
+    "fullName": "Jonathan Pabo'n",
+    "role": "Flex",
+    "dob": "2002-08-05",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "nejra",
+    "startEventId": "M1Q"
+  },
+  "c9_okis": {
+    "tag": "Okis",
+    "fullName": "Arnel Avdagić",
+    "role": "Flex",
+    "dob": "2003-08-04",
+    "status": "starter",
+    "active": true,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "okis",
+    "startEventId": "M1Q"
+  },
+  "c9_vivid": {
+    "tag": "Vivid",
+    "fullName": "Reece Drost",
+    "role": "SMG",
+    "dob": "1999-12-24",
+    "status": "inactive",
+    "active": false,
+    "teamId": "c9",
+    "teamName": "Cloud9 New York",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "vivid",
+    "startEventId": "M1Q"
+  },
+  "falcons_cellium": {
+    "tag": "Cellium",
+    "fullName": "McArthur Jovel",
+    "role": "Main AR",
+    "dob": "2000-12-24",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 11,
+    "careerChampsWins": 1,
+    "careerEwcWins": 1,
+    "majorMVPs": 2,
+    "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2022 CDL Season MVP",
+      "2024 Esports World Cup MVP",
+      "2025 CDL Major 2 MVP"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "cellium",
+    "startEventId": "M1Q"
+  },
+  "falcons_exnid": {
+    "tag": "Exnid",
+    "fullName": "Saud Al-Ati",
+    "role": "Flex",
+    "dob": "2002-10-28",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "exnid",
+    "startEventId": "M1Q"
+  },
+  "falcons_kismet": {
+    "tag": "KiSMET",
+    "fullName": "Matthew Tinsley",
+    "role": "SMG",
+    "dob": "1999-11-11",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 5,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 2,
+    "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2023 CDL Major 1 MVP",
+      "2023 CDL Championship MVP"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "kismet",
+    "startEventId": "M1Q"
+  },
+  "falcons_pred": {
+    "tag": "Pred",
+    "fullName": "Amer Zulbeari",
+    "role": "SMG",
+    "dob": "2001-08-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "falcons",
+    "teamName": "Riyadh Falcons",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 3,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 1,
+    "rookieOfTheYear": "2022 CDL Rookie of the Year",
+    "careerAccolades": [
+      "2022 CDL Major 3 MVP"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "pred",
+    "startEventId": "M1Q"
   },
   "faze_04": {
     "tag": "04",
@@ -309,7 +653,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "04",
+    "startEventId": "M1Q"
   },
   "faze_abuzah": {
     "tag": "Abuzah",
@@ -341,7 +687,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "abuzah",
+    "startEventId": "M1Q"
   },
   "faze_drazah": {
     "tag": "Drazah",
@@ -375,7 +723,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "drazah",
+    "startEventId": "M1Q"
   },
   "faze_simp": {
     "tag": "Simp",
@@ -415,169 +765,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "toronto_cleanx": {
-    "tag": "CleanX",
-    "fullName": "Tobias Juul Jønsson",
-    "role": "SMG",
-    "dob": "2000-08-11",
-    "status": "starter",
-    "active": true,
-    "teamId": "toronto",
-    "teamName": "Toronto KOI",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 5,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "toronto_insight": {
-    "tag": "Insight",
-    "fullName": "Jamie Craven",
-    "role": "Main AR",
-    "dob": "1999-10-31",
-    "status": "starter",
-    "active": true,
-    "teamId": "toronto",
-    "teamName": "Toronto KOI",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 4,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "toronto_joedeceives": {
-    "tag": "JoeDeceives",
-    "fullName": "Joseph Romero",
-    "role": "Flex",
-    "dob": "2004-09-23",
-    "status": "starter",
-    "active": true,
-    "teamId": "toronto",
-    "teamName": "Toronto KOI",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [
-      "2025 CDL Second Team"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "toronto_kips": {
-    "tag": "Kips",
-    "fullName": "Nicholas Lyons",
-    "role": "SMG",
-    "dob": "2006-02-17",
-    "status": "starter",
-    "active": true,
-    "teamId": "toronto",
-    "teamName": "Toronto KOI",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "toronto_reeal": {
-    "tag": "ReeaL",
-    "fullName": "José Fernández",
-    "role": "SMG",
-    "dob": "2003-12-11",
-    "status": "inactive",
-    "active": false,
-    "teamId": "toronto",
-    "teamName": "Toronto KOI",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "simp",
+    "startEventId": "M1Q"
   },
   "g2_estreal": {
     "tag": "Estreal",
@@ -609,7 +799,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "estreal",
+    "startEventId": "M1Q"
   },
   "g2_kremp": {
     "tag": "Kremp",
@@ -641,7 +833,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "kremp",
+    "startEventId": "M1Q"
   },
   "g2_mamba": {
     "tag": "Mamba",
@@ -673,7 +867,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "mamba",
+    "startEventId": "M1Q"
   },
   "g2_skyz": {
     "tag": "Skyz",
@@ -707,7 +903,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "skyz",
+    "startEventId": "M1Q"
   },
   "lat_abezy": {
     "tag": "aBeZy",
@@ -742,7 +940,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "abezy",
+    "startEventId": "M1Q"
   },
   "lat_hydra": {
     "tag": "HyDra",
@@ -779,7 +979,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "hydra",
+    "startEventId": "M1Q"
   },
   "lat_kenny": {
     "tag": "Kenny",
@@ -815,7 +1017,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "kenny",
+    "startEventId": "M1Q"
   },
   "lat_nium": {
     "tag": "Nium",
@@ -847,7 +1051,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "nium",
+    "startEventId": "M1Q"
   },
   "lat_scrap": {
     "tag": "Scrap",
@@ -887,144 +1093,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "falcons_cellium": {
-    "tag": "Cellium",
-    "fullName": "McArthur Jovel",
-    "role": "Main AR",
-    "dob": "2000-12-24",
-    "status": "starter",
-    "active": true,
-    "teamId": "falcons",
-    "teamName": "Riyadh Falcons",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 11,
-    "careerChampsWins": 1,
-    "careerEwcWins": 1,
-    "majorMVPs": 2,
-    "rookieOfTheYear": null,
-    "careerAccolades": [
-      "2022 CDL Season MVP",
-      "2024 Esports World Cup MVP",
-      "2025 CDL Major 2 MVP"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "falcons_exnid": {
-    "tag": "Exnid",
-    "fullName": "Saud Al-Ati",
-    "role": "Flex",
-    "dob": "2002-10-28",
-    "status": "starter",
-    "active": true,
-    "teamId": "falcons",
-    "teamName": "Riyadh Falcons",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "falcons_kismet": {
-    "tag": "KiSMET",
-    "fullName": "Matthew Tinsley",
-    "role": "SMG",
-    "dob": "1999-11-11",
-    "status": "starter",
-    "active": true,
-    "teamId": "falcons",
-    "teamName": "Riyadh Falcons",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 5,
-    "careerChampsWins": 1,
-    "careerEwcWins": 0,
-    "majorMVPs": 2,
-    "rookieOfTheYear": null,
-    "careerAccolades": [
-      "2023 CDL Major 1 MVP",
-      "2023 CDL Championship MVP"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "falcons_pred": {
-    "tag": "Pred",
-    "fullName": "Amer Zulbeari",
-    "role": "SMG",
-    "dob": "2001-08-19",
-    "status": "starter",
-    "active": true,
-    "teamId": "falcons",
-    "teamName": "Riyadh Falcons",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 3,
-    "careerChampsWins": 1,
-    "careerEwcWins": 0,
-    "majorMVPs": 1,
-    "rookieOfTheYear": "2022 CDL Rookie of the Year",
-    "careerAccolades": [
-      "2022 CDL Major 3 MVP"
-    ],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "scrap",
+    "startEventId": "M1Q"
   },
   "miami_mettalz": {
     "tag": "Mettalz",
@@ -1056,7 +1127,44 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "mettalz",
+    "startEventId": "M1Q"
+  },
+  "miami_reeal": {
+    "tag": "ReeaL",
+    "fullName": "José Fernández",
+    "role": "SMG",
+    "dob": "2003-12-11",
+    "status": "substitute",
+    "active": false,
+    "teamId": "miami",
+    "teamName": "Miami Heretics",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": "Listed as Miami Heretics substitute ahead of Major 3 Qualifiers.",
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)",
+      "Plan.txt M3 update (2026-04-14)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "reeal",
+    "startEventId": "M3Q"
   },
   "miami_renkor": {
     "tag": "RenKor",
@@ -1091,7 +1199,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "renkor",
+    "startEventId": "M1Q"
   },
   "miami_super": {
     "tag": "SupeR",
@@ -1125,7 +1235,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "super",
+    "startEventId": "M1Q"
   },
   "miami_traixx": {
     "tag": "Traixx",
@@ -1157,7 +1269,305 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "traixx",
+    "startEventId": "M1Q"
+  },
+  "optic_dashy": {
+    "tag": "Dashy",
+    "fullName": "Brandon Otell",
+    "role": "Main AR",
+    "dob": "1999-04-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 6,
+    "careerChampsWins": 2,
+    "careerEwcWins": 1,
+    "majorMVPs": 3,
+    "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2018 CWL Las Vegas Open MVP",
+      "2022 CDL Major 1 MVP",
+      "2025 Esports World Cup Grand Finals MVP",
+      "2020 CDL Player to Watch",
+      "2025 Breaking Point Clutch Player of the Year",
+      "2024 Breaking Point OBJ Player of the Year"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "dashy",
+    "startEventId": "M1Q"
+  },
+  "optic_huke": {
+    "tag": "Huke",
+    "fullName": "Cuyler Garland",
+    "role": "SMG",
+    "dob": "1999-10-21",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 7,
+    "careerChampsWins": 2,
+    "careerEwcWins": 1,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 Breaking Point Comeback Player of the Year"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "huke",
+    "startEventId": "M1Q"
+  },
+  "optic_mercules": {
+    "tag": "MercuLes",
+    "fullName": "Mason Ramsey",
+    "role": "Flex",
+    "dob": "2003-07-14",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 2,
+    "careerChampsWins": 1,
+    "careerEwcWins": 1,
+    "majorMVPs": 1,
+    "rookieOfTheYear": "2025 Breaking Point Rookie of the Year",
+    "careerAccolades": [
+      "2025 CDL Championship MVP",
+      "2025 Breaking Point Play of the Year"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "mercules",
+    "startEventId": "M1Q"
+  },
+  "optic_shotzzy": {
+    "tag": "Shotzzy",
+    "fullName": "Anthony Cuevas-Castro",
+    "role": "SMG",
+    "dob": "2001-07-04",
+    "status": "starter",
+    "active": true,
+    "teamId": "optic",
+    "teamName": "OpTic Texas",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 9,
+    "careerChampsWins": 3,
+    "careerEwcWins": 1,
+    "majorMVPs": 1,
+    "rookieOfTheYear": "2020 Esports Awards Console Rookie of the Year",
+    "careerAccolades": [
+      "2020 CDL Season MVP",
+      "2025 Esports World Cup MVP",
+      "2020 CDL Breakout Player of the Year",
+      "First multi-FPS world champion in Halo and Call of Duty",
+      "2024 CDL Championship MVP"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "shotzzy",
+    "startEventId": "M1Q"
+  },
+  "pgm_envoy": {
+    "tag": "Envoy",
+    "fullName": "Dylan Hannon",
+    "role": "SMG",
+    "dob": "2000-01-19",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 10,
+    "careerChampsWins": 1,
+    "careerEwcWins": 0,
+    "majorMVPs": 1,
+    "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 CDL Minor 2 MVP",
+      "2020 CDL Clutch of the Year",
+      "2020 CDL Search and Destroy Clutch Player of the Year"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "envoy",
+    "startEventId": "M1Q"
+  },
+  "pgm_ghosty": {
+    "tag": "Ghosty",
+    "fullName": "Daniel Rothe",
+    "role": "Flex",
+    "dob": "2002-04-24",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 3,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 Breaking Point OBJ Player of the Year"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "ghosty",
+    "startEventId": "M1Q"
+  },
+  "pgm_neptune": {
+    "tag": "Neptune",
+    "fullName": "Travis McCloud",
+    "role": "SMG",
+    "dob": "2002-04-09",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 1,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "neptune",
+    "startEventId": "M1Q"
+  },
+  "pgm_sib": {
+    "tag": "Sib",
+    "fullName": "Daunte Gray",
+    "role": "Flex",
+    "dob": "2002-02-03",
+    "status": "starter",
+    "active": true,
+    "teamId": "pgm",
+    "teamName": "Paris Gentle Mates",
+    "seasonMajorWins": 1,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 3,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "sib",
+    "startEventId": "M1Q"
   },
   "ravens_craze": {
     "tag": "Craze",
@@ -1190,7 +1600,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "craze",
+    "startEventId": "M1Q"
   },
   "ravens_exceed": {
     "tag": "Exceed",
@@ -1222,6 +1634,39 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "exceed",
+    "startEventId": "M1Q"
+  },
+  "ravens_fire": {
+    "tag": "Fire",
+    "fullName": "Fire",
+    "role": "SMG",
+    "dob": null,
+    "status": "starter",
+    "active": true,
+    "teamId": "ravens",
+    "teamName": "Carolina Royal Ravens",
+    "personId": "fire",
+    "startEventId": "M3Q",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": "Bio scaffold added for the M3 Qualifiers roster update.",
+    "source": [
+      "Plan.txt M3 update (2026-04-14)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "team-plan-confirmed_name_only",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "not_applicable_new_stint",
+      "careerAccomplishments": "placeholder_until_researched"
     }
   },
   "ravens_lurqxx": {
@@ -1254,15 +1699,17 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "lurqxx",
+    "startEventId": "M1Q"
   },
   "ravens_nero": {
     "tag": "Nero",
     "fullName": "Dylan Koch",
     "role": "SMG",
     "dob": "2002-05-30",
-    "status": "starter",
-    "active": true,
+    "status": "inactive",
+    "active": false,
     "teamId": "ravens",
     "teamName": "Carolina Royal Ravens",
     "seasonMajorWins": 0,
@@ -1286,7 +1733,10 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "nero",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   "ravens_slasher": {
     "tag": "SlasheR",
@@ -1318,49 +1768,157 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "slasher",
+    "startEventId": "M1Q"
   },
-  "boston_cammy": {
-    "tag": "Cammy",
-    "fullName": "Cameron McKilligan",
+  "toronto_cleanx": {
+    "tag": "CleanX",
+    "fullName": "Tobias Juul Jønsson",
+    "role": "SMG",
+    "dob": "2000-08-11",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 5,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "cleanx",
+    "startEventId": "M1Q"
+  },
+  "toronto_insight": {
+    "tag": "Insight",
+    "fullName": "Jamie Craven",
+    "role": "Main AR",
+    "dob": "1999-10-31",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 4,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "insight",
+    "startEventId": "M1Q"
+  },
+  "toronto_joedeceives": {
+    "tag": "JoeDeceives",
+    "fullName": "Joseph Romero",
     "role": "Flex",
-    "dob": "1999-10-10",
+    "dob": "2004-09-23",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [
+      "2025 CDL Second Team"
+    ],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "joedeceives",
+    "startEventId": "M1Q"
+  },
+  "toronto_kips": {
+    "tag": "Kips",
+    "fullName": "Nicholas Lyons",
+    "role": "SMG",
+    "dob": "2006-02-17",
+    "status": "starter",
+    "active": true,
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": null,
+    "source": [
+      "Rosters.txt",
+      "latest(1).json",
+      "cdl_2026_players_registry_seed.json",
+      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "verified_from_seed_research",
+      "role": "best_effort_manual",
+      "seasonAccomplishments": "derived_from_latest_match_data",
+      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "kips",
+    "startEventId": "M1Q"
+  },
+  "toronto_reeal": {
+    "tag": "ReeaL",
+    "fullName": "José Fernández",
+    "role": "SMG",
+    "dob": "2003-12-11",
     "status": "inactive",
     "active": false,
-    "teamId": "boston",
-    "teamName": "Boston Breach",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 3,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "boston_nastie": {
-    "tag": "Nastie",
-    "fullName": "Byron Plumridge",
-    "role": "Main AR",
-    "dob": "1999-07-03",
-    "status": "starter",
-    "active": true,
-    "teamId": "boston",
-    "teamName": "Boston Breach",
+    "teamId": "toronto",
+    "teamName": "Toronto KOI",
     "seasonMajorWins": 0,
     "seasonChampsWins": 0,
     "seasonEwcWins": 0,
@@ -1382,103 +1940,10 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "boston_purj": {
-    "tag": "Purj",
-    "fullName": "Evan Perez",
-    "role": "Flex",
-    "dob": "2003-03-03",
-    "status": "starter",
-    "active": true,
-    "teamId": "boston",
-    "teamName": "Boston Breach",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "boston_snoopy": {
-    "tag": "Snoopy",
-    "fullName": "Eric Pérez",
-    "role": "SMG",
-    "dob": "2004-09-25",
-    "status": "starter",
-    "active": true,
-    "teamId": "boston",
-    "teamName": "Boston Breach",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "boston_spart": {
-    "tag": "Spart",
-    "fullName": "Kristopher Cervantez",
-    "role": "Flex",
-    "dob": "2001-05-24",
-    "status": "starter",
-    "active": true,
-    "teamId": "boston",
-    "teamName": "Boston Breach",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 1,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "reeal",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   "vancouver_abe": {
     "tag": "Abe",
@@ -1510,15 +1975,17 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "abe",
+    "startEventId": "M1Q"
   },
   "vancouver_capsidal": {
     "tag": "Capsidal",
     "fullName": "Kenyen Sutton",
     "role": "SMG",
     "dob": "2002-08-19",
-    "status": "starter",
-    "active": true,
+    "status": "inactive",
+    "active": false,
     "teamId": "vancouver",
     "teamName": "Vancouver Surge",
     "seasonMajorWins": 0,
@@ -1542,7 +2009,10 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "capsidal",
+    "startEventId": "M1Q",
+    "endEventId": "M2T"
   },
   "vancouver_gwinn": {
     "tag": "Gwinn",
@@ -1574,7 +2044,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "gwinn",
+    "startEventId": "M1Q"
   },
   "vancouver_lqgend": {
     "tag": "Lqgend",
@@ -1606,7 +2078,9 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "lqgend",
+    "startEventId": "M1Q"
   },
   "vancouver_lunarz": {
     "tag": "Lunarz",
@@ -1638,6 +2112,40 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
+    },
+    "personId": "lunarz",
+    "startEventId": "M1Q"
+  },
+  "vancouver_tbd": {
+    "tag": "TBD",
+    "fullName": "TBD",
+    "role": "Roster Placeholder",
+    "dob": null,
+    "status": "placeholder",
+    "active": true,
+    "teamId": "vancouver",
+    "teamName": "Vancouver Surge",
+    "personId": "tbd_vancouver",
+    "startEventId": "M3Q",
+    "placeholder": true,
+    "seasonMajorWins": 0,
+    "seasonChampsWins": 0,
+    "seasonEwcWins": 0,
+    "careerMajorWins": 0,
+    "careerChampsWins": 0,
+    "careerEwcWins": 0,
+    "majorMVPs": 0,
+    "rookieOfTheYear": null,
+    "careerAccolades": [],
+    "note": "Placeholder kept until Vancouver confirms its M3 replacement.",
+    "source": [
+      "Plan.txt M3 update (2026-04-14)"
+    ],
+    "metadataConfidence": {
+      "nameDob": "placeholder",
+      "role": "placeholder",
+      "seasonAccomplishments": "placeholder",
+      "careerAccomplishments": "placeholder"
     }
   },
   "vancouver_tjhaly": {
@@ -1670,262 +2178,8 @@
       "role": "best_effort_manual",
       "seasonAccomplishments": "derived_from_latest_match_data",
       "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_afro": {
-    "tag": "Afro",
-    "fullName": "Marcus Reid",
-    "role": "SMG",
-    "dob": "2001-07-19",
-    "status": "inactive",
-    "active": false,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_beans": {
-    "tag": "Beans",
-    "fullName": "Ben McMellon",
-    "role": "Main AR",
-    "dob": "2000-05-16",
-    "status": "inactive",
-    "active": false,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_encourage": {
-    "tag": "Encourage",
-    "fullName": "Jordan Byrd",
-    "role": "SMG",
-    "dob": "2006-06-19",
-    "status": "starter",
-    "active": true,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_hide": {
-    "tag": "Hide",
-    "fullName": "Jacob Bustillos",
-    "role": "SMG",
-    "dob": "2007-06-05",
-    "status": "starter",
-    "active": true,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_mack": {
-    "tag": "Mack",
-    "fullName": "Makenzie Kelley",
-    "role": "Flex",
-    "dob": "2001-11-21",
-    "status": "inactive",
-    "active": false,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 2,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_nejra": {
-    "tag": "Nejra",
-    "fullName": "Jonathan Pabo'n",
-    "role": "Flex",
-    "dob": "2002-08-05",
-    "status": "starter",
-    "active": true,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_okis": {
-    "tag": "Okis",
-    "fullName": "Arnel Avdagić",
-    "role": "Flex",
-    "dob": "2003-08-04",
-    "status": "starter",
-    "active": true,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
-  },
-  "c9_vivid": {
-    "tag": "Vivid",
-    "fullName": "Reece Drost",
-    "role": "SMG",
-    "dob": "1999-12-24",
-    "status": "inactive",
-    "active": false,
-    "teamId": "c9",
-    "teamName": "Cloud9 New York",
-    "seasonMajorWins": 0,
-    "seasonChampsWins": 0,
-    "seasonEwcWins": 0,
-    "careerMajorWins": 0,
-    "careerChampsWins": 0,
-    "careerEwcWins": 0,
-    "majorMVPs": 0,
-    "rookieOfTheYear": null,
-    "careerAccolades": [],
-    "note": null,
-    "source": [
-      "Rosters.txt",
-      "latest(1).json",
-      "cdl_2026_players_registry_seed.json",
-      "Call of Duty Esports Wiki career accomplishments research (2026-04-12)"
-    ],
-    "metadataConfidence": {
-      "nameDob": "verified_from_seed_research",
-      "role": "best_effort_manual",
-      "seasonAccomplishments": "derived_from_latest_match_data",
-      "careerAccomplishments": "manual_research_call_of_duty_esports_wiki_2026_04_12"
-    }
+    },
+    "personId": "tjhaly",
+    "startEventId": "M1Q"
   }
 }

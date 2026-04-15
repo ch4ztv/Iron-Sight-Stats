@@ -240,5 +240,84 @@
       "score2": 4,
       "winner": "faze"
     }
+  },
+  "MI1": {
+    "MI1_R1_1": {
+      "t1": "toronto",
+      "t2": "ravens",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_R1_2": {
+      "t1": "g2",
+      "t2": "c9",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_R1_3": {
+      "t1": "miami",
+      "t2": "boston",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_R1_4": {
+      "t1": "falcons",
+      "t2": "vancouver",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_R2_1": {
+      "t1": "optic",
+      "t2": "TBD",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_R2_2": {
+      "t1": "lat",
+      "t2": "TBD",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_R2_3": {
+      "t1": "pgm",
+      "t2": "TBD",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_R2_4": {
+      "t1": "faze",
+      "t2": "TBD",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_SF_1": {
+      "t1": "TBD",
+      "t2": "TBD",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_SF_2": {
+      "t1": "TBD",
+      "t2": "TBD",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    },
+    "MI1_F": {
+      "t1": "TBD",
+      "t2": "TBD",
+      "score1": null,
+      "score2": null,
+      "winner": null
+    }
   }
 }
