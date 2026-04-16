@@ -406,26 +406,56 @@
     background:#0f1711;
     border-color:rgba(0,232,64,.08);
   }
-  .player-leaderboard-wrap{
+  .player-leaderboard-wrap.stack-on-mobile{
     overflow:visible;
     border:0;
     border-radius:0;
   }
-  .player-leaderboard-wrap table{min-width:0}
-  .player-leaderboard-wrap th,
-  .player-leaderboard-wrap td{font-size:13px}
+  .player-leaderboard-wrap.stack-on-mobile table{min-width:0}
+  .player-leaderboard-wrap.stack-on-mobile th,
+  .player-leaderboard-wrap.stack-on-mobile td{font-size:13px}
   .player-open-btn{
     width:100%;
     justify-content:flex-start;
     text-align:left;
   }
-  .team-data-card .table-wrap{
+  .team-data-card .stack-on-mobile{
     overflow:visible;
     border:0;
     border-radius:0;
     background:none;
   }
-  .table-wrap table{min-width:0}
+  .stack-on-mobile table{min-width:0}
+  .mobile-scroll-table{
+    max-width:100%;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    overscroll-behavior-y:auto;
+  }
+  .mobile-scroll-table .responsive-table{min-width:760px}
+  .dashboard-standings-wrap.mobile-scroll-table .responsive-table,
+  .standings-table-wrap.mobile-scroll-table .responsive-table{min-width:680px}
+  .player-leaderboard-wrap.mobile-scroll-table{
+    overflow-x:auto;
+    border:1px solid rgba(0,232,64,.12);
+    border-radius:16px;
+    background:rgba(255,255,255,.02);
+  }
+  .player-leaderboard-wrap.mobile-scroll-table .responsive-table{min-width:1180px}
+  .player-leaderboard-wrap.mobile-scroll-table th,
+  .player-leaderboard-wrap.mobile-scroll-table td{
+    font-size:13px;
+    white-space:nowrap;
+  }
+  .team-data-card .mobile-scroll-table{
+    overflow-x:auto;
+    border:1px solid rgba(0,232,64,.10);
+    border-radius:16px;
+    background:rgba(255,255,255,.02);
+  }
+  .team-data-card .mobile-scroll-table .responsive-table{min-width:720px}
   .stat-list.compact{grid-template-columns:repeat(2,minmax(0,1fr))}
   .team-hero,.player-card .top,.roster-card .top,.match-head{align-items:flex-start}
   .player-grid,.roster-grid,
