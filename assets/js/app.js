@@ -245,7 +245,7 @@ function teamTablePanel(title, subtitle, headerCells, rowMarkup, summaryMarkup =
         <span class="team-data-subtle">${escapeHtml(subtitle)}</span>
       </div>
       ${summaryMarkup}
-      <div class="table-wrap stack-on-mobile">
+      <div class="table-wrap mobile-scroll-table">
         <table class="responsive-table table">
           <thead><tr>${headerCells.map(cell => `<th>${cell}</th>`).join('')}</tr></thead>
           <tbody>${rowMarkup}</tbody>
@@ -1379,7 +1379,7 @@ function renderDashboard(){
     <div class="dashboard-panels">
       <article class="card">
         <div class="card-title">CDL Standings <span class="small">Top 5</span></div>
-        <div class="table-wrap stack-on-mobile dashboard-standings-wrap">
+        <div class="table-wrap mobile-scroll-table dashboard-standings-wrap">
           <table class="responsive-table">
             <thead><tr><th>#</th><th>Team</th><th>CDL Pts</th><th>Series</th><th>Maps</th></tr></thead>
             <tbody>
@@ -1437,7 +1437,7 @@ function renderStandings(){
   const rows = getStandings();
   $('#standings').innerHTML = `
     ${sectionHeader('CDL Standings', 'Sorted by CDL points with series, maps, and recent form.')}
-    <div class="table-wrap stack-on-mobile">
+    <div class="table-wrap mobile-scroll-table standings-table-wrap">
       <table class="responsive-table">
         <thead><tr><th>#</th><th>Team</th><th>Points</th><th>Series</th><th>Map Record</th><th>Map Diff</th><th>Recent</th></tr></thead>
         <tbody>
@@ -2007,7 +2007,7 @@ function legacyRenderPlayers(){
         <span>Show Inactive</span>
       </label>
     </div>
-    ${rows.length ? `<div class="table-wrap stack-on-mobile player-leaderboard-wrap">
+    ${rows.length ? `<div class="table-wrap mobile-scroll-table player-leaderboard-wrap">
       <table class="responsive-table table">
         <thead>
           <tr>
@@ -2334,7 +2334,7 @@ function renderPlayers(){
         <span>Show Inactive</span>
       </label>
     </div>
-    ${rows.length ? `<div class="table-wrap stack-on-mobile player-leaderboard-wrap">
+    ${rows.length ? `<div class="table-wrap mobile-scroll-table player-leaderboard-wrap">
       <table class="responsive-table table">
         <thead>
           <tr>
