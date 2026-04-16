@@ -324,12 +324,21 @@
   .result-line,
   .matchup-pick-row{align-items:flex-start}
   .bet-hero{flex-direction:column}
+  .bet-hero-id{
+    width:100%;
+    flex-direction:column;
+    gap:10px;
+  }
   .bet-hero-art{
     width:min(100%, 228px);
     height:194px;
     flex:0 0 auto;
   }
   .bet-hero-copy{width:100%}
+  .bet-hero-sub{
+    white-space:normal;
+    overflow-wrap:anywhere;
+  }
   .bet-hero-right{justify-content:flex-start}
   .team-sel-card{padding:12px}
   .matchup-format-switch{width:100%;justify-content:space-between}
